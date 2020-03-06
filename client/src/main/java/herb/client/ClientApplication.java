@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 public class ClientApplication {
 
 	public static void main(String[] args) {
-
+		/*
 		//SpringApplication.run(ClientApplication.class, args);
 		
 		//WebClient client = WebClient.create("http://localhost:8080");
@@ -18,6 +18,7 @@ public class ClientApplication {
 		Player player = restTemplate.getForObject(uri.concat("/player"), Player.class);
 
 		System.out.println(player.getName() + player.getRank());
+		*/
 
 	}
 
