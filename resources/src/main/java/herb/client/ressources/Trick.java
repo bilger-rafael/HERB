@@ -1,4 +1,4 @@
-package herb;
+package herb.client.ressources;
 
 import java.util.Map;
 

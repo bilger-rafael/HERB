@@ -1,4 +1,4 @@
-package herb;
+package herb.client.ressources;
 
 public class Game {
 	private Player[] players;

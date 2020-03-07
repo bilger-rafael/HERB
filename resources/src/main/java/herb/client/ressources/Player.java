@@ -1,4 +1,4 @@
-package herb;
+package herb.client.ressources;
 
 public class Player {
 	private String username;
