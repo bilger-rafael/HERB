@@ -1,8 +1,0 @@
-package herb.client.ressources;
-
-public class Game {
-	private Player[] players;
-	private Round[] rounds;
-	
-	public Round startRound() { return null; };
-}
