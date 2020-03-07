@@ -77,7 +77,7 @@ public class Main extends Application {
 	 * which means that it is allowed to work with GUI components.
 	 * http://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm
 	 */
-	public void startLogin() {
+	public void startMain() {
 		/*
 		// Initialize the application MVC components. Note that these components
 		// can only be initialized now, because they may depend on the
@@ -96,6 +96,17 @@ public class Main extends Application {
 
 		view.start();
 		*/
+		
+		splashView.stop();
+		splashView = null;
+		
+		/*
+		serviceLocator = ServiceLocator.getServiceLocator();
+		String url = serviceLocator.getConfiguration().getOption("rootURL");
+		Player player = restTemplate.getForObject(url.concat("/player"), Player.class);
+		System.out.println(player.getName() + player.getRank());
+		*/
+		
 	}
 
 	/**
@@ -116,21 +127,5 @@ public class Main extends Application {
 	public static Main getMainProgram() {
 		return main;
 	}
-
-	/*
-	public static void main(String[] args) {
-		
-		//SpringApplication.run(ClientApplication.class, args);
-
-		//WebClient client = WebClient.create("http://localhost:8080");
-
-		final String uri = "http://127.0.0.1:8080";
-		RestTemplate restTemplate = new RestTemplate();
-
-		Player player = restTemplate.getForObject(uri.concat("/player"), Player.class);
-
-		System.out.println(player.getName() + player.getRank());
-	}
-	*/
 
 }

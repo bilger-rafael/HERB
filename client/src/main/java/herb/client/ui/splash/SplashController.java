@@ -25,7 +25,7 @@ public class SplashController extends Controller<SplashModel, SplashView> {
         model.initializer.stateProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue == Worker.State.SUCCEEDED)
-                    	Main.getMainProgram().startLogin();
+                    	Main.getMainProgram().startMain();
                 });
     }
 }
