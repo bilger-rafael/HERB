@@ -5,6 +5,9 @@ public class Player {
 	private String authToken;
 	private Hand hand;
 	
-	public void play(Card card) {}
+	public void play(Card card) {
+		
+		
+	}
 
 }

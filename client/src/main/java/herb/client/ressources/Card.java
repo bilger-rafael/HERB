@@ -1,9 +1,6 @@
 package herb.client.ressources;
 
 public class Card {
-    public enum Suit { };
-    public enum Rank { };
-    
     private final Suit suit;
     private final Rank rank;
     
