@@ -1,7 +1,7 @@
-package herb.client.ressources;
+package herb.serverressources;
 
-import herb.client.ressources.core.CardBase;
-import herb.client.ressources.core.PlayerBase;
+import herb.serverressources.core.CardBase;
+import herb.serverressources.core.PlayerBase;
 
 public class Player extends PlayerBase{
 
@@ -15,4 +15,9 @@ public class Player extends PlayerBase{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public static Player login(String username, String password) {
+		return new Player(username, "TOKEN1");
+	}
+
 }
