@@ -1,5 +1,7 @@
 package herb.server.ressources;
 
+import java.util.UUID;
+
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.PlayerBase;
 
@@ -13,11 +15,11 @@ public class Player extends PlayerBase{
 	@Override
 	public void play(CardBase card) {
 		// TODO Auto-generated method stub
-		
+	}
+
+	public static PlayerBase login(String username, String password) {
+		return new Player(username, UUID.randomUUID().toString());
 	}
 	
-	public static Player login(String username, String password) {
-		return new Player(username, "TOKEN1");
-	}
 
 }
