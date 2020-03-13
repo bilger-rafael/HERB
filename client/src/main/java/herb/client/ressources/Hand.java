@@ -1,8 +1,13 @@
 package herb.client.ressources;
 
-public class Hand {
-	private Card[] cards;
-	
-	public void play(Card card) {}
-	
+import herb.client.ressources.core.CardBase;
+import herb.client.ressources.core.HandBase;
+
+public class Hand extends HandBase {
+
+	@Override
+	public void play(CardBase card) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -1,7 +1,7 @@
 package herb.client.ui.login;
 
-import herb.client.ui.base.View;
 import javafx.stage.Stage;
+import herb.client.ui.core.View;
 import javafx.scene.Scene;
 
 public class LoginView extends View<LoginModel> {

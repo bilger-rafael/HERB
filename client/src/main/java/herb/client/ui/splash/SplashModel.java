@@ -6,7 +6,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import herb.client.ui.base.Model;
+import herb.client.ui.core.Model;
 import herb.client.utils.Configuration;
 import herb.client.utils.ServiceLocator;
 import herb.client.utils.Translator;

@@ -1,6 +1,6 @@
 package herb.client.ui.lobby;
 
-import herb.client.ui.base.Model;
+import herb.client.ui.core.Model;
 
 public class LobbyModel extends Model{
 

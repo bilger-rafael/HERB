@@ -1,6 +1,6 @@
 package herb.client.ui.launcher;
 
-import herb.client.ui.base.Model;
+import herb.client.ui.core.Model;
 
 public class LauncherModel extends Model{
 

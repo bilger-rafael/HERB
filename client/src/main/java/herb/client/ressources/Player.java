@@ -1,13 +1,13 @@
 package herb.client.ressources;
 
-public class Player {
-	private String username;
-	private String authToken;
-	private Hand hand;
-	
-	public void play(Card card) {
-		
+import herb.client.ressources.core.CardBase;
+import herb.client.ressources.core.PlayerBase;
+
+public class Player extends PlayerBase{
+
+	@Override
+	public void play(CardBase card) {
+		// TODO Auto-generated method stub
 		
 	}
-
 }

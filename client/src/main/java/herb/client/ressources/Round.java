@@ -1,7 +1,13 @@
 package herb.client.ressources;
 
-public class Round {
-	private Trick[] tricks;
-	
-	public Trick getCurrentTick() { return null; };
+import herb.client.ressources.core.RoundBase;
+import herb.client.ressources.core.TrickBase;
+
+public class Round extends RoundBase{
+
+	@Override
+	public TrickBase getCurrentTick() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

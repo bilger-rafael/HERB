@@ -1,6 +1,6 @@
 package herb.client.ui.game;
 
-import herb.client.ui.base.Model;
+import herb.client.ui.core.Model;
 
 public class GameModel extends Model{
 

@@ -1,4 +1,4 @@
-package herb.client.ui.base;
+package herb.client.ui.core;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;

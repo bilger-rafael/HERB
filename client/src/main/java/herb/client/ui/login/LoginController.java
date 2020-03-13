@@ -1,6 +1,6 @@
 package herb.client.ui.login;
 
-import herb.client.ui.base.Controller;
+import herb.client.ui.core.Controller;
 
 public class LoginController extends Controller<LoginModel, LoginView> {
 

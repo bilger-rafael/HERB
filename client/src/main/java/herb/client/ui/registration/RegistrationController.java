@@ -1,6 +1,6 @@
 package herb.client.ui.registration;
 
-import herb.client.ui.base.Controller;
+import herb.client.ui.core.Controller;
 
 public class RegistrationController extends Controller<RegistrationModel, RegistrationView> {
 

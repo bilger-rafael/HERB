@@ -1,6 +1,6 @@
 package herb.client.ui.login;
 
-import herb.client.ui.base.Model;
+import herb.client.ui.core.Model;
 
 public class LoginModel extends Model{
 

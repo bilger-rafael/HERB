@@ -1,7 +1,7 @@
 package herb.client.ui.lobby;
 
-import herb.client.ui.base.View;
 import javafx.stage.Stage;
+import herb.client.ui.core.View;
 import javafx.scene.Scene;
 
 public class LobbyView extends View<LobbyModel> {

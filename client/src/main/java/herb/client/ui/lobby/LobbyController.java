@@ -1,6 +1,6 @@
 package herb.client.ui.lobby;
 
-import herb.client.ui.base.Controller;
+import herb.client.ui.core.Controller;
 
 public class LobbyController extends Controller<LobbyModel, LobbyView> {
 

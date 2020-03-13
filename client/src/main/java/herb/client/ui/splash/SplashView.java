@@ -1,6 +1,6 @@
 package herb.client.ui.splash;
 
-import herb.client.ui.base.View;
+import herb.client.ui.core.View;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;

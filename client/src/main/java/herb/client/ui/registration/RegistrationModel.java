@@ -1,6 +1,6 @@
 package herb.client.ui.registration;
 
-import herb.client.ui.base.Model;
+import herb.client.ui.core.Model;
 
 public class RegistrationModel extends Model{
 

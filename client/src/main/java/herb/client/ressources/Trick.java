@@ -1,11 +1,19 @@
 package herb.client.ressources;
 
-import java.util.Map;
+import herb.client.ressources.core.PlayerBase;
+import herb.client.ressources.core.TrickBase;
 
-public class Trick {
+public class Trick extends TrickBase{
 
-	private Map<Player,Card> playedCards;
-	
-	public Player getWinner() { return null; };
-	public Player getNextPlayer() { return null; };
+	@Override
+	public PlayerBase getWinner() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PlayerBase getNextPlayer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

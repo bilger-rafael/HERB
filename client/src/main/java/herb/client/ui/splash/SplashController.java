@@ -1,7 +1,7 @@
 package herb.client.ui.splash;
 
 import herb.client.Main;
-import herb.client.ui.base.Controller;
+import herb.client.ui.core.Controller;
 import javafx.concurrent.Worker;
 
 /**

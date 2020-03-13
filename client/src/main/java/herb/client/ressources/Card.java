@@ -1,13 +1,20 @@
 package herb.client.ressources;
 
-public class Card {
-    private final Suit suit;
-    private final Rank rank;
-    
-    public Card(Suit suit, Rank rank) {
-    	this.suit = suit;
-    	this.rank = rank;
-    }
-    
-    public void getPoints() {}
+import herb.client.ressources.core.CardBase;
+import herb.client.ressources.core.Rank;
+import herb.client.ressources.core.Suit;
+
+public class Card extends CardBase {
+
+	public Card(Suit suit, Rank rank) {
+		super(suit, rank);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void getPoints() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

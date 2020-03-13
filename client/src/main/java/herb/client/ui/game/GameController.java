@@ -1,6 +1,6 @@
 package herb.client.ui.game;
 
-import herb.client.ui.base.Controller;
+import herb.client.ui.core.Controller;
 
 public class GameController extends Controller<GameModel, GameView> {
 
