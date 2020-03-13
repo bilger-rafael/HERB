@@ -8,7 +8,9 @@ import herb.server.ressources.Player;
 import herb.server.ressources.core.PlayerBase;
 
 @RestController
-public class LoginController {
+public class AuthenticationController {
+	
+	//TODO implement JWT Token (https://ertan-toker.de/spring-boot-spring-security-jwt-token/)
 	
 	@GetMapping("/login")
 	public PlayerBase login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
