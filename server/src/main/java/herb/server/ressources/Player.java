@@ -1,7 +1,7 @@
-package herb.serverressources;
+package herb.server.ressources;
 
-import herb.serverressources.core.CardBase;
-import herb.serverressources.core.PlayerBase;
+import herb.server.ressources.core.CardBase;
+import herb.server.ressources.core.PlayerBase;
 
 public class Player extends PlayerBase{
 

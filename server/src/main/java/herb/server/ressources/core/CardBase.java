@@ -1,4 +1,4 @@
-package herb.serverressources.core;
+package herb.server.ressources.core;
 
 public abstract class CardBase {
     private final Suit suit;

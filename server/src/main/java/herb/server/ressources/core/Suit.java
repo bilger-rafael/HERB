@@ -1,4 +1,4 @@
-package herb.serverressources.core;
+package herb.server.ressources.core;
 
 public enum Suit { Clubs, Diamonds, Hearts, Spades;
     @Override

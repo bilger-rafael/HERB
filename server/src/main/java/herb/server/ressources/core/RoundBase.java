@@ -1,4 +1,4 @@
-package herb.serverressources.core;
+package herb.server.ressources.core;
 
 public abstract class RoundBase {
 	private TrickBase[] tricks;

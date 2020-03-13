@@ -1,4 +1,4 @@
-package herb.serverressources.core;
+package herb.server.ressources.core;
 
 public enum Rank { Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace;
     @Override
