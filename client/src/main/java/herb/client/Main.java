@@ -108,9 +108,8 @@ public class Main extends Application {
 		splashView.stop();
 		splashView = null;
 		
-		Game g = new Game(UUID.randomUUID());
-		Round r = (Round)g.startRound();
-		System.out.println(r);
+		
+		// call login view
 		
 		/*
 		serviceLocator = ServiceLocator.getServiceLocator();
