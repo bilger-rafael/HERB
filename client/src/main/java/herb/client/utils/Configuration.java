@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * @author Brad Richards
  */
 public class Configuration {
-    ServiceLocator sl = ServiceLocator.getServiceLocator();  // for easy reference
+    ServiceLocator sl = ServiceLocator.getInstance();  // for easy reference
     Logger logger = sl.getLogger();                          // for easy reference
 
     private Properties defaultOptions;

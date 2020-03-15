@@ -36,7 +36,7 @@ public class SplashModel extends Model {
             TimeUnit.MILLISECONDS.sleep(250);
             
             // Create the service locator to hold our resources
-            serviceLocator = ServiceLocator.getServiceLocator();
+            serviceLocator = ServiceLocator.getInstance();
             this.updateProgress(2,  6);
             
             TimeUnit.MILLISECONDS.sleep(250);

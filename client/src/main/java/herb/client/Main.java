@@ -1,6 +1,11 @@
 package herb.client;
 
+import java.util.UUID;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import herb.client.ressources.Game;
+import herb.client.ressources.Round;
 import herb.client.ui.splash.SplashController;
 import herb.client.ui.splash.SplashModel;
 import herb.client.ui.splash.SplashView;
@@ -97,8 +102,15 @@ public class Main extends Application {
 		view.start();
 		*/
 		
+		// Resources are now initialized
+		serviceLocator = ServiceLocator.getInstance();
+		
 		splashView.stop();
 		splashView = null;
+		
+		Game g = new Game(UUID.randomUUID());
+		Round r = (Round)g.startRound();
+		System.out.println(r);
 		
 		/*
 		serviceLocator = ServiceLocator.getServiceLocator();

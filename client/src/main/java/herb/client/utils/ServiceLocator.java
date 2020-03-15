@@ -36,7 +36,7 @@ public class ServiceLocator {
      * @param mainClass The main class of this program
      * @return The singleton resource locator
      */
-    public static ServiceLocator getServiceLocator() {
+    public static ServiceLocator getInstance() {
         if (serviceLocator == null)
             serviceLocator = new ServiceLocator();
         return serviceLocator;

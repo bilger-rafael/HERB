@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class Translator {
-    private ServiceLocator sl = ServiceLocator.getServiceLocator();
+    private ServiceLocator sl = ServiceLocator.getInstance();
     private Logger logger = sl.getLogger();
     
     protected Locale currentLocale;
