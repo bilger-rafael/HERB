@@ -18,6 +18,7 @@ public class Player extends PlayerBase{
 	}
 
 	public static PlayerBase login(String username, String password) {
+		//TODO save player instance 
 		return new Player(username, UUID.randomUUID().toString());
 	}
 	
