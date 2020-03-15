@@ -15,8 +15,7 @@ public class GameController {
 	
 	@PostMapping("/Game({id})/startRound")
 	public RoundBase startRound(@PathVariable String id) {
-		
-		//TODO check if Game with id exists and read instead of create
+		//TODO check if Game with id exists and read it instead of create a new one
 		Game g = new Game(UUID.fromString(id));
 		
 		return g.startRound();

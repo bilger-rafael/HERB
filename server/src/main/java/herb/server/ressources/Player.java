@@ -11,16 +11,15 @@ public class Player extends PlayerBase{
 		super(username, authToken);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public void play(CardBase card) {
 		// TODO Auto-generated method stub
 	}
-
+	
 	public static PlayerBase login(String username, String password) {
 		//TODO save player instance 
 		return new Player(username, UUID.randomUUID().toString());
 	}
-	
 
 }

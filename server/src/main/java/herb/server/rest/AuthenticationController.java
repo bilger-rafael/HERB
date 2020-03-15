@@ -15,7 +15,6 @@ public class AuthenticationController {
 	@GetMapping("/login")
 	public PlayerBase login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
 		return (PlayerBase)Player.login(username,password);
-		//TEST: http://127.0.0.1:8080/login?username=%22Rafael%22&password=%22Test%22
 	}
 	
 }

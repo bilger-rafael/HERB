@@ -14,7 +14,6 @@ public class Game extends GameBase {
 
 	@Override
 	public RoundBase startRound() {
-		
 		Round r = RestClient.getClient()
 							.post()
 							.uri("/Game(" + this.getUuid() + ")/startRound")
