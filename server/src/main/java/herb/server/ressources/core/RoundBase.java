@@ -3,7 +3,7 @@ package herb.server.ressources.core;
 //Etter
 public abstract class RoundBase {
 	private TrickBase[] tricks;
-	private Trump current Trump;
+	private Trump currentTrump;
 	
 	public abstract RoundBase();
 	

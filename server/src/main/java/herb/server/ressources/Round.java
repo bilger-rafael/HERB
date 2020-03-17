@@ -1,15 +1,17 @@
 package herb.server.ressources;
 
+import java.util.Random;
+
 import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.TrickBase;
 
 //Etter
 public class Round extends RoundBase{
-	Trump currentTrump;
+	private Trump currentTrump;
 	
 	@Override
 	public Round() {
-		this.genTrump();
+		genTrump();
 	}
 
 	@Override
@@ -20,8 +22,8 @@ public class Round extends RoundBase{
 	
 	@Override
 	private void genTrump() {
-		
-		
+		Random rand = new Random();
+		currentTrump = Trump.values()[rand.nextInt((Enum.GetNames(typeof(Trump)).Length-1))];
 	}
 	
 	@Override
