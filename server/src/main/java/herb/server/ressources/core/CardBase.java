@@ -1,13 +1,15 @@
 package herb.server.ressources.core;
 
 public abstract class CardBase {
-    private final Suit suit;
-    private final Rank rank;
+    protected final Suit suit;
+    protected final Rank rank;
+    protected final Trump trump;
     
-    public CardBase(Suit suit, Rank rank) {
+    public CardBase(Suit suit, Rank rank, Trump trump) {
     	this.suit = suit;
     	this.rank = rank;
+    	this.trump = trump;
     }
     
-    public abstract void getPoints();
+    public abstract int getPoints();
 }

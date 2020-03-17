@@ -1,5 +1,6 @@
 package herb.client.ressources;
 
+//Etter
 public enum Trump { Clubs, Diamonds, Hearts, Spades, TopsDown, BottomsUp;
     @Override
     public String toString() {
