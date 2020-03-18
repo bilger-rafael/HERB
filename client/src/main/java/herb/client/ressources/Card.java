@@ -19,4 +19,28 @@ public class Card extends CardBase {
 		
 	}
 
+	@Override
+	public int compareTo(CardBase o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected boolean isTrump() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean isTopDown() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean isBottomUp() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

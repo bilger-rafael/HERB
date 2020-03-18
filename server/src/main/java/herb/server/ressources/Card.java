@@ -5,6 +5,7 @@ import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
 import herb.server.ressources.core.Trump;
 
+//Etter
 public class Card extends CardBase {
 
 	public Card(Suit suit, Rank rank, Trump trump) {
@@ -12,7 +13,7 @@ public class Card extends CardBase {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override //Etter gibt den Punktewert der Karte zurück
+	@Override //gibt den Punktewert der Karte zurück
 	public int getPoints() {
 		int points = 0;
 		
@@ -115,22 +116,71 @@ public class Card extends CardBase {
 		return points;
 	}
 	
-	private boolean isTrump() {
+	protected boolean isTrump() {
 		if(this.suit.name() == this.trump.name())
 			return true;
 		else return false;
 	}
 	
-	private boolean isTopDown() {
+	protected  boolean isTopDown() {
 		if (this.trump.ordinal() == 4)
 			return true;
 		else return false;
 	}
 	
-	private boolean isBottomUp() {
+	protected boolean isBottomUp() {
 		if (this.trump.ordinal() == 5)
 			return true;
 		else return false;
+	}
+
+	@Override //o ist die Karte vom vorherigen Spieler, this die neue Karte
+	public int compareTo(Card o) {
+		int result=0;
+		
+		//gleicher Suit
+		if (this.suit==o.suit) {
+			//Trumpf
+			if(isTrump()) {
+				//Buur und Nell
+				if(this.rank.ordinal()==3 || this.rank.ordinal()==5 || o.rank.ordinal()==3 || o.rank.ordinal()==5) {
+					if (this.rank.ordinal()==3) result=9;
+					if (o.rank.ordinal()==3)	result=-9;
+					if (this.rank.ordinal()==5) result=10;
+					if (o.rank.ordinal()==5) 	result=-10;
+				//Kein Buur und Nell	
+				}else {
+					result=this.rank.ordinal()-o.rank.ordinal();
+				}
+				
+			//kein Trumpf	
+			}else {
+				result=this.rank.ordinal()-o.rank.ordinal();
+			}
+		//unterschiedliche Suit
+		}else { 
+			//Ich habe Trump
+			if(isTrump()) {
+				result = 8;
+				
+			//Ich habe keinen Trump und nicht die selbe Suit
+			}else {
+				result = -8;
+			}
+			
+		}
+		
+		
+			
+		
+		// TODO Auto-generated method stub
+		return result;
+	}
+
+	@Override //nicht möglich, eigene CompareTo nötig mit Card
+	public int compareTo(CardBase o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 

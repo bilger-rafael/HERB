@@ -2,8 +2,9 @@ package herb.client.ressources.core;
 
 import herb.client.ressources.Trump;
 
+
 //Etter
-public abstract class CardBase {
+public abstract class CardBase implements Comparable<CardBase> {
     private final Suit suit;
     private final Rank rank;
     private final Trump trump;
@@ -15,4 +16,10 @@ public abstract class CardBase {
     }
     
     public abstract int getPoints();
+    
+    protected abstract boolean isTrump();
+    
+    protected abstract boolean isTopDown();
+    
+    protected abstract boolean isBottomUp();
 }

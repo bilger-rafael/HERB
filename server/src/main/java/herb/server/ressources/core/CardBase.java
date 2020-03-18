@@ -1,6 +1,8 @@
 package herb.server.ressources.core;
 
-public abstract class CardBase {
+import herb.server.ressources.Card;
+
+public abstract class CardBase implements Comparable<CardBase>{
     protected final Suit suit;
     protected final Rank rank;
     protected final Trump trump;
@@ -12,4 +14,15 @@ public abstract class CardBase {
     }
     
     public abstract int getPoints();
+    
+    protected abstract boolean isTrump();
+    
+    protected abstract boolean isTopDown();
+    
+    protected abstract boolean isBottomUp();
+
+	public int compareTo(Card o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
