@@ -18,4 +18,5 @@ public abstract class GameBase {
 	public UUID getUuid() {
 		return uuid;
 	}
+
 }

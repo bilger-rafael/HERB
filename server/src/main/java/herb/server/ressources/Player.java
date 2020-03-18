@@ -9,6 +9,7 @@ import herb.server.ressources.core.PlayerBase;
 //Etter
 public class Player extends PlayerBase{
 	private HandBase hand;
+	private Round currentRound;
 	
 
 	public Player(String username, String authToken) {
@@ -22,7 +23,7 @@ public class Player extends PlayerBase{
 		//Aus Hand entfernen
 		this.hand.play(card);
 		//TODO Karte dem Trick hinzufügen
-		
+		this.currentRound.getCurrentTrick().addCardtoTrick(card);
 	}
 	
 	public static PlayerBase login(String username, String password) {
@@ -38,6 +39,10 @@ public class Player extends PlayerBase{
 	
 	public void clearHand() {
 		this.hand.clearCards();
+	}
+	
+	public void setCurrentRound(Round r) {
+		this.currentRound = r;
 	}
 
 

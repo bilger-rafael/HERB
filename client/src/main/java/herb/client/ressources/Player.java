@@ -43,4 +43,10 @@ public class Player extends PlayerBase {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setCurrentRound(Round r) {
+		// TODO Auto-generated method stub
+		
+	}
 }

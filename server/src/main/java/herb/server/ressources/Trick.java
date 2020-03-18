@@ -15,8 +15,8 @@ public class Trick extends TrickBase{
 	public Trick(PlayerBase[] players) {
 		super();
 		this.players = players;
-		
 		this.currentplayer= this.players[0];
+		
 	}
 
 	@Override
@@ -34,6 +34,7 @@ public class Trick extends TrickBase{
 	@Override
 	public void addCardtoTrick(CardBase c) {
 		this.playedCards.put(this.currentplayer, c);
+		getNextPlayer();
 	}
 
 	@Override
