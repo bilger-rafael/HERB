@@ -20,4 +20,6 @@ public abstract class PlayerBase {
 		return authToken;
 	}
 
+	public abstract void addCardtoHand(CardBase card);
+
 }

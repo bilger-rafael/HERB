@@ -1,5 +1,6 @@
 package herb.client.ressources.core;
 
+
 public abstract class PlayerBase {
 	private final String username;
 	private final String authToken;
@@ -19,5 +20,7 @@ public abstract class PlayerBase {
 	public String getAuthToken() {
 		return authToken;
 	}
+	
+	public abstract void addCardtoHand(CardBase card);
 
 }

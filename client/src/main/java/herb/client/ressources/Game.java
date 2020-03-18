@@ -3,12 +3,13 @@ package herb.client.ressources;
 import java.util.UUID;
 
 import herb.client.ressources.core.GameBase;
+import herb.client.ressources.core.PlayerBase;
 import herb.client.ressources.core.RoundBase;
 import herb.client.rest.RestClient;
 
 public class Game extends GameBase {
-	public Game(UUID uuid) {
-		super(uuid);
+	public Game(UUID uuid, PlayerBase[] players) {
+		super(uuid, players);
 		// TODO Auto-generated constructor stub
 	}
 

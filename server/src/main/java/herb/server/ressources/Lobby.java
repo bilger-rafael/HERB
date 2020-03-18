@@ -20,7 +20,7 @@ public class Lobby extends LobbyBase {
 
 	@Override //Etter Spiel starten
 	public GameBase startGame() {
-		Game g = new Game(this.uuid);
+		Game g = new Game(this.uuid, this.players);
 		return g;
 	}
 	

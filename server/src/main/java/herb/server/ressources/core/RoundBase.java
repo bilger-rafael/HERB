@@ -4,6 +4,7 @@ package herb.server.ressources.core;
 public abstract class RoundBase {
 	private TrickBase[] tricks;
 	private Trump currentTrump;
+	protected PlayerBase[] players = new PlayerBase[4];
 	
 	
 	public abstract TrickBase getCurrentTrick();

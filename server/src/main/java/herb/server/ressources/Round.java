@@ -2,6 +2,7 @@ package herb.server.ressources;
 
 import java.util.Random;
 
+import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.TrickBase;
 import herb.server.ressources.core.Trump;
@@ -10,11 +11,20 @@ import herb.server.ressources.core.Trump;
 public class Round extends RoundBase{
 	private Trump currentTrump;
 	private DeckOfCards deck;
+	protected PlayerBase[] players = new PlayerBase[4];
 	
-	public Round() {
+	public Round(PlayerBase[] players) {
+		super();
 		genTrump();
 		this.deck = new DeckOfCards(this.currentTrump);
+		this.players = players;
 		
+		//Karten verteilen
+		while (this.deck.getCardsRemaining()>0) {	
+		}
+		for (int i = 0; i<this.players.length; i++) {
+			this.players[i].addCardtoHand(this.deck.dealCard());
+		}
 	}
 
 	@Override

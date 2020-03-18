@@ -31,4 +31,10 @@ public class Player extends PlayerBase {
 
 		return p;
 	}
+
+	@Override
+	public void addCardtoHand(CardBase card) {
+		// TODO Auto-generated method stub
+		
+	}
 }

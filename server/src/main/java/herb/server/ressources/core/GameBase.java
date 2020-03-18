@@ -8,8 +8,9 @@ public abstract class GameBase {
 	protected PlayerBase[] players = new PlayerBase[4];
 	protected ArrayList<RoundBase> rounds = new ArrayList<RoundBase>();
 	
-	public GameBase(UUID uuid) {
+	public GameBase(UUID uuid, PlayerBase[] players) {
 		this.uuid = uuid;
+		this.players = players;
 	}
 	
 	public abstract RoundBase startRound();
