@@ -13,4 +13,10 @@ public abstract class LobbyBase {
 	public String getName() {
 		return name;
 	}
+	
+	//Etter
+	public abstract void addPlayer(PlayerBase p);
+	
+	//Etter
+	public abstract void removePlayer(PlayerBase p);
 }

@@ -1,5 +1,6 @@
 package herb.client.ressources.core;
 
+
 public abstract class LobbyBase {
 	private final String name;
 	protected PlayerBase[] players = new PlayerBase[4];
@@ -13,4 +14,10 @@ public abstract class LobbyBase {
 	public String getName() {
 		return name;
 	}
+	
+	//Etter
+	public abstract void addPlayer(PlayerBase p);
+	
+	//Etter
+	public abstract void removePlayer(PlayerBase p);
 }

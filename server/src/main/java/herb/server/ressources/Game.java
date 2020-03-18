@@ -5,11 +5,12 @@ import java.util.UUID;
 import herb.server.ressources.core.GameBase;
 import herb.server.ressources.core.RoundBase;
 
+//Etter
 public class Game extends GameBase{
 
 	public Game(UUID uuid) {
 		super(uuid);
-		// TODO Auto-generated constructor stub
+		startRound();
 	}
 
 	@Override

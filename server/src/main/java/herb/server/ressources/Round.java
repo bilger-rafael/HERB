@@ -8,7 +8,7 @@ import herb.server.ressources.core.Trump;
 
 //Etter
 public class Round extends RoundBase{
-	private static Trump currentTrump;
+	private Trump currentTrump;
 	private DeckOfCards deck;
 	
 	public Round() {
