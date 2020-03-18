@@ -28,6 +28,9 @@ public class Trick extends TrickBase{
 	public PlayerBase getNextPlayer() {
 		for (int i =0; i<this.players.length;i++) {
 			if (this.currentplayer == this.players[i] ) {
+				if(i==this.players.length-1) {
+					this.currentplayer = this.players[0];
+				}
 				this.currentplayer = this.players[i+1];
 				break;
 			}
@@ -43,7 +46,8 @@ public class Trick extends TrickBase{
 
 	@Override
 	protected void clearTrick() {
-		// TODO Auto-generated method stub
+		this.playedCards.clear();
+		this.currentplayer=this.players[0];
 		
 	}
 
