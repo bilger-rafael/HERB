@@ -14,15 +14,20 @@ public class Trick extends TrickBase{
 	private PlayerBase startingPlayer;
 	private PlayerBase currentWinner;
 	
-	public Trick(PlayerBase[] players) {
+	public Trick(PlayerBase[] players, PlayerBase startingPlayer) {
 		super();
 		this.players = players;
-		
-		//TODO Startspieler ist der Gewinner der letzten Runde
-		this.currentplayer= this.players[0];
-		this.startingPlayer = this.players[0];
-		//nicht Player0
+		this.currentplayer= startingPlayer;
+		this.startingPlayer = startingPlayer;
 	}
+
+	public PlayerBase playTrick() {
+		// TODO Logik wer ist dran und weitergabe implementieren!
+		
+		getWinner();
+		return null;
+	}
+	
 
 	@Override
 	public PlayerBase getWinner() {

@@ -37,12 +37,22 @@ public class Player extends PlayerBase{
 		
 	}
 	
+
 	public void clearHand() {
 		this.hand.clearCards();
 	}
 	
 	public void setCurrentRound(Round r) {
 		this.currentRound = r;
+	}
+
+	@Override
+	public boolean PlayerNoCards() {
+		if (this.hand.cardsEmpty()) {
+		return true;
+		}else {
+		return false;
+		}
 	}
 
 

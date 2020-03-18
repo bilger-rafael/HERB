@@ -44,4 +44,13 @@ public class Hand extends HandBase {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean cardsEmpty() {
+		if (cards.length==0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

@@ -30,4 +30,10 @@ public class Hand extends HandBase {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean cardsEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

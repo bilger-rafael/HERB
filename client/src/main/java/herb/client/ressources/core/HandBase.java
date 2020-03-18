@@ -14,4 +14,6 @@ public abstract class HandBase {
 	
 	public abstract void sortCards();
 	
+	public abstract boolean cardsEmpty();
+	
 }

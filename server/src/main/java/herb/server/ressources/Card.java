@@ -169,11 +169,6 @@ public class Card extends CardBase {
 			}
 			
 		}
-		
-		
-			
-		
-		// TODO Auto-generated method stub
 		return result;
 	}
 
