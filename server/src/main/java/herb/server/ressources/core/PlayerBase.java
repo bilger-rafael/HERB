@@ -21,5 +21,7 @@ public abstract class PlayerBase {
 	}
 
 	public abstract void addCardtoHand(CardBase card);
+	
+	public abstract void clearHand();
 
 }

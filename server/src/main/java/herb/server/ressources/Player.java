@@ -33,6 +33,9 @@ public class Player extends PlayerBase{
 		
 	}
 	
-	//TODO clear Hand
+	public void clearHand() {
+		this.hand.clearCards();
+	}
+
 
 }

@@ -37,4 +37,10 @@ public class Player extends PlayerBase {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void clearHand() {
+		// TODO Auto-generated method stub
+		
+	}
 }

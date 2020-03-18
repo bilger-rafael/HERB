@@ -19,6 +19,11 @@ public class Round extends RoundBase{
 		this.deck = new DeckOfCards(this.currentTrump);
 		this.players = players;
 		
+		//Hände leeren
+		for (int i = 0; i<this.players.length; i++) {
+			this.players[i].clearHand();
+		}
+		
 		//Karten verteilen
 		while (this.deck.getCardsRemaining()>0) {	
 		}
