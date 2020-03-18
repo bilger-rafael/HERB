@@ -8,22 +8,30 @@ import herb.server.ressources.core.HandBase;
 //Etter
 public class Hand extends HandBase {
 	private CardBase[] cards;
-	private int index;
+	private int addIndex;
 	
 	public Hand() {
-		this.index=0;
+		this.addIndex=0;
 	}
 
 	@Override
 	public void play(CardBase card) {
-		// TODO Auto-generated method stub
+		try { 
+			for (int i=0; i<this.cards.length; i++) {
+			if (this.cards[i] == card) {
+				this.cards[i] = null;
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception => Meldung auf UI
+		}
 		
 	}
 
 	@Override
 	public void addCard(CardBase card) {
-		this.cards[this.index] = card;
-		this.index++;
+		this.cards[this.addIndex] = card;
+		this.addIndex++;
 	}
 
 	@Override

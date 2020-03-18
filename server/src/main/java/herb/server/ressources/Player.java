@@ -19,7 +19,10 @@ public class Player extends PlayerBase{
 	
 	@Override
 	public void play(CardBase card) {
-		// TODO Auto-generated method stub
+		//Aus Hand entfernen
+		this.hand.play(card);
+		//TODO Karte dem Trick hinzufügen
+		
 	}
 	
 	public static PlayerBase login(String username, String password) {

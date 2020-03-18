@@ -12,6 +12,7 @@ public class Round extends RoundBase{
 	private Trump currentTrump;
 	private DeckOfCards deck;
 	protected PlayerBase[] players = new PlayerBase[4];
+	private Trick currentTrick;
 	
 	public Round(PlayerBase[] players) {
 		super();
@@ -30,12 +31,22 @@ public class Round extends RoundBase{
 		for (int i = 0; i<this.players.length; i++) {
 			this.players[i].addCardtoHand(this.deck.dealCard());
 		}
+		
+		//TODO Hände sortieren
+		
+		//Erster Trick erstellen
+		createNewTrick();
 	}
 
 	@Override
 	public TrickBase getCurrentTrick() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.currentTrick;
+	}
+	
+	private void createNewTrick() {
+		Trick trick = new Trick(this.players);
+		this.currentTrick=trick;
 	}
 	
 	@Override

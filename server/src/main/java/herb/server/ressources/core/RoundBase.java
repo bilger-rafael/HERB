@@ -12,4 +12,5 @@ public abstract class RoundBase {
 	protected abstract void genTrump();
 	
 	public abstract Trump getCurrentTrump();
+	
 }
