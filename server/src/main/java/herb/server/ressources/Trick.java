@@ -16,7 +16,6 @@ public class Trick extends TrickBase{
 		super();
 		this.players = players;
 		this.currentplayer= this.players[0];
-		
 	}
 
 	@Override
@@ -27,7 +26,12 @@ public class Trick extends TrickBase{
 
 	@Override
 	public PlayerBase getNextPlayer() {
-		// TODO Auto-generated method stub
+		for (int i =0; i<this.players.length;i++) {
+			if (this.currentplayer == this.players[i] ) {
+				this.currentplayer = this.players[i+1];
+				break;
+			}
+		}
 		return null;
 	}
 	
