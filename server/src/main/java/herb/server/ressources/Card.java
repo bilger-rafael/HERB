@@ -16,7 +16,6 @@ public class Card extends CardBase {
 	@Override //gibt den Punktewert der Karte zurück
 	public int getPoints() {
 		int points = 0;
-		
 		//Obeabe
 		if(isTopDown()) {
 			int i = rank.ordinal();
@@ -137,7 +136,6 @@ public class Card extends CardBase {
 	@Override //o ist die Karte vom vorherigen Spieler, this die neue Karte
 	public int compareTo(CardBase o) {
 		int result=0;
-		
 		//gleicher Suit
 		if (this.getSuit()==o.getSuit()) {
 			//Trumpf
@@ -151,8 +149,7 @@ public class Card extends CardBase {
 				//Kein Buur und Nell	
 				}else {
 					result=this.getRank().ordinal()-o.getRank().ordinal();
-				}
-				
+				}	
 			//kein Trumpf	
 			}else {
 				result=this.getRank().ordinal()-o.getRank().ordinal();
@@ -162,18 +159,14 @@ public class Card extends CardBase {
 			//Ich habe Trump
 			if(isTrump()) {
 				result = 8;
-				
 			//Ich habe keinen Trump und nicht die selbe Suit
 			}else {
 				result = -8;
 			}
-			
 		}
 		return result;
 	}
 
-
-	
 	public Suit getSuit() {
 		return this.suit;
 	}
