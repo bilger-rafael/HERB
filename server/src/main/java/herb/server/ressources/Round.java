@@ -34,7 +34,10 @@ public class Round extends RoundBase{
 			this.players[i].addCardtoHand(this.deck.dealCard());
 		}
 		
-		//TODO Hände sortieren
+		//Hände sortieren
+		for (int i =0; i<this.players.length;i++) {
+			this.players[i].SortMyCards();
+		}
 		
 		//Tricks spielen
 		while(!this.players[0].PlayerNoCards()) {

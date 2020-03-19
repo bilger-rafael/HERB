@@ -30,5 +30,7 @@ public abstract class PlayerBase {
 	public abstract void clearHand();
 	
 	public abstract void setCurrentRound(Round r);
+	
+	public abstract void SortMyCards();
 
 }

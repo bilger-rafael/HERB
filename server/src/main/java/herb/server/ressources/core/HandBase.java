@@ -1,5 +1,9 @@
 package herb.server.ressources.core;
 
+import java.util.Comparator;
+
+import herb.server.ressources.Card;
+
 
 public abstract class HandBase {
 	private CardBase[] cards;

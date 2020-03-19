@@ -21,8 +21,9 @@ public abstract class CardBase implements Comparable<CardBase>{
     
     protected abstract boolean isBottomUp();
 
-	public int compareTo(Card o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public abstract int compareTo(Card o);
+
+	public abstract Suit getSuit();
+	
+	public abstract Rank getRank();
 }

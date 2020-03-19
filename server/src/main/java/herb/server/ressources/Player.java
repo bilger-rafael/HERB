@@ -55,5 +55,11 @@ public class Player extends PlayerBase{
 		}
 	}
 
+	@Override
+	public void SortMyCards() {
+		this.hand.sortCards();
+		
+	}
+
 
 }

@@ -55,4 +55,10 @@ public class Player extends PlayerBase {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public void SortMyCards() {
+		// TODO Auto-generated method stub
+		
+	}
 }

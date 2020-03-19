@@ -178,5 +178,11 @@ public class Card extends CardBase {
 		return 0;
 	}
 	
-
+	public Suit getSuit() {
+		return this.suit;
+	}
+	
+	public Rank getRank() {
+		return this.rank;
+	}
 }
