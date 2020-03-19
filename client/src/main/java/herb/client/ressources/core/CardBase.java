@@ -4,7 +4,7 @@ import herb.client.ressources.Trump;
 
 
 //Etter
-public abstract class CardBase implements Comparable<CardBase> {
+public abstract class CardBase{
     private final Suit suit;
     private final Rank rank;
     private final Trump trump;

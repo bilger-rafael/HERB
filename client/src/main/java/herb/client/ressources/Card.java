@@ -19,11 +19,7 @@ public class Card extends CardBase {
 		
 	}
 
-	@Override
-	public int compareTo(CardBase o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 
 	@Override
 	protected boolean isTrump() {

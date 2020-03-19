@@ -24,6 +24,8 @@ public class Trick extends TrickBase{
 		// TODO Logik wer ist dran und weitergabe implementieren!
 		
 		winner = getWinner();
+		
+		
 		return winner;
 		
 	}

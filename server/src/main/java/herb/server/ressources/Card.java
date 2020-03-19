@@ -135,27 +135,27 @@ public class Card extends CardBase {
 	}
 
 	@Override //o ist die Karte vom vorherigen Spieler, this die neue Karte
-	public int compareTo(Card o) {
+	public int compareTo(CardBase o) {
 		int result=0;
 		
 		//gleicher Suit
-		if (this.suit==o.suit) {
+		if (this.getSuit()==o.getSuit()) {
 			//Trumpf
 			if(isTrump()) {
 				//Buur und Nell
-				if(this.rank.ordinal()==3 || this.rank.ordinal()==5 || o.rank.ordinal()==3 || o.rank.ordinal()==5) {
-					if (this.rank.ordinal()==3) result=9;
-					if (o.rank.ordinal()==3)	result=-9;
-					if (this.rank.ordinal()==5) result=10;
-					if (o.rank.ordinal()==5) 	result=-10;
+				if(this.getRank().ordinal()==3 || this.getRank().ordinal()==5 || o.getRank().ordinal()==3 || o.getRank().ordinal()==5) {
+					if (this.getRank().ordinal()==3) result=9;
+					if (o.getRank().ordinal()==3)	result=-9;
+					if (this.getRank().ordinal()==5) result=10;
+					if (o.getRank().ordinal()==5) 	result=-10;
 				//Kein Buur und Nell	
 				}else {
-					result=this.rank.ordinal()-o.rank.ordinal();
+					result=this.getRank().ordinal()-o.getRank().ordinal();
 				}
 				
 			//kein Trumpf	
 			}else {
-				result=this.rank.ordinal()-o.rank.ordinal();
+				result=this.getRank().ordinal()-o.getRank().ordinal();
 			}
 		//unterschiedliche Suit
 		}else { 
@@ -172,11 +172,7 @@ public class Card extends CardBase {
 		return result;
 	}
 
-	@Override //nicht möglich, eigene CompareTo nötig mit Card
-	public int compareTo(CardBase o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 	
 	public Suit getSuit() {
 		return this.suit;

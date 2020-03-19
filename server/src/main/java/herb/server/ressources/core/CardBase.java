@@ -2,7 +2,7 @@ package herb.server.ressources.core;
 
 import herb.server.ressources.Card;
 
-public abstract class CardBase implements Comparable<CardBase>{
+public abstract class CardBase {
     protected final Suit suit;
     protected final Rank rank;
     protected final Trump trump;
@@ -21,7 +21,7 @@ public abstract class CardBase implements Comparable<CardBase>{
     
     protected abstract boolean isBottomUp();
 
-	public abstract int compareTo(Card o);
+	public abstract int compareTo(CardBase o);
 
 	public abstract Suit getSuit();
 	
