@@ -6,6 +6,9 @@ public abstract class RoundBase {
 	private Trump currentTrump;
 	protected PlayerBase[] players = new PlayerBase[4];
 	
+	public RoundBase (PlayerBase[] players) {
+		this.players=players;
+	}
 	
 	public abstract TrickBase getCurrentTrick();
 	

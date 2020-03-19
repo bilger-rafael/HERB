@@ -16,10 +16,10 @@ public class Round extends RoundBase{
 	private PlayerBase startingPlayer;
 	
 	public Round(PlayerBase[] players) {
-		super();
+		super(players);
 		genTrump();
 		this.deck = new DeckOfCards(this.currentTrump);
-		this.players = players;
+		//TODO Wer startet (Schellen 7?)
 		this.startingPlayer=players[0];
 		
 		//Hände leeren

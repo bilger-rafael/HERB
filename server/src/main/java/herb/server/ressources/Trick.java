@@ -15,17 +15,15 @@ public class Trick extends TrickBase{
 	private PlayerBase currentWinner;
 	
 	public Trick(PlayerBase[] players, PlayerBase startingPlayer) {
-		super();
-		this.players = players;
-		this.currentplayer= startingPlayer;
-		this.startingPlayer = startingPlayer;
+		super(players, startingPlayer);
+
 	}
 
 	public PlayerBase playTrick() {
 		// TODO Logik wer ist dran und weitergabe implementieren!
 		
-		getWinner();
-		return null;
+		return getWinner();
+		
 	}
 	
 
@@ -72,10 +70,7 @@ public class Trick extends TrickBase{
 				}
 			}
 		}
-		
-		
-		// TODO Auto-generated method stub
-		return null;
+		return this.currentWinner;
 	}
 
 	@Override
