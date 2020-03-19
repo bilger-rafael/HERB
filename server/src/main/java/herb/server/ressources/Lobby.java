@@ -33,7 +33,10 @@ public class Lobby extends LobbyBase {
 					if(this.players[i]== null) {
 						this.players[i] = p;
 						found = true;
-					} else {
+						if(i==3) 
+						{startGame();
+							} else {
+						}
 						i++;
 					}
 				}	
