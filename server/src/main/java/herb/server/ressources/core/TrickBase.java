@@ -18,4 +18,5 @@ public abstract class TrickBase {
 	public abstract PlayerBase getNextPlayer();
 	public abstract void addCardtoTrick(CardBase c);
 	protected abstract void clearTrick();
+	protected abstract int getTrickPoints();
 }

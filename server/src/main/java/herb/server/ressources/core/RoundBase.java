@@ -1,10 +1,13 @@
 package herb.server.ressources.core;
 
+import java.util.Map;
+
 //Etter
 public abstract class RoundBase {
-	private TrickBase[] tricks;
-	private Trump currentTrump;
+	protected TrickBase[] tricks;
+	protected Trump currentTrump;
 	protected PlayerBase[] players = new PlayerBase[4];
+	protected Map<PlayerBase,Integer> actualScores;
 	
 	public RoundBase (PlayerBase[] players) {
 		this.players=players;
@@ -15,5 +18,7 @@ public abstract class RoundBase {
 	protected abstract void genTrump();
 	
 	public abstract Trump getCurrentTrump();
+	
+	protected abstract void addTrickScore(PlayerBase winner);
 	
 }

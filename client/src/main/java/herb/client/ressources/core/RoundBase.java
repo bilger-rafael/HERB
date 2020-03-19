@@ -1,7 +1,25 @@
 package herb.client.ressources.core;
 
+import java.util.Map;
+
+import herb.client.ressources.Trump;
+
+
 public abstract class RoundBase {
-	private TrickBase[] tricks;
+	protected TrickBase[] tricks;
+	protected Trump currentTrump;
+	protected PlayerBase[] players = new PlayerBase[4];
+	protected Map<PlayerBase,Integer> actualScores;
 	
-	public abstract TrickBase getCurrentTick();
+	public RoundBase (PlayerBase[] players) {
+		this.players=players;
+	}
+	
+	public abstract TrickBase getCurrentTrick();
+	
+	protected abstract void genTrump();
+	
+	public abstract Trump getCurrentTrump();
+	
+	protected abstract void addTrickScore(PlayerBase winner);
 }

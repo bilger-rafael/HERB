@@ -20,9 +20,11 @@ public class Trick extends TrickBase{
 	}
 
 	public PlayerBase playTrick() {
+		PlayerBase winner = null;
 		// TODO Logik wer ist dran und weitergabe implementieren!
 		
-		return getWinner();
+		winner = getWinner();
+		return winner;
 		
 	}
 	
@@ -96,8 +98,19 @@ public class Trick extends TrickBase{
 	@Override
 	protected void clearTrick() {
 		this.playedCards.clear();
-		this.currentplayer=this.players[0];
+		this.currentplayer=this.startingPlayer;
 		
+	}
+
+	@Override
+	protected int getTrickPoints() {
+		int trickPoints=0;
+		
+		for(int i=0; i<playedCards.size();i++) {
+			trickPoints+=playedCards.get(this.players[i]).getPoints();
+		}
+		
+		return trickPoints;
 	}
 
 

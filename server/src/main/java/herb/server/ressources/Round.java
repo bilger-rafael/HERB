@@ -1,7 +1,9 @@
 package herb.server.ressources;
 
+import java.util.Map;
 import java.util.Random;
 
+import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.TrickBase;
@@ -14,6 +16,7 @@ public class Round extends RoundBase{
 	protected PlayerBase[] players = new PlayerBase[4];
 	private Trick currentTrick;
 	private PlayerBase startingPlayer;
+	private Map<PlayerBase,Integer> actualScores;
 	
 	public Round(PlayerBase[] players) {
 		super(players);
@@ -41,8 +44,14 @@ public class Round extends RoundBase{
 		
 		//Tricks spielen
 		while(!this.players[0].PlayerNoCards()) {
+			PlayerBase winner;
 			createNewTrick();
-			this.startingPlayer=this.currentTrick.playTrick();
+			//Spielen
+			winner = this.currentTrick.playTrick();
+			//Punkte auswerten
+			addTrickScore(winner);
+			//neuer Startspieler setzen
+			this.startingPlayer=winner;
 			
 		}
 		endRound();
@@ -74,6 +83,13 @@ public class Round extends RoundBase{
 	@Override
 	public Trump getCurrentTrump() {
 		return currentTrump;
+	}
+
+	@Override
+	protected void addTrickScore(PlayerBase winner) {
+		Integer additionalScore = this.currentTrick.getTrickPoints();
+		Integer oldScore = actualScores.get(winner);
+		actualScores.put(winner, (additionalScore+oldScore));
 	}
 
 }
