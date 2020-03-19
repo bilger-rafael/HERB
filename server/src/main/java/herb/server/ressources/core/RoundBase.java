@@ -21,4 +21,6 @@ public abstract class RoundBase {
 	
 	protected abstract void addTrickScore(PlayerBase winner);
 	
+	public abstract Map<PlayerBase, Integer> getScoreTable();
+	
 }

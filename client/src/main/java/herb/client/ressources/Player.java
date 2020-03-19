@@ -3,6 +3,9 @@ package herb.client.ressources;
 import herb.client.ressources.core.CardBase;
 import herb.client.ressources.core.PlayerBase;
 import herb.client.rest.RestClient;
+
+import java.util.Map;
+
 import herb.client.ressources.Player;
 
 public class Player extends PlayerBase {
@@ -61,4 +64,6 @@ public class Player extends PlayerBase {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 }

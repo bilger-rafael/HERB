@@ -5,6 +5,8 @@ import java.util.Map;
 import herb.client.ressources.Trump;
 
 
+
+
 public abstract class RoundBase {
 	protected TrickBase[] tricks;
 	protected Trump currentTrump;
@@ -22,4 +24,6 @@ public abstract class RoundBase {
 	public abstract Trump getCurrentTrump();
 	
 	protected abstract void addTrickScore(PlayerBase winner);
+	
+	public abstract Map<PlayerBase, Integer> getScoreTable();
 }

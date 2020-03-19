@@ -1,5 +1,7 @@
 package herb.client.ressources.core;
 
+import java.util.Map;
+
 import herb.client.ressources.Round;
 
 public abstract class PlayerBase {
@@ -32,5 +34,6 @@ public abstract class PlayerBase {
 	public abstract void setCurrentRound(Round r);
 	
 	public abstract void SortMyCards();
+
 
 }

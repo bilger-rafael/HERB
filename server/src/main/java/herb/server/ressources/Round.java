@@ -1,7 +1,12 @@
 package herb.server.ressources;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.PlayerBase;
@@ -17,13 +22,12 @@ public class Round extends RoundBase{
 	private Trick currentTrick;
 	private PlayerBase startingPlayer;
 	private Map<PlayerBase,Integer> actualScores;
+
 	
 	public Round(PlayerBase[] players) {
 		super(players);
 		genTrump();
 		this.deck = new DeckOfCards(this.currentTrump);
-		//TODO Wer startet (Schellen 7?)
-		this.startingPlayer=players[0];
 		
 		//Hände leeren
 		for (int i = 0; i<this.players.length; i++) {
@@ -42,6 +46,9 @@ public class Round extends RoundBase{
 			this.players[i].SortMyCards();
 		}
 		
+		//TODO Wer startet (Schellen 7?)
+		this.startingPlayer=players[0];
+		
 		//Tricks spielen
 		while(!this.players[0].PlayerNoCards()) {
 			PlayerBase winner;
@@ -58,7 +65,7 @@ public class Round extends RoundBase{
 	}
 
 	private void endRound() {
-		// TODO Auto-generated method stub
+
 		
 	}
 
@@ -90,6 +97,18 @@ public class Round extends RoundBase{
 		Integer additionalScore = this.currentTrick.getTrickPoints();
 		Integer oldScore = actualScores.get(winner);
 		actualScores.put(winner, (additionalScore+oldScore));
+	}
+
+	@Override
+	public Map<PlayerBase, Integer> getScoreTable() {
+		Map<PlayerBase, Integer> sortedTable = new TreeMap<>();
+				actualScores.entrySet().stream()
+				.sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+				.forEachOrdered(x-> sortedTable.put(x.getKey(), x.getValue()));
+				
+		return sortedTable;
+	
+		
 	}
 
 }
