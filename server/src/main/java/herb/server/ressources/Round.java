@@ -46,7 +46,7 @@ public class Round extends RoundBase{
 			this.players[i].SortMyCards();
 		}
 		
-		//TODO Wer startet (Schellen 7?)
+		//TODO Wer soll starten?
 		this.startingPlayer=players[0];
 		
 		//Tricks spielen
@@ -65,7 +65,7 @@ public class Round extends RoundBase{
 	}
 
 	private void endRound() {
-
+		getScoreTable();
 		
 	}
 
