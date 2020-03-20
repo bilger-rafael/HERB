@@ -4,6 +4,7 @@ import herb.client.ressources.Trump;
 
 
 
+
 //Etter
 public abstract class CardBase{
     private final Suit suit;
@@ -23,6 +24,10 @@ public abstract class CardBase{
     protected abstract boolean isTopDown();
     
     protected abstract boolean isBottomUp();
+    
+	public abstract int compareTo(CardBase o);
+	
+	public abstract boolean compareToPlayable(CardBase o);
     
 	public abstract Suit getSuit();
 	

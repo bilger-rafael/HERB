@@ -189,6 +189,13 @@ public class Card extends CardBase {
 		}
 		return result;
 	}
+	
+	@Override //Gibt zurück ob die Karte gewinnt gegen die andere Karte
+	public boolean compareToPlayable(CardBase o) {
+		 if(this.compareTo(o)>0) {
+			 return true;
+		 }else return false;
+	}
 
 	public Suit getSuit() {
 		return this.suit;
@@ -201,4 +208,6 @@ public class Card extends CardBase {
 	public Trump getTrump() {
 		return this.trump;
 	}
+
+
 }

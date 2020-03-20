@@ -57,4 +57,16 @@ public class Card extends CardBase {
 		return null;
 	}
 
+	@Override
+	public int compareTo(CardBase o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean compareToPlayable(CardBase o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

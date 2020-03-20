@@ -22,7 +22,7 @@ public class Player extends PlayerBase{
 	public void play(CardBase card) {
 		//Aus Hand entfernen
 		this.hand.play(card);
-		//TODO Karte dem Trick hinzufügen
+		//Karte dem Trick hinzufügen
 		this.currentRound.getCurrentTrick().addCardtoTrick(card);
 	}
 	
@@ -36,7 +36,6 @@ public class Player extends PlayerBase{
 		this.hand.addCard(card);
 		
 	}
-	
 
 	public void clearHand() {
 		this.hand.clearCards();
@@ -59,6 +58,18 @@ public class Player extends PlayerBase{
 	public void SortMyCards() {
 		this.hand.sortCards();
 		
+	}
+
+	@Override
+	public PlayerBase getCurrentStartingPlayer() {
+		return this.currentRound.getCurrentTrick().getStaringPlayer();
+		
+	}
+
+	@Override
+	public CardBase[] getPlayableCards() {
+		// TODO Gibt die Karten zurück, die gespielt werden dürfen
+		return null;
 	}
 
 

@@ -79,12 +79,44 @@ public class Trick extends TrickBase{
 
 	@Override
 	public PlayerBase getNextPlayer() {
+		PlayerBase temp = this.currentplayer;
+	
+		for (int i =0; i<this.players.length;i++) {
+			if (temp == this.players[i] ) {
+				try{ temp = this.players[i+1];
+				}catch (ArrayIndexOutOfBoundsException e) {
+					temp = this.players[0]; 
+				}
+				break;
+			}
+		}
+		return temp;
+	}
+	
+	@Override
+	public PlayerBase getPrivousPlayer() {
+		PlayerBase temp = this.currentplayer;
+		
+		for (int i =0; i<this.players.length;i++) {
+			if (temp == this.players[i] ) {
+				try{ temp = this.players[i-1];
+				}catch (ArrayIndexOutOfBoundsException e) {
+					temp = this.players[3]; 
+				}
+				break;
+			}
+		}
+		return temp;
+	}
+
+	@Override
+	public PlayerBase setNextCurrentPlayer() {
 		for (int i =0; i<this.players.length;i++) {
 			if (this.currentplayer == this.players[i] ) {
-				if(i==this.players.length-1) {
-					getWinner();
+				try{ this.currentplayer = this.players[i+1];
+				}catch (ArrayIndexOutOfBoundsException e) {
+					this.currentplayer = this.players[0]; 
 				}
-				this.currentplayer = this.players[i+1];
 				break;
 			}
 		}
@@ -115,5 +147,12 @@ public class Trick extends TrickBase{
 		return trickPoints;
 	}
 
+	@Override
+	public PlayerBase getStaringPlayer() {
+		return this.startingPlayer;
+	}
+
 
 }
+
+

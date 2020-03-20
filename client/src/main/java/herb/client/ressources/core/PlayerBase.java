@@ -4,6 +4,7 @@ import java.util.Map;
 
 import herb.client.ressources.Round;
 
+
 public abstract class PlayerBase {
 	private final String username;
 	private final String authToken;
@@ -34,6 +35,7 @@ public abstract class PlayerBase {
 	public abstract void setCurrentRound(Round r);
 	
 	public abstract void SortMyCards();
-
+	
+	public abstract CardBase[] getPlayableCards();
 
 }

@@ -18,4 +18,5 @@ public abstract class HandBase {
 	
 	public abstract boolean cardsEmpty();
 	
+	
 }
