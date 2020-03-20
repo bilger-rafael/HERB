@@ -3,6 +3,7 @@ package herb.client.ressources.core;
 import herb.client.ressources.Trump;
 
 
+
 //Etter
 public abstract class CardBase{
     private final Suit suit;
@@ -22,4 +23,10 @@ public abstract class CardBase{
     protected abstract boolean isTopDown();
     
     protected abstract boolean isBottomUp();
+    
+	public abstract Suit getSuit();
+	
+	public abstract Rank getRank();
+	
+	public abstract Trump getTrump();
 }

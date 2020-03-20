@@ -26,4 +26,6 @@ public abstract class CardBase {
 	public abstract Suit getSuit();
 	
 	public abstract Rank getRank();
+	
+	public abstract Trump getTrump();
 }

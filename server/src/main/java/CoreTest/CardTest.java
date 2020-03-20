@@ -11,11 +11,15 @@ import herb.server.ressources.core.Suit;
 import herb.server.ressources.core.Trump;
 
 public class CardTest {
-	private static String cardTrump9s = "C9C";
+	private static String cardTrump9s = "H9H";
 	private static String card6s = "D6C";
 	private static String cardTrumpBs = "HJH";
 	private static String cardTopdown8s = "S8T";
 	private static String cardBottonUp6s = "H6B";
+	private static String cardtrumpQs= "DQD";
+	private static String cardtrumpKs= "DKD";
+	private static String cardTopdown7s = "S7T";
+	private static String cardBottomUp7s = "H7B";
 	
 	
 	// Speicherort der Karten
@@ -24,6 +28,10 @@ public class CardTest {
 	Card cardTrumpB;
 	Card cardTopdown8;
 	Card cardBottonUp6;
+	Card cardtrumpQ;
+	Card cardtrumpK;
+	Card cardTopdown7;
+	Card cardBottomUp7;
 
 	@Before
 	public void makeCard() {
@@ -32,7 +40,10 @@ public class CardTest {
 		cardTrumpB = makeCard(cardTrumpBs);
 		cardTopdown8 = makeCard(cardTopdown8s);
 		cardBottonUp6 = makeCard(cardBottonUp6s);
-	
+		cardtrumpQ = makeCard(cardtrumpQs);
+		cardtrumpK = makeCard(cardtrumpKs);
+		cardTopdown7 = makeCard(cardTopdown7s);
+		cardBottomUp7 = makeCard(cardBottomUp7s);
 	}
 
 	@Test
@@ -43,6 +54,16 @@ public class CardTest {
 		assertTrue (8 == cardTopdown8.getPoints());
 		assertTrue (11 == cardBottonUp6.getPoints());
 	
+	}
+	
+	@Test
+	public void testCompareTo() {
+		assertTrue (10 == cardTrumpB.compareTo(cardTrump9));
+		assertTrue (-10 == cardTrump9.compareTo(cardTrumpB));
+		assertTrue (-8 == cardTopdown8.compareTo(card6));
+		assertTrue (-1 == cardtrumpQ.compareTo(cardtrumpK));
+		assertTrue (1 == cardTopdown8.compareTo(cardTopdown7));
+		assertTrue (1 == cardBottonUp6.compareTo(cardBottomUp7));
 	}
 
 	//Etter Input aus Testklasse von PokerGame HS19
