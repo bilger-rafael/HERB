@@ -137,8 +137,7 @@ public class Card extends CardBase {
 	public int compareTo(CardBase o) {
 		int result=0;
 		//normaler Trumpf
-		if(this.getTrump().ordinal()<4) {
-		
+		if(isTrump()) {
 			//gleicher Suit
 			if (this.getSuit()==o.getSuit()) {
 				//Trumpf
@@ -169,7 +168,7 @@ public class Card extends CardBase {
 			}
 		}
 		//Obeabe
-		if (this.getTrump().ordinal()==4) {
+		if (isTopDown()) {
 			//gleicher Suit
 			if (this.getSuit()==o.getSuit()) {
 				result=this.getRank().ordinal()-o.getRank().ordinal();
@@ -179,7 +178,7 @@ public class Card extends CardBase {
 			}
 		}
 		//Undeufe
-		if(this.getTrump().ordinal()==5) {
+		if(isBottomUp()) {
 			//gleicher Suit
 			if (this.getSuit()==o.getSuit()) {
 				result=o.getRank().ordinal()-this.getRank().ordinal();	
