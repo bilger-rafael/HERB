@@ -29,8 +29,6 @@ public abstract class PlayerBase {
 	
 	public abstract void sortHand();
 	
-	public abstract PlayerBase getCurrentStartingPlayer();
-	
 	public abstract CardBase[] getPlayableCards();
 
 	public RoundBase getRound() {
