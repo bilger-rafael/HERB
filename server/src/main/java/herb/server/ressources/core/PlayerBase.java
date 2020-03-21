@@ -1,14 +1,22 @@
 package herb.server.ressources.core;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public abstract class PlayerBase {
 	private final String username;
-	private final String authToken;
+	private final String password;
 	private RoundBase round;
 	protected HandBase hand;
 	
-	public PlayerBase(String username, String authToken) {
+	@JsonCreator
+	public PlayerBase(String username) {
 		this.username = username;
-		this.authToken = authToken;
+		this.password = "";
+	}
+	
+	public PlayerBase(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 	
 	public abstract void play(CardBase card);
@@ -16,9 +24,13 @@ public abstract class PlayerBase {
 	public String getUsername() {
 		return username;
 	}
-
-	public String getAuthToken() {
-		return authToken;
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setRound(RoundBase round) {
+		this.round = round;
 	}
 
 	public abstract void addCardtoHand(CardBase card);
@@ -33,10 +45,6 @@ public abstract class PlayerBase {
 
 	public RoundBase getRound() {
 		return round;
-	}
-
-	public void setRound(RoundBase round) {
-		this.round = round;
 	}
 
 }

@@ -1,8 +1,6 @@
 package herb.server;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 
 import herb.server.ressources.Game;
@@ -14,8 +12,9 @@ public class Datastore {
     private static Datastore datastore; // singleton
     
     public HashMap<String,Player> players = new HashMap<String,Player>();
+    public HashMap<String,Lobby> lobbys = new HashMap<String,Lobby>();
     public HashMap<UUID,Game> games = new HashMap<UUID,Game>();
-    public HashMap<UUID,Lobby> lobbys = new HashMap<UUID,Lobby>();
+
     
     public static Datastore getInstance() {
         if (datastore == null)

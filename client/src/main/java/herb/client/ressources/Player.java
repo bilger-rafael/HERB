@@ -10,9 +10,9 @@ import java.util.Map;
 import herb.client.ressources.Player;
 
 public class Player extends PlayerBase {
-	
-	public Player(String username, String authToken) {
-		super(username, authToken);
+
+	public Player(String username, String password) {
+		super(username, password);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -59,13 +59,7 @@ public class Player extends PlayerBase {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public PlayerBase getCurrentStartingPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public CardBase[] getPlayableCards() {
 		// TODO Auto-generated method stub

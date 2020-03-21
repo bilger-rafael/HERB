@@ -23,7 +23,7 @@ public class AuthenticationController {
 			@RequestParam(value = "password") String password) {
 
 		try {
-			return (PlayerBase) Player.login(username, password);
+			return Player.login(username, password);
 		} catch (PlayerNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage(), e);
 		} catch (PlayerLoginFailedException e) {
@@ -37,7 +37,7 @@ public class AuthenticationController {
 			@RequestParam(value = "password") String password) {
 		
 		try {
-			return (PlayerBase) Player.register(username, password);
+			return Player.register(username, password);
 		} catch (PlayerAlreadyExistsException e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
 		}
