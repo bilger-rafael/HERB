@@ -22,8 +22,12 @@ public abstract class CardBase {
     protected abstract boolean isBottomUp();
 
 	public abstract int compareTo(CardBase o);
+	
+	public abstract boolean compareToPlayable(CardBase o);
 
 	public abstract Suit getSuit();
 	
 	public abstract Rank getRank();
+	
+	public abstract Trump getTrump();
 }

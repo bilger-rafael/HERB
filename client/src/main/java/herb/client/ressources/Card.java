@@ -39,4 +39,34 @@ public class Card extends CardBase {
 		return false;
 	}
 
+	@Override
+	public Suit getSuit() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Rank getRank() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Trump getTrump() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int compareTo(CardBase o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean compareToPlayable(CardBase o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -136,35 +136,65 @@ public class Card extends CardBase {
 	@Override //o ist die Karte vom vorherigen Spieler, this die neue Karte
 	public int compareTo(CardBase o) {
 		int result=0;
-		//gleicher Suit
-		if (this.getSuit()==o.getSuit()) {
-			//Trumpf
-			if(isTrump()) {
-				//Buur und Nell
-				if(this.getRank().ordinal()==3 || this.getRank().ordinal()==5 || o.getRank().ordinal()==3 || o.getRank().ordinal()==5) {
-					if (this.getRank().ordinal()==3) result=9;
-					if (o.getRank().ordinal()==3)	result=-9;
-					if (this.getRank().ordinal()==5) result=10;
-					if (o.getRank().ordinal()==5) 	result=-10;
-				//Kein Buur und Nell	
+		//normaler Trumpf
+		if(isTrump()) {
+			//gleicher Suit
+			if (this.getSuit()==o.getSuit()) {
+				//Trumpf
+				if(isTrump()) {
+					//Buur und Nell
+					if(this.getRank().ordinal()==3 || this.getRank().ordinal()==5 || o.getRank().ordinal()==3 || o.getRank().ordinal()==5) {
+						if (this.getRank().ordinal()==3) result=9;
+						if (o.getRank().ordinal()==3)	result=-9;
+						if (this.getRank().ordinal()==5) result=10;
+						if (o.getRank().ordinal()==5) 	result=-10;
+						//Kein Buur und Nell	
+					}else {
+						result=this.getRank().ordinal()-o.getRank().ordinal();
+					}	
+					//kein Trumpf	
 				}else {
 					result=this.getRank().ordinal()-o.getRank().ordinal();
-				}	
-			//kein Trumpf	
-			}else {
-				result=this.getRank().ordinal()-o.getRank().ordinal();
+				}
+				//unterschiedliche Suit
+			}else { 
+				//Ich habe Trump
+				if(isTrump()) {
+					result = 8;
+					//Ich habe keinen Trump und nicht die selbe Suit
+				}else {
+					result = -8;
+				}
 			}
-		//unterschiedliche Suit
-		}else { 
-			//Ich habe Trump
-			if(isTrump()) {
-				result = 8;
-			//Ich habe keinen Trump und nicht die selbe Suit
+		}
+		//Obeabe
+		if (isTopDown()) {
+			//gleicher Suit
+			if (this.getSuit()==o.getSuit()) {
+				result=this.getRank().ordinal()-o.getRank().ordinal();
 			}else {
-				result = -8;
+			//unterschiedlicher Suit
+				result=-8;					
+			}
+		}
+		//Undeufe
+		if(isBottomUp()) {
+			//gleicher Suit
+			if (this.getSuit()==o.getSuit()) {
+				result=o.getRank().ordinal()-this.getRank().ordinal();	
+			}else {
+			//unterschiedlicher Suit
+				result=-8;
 			}
 		}
 		return result;
+	}
+	
+	@Override //Gibt zurück ob die Karte gewinnt gegen die andere Karte
+	public boolean compareToPlayable(CardBase o) {
+		 if(this.compareTo(o)>0) {
+			 return true;
+		 }else return false;
 	}
 
 	public Suit getSuit() {
@@ -174,4 +204,10 @@ public class Card extends CardBase {
 	public Rank getRank() {
 		return this.rank;
 	}
+	
+	public Trump getTrump() {
+		return this.trump;
+	}
+
+
 }

@@ -65,5 +65,11 @@ public class Player extends PlayerBase {
 		
 	}
 
+	@Override
+	public CardBase[] getPlayableCards() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

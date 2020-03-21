@@ -29,4 +29,16 @@ public class Trick extends TrickBase{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public PlayerBase getPriousPlayer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PlayerBase setNextCurrentPlayer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

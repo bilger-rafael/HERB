@@ -32,5 +32,9 @@ public abstract class PlayerBase {
 	public abstract void setCurrentRound(Round r);
 	
 	public abstract void SortMyCards();
+	
+	public abstract PlayerBase getCurrentStartingPlayer();
+	
+	public abstract CardBase[] getPlayableCards();
 
 }

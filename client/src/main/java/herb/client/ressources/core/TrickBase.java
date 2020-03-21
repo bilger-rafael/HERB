@@ -10,6 +10,8 @@ public abstract class TrickBase {
 	
 	public abstract PlayerBase getWinner();
 	public abstract PlayerBase getNextPlayer();
+	public abstract PlayerBase getPriousPlayer();
+	public abstract PlayerBase setNextCurrentPlayer();
 	public abstract void addCardtoTrick(PlayerBase p, CardBase c);
 	protected abstract void clearTrick();
 }
