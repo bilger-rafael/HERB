@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 
-import org.yaml.snakeyaml.nodes.CollectionNode;
-
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.HandBase;
 
