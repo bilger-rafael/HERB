@@ -1,13 +1,15 @@
 package herb.client.ressources;
 
+import java.util.UUID;
+
 import herb.client.ressources.core.GameBase;
 import herb.client.ressources.core.LobbyBase;
 import herb.client.ressources.core.PlayerBase;
 
 public class Lobby extends LobbyBase {
 
-	public Lobby(String name) {
-		super(name);
+	public Lobby(UUID uuid, String name) {
+		super(uuid, name);
 		// TODO Auto-generated constructor stub
 	}
 

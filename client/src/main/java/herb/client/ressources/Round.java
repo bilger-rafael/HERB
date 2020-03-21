@@ -15,18 +15,6 @@ public class Round extends RoundBase{
 	}
 
 	@Override
-	public TrickBase getCurrentTrick() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void genTrump() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected void addTrickScore(PlayerBase winner) {
 		// TODO Auto-generated method stub
 		
@@ -37,12 +25,5 @@ public class Round extends RoundBase{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public Trump getCurrentTrump() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 }

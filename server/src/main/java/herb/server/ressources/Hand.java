@@ -9,7 +9,6 @@ import herb.server.ressources.core.HandBase;
 
 //Etter
 public class Hand extends HandBase{
-	private CardBase[] cards;
 	private int addIndex;
 	
 	public Hand() {

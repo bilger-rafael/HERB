@@ -2,6 +2,7 @@ package herb.client.ressources;
 
 import herb.client.ressources.core.CardBase;
 import herb.client.ressources.core.PlayerBase;
+import herb.client.ressources.core.RoundBase;
 import herb.client.rest.RestClient;
 
 import java.util.Map;
@@ -9,18 +10,12 @@ import java.util.Map;
 import herb.client.ressources.Player;
 
 public class Player extends PlayerBase {
-
+	
 	public Player(String username, String authToken) {
 		super(username, authToken);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void play(CardBase card) {
-		// TODO Auto-generated method stub
-
-	}
-	
 	public static PlayerBase login(String username, String password) {
 		Player p = RestClient.getClient()
 							 .post()
@@ -36,19 +31,13 @@ public class Player extends PlayerBase {
 	}
 
 	@Override
+	public void play(CardBase card) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void addCardtoHand(CardBase card) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void clearHand() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setCurrentRound(Round r) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -60,19 +49,25 @@ public class Player extends PlayerBase {
 	}
 
 	@Override
-	public void SortMyCards() {
+	public void clearHand() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public CardBase[] getPlayableCards() {
+	public void sortHand() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public PlayerBase getCurrentStartingPlayer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public PlayerBase getCurrentStartingPlayer() {
+	public CardBase[] getPlayableCards() {
 		// TODO Auto-generated method stub
 		return null;
 	}

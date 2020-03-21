@@ -1,12 +1,10 @@
 package herb.server.ressources.core;
 
-import herb.server.ressources.Round;
-
 public abstract class PlayerBase {
 	private final String username;
 	private final String authToken;
-	private Round r;
-	private HandBase hand;
+	private RoundBase round;
+	protected HandBase hand;
 	
 	public PlayerBase(String username, String authToken) {
 		this.username = username;
@@ -29,12 +27,18 @@ public abstract class PlayerBase {
 	
 	public abstract void clearHand();
 	
-	public abstract void setCurrentRound(Round r);
-	
-	public abstract void SortMyCards();
+	public abstract void sortHand();
 	
 	public abstract PlayerBase getCurrentStartingPlayer();
 	
 	public abstract CardBase[] getPlayableCards();
+
+	public RoundBase getRound() {
+		return round;
+	}
+
+	public void setRound(RoundBase round) {
+		this.round = round;
+	}
 
 }

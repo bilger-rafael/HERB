@@ -5,17 +5,13 @@ import java.util.UUID;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.HandBase;
 import herb.server.ressources.core.PlayerBase;
+import herb.server.ressources.core.RoundBase;
 
 //Etter
 public class Player extends PlayerBase{
-	private HandBase hand;
-	private Round currentRound;
 	
-
 	public Player(String username, String authToken) {
 		super(username, authToken);
-		this.hand = new Hand();
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
@@ -23,7 +19,7 @@ public class Player extends PlayerBase{
 		//Aus Hand entfernen
 		this.hand.play(card);
 		//Karte dem Trick hinzufügen
-		this.currentRound.getCurrentTrick().addCardtoTrick(card);
+		this.getRound().getTricks().getLast().addCardtoTrick(card);
 	}
 	
 	public static PlayerBase login(String username, String password) {
@@ -40,10 +36,6 @@ public class Player extends PlayerBase{
 	public void clearHand() {
 		this.hand.clearCards();
 	}
-	
-	public void setCurrentRound(Round r) {
-		this.currentRound = r;
-	}
 
 	@Override
 	public boolean PlayerNoCards() {
@@ -54,15 +46,13 @@ public class Player extends PlayerBase{
 		}
 	}
 
-	@Override
-	public void SortMyCards() {
+	public void sortHand() {
 		this.hand.sortCards();
-		
 	}
 
 	@Override
 	public PlayerBase getCurrentStartingPlayer() {
-		return this.currentRound.getCurrentTrick().getStaringPlayer();
+		return this.getRound().getTricks().getLast().getStaringPlayer();
 		
 	}
 
@@ -71,6 +61,5 @@ public class Player extends PlayerBase{
 		// TODO Gibt die Karten zurück, die gespielt werden dürfen
 		return null;
 	}
-
 
 }

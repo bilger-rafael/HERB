@@ -7,12 +7,13 @@ import java.util.Map;
 public abstract class TrickBase {
 	protected PlayerBase[] players;
 	protected Map<PlayerBase,CardBase> playedCards;
-	protected PlayerBase currentplayer;
+	protected PlayerBase currentPlayer;
 	protected PlayerBase startingPlayer;
+	protected PlayerBase winningPlayer;
 	
 	public TrickBase(PlayerBase[] players, PlayerBase startingPlayer) {
 		this.players = players;
-		this.currentplayer= startingPlayer;
+		this.currentPlayer= startingPlayer;
 		this.startingPlayer = startingPlayer;
 	}
 	
@@ -22,6 +23,6 @@ public abstract class TrickBase {
 	public abstract PlayerBase setNextCurrentPlayer();
 	public abstract void addCardtoTrick(CardBase c);
 	protected abstract void clearTrick();
-	protected abstract int getTrickPoints();
+	public abstract int getTrickPoints();
 	public abstract PlayerBase getStaringPlayer();
 }

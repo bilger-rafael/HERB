@@ -1,11 +1,16 @@
 package herb.server.ressources.core;
 
+import java.util.UUID;
+
 public abstract class LobbyBase {
+	private final UUID uuid;
 	private final String name;
 	protected PlayerBase[] players = new PlayerBase[4];
 	
-	public LobbyBase(String name) {
+	public LobbyBase(UUID uuid, String name) {
+		this.uuid = uuid;
 		this.name = name;
+		this.players = new PlayerBase[4];
 	}
 	
 	public abstract GameBase startGame();

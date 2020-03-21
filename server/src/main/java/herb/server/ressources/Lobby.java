@@ -7,14 +7,10 @@ import herb.server.ressources.core.LobbyBase;
 import herb.server.ressources.core.PlayerBase;
 
 public class Lobby extends LobbyBase {
-	private UUID uuid;
-	protected PlayerBase[] players;
 	private int index;
 	
 	public Lobby(String name) {
-		super(name);
-		this.uuid= UUID.randomUUID();
-		this.players = new PlayerBase[4];
+		super(UUID.randomUUID(), name);
 	}
 
 	@Override //Etter Spiel starten

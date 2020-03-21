@@ -48,14 +48,14 @@ public class Trick extends TrickBase{
 	}
 
 	@Override
-	protected int getTrickPoints() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public PlayerBase getStaringPlayer() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getTrickPoints() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

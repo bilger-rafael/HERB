@@ -1,39 +1,29 @@
 package herb.server.ressources;
 
-import java.util.Map;
-
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.TrickBase;
 
 //Etter
 public class Trick extends TrickBase{
-	private Map<PlayerBase,CardBase> playedCards;
-	protected PlayerBase[] players;
-	private PlayerBase currentplayer;
-	private PlayerBase startingPlayer;
-	private PlayerBase currentWinner;
-	
 	public Trick(PlayerBase[] players, PlayerBase startingPlayer) {
 		super(players, startingPlayer);
-
 	}
 
 	public PlayerBase playTrick() {
 		PlayerBase winner = null;
 		// TODO Logik wer ist dran und weitergabe implementieren!
+		// Am besten circular linked list verwenden, dann ist es möglich von einem beliebigen Player aus 3 mal getNext() aufzurufen
 		
 		winner = getWinner();
 		
-		
 		return winner;
-		
 	}
 	
 
 	@Override
 	public PlayerBase getWinner() {
-		this.currentWinner=this.startingPlayer;
+		this.winningPlayer=this.startingPlayer;
 		//Ort des Startspielers
 		for (int i =0; i<this.players.length;i++) {
 			if(this.startingPlayer==this.players[i]) {
@@ -41,45 +31,45 @@ public class Trick extends TrickBase{
 				switch (i) {
 				case(0):
 					if(playedCards.get(this.players[1]).compareTo(playedCards.get(this.players[0]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					if(playedCards.get(this.players[2]).compareTo(playedCards.get(this.players[1]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					if(playedCards.get(this.players[3]).compareTo(playedCards.get(this.players[2]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					break;
 				case(1):
 					if(playedCards.get(this.players[2]).compareTo(playedCards.get(this.players[1]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					if(playedCards.get(this.players[3]).compareTo(playedCards.get(this.players[2]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					if(playedCards.get(this.players[0]).compareTo(playedCards.get(this.players[3]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					break;
 				case(2):
 					if(playedCards.get(this.players[3]).compareTo(playedCards.get(this.players[2]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					if(playedCards.get(this.players[0]).compareTo(playedCards.get(this.players[3]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					if(playedCards.get(this.players[1]).compareTo(playedCards.get(this.players[0]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					break;
 				case(3):
 					if(playedCards.get(this.players[0]).compareTo(playedCards.get(this.players[3]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					if(playedCards.get(this.players[1]).compareTo(playedCards.get(this.players[0]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					if(playedCards.get(this.players[2]).compareTo(playedCards.get(this.players[1]))>0) {
-						this.currentWinner=this.players[0];}
+						this.winningPlayer=this.players[0];}
 					break;
 				}
 			}
 		}
-		return this.currentWinner;
+		return this.winningPlayer;
 	}
 
 	@Override
 	public PlayerBase getNextPlayer() {
-		PlayerBase temp = this.currentplayer;
+		PlayerBase temp = this.currentPlayer;
 	
 		for (int i =0; i<this.players.length;i++) {
 			if (temp == this.players[i] ) {
@@ -95,7 +85,7 @@ public class Trick extends TrickBase{
 	
 	@Override
 	public PlayerBase getPrivousPlayer() {
-		PlayerBase temp = this.currentplayer;
+		PlayerBase temp = this.currentPlayer;
 		
 		for (int i =0; i<this.players.length;i++) {
 			if (temp == this.players[i] ) {
@@ -112,32 +102,32 @@ public class Trick extends TrickBase{
 	@Override
 	public PlayerBase setNextCurrentPlayer() {
 		for (int i =0; i<this.players.length;i++) {
-			if (this.currentplayer == this.players[i] ) {
-				try{ this.currentplayer = this.players[i+1];
+			if (this.currentPlayer == this.players[i] ) {
+				try{ this.currentPlayer = this.players[i+1];
 				}catch (ArrayIndexOutOfBoundsException e) {
-					this.currentplayer = this.players[0]; 
+					this.currentPlayer = this.players[0]; 
 				}
 				break;
 			}
 		}
-		return this.currentplayer;
+		return this.currentPlayer;
 	}
 	
 	@Override
 	public void addCardtoTrick(CardBase c) {
-		this.playedCards.put(this.currentplayer, c);
+		this.playedCards.put(this.currentPlayer, c);
 		getNextPlayer();
 	}
 
 	@Override
 	protected void clearTrick() {
 		this.playedCards.clear();
-		this.currentplayer=this.startingPlayer;
+		this.currentPlayer=this.startingPlayer;
 		
 	}
 
 	@Override
-	protected int getTrickPoints() {
+	public int getTrickPoints() {
 		int trickPoints=0;
 		
 		for(int i=0; i<playedCards.size();i++) {
