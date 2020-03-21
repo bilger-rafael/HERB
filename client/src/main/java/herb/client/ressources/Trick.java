@@ -6,6 +6,11 @@ import herb.client.ressources.core.TrickBase;
 
 public class Trick extends TrickBase{
 
+	public Trick(PlayerBase[] players, PlayerBase startingPlayer) {
+		super(players, startingPlayer);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public PlayerBase getWinner() {
 		// TODO Auto-generated method stub
@@ -19,25 +24,37 @@ public class Trick extends TrickBase{
 	}
 
 	@Override
-	public void addCardtoTrick(PlayerBase p, CardBase c) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected void clearTrick() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public PlayerBase getPriousPlayer() {
+	public PlayerBase setNextCurrentPlayer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public PlayerBase setNextCurrentPlayer() {
+	public PlayerBase getPrivousPlayer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addCardtoTrick(CardBase c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected int getTrickPoints() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public PlayerBase getStaringPlayer() {
 		// TODO Auto-generated method stub
 		return null;
 	}

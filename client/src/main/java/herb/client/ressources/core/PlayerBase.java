@@ -1,15 +1,12 @@
 package herb.client.ressources.core;
 
-import java.util.Map;
-
 import herb.client.ressources.Round;
-
 
 public abstract class PlayerBase {
 	private final String username;
 	private final String authToken;
-	private HandBase hand;
 	private Round r;
+	private HandBase hand;
 	
 	public PlayerBase(String username, String authToken) {
 		this.username = username;
@@ -25,7 +22,7 @@ public abstract class PlayerBase {
 	public String getAuthToken() {
 		return authToken;
 	}
-	
+
 	public abstract void addCardtoHand(CardBase card);
 	
 	public abstract boolean PlayerNoCards();
@@ -35,6 +32,8 @@ public abstract class PlayerBase {
 	public abstract void setCurrentRound(Round r);
 	
 	public abstract void SortMyCards();
+	
+	public abstract PlayerBase getCurrentStartingPlayer();
 	
 	public abstract CardBase[] getPlayableCards();
 

@@ -1,10 +1,8 @@
 package herb.client.ressources.core;
 
 
-//Etter
 public abstract class HandBase {
 	private CardBase[] cards;
-	private int index;
 	
 	public abstract void play(CardBase card);
 	
@@ -15,5 +13,6 @@ public abstract class HandBase {
 	public abstract void sortCards();
 	
 	public abstract boolean cardsEmpty();
+	
 	
 }

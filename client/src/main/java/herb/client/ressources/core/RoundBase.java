@@ -2,11 +2,7 @@ package herb.client.ressources.core;
 
 import java.util.Map;
 
-import herb.client.ressources.Trump;
-
-
-
-
+//Etter
 public abstract class RoundBase {
 	protected TrickBase[] tricks;
 	protected Trump currentTrump;
@@ -26,4 +22,5 @@ public abstract class RoundBase {
 	protected abstract void addTrickScore(PlayerBase winner);
 	
 	public abstract Map<PlayerBase, Integer> getScoreTable();
+	
 }

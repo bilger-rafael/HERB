@@ -1,15 +1,9 @@
 package herb.client.ressources.core;
 
-import herb.client.ressources.Trump;
-
-
-
-
-//Etter
-public abstract class CardBase{
-    private final Suit suit;
-    private final Rank rank;
-    private final Trump trump;
+public abstract class CardBase {
+    protected final Suit suit;
+    protected final Rank rank;
+    protected final Trump trump;
     
     public CardBase(Suit suit, Rank rank, Trump trump) {
     	this.suit = suit;
@@ -24,11 +18,11 @@ public abstract class CardBase{
     protected abstract boolean isTopDown();
     
     protected abstract boolean isBottomUp();
-    
+
 	public abstract int compareTo(CardBase o);
 	
 	public abstract boolean compareToPlayable(CardBase o);
-    
+
 	public abstract Suit getSuit();
 	
 	public abstract Rank getRank();

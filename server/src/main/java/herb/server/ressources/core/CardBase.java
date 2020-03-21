@@ -1,7 +1,5 @@
 package herb.server.ressources.core;
 
-import herb.server.ressources.Card;
-
 public abstract class CardBase {
     protected final Suit suit;
     protected final Rank rank;

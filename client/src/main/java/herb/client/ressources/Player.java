@@ -71,5 +71,11 @@ public class Player extends PlayerBase {
 		return null;
 	}
 
+	@Override
+	public PlayerBase getCurrentStartingPlayer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
