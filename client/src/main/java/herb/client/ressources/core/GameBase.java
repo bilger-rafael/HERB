@@ -3,9 +3,6 @@ package herb.client.ressources.core;
 import java.util.ArrayList;
 import java.util.UUID;
 
-
-
-
 public abstract class GameBase {
 	private final UUID uuid;
 	protected PlayerBase[] players = new PlayerBase[4];

@@ -10,17 +10,16 @@ public class Lobby extends LobbyBase {
 	private UUID uuid;
 	protected PlayerBase[] players;
 	private int index;
-
-	//TODO @Raphael, weisst du wie das mit der UUID funktioniert?
+	
 	public Lobby(String name) {
 		super(name);
-		this.uuid= new UUID(0, 0);
+		this.uuid= UUID.randomUUID();
 		this.players = new PlayerBase[4];
 	}
 
 	@Override //Etter Spiel starten
 	public GameBase startGame() {
-		Game g = new Game(this.uuid, this.players);
+		Game g = new Game(this.players);
 		return g;
 	}
 	

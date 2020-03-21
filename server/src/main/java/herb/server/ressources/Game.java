@@ -13,8 +13,8 @@ public class Game extends GameBase{
 	protected PlayerBase[] players = new PlayerBase[4];
 	protected ArrayList<RoundBase> rounds = new ArrayList<RoundBase>();
 
-	public Game(UUID uuid, PlayerBase[] players) {
-		super(uuid, players);
+	public Game(PlayerBase[] players) {
+		super(UUID.randomUUID(), players);
 		startRound();
 	}
 
