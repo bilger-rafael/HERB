@@ -4,6 +4,10 @@ package herb.client.ressources.core;
 public abstract class HandBase {
 	protected CardBase[] cards;
 	
+	public CardBase[] getCards() {
+		return cards;
+	}
+	
 	public abstract void play(CardBase card);
 	
 	public abstract void addCard(CardBase card);

@@ -3,11 +3,16 @@ package herb.server.ressources.core;
 import java.util.LinkedList;
 import java.util.Map;
 
+import herb.server.ressources.Player;
+
 //Etter
 public abstract class RoundBase {
 	protected LinkedList<TrickBase> tricks = new LinkedList<TrickBase>();
 	private Trump trump;
 	protected PlayerBase[] players = new PlayerBase[4];
+	protected PlayerBase currentStartingPlayer;
+
+
 	protected Map<PlayerBase,Integer> actualScores;
 	
 	public RoundBase (PlayerBase[] players) {
@@ -28,6 +33,14 @@ public abstract class RoundBase {
 
 	public void setTrump(Trump trump) {
 		this.trump = trump;
+	}
+	
+	public PlayerBase[] getPlayers() {
+		return players;
+	}
+	
+	public PlayerBase getCurrentStartingPlayer() {
+		return currentStartingPlayer;
 	}
 	
 }

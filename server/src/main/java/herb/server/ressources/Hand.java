@@ -83,5 +83,10 @@ public class Hand extends HandBase{
 		}
 	}
 
+	@Override
+	public CardBase getCard(int i) {
+		return this.cards[i];
+	}
+
 
 }

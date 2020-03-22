@@ -31,6 +31,7 @@ public class Player extends PlayerBase {
 
 	}
 
+	@Override
 	public void clearHand() {
 		this.hand.clearCards();
 	}
@@ -44,13 +45,49 @@ public class Player extends PlayerBase {
 		}
 	}
 
+	@Override
 	public void sortHand() {
 		this.hand.sortCards();
 	}
 
-	@Override
+	@Override //Gibt die Karten zurück, die gespielt werden dürfen
 	public CardBase[] getPlayableCards() {
-		// TODO Gibt die Karten zurück, die gespielt werden dürfen
+		//Lokale Var, damit nicht gesamter Pfad aufgerufen werden muss
+		PlayerBase[] players = new PlayerBase[this.getRound().getPlayers().length];
+		CardBase[] playableCards = new CardBase[9];
+		int counterPlayableCards =0;
+		PlayerBase startingPlayer = this.getRound().getCurrentStartingPlayer();
+		int startingPlayerIndex=0;
+		for (int i =0; i<this.getRound().getPlayers().length;i++) {
+			if ( startingPlayer == players[i] ) {
+				startingPlayerIndex = i;
+			}
+			
+			
+		//Ich bin der Startspieler
+		if(this == players[startingPlayerIndex]) {
+			return this.hand.getCards();
+		}else {//Ein anderer ist Startspieler
+			//TODO Logik
+			//Gleiche Farbe wie Startspieler? Trümpfe? Untertrumpfen?
+			
+			//TODO Hilfe für nächsten Schritt
+			for (int j = 0; j<this.hand.getCards().length;j++) {
+				if(this.hand.getCard(j).compareToPlayable(this.getRound().getTricks().getLast().getPlayedCard(players[startingPlayerIndex])))
+				playableCards[counterPlayableCards] = this.hand.getCard(j);
+				counterPlayableCards++;
+			}
+			
+			
+			
+		}
+		
+		
+			
+			
+			
+		}
+		// TODO 
 		return null;
 	}
 	

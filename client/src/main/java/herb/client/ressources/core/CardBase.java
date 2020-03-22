@@ -1,5 +1,6 @@
 package herb.client.ressources.core;
 
+
 public abstract class CardBase {
     protected final Suit suit;
     protected final Rank rank;
@@ -28,4 +29,6 @@ public abstract class CardBase {
 	public abstract Rank getRank();
 	
 	public abstract Trump getTrump();
+	
+	public abstract CardBase getCard(int i);
 }
