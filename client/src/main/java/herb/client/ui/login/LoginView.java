@@ -5,9 +5,6 @@ import javafx.stage.Stage;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import chat.ServiceLocator;
-import chat.LoginClasses.LoginModel;
-import chat.commonClasses.Translator;
 import herb.client.ui.core.View;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
@@ -21,6 +18,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class LoginView extends View<LoginModel> {
@@ -30,7 +28,9 @@ public class LoginView extends View<LoginModel> {
 	private TextField nameField;
 	private PasswordField pwField;
 	private Button loginButton, createUserButton;
-	private Spacer zero;
+	private Region zero;
+	private VBox leftBox;
+	private VBox rightBox;
 	
 	private VBox centerBox;
 	private BorderPane bottomBox;
@@ -79,9 +79,9 @@ public class LoginView extends View<LoginModel> {
 		pwField = new PasswordField();
 		
 		// Left and Right
-		zero = new Spacer();
-		leftBox = new VBox();
-		rightBox = new VBox();
+		zero = new Region();
+	 leftBox = new VBox();
+	 rightBox = new VBox();
 
 		// Bottom HBox
 		loginButton = new Button();
@@ -97,38 +97,37 @@ public class LoginView extends View<LoginModel> {
 		loginButton.setAlignment(Pos.BASELINE_CENTER);
 		createUserButton.setAlignment(Pos.BASELINE_CENTER);
 
-		getNameField().setPrefWidth(250);
-		getPwField().setPrefWidth(250);
-		loginButton.setPrefWidth(100);
-		createUserButton.setPrefWidth(100);
+//		centerBox.getChildren().addAll(nameLabel, getNameField(), pwLabel, getPwField(), bottomBox);
+//		leftBox.add(zero);
+//		rightBox.add(zero);
 
-		centerBox.getChildren().addAll(nameLabel, getNameField(), pwLabel, getPwField(), bottomBox);
-		leftBox.add(zero);
-		rightBox.add(zero);
-
-		messageBox = new HBox();
+//		messageBox = new HBox();
 		connectedLabel = new Label();
 		connectedLabel.setId("connectedLabel");
 		connectedLabel.setOpacity(0);
-		messageBox.getChildren().add(connectedLabel);
+//		messageBox.getChildren().add(connectedLabel);
 
 		
 		//Nachricht, falls Login fehlgeschlagen ist
 		message = new Label("");
 		message.setId("message");
 		message.setOpacity(0);
-		messageBox.getChildren().add(message);
+//		messageBox.getChildren().add(message);
 		
 		
 		// Borderpane anordnen
 	//	root.setTop(headMenu);
 		root.setCenter(centerBox);
-		root.setBottom(messageBox);
+//		root.setBottom(messageBox);
 
-		updateTexts();
+//		updateTexts();
 
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
+		
+		
+//		scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
+		
+		
 		return scene;
 	}
 
