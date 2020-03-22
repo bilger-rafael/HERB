@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import chat.LoginClasses.LoginController;
+import chat.LoginClasses.LoginModel;
+import chat.LoginClasses.LoginView;
 import herb.client.ressources.Game;
 import herb.client.ressources.Round;
 import herb.client.ui.splash.SplashController;
@@ -83,7 +86,7 @@ public class Main extends Application {
 	 * http://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm
 	 */
 	public void startMain() {
-		/*
+		
 		// Initialize the application MVC components. Note that these components
 		// can only be initialized now, because they may depend on the
 		// resources initialized by the splash screen
@@ -100,7 +103,6 @@ public class Main extends Application {
 		splashView = null;
 
 		view.start();
-		*/
 		
 		// Resources are now initialized
 		serviceLocator = ServiceLocator.getInstance();
@@ -111,13 +113,22 @@ public class Main extends Application {
 		
 		// call login view
 		
+		public LoginView getLoginView() {
+			if (loginView == null) {
+				Stage stage = new Stage();
+				LoginModel loginModel = new LoginModel();
+				loginView = new LoginView(stage, loginModel);
+				new LoginController(loginModel, loginView);
+			}
+
+			return loginView;
+		}
 		/*
 		serviceLocator = ServiceLocator.getServiceLocator();
 		String url = serviceLocator.getConfiguration().getOption("rootURL");
 		Player player = restTemplate.getForObject(url.concat("/player"), Player.class);
 		System.out.println(player.getName() + player.getRank());
-		*/
-		
+		/*
 	}
 
 	/**
