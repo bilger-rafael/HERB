@@ -4,7 +4,7 @@ public abstract class LobbyBase {
 	private final String name;
 	protected PlayerBase[] players = new PlayerBase[4];
 
-	public LobbyBase(String name) {
+	protected LobbyBase(String name) {
 		this.name = name;
 		this.players = new PlayerBase[4];
 	}
@@ -20,8 +20,8 @@ public abstract class LobbyBase {
 	public abstract GameBase startGame();
 
 	// Etter
-	public abstract void addPlayer(PlayerBase p);
+	public abstract void addPlayer(PlayerBase player) throws ExceptionBase;
 
 	// Etter
-	public abstract void removePlayer(PlayerBase p);
+	public abstract void removePlayer(PlayerBase player) throws ExceptionBase;
 }

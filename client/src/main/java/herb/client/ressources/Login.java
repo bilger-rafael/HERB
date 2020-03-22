@@ -31,6 +31,20 @@ public class Login extends LoginBase {
 		} catch (WebClientException e) {
 			throw new LoginException();
 		}
+		
+		/*
+		 * example to set query params in URL:
+		 * 
+		return (Player) RestClient.getClient()
+				 .post()
+				 .uri(uriBuilder -> uriBuilder.path("/login")
+						    				  .queryParam("username", this.getUsername())
+						    				  .queryParam("password", this.getPassword())
+						    				  .build())
+				 .retrieve()
+				 .bodyToMono(Player.class)
+				 .block();
+		*/
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package herb.server.ressources;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.server.Datastore;
+import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.GameBase;
 import herb.server.ressources.core.LobbyBase;
 import herb.server.ressources.core.PlayerBase;
@@ -22,7 +23,7 @@ public class Lobby extends LobbyBase {
 	}
 	
 	//Etter Spieler dem Array hinzufügen
-	public void addPlayer(PlayerBase p) {
+	public void addPlayer(PlayerBase player) throws ExceptionBase {
 		// TODO prüfen ob player nicht bereits in lobby
 		try { 
 			int i = 0;
@@ -30,7 +31,7 @@ public class Lobby extends LobbyBase {
 				// TODO check if lobby already full, otherwise this will end in a endless loop
 				while(!found) {
 					if(this.players[i]== null) {
-						this.players[i] = p;
+						this.players[i] = player;
 						found = true;
 						if(i==3) 
 						{startGame();
@@ -45,10 +46,10 @@ public class Lobby extends LobbyBase {
 	}
 	
 	// Etter Spieler verlässt die Lobby
-	public void removePlayer(PlayerBase p) {
+	public void removePlayer(PlayerBase player) throws ExceptionBase {
 		try { 
 			for (int i=0; i<this.players.length; i++) {
-			if (this.players[i].equals(p)) {
+			if (this.players[i].equals(player)) {
 				this.players[i] = null;
 				}
 			}
@@ -57,7 +58,7 @@ public class Lobby extends LobbyBase {
 		}
 	}
 	
-	public static Lobby createLobby(String name) throws LobbyAlreadyExistsException {
+	public static Lobby createLobby(String name) throws ExceptionBase {
 		if (Datastore.getInstance().lobbys.containsKey(name))
 			throw new LobbyAlreadyExistsException();
 
@@ -70,7 +71,7 @@ public class Lobby extends LobbyBase {
 		return lobby;
 	}
 	
-	public static Lobby readLobby(String name) throws LobbyNotFoundException {
+	public static Lobby readLobby(String name) throws ExceptionBase {
 		Lobby lobby = Datastore.getInstance().lobbys.get(name);
 
 		if (lobby == null)
