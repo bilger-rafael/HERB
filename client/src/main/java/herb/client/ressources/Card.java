@@ -66,5 +66,11 @@ public class Card extends CardBase {
 		return null;
 	}
 
+	@Override
+	public CardBase getCard(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

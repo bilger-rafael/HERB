@@ -20,19 +20,19 @@ public class Round extends RoundBase {
 		startRound();
 
 		// set random player as starting player
-		PlayerBase startingPlayer = this.players[0];
+		this.currentStartingPlayer = this.players[0];
 
 		// Tricks spielen
 		while (!this.players[0].PlayerNoCards()) {
 			// neuer Trick erstellen
-			this.tricks.add(new Trick(this.players, startingPlayer));
+			this.tricks.add(new Trick(this.players, this.currentStartingPlayer));
 			// Spielen
 			Trick trick = (Trick) this.tricks.getLast();
 			PlayerBase winner = trick.playTrick();
 			// Punkte auswerten
 			addTrickScore(winner);
 			// set winner as starting player
-			startingPlayer = winner;
+			this.currentStartingPlayer = winner;
 		}
 
 		endRound();

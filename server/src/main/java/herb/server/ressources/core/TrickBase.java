@@ -27,5 +27,6 @@ public abstract class TrickBase {
 	public abstract int getTrickPoints();
 	public abstract PlayerBase getStaringPlayer();
 	public abstract Map<PlayerBase, CardBase> getPlayedCards();
+	public abstract CardBase getPlayedCard (PlayerBase p);
 	
 }

@@ -66,4 +66,10 @@ public class Trick extends TrickBase{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public CardBase getPlayedCard(PlayerBase p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

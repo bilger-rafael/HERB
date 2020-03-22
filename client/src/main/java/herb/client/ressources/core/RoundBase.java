@@ -9,6 +9,7 @@ public abstract class RoundBase {
 	private Trump trump;
 	protected PlayerBase[] players = new PlayerBase[4];
 	protected Map<PlayerBase,Integer> actualScores;
+	protected PlayerBase currentStartingPlayer;
 	
 	public RoundBase (PlayerBase[] players) {
 		this.players=players;
@@ -28,6 +29,10 @@ public abstract class RoundBase {
 
 	public void setTrump(Trump trump) {
 		this.trump = trump;
+	}
+	
+	public PlayerBase getCurrentStartingPlayer() {
+		return currentStartingPlayer;
 	}
 	
 }

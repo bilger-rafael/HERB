@@ -149,6 +149,11 @@ public class Trick extends TrickBase{
 		return this.playedCards;
 	}
 
+	@Override
+	public CardBase getPlayedCard(PlayerBase p) {
+		return this.playedCards.get(p);
+	}
+
 
 }
 

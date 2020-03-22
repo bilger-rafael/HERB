@@ -3,6 +3,8 @@ package herb.client.ressources.core;
 import java.util.Map;
 
 
+
+
 public abstract class TrickBase {
 	protected PlayerBase[] players;
 	protected Map<PlayerBase,CardBase> playedCards;
@@ -25,4 +27,5 @@ public abstract class TrickBase {
 	public abstract int getTrickPoints();
 	public abstract PlayerBase getStaringPlayer();
 	public abstract Map<PlayerBase, CardBase> getPlayedCards();
+	public abstract CardBase getPlayedCard (PlayerBase p);
 }
