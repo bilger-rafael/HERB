@@ -2,18 +2,15 @@ package herb.client.ressources;
 
 import herb.client.ressources.core.CardBase;
 import herb.client.ressources.core.PlayerBase;
-import herb.client.ressources.core.RoundBase;
-import herb.client.rest.RestClient;
-
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.client.ressources.Player;
 
 public class Player extends PlayerBase {
 
-	public Player(String username, String password) {
-		super(username, password);
-		// TODO Auto-generated constructor stub
+	@JsonCreator
+	public Player(String username, String authToken) {
+		super(username, authToken);
 	}
 
 	@Override
