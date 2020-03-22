@@ -19,27 +19,44 @@ public class ServerTest {
 		sl = ServiceLocator.getInstance();
         sl.setLogger(configureLogging());
 		sl.setConfiguration(new Configuration());
-
+		
+		/*
+		 * Login and registration
+		 */
 		Login l = new Login("TestUser", "TestPW");
 		
+		// login that should NOT work
 		try {
 			l.login();
 		} catch (ExceptionBase e) {
 			sl.getLogger().warning("login failed");
 		}
 		
+		// registration that should work
 		try {
 			l.register();
 		} catch (ExceptionBase e) {
 			sl.getLogger().warning("registration failed");
 		}
 		
+		// registration that should NOT work
+		try {
+			l.register();
+		} catch (ExceptionBase e) {
+			sl.getLogger().warning("registration failed");
+		}
+		
+		// login that should work
 		try {
 			Player p = (Player) l.login();
-			System.out.println(p.getUsername());
 		} catch (ExceptionBase e) {
 			sl.getLogger().warning("login failed");
 		}
+		
+		/*
+		 * Lobby
+		 */
+
 		
 	}
 	

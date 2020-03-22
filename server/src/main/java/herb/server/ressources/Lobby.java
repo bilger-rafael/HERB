@@ -1,8 +1,5 @@
 package herb.server.ressources;
 
-import java.util.Base64;
-import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.server.Datastore;
@@ -15,7 +12,7 @@ public class Lobby extends LobbyBase {
 	
 	@JsonCreator
 	public Lobby(String name) {
-		super(UUID.randomUUID(), name);
+		super(name);
 	}
 
 	@Override //Etter Spiel starten
