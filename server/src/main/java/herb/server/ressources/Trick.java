@@ -1,5 +1,7 @@
 package herb.server.ressources;
 
+import java.util.Map;
+
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.TrickBase;
@@ -140,6 +142,11 @@ public class Trick extends TrickBase{
 	@Override
 	public PlayerBase getStaringPlayer() {
 		return this.startingPlayer;
+	}
+
+	@Override
+	public Map<PlayerBase, CardBase> getPlayedCards() {
+		return this.playedCards;
 	}
 
 

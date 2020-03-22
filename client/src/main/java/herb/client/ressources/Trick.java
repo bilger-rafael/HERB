@@ -1,5 +1,7 @@
 package herb.client.ressources;
 
+import java.util.Map;
+
 import herb.client.ressources.core.CardBase;
 import herb.client.ressources.core.PlayerBase;
 import herb.client.ressources.core.TrickBase;
@@ -57,5 +59,11 @@ public class Trick extends TrickBase{
 	public int getTrickPoints() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Map<PlayerBase, CardBase> getPlayedCards() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
