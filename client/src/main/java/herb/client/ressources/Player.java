@@ -8,7 +8,11 @@ import herb.client.ressources.Player;
 
 public class Player extends PlayerBase {
 
-	@JsonCreator
+	// default constructor for json deserialization
+	public Player() {
+		super("", "");
+	}
+	
 	public Player(String username, String authToken) {
 		super(username, authToken);
 	}

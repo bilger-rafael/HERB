@@ -1,5 +1,5 @@
 package herb.server.ressources.core;
 
-public class ExceptionBase extends Exception {
+public abstract class ExceptionBase extends Exception {
 
 }

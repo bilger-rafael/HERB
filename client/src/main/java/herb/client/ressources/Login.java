@@ -2,6 +2,7 @@ package herb.client.ressources;
 
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClientException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ressources.core.LoginBase;
@@ -22,11 +23,13 @@ public class Login extends LoginBase {
 					.uri("/login")
 					.body(BodyInserters.fromValue(this))
 					.retrieve()
-					//.onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new ExceptionBase()))
 					.bodyToMono(Player.class)
 					.block();
+		} catch (WebClientResponseException e) {
+			//TODO check e.getStatusCode() and raise specific error
+			throw new LoginException();
 		} catch (WebClientException e) {
-			throw new ExceptionBase();
+			throw new LoginException();
 		}
 	}
 
@@ -40,8 +43,11 @@ public class Login extends LoginBase {
 						.retrieve()
 						.bodyToMono(String.class)
 						.block();
+		} catch (WebClientResponseException e) {
+			//TODO check e.getStatusCode() and raise specific error
+			throw new LoginException();
 		} catch (WebClientException e) {
-			throw new ExceptionBase();
+			throw new LoginException();
 		}
 	}
 

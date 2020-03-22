@@ -22,13 +22,11 @@ public class ServerTest {
 
 		Login l = new Login("TestUser", "TestPW");
 		
-		/*
 		try {
 			l.login();
 		} catch (ExceptionBase e) {
 			sl.getLogger().warning("login failed");
 		}
-		*/
 		
 		try {
 			l.register();
@@ -38,10 +36,10 @@ public class ServerTest {
 		
 		try {
 			Player p = (Player) l.login();
+			System.out.println(p.getUsername());
 		} catch (ExceptionBase e) {
 			sl.getLogger().warning("login failed");
 		}
-		
 		
 	}
 	

@@ -3,6 +3,7 @@ package herb.server.ressources;
 import java.util.UUID;
 
 import herb.server.Datastore;
+import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.LoginBase;
 import herb.server.ressources.core.PlayerBase;
 
@@ -14,7 +15,7 @@ public class Login extends LoginBase {
 	}
 
 	@Override
-	public PlayerBase login() throws PlayerNotFoundException, PlayerLoginFailedException {
+	public PlayerBase login() throws ExceptionBase {
 		Login login = Datastore.getInstance().logins.get(this.getUsername());
 
 		if (login == null)
@@ -30,7 +31,7 @@ public class Login extends LoginBase {
 	}
 
 	@Override
-	public void register() throws PlayerAlreadyExistsException {
+	public void register() throws ExceptionBase {
 		if (Datastore.getInstance().logins.containsKey(this.getUsername()))
 			throw new PlayerAlreadyExistsException();
 
