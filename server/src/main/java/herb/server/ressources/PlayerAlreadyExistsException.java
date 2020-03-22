@@ -1,5 +1,7 @@
 package herb.server.ressources;
 
-public class PlayerAlreadyExistsException extends Exception {
+import herb.server.ressources.core.ExceptionBase;
+
+public class PlayerAlreadyExistsException extends ExceptionBase {
 
 }

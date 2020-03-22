@@ -1,5 +1,7 @@
 package herb.server.ressources;
 
-public class PlayerNotFoundException extends Exception {
+import herb.server.ressources.core.ExceptionBase;
+
+public class PlayerNotFoundException extends ExceptionBase {
 
 }

@@ -1,5 +1,7 @@
 package herb.server.ressources;
 
-public class PlayerLoginFailedException extends Exception {
+import herb.server.ressources.core.ExceptionBase;
+
+public class PlayerLoginFailedException extends ExceptionBase {
 
 }

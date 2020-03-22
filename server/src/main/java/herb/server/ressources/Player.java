@@ -12,8 +12,9 @@ import herb.server.ressources.core.PlayerBase;
 //Etter
 public class Player extends PlayerBase {
 	
-	public Player(String username, String password) {
-		super(username, password);
+	public Player(String username, String authToken) {
+		super(username, authToken);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -52,37 +53,5 @@ public class Player extends PlayerBase {
 		// TODO Gibt die Karten zurück, die gespielt werden dürfen
 		return null;
 	}
-
-	public static PlayerBase login(String username, String password)
-			throws PlayerNotFoundException, PlayerLoginFailedException {
-		Player player = Datastore.getInstance().players.get(username);
-
-		if (player == null)
-			throw new PlayerNotFoundException();
-
-		String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
-
-		if (!player.getPassword().equals(encodedPassword))
-			throw new PlayerLoginFailedException();
-
-		// return player without password
-		return new Player(player.getUsername(), "");
-	}
-
-	public static PlayerBase register(String username, String password) throws PlayerAlreadyExistsException {
-		if (Datastore.getInstance().players.containsKey(username))
-			throw new PlayerAlreadyExistsException();
-
-		// TODO check username and password length, if needed
-		
-		String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
-
-		Player player = new Player(username, encodedPassword);
-
-		Datastore.getInstance().players.put(username, player);
-
-		// return player without password
-		return new Player(player.getUsername(), "");
-	}
-
+	
 }

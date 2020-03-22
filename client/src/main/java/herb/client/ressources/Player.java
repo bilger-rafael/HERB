@@ -16,20 +16,6 @@ public class Player extends PlayerBase {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static PlayerBase login(String username, String password) {
-		Player p = RestClient.getClient()
-							 .post()
-							 .uri(uriBuilder -> uriBuilder.path("/login")
-									    				  .queryParam("username", username)
-									    				  .queryParam("password", password)
-									    				  .build())
-							 .retrieve()
-							 .bodyToMono(Player.class)
-							 .block();
-
-		return p;
-	}
-
 	@Override
 	public void play(CardBase card) {
 		// TODO Auto-generated method stub

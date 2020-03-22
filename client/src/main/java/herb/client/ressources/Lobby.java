@@ -5,6 +5,7 @@ import java.util.UUID;
 import herb.client.ressources.core.GameBase;
 import herb.client.ressources.core.LobbyBase;
 import herb.client.ressources.core.PlayerBase;
+import herb.client.rest.RestClient;
 
 public class Lobby extends LobbyBase {
 
@@ -21,7 +22,21 @@ public class Lobby extends LobbyBase {
 
 	@Override
 	public void addPlayer(PlayerBase p) {
-		// TODO Auto-generated method stub
+		
+		/*
+		 * example to set query params in URL:
+		 * 
+		return (Player) RestClient.getClient()
+				 .post()
+				 .uri(uriBuilder -> uriBuilder.path("/login")
+						    				  .queryParam("username", this.getUsername())
+						    				  .queryParam("password", this.getPassword())
+						    				  .build())
+				 .retrieve()
+				 .bodyToMono(Player.class)
+				 .block();
+		*/
+		
 		
 	}
 

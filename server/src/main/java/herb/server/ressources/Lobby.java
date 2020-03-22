@@ -51,7 +51,7 @@ public class Lobby extends LobbyBase {
 	public void removePlayer(PlayerBase p) {
 		try { 
 			for (int i=0; i<this.players.length; i++) {
-			if (this.players[i] == p) {
+			if (this.players[i].equals(p)) {
 				this.players[i] = null;
 				}
 			}
