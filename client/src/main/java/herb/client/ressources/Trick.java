@@ -20,7 +20,7 @@ public class Trick extends TrickBase{
 	}
 
 	@Override
-	public PlayerBase getNextPlayer() {
+	public PlayerBase getNextPlayer(PlayerBase p) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -32,13 +32,13 @@ public class Trick extends TrickBase{
 	}
 
 	@Override
-	public PlayerBase setNextCurrentPlayer() {
+	protected PlayerBase setNextCurrentPlayer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public PlayerBase getPrivousPlayer() {
+	public PlayerBase getPrivousPlayer(PlayerBase p) {
 		// TODO Auto-generated method stub
 		return null;
 	}

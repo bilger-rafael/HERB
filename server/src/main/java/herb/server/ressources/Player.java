@@ -57,38 +57,105 @@ public class Player extends PlayerBase {
 		CardBase[] playableCards = new CardBase[9];
 		int counterPlayableCards =0;
 		PlayerBase startingPlayer = this.getRound().getCurrentStartingPlayer();
+		//Erster Spieler
 		int startingPlayerIndex=0;
 		for (int i =0; i<this.getRound().getPlayers().length;i++) {
 			if ( startingPlayer == players[i] ) {
 				startingPlayerIndex = i;
 			}
-			
-			
-		//Ich bin der Startspieler
-		if(this == players[startingPlayerIndex]) {
-			return this.hand.getCards();
-		}else {//Ein anderer ist Startspieler
-			//TODO Logik
-			//Gleiche Farbe wie Startspieler? Trümpfe? Untertrumpfen?
-			
-			//TODO Hilfe für nächsten Schritt
-			for (int j = 0; j<this.hand.getCards().length;j++) {
-				if(this.hand.getCard(j).compareToPlayable(this.getRound().getTricks().getLast().getPlayedCard(players[startingPlayerIndex])))
-				playableCards[counterPlayableCards] = this.hand.getCard(j);
-				counterPlayableCards++;
+		}
+		//ZweiterSpieler auslesen
+		int secoundPlayerIndex=0;
+		PlayerBase secoundPlayer=this.getRound().getTricks().getLast().getNextPlayer(startingPlayer);
+		for (int i =0; i<this.getRound().getPlayers().length;i++) {
+			if(secoundPlayer == players[i]) {
+				secoundPlayerIndex = i;
 			}
-			
-			
-			
 		}
-		
-		
-			
-			
-			
+		//DritterSpieler auslesen
+		int thirdPlayerIndex=0;
+		PlayerBase thirdPlayer=this.getRound().getTricks().getLast().getNextPlayer(secoundPlayer);
+		for (int i =0; i<this.getRound().getPlayers().length;i++) {
+			if(thirdPlayer == players[i]) {
+				thirdPlayerIndex = i;
+			}
 		}
-		// TODO 
-		return null;
-	}
+			
+
+		//Logik
+		int NumberPlayedCards = this.getRound().getTricks().getLast().getPlayedCards().size();
+			
+		switch (NumberPlayedCards) {
+				//Ich bin der Startspieler
+				case(0): for (int j = 0; j<this.hand.getCards().length;j++) {
+							playableCards[counterPlayableCards] = this.hand.getCard(j);
+							counterPlayableCards++;		
+						}
+						break;
+				//2. Spieler
+				case(1): 
+					//Spielen kann ich Trümpfe und gleiche Farbe, falls keine alles spielbar
+					for (int j = 0; j<this.hand.getCards().length;j++) {
+						if(this.hand.getCard(j).getSuit()== this.getRound().getTricks().getLast().getPlayedCard(players[startingPlayerIndex]).getSuit() 
+								|| this.hand.getCard(j).getTrump().ordinal()==this.hand.getCard(j).getSuit().ordinal()) {
+							playableCards[counterPlayableCards] = this.hand.getCard(j);
+							counterPlayableCards++;		
+						}
+					}
+					if(counterPlayableCards!=0) {
+					
+					}else {
+						for (int j = 0; j<this.hand.getCards().length;j++) {
+							playableCards[counterPlayableCards] = this.hand.getCard(j);
+							counterPlayableCards++;		
+						}
+					}
+						
+					break;
+				//3.Spieler
+					//gleiche Farbe wie StartSpieler oder man gewinnt (höchster Trumpf), sonst alles erlaubt
+				case(2):
+					for (int j = 0; j<this.hand.getCards().length;j++) {
+						if(this.hand.getCard(j).getSuit()== this.getRound().getTricks().getLast().getPlayedCard(players[startingPlayerIndex]).getSuit() 
+							|| (this.hand.getCard(j).compareToPlayable(this.getRound().getTricks().getLast().getPlayedCard(players[startingPlayerIndex])) 
+								&& this.hand.getCard(j).compareToPlayable(this.getRound().getTricks().getLast().getPlayedCard(players[secoundPlayerIndex]))
+								)){
+							playableCards[counterPlayableCards] = this.hand.getCard(j);
+							counterPlayableCards++;	
+						}
+					}
+					if(counterPlayableCards!=0) {
+					}else {
+						for (int j = 0; j<this.hand.getCards().length;j++) {
+						playableCards[counterPlayableCards] = this.hand.getCard(j);
+						counterPlayableCards++;		
+						}
+					}
+
+					break;
+				//Letzter Spieler 
+					//gleiche Farbe wie StartSpieler oder man gewinnt (höchster Trumpf), sonst alles erlaubt
+				case(3): 
+					for (int j = 0; j<this.hand.getCards().length;j++) {
+						if(this.hand.getCard(j).getSuit()== this.getRound().getTricks().getLast().getPlayedCard(players[startingPlayerIndex]).getSuit() 
+							|| (this.hand.getCard(j).compareToPlayable(this.getRound().getTricks().getLast().getPlayedCard(players[startingPlayerIndex])) 
+								&& this.hand.getCard(j).compareToPlayable(this.getRound().getTricks().getLast().getPlayedCard(players[secoundPlayerIndex]))
+								&& this.hand.getCard(j).compareToPlayable(this.getRound().getTricks().getLast().getPlayedCard(players[thirdPlayerIndex]))
+								)){
+							playableCards[counterPlayableCards] = this.hand.getCard(j);
+							counterPlayableCards++;	
+						}
+					}
+					if(counterPlayableCards!=0) {
+					}else {
+						for (int j = 0; j<this.hand.getCards().length;j++) {
+						playableCards[counterPlayableCards] = this.hand.getCard(j);
+						counterPlayableCards++;		
+						}
+					}
+					break;
+		}
+		return playableCards;
 	
+	}
 }

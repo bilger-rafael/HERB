@@ -70,8 +70,8 @@ public class Trick extends TrickBase{
 	}
 
 	@Override
-	public PlayerBase getNextPlayer() {
-		PlayerBase temp = this.currentPlayer;
+	public PlayerBase getNextPlayer(PlayerBase p) {
+		PlayerBase temp = p;
 	
 		for (int i =0; i<this.players.length;i++) {
 			if (temp == this.players[i] ) {
@@ -86,8 +86,8 @@ public class Trick extends TrickBase{
 	}
 	
 	@Override
-	public PlayerBase getPrivousPlayer() {
-		PlayerBase temp = this.currentPlayer;
+	public PlayerBase getPrivousPlayer(PlayerBase p) {
+		PlayerBase temp = p;
 		
 		for (int i =0; i<this.players.length;i++) {
 			if (temp == this.players[i] ) {
@@ -102,7 +102,7 @@ public class Trick extends TrickBase{
 	}
 
 	@Override
-	public PlayerBase setNextCurrentPlayer() {
+	protected PlayerBase setNextCurrentPlayer() {
 		for (int i =0; i<this.players.length;i++) {
 			if (this.currentPlayer == this.players[i] ) {
 				try{ this.currentPlayer = this.players[i+1];
@@ -118,7 +118,7 @@ public class Trick extends TrickBase{
 	@Override
 	public void addCardtoTrick(CardBase c) {
 		this.playedCards.put(this.currentPlayer, c);
-		getNextPlayer();
+		setNextCurrentPlayer();
 	}
 
 	@Override
