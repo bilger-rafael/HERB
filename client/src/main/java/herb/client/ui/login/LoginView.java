@@ -42,7 +42,7 @@ public class LoginView extends View<LoginModel> {
 	
 	public LoginView(Stage stage, LoginModel model) {
 		super(stage, model);
-		stage.setTitle("HERB-Jass");
+		stage.setTitle("HERB-Jass_Login");
 		//ServiceLocator.getServiceLocator().getLogger().info("Application view initialized");
 	}
 
@@ -84,8 +84,8 @@ public class LoginView extends View<LoginModel> {
 	 rightBox = new VBox();
 
 		// Bottom HBox
-		loginButton = new Button();
-		createUserButton = new Button();
+		loginButton = new Button("Test 2");
+		createUserButton = new Button("Test 1");
 
 		bottomBox = new BorderPane();
 
@@ -96,7 +96,7 @@ public class LoginView extends View<LoginModel> {
 
 		loginButton.setAlignment(Pos.BASELINE_CENTER);
 		createUserButton.setAlignment(Pos.BASELINE_CENTER);
-
+		centerBox.getChildren().add(bottomBox);
 //		centerBox.getChildren().addAll(nameLabel, getNameField(), pwLabel, getPwField(), bottomBox);
 //		leftBox.add(zero);
 //		rightBox.add(zero);
