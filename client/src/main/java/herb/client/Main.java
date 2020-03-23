@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import herb.client.ressources.Game;
 import herb.client.ressources.Round;
+import herb.client.ui.login.LoginController;
+import herb.client.ui.login.LoginModel;
+import herb.client.ui.login.LoginView;
 import herb.client.ui.splash.SplashController;
 import herb.client.ui.splash.SplashModel;
 import herb.client.ui.splash.SplashView;
@@ -83,41 +86,57 @@ public class Main extends Application {
 	 * http://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm
 	 */
 	public void startMain() {
-		/*
+		
 		// Initialize the application MVC components. Note that these components
 		// can only be initialized now, because they may depend on the
 		// resources initialized by the splash screen
-
-		// LoginView
-		View view = getLoginView();
-
-		// Resources are now initialized
-		serviceLocator = ServiceLocator.getServiceLocator();
-
-		// Close the splash screen, and set the reference to null, so that all
-		// Splash_XXX objects can be garbage collected
-		splashView.stop();
-		splashView = null;
-
-		view.start();
-		*/
 		
 		// Resources are now initialized
 		serviceLocator = ServiceLocator.getInstance();
+
+
+//		View view = getLoginView();
+//
+//		// Resources are now initialized
+//		serviceLocator = ServiceLocator.getServiceLocator();
+//
+//		// Close the splash screen, and set the reference to null, so that all
+//		// Splash_XXX objects can be garbage collected
+//		splashView.stop();
+//		splashView = null;
+//
+//		view.start();
 		
+//		// create LoginView
+		Stage stage = new Stage();
+		LoginModel loginModel = new LoginModel();
+		LoginView loginView = new LoginView(stage, loginModel);
+		new LoginController(loginModel, loginView);
+		loginView.start();
+		
+		// clear splashView
 		splashView.stop();
 		splashView = null;
 		
 		
 		// call login view
 		
+//		public LoginView getLoginView() {
+//			if (loginView == null) {
+//				Stage stage = new Stage();
+//				LoginModel loginModel = new LoginModel();
+//				loginView = new LoginView(stage, loginModel);
+//				new LoginController(loginModel, loginView);
+//			}
+//
+//			return loginView;
+//		}
 		/*
 		serviceLocator = ServiceLocator.getServiceLocator();
 		String url = serviceLocator.getConfiguration().getOption("rootURL");
 		Player player = restTemplate.getForObject(url.concat("/player"), Player.class);
 		System.out.println(player.getName() + player.getRank());
 		*/
-		
 	}
 
 	/**
