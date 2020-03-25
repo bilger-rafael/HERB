@@ -42,7 +42,7 @@ public class LoginView extends View<LoginModel> {
 	
 	public LoginView(Stage stage, LoginModel model) {
 		super(stage, model);
-		stage.setTitle("HERB-Jass_Login");
+		stage.setTitle("HERB-Jass_Login_ neuer Name");
 		//ServiceLocator.getServiceLocator().getLogger().info("Application view initialized");
 	}
 
