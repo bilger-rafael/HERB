@@ -1,25 +1,17 @@
 package herb.client.ui.login;
 
-import javafx.stage.Stage;
-
-import java.util.Locale;
-import java.util.logging.Logger;
-
 import herb.client.ui.core.View;
-import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 public class LoginView extends View<LoginModel> {
 	
@@ -28,12 +20,11 @@ public class LoginView extends View<LoginModel> {
 	private TextField nameField;
 	private PasswordField pwField;
 	private Button loginButton, createUserButton;
-	private Region zero;
-	private VBox leftBox;
-	private VBox rightBox;
+	private Region zero, one, two;
 	
 	private VBox centerBox;
 	private BorderPane bottomBox;
+	private HBox topBox;
 	
 	private Label nameLabel, pwLabel, connectedLabel;
 	private Label message;
@@ -42,7 +33,7 @@ public class LoginView extends View<LoginModel> {
 	
 	public LoginView(Stage stage, LoginModel model) {
 		super(stage, model);
-		stage.setTitle("HERB-Jass_Login_ neuer Name");
+		stage.setTitle("HERB-Jass > Login");
 		//ServiceLocator.getServiceLocator().getLogger().info("Application view initialized");
 	}
 
@@ -59,7 +50,7 @@ public class LoginView extends View<LoginModel> {
 		// Top Menuleiste auch so machen?
 
 		/*
-		// Locale setzen
+		// define Locale
 		for (Locale locale : sl.getLocales()) {
 			MenuItem language = new MenuItem(locale.getLanguage());
 			this.menuLanguage.getItems().add(language);
@@ -71,36 +62,48 @@ public class LoginView extends View<LoginModel> {
 		}
 		 */
 
-		// Center
+		//roesti > Center VBox
+		//TODO - translation - locale
 		centerBox = new VBox();
 		nameLabel = new Label("Nick-Name");
 		nameField = new TextField();
 		pwLabel = new Label("Passwort");
 		pwField = new PasswordField();
-		
-		// Left and Right
 		zero = new Region();
-	 leftBox = new VBox();
-	 rightBox = new VBox();
+		one = new Region();
+		two = new Region();
+	
+		nameLabel.setPrefSize(100, 20);
+		pwLabel.setPrefSize(100, 20);
+		zero.setPrefSize(80, 20);
+		one.setPrefSize(80,20);
+		two.setPrefSize(80,5);
 
-		// Bottom HBox
-		loginButton = new Button("Test 2");
-		createUserButton = new Button("Test 1");
+		HBox un = new HBox();
+		HBox pw = new HBox();		
+
+		un.getChildren().addAll(one, nameLabel, nameField);
+		pw.getChildren().addAll(zero, pwLabel, pwField);
+		
+		// roesti > Bottom HBox
+		//TODO - translation - locale
+		loginButton = new Button("einloggen");
+		createUserButton = new Button("Account anlegen");
+		loginButton.setPrefSize(200, 30);
+		createUserButton.setPrefSize(200, 30);
 
 		bottomBox = new BorderPane();
-
 		bottomBox.setLeft(createUserButton);
 		bottomBox.setRight(loginButton);
 
-		centerBox.setSpacing(10);
-
 		loginButton.setAlignment(Pos.BASELINE_CENTER);
 		createUserButton.setAlignment(Pos.BASELINE_CENTER);
-		centerBox.getChildren().add(bottomBox);
+		
+		//roesti - fill CenterBox
+		centerBox.getChildren().addAll(two, un, pw, bottomBox);
 //		centerBox.getChildren().addAll(nameLabel, getNameField(), pwLabel, getPwField(), bottomBox);
-//		leftBox.add(zero);
-//		rightBox.add(zero);
-
+		centerBox.setSpacing(10);
+		
 //		messageBox = new HBox();
 		connectedLabel = new Label();
 		connectedLabel.setId("connectedLabel");
@@ -115,7 +118,7 @@ public class LoginView extends View<LoginModel> {
 //		messageBox.getChildren().add(message);
 		
 		
-		// Borderpane anordnen
+	// 	Borderpane anordnen
 	//	root.setTop(headMenu);
 		root.setCenter(centerBox);
 //		root.setBottom(messageBox);
@@ -125,8 +128,7 @@ public class LoginView extends View<LoginModel> {
 		Scene scene = new Scene(root);
 		
 		
-//		scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
-		
+//		scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
 		
 		return scene;
 	}
