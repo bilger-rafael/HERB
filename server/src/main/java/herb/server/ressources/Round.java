@@ -22,18 +22,7 @@ public class Round extends RoundBase {
 		// set random player as starting player
 		this.currentStartingPlayer = this.players[0];
 
-		// Tricks spielen
-		while (!this.players[0].PlayerNoCards()) {
-			// neuer Trick erstellen
-			this.tricks.add(new Trick(this.players, this.currentStartingPlayer));
-			// Spielen
-			Trick trick = (Trick) this.tricks.getLast();
-			PlayerBase winner = trick.playTrick();
-			// Punkte auswerten
-			addTrickScore(winner);
-			// set winner as starting player
-			this.currentStartingPlayer = winner;
-		}
+		playTricks();
 
 		endRound();
 	}
@@ -59,6 +48,21 @@ public class Round extends RoundBase {
 		// Hände sortieren
 		for (int i = 0; i < this.players.length; i++) {
 			this.players[i].sortHand();
+		}
+	}
+
+	private void playTricks() {
+		// Tricks spielen
+		while (!this.players[0].PlayerNoCards()) {
+			// neuer Trick erstellen
+			this.tricks.add(new Trick(this.players, this.currentStartingPlayer));
+			// Spielen
+			Trick trick = (Trick) this.tricks.getLast();
+			PlayerBase winner = trick.playTrick();
+			// Punkte auswerten
+			addTrickScore(winner);
+			// set winner as starting player
+			this.currentStartingPlayer = winner;
 		}
 	}
 
