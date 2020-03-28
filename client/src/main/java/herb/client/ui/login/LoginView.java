@@ -1,10 +1,18 @@
 package herb.client.ui.login;
 
+import java.util.logging.Logger;
 import herb.client.ui.core.View;
+import herb.client.utils.ServiceLocator;
+import herb.client.utils.Translator;
+
+import java.util.Locale;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -20,54 +28,56 @@ public class LoginView extends View<LoginModel> {
 	private TextField nameField;
 	private PasswordField pwField;
 	private Button loginButton, createUserButton;
-	private Region zero, one, two;
-	
+	private Region zero, one, two;	
 	private VBox centerBox;
 	private BorderPane bottomBox;
-	private HBox topBox;
-	
+	private HBox topBox;	
 	private Label nameLabel, pwLabel, connectedLabel;
 	private Label message;
 //	private FadeTransition transition;
 //	private HBox messageBox;
+	private MenuBar headMenu;
+	private Menu menuLanguage;
+	//private Menu menuFile, menuEdit, menuLanguage, menuHelp;
 	
 	public LoginView(Stage stage, LoginModel model) {
 		super(stage, model);
 		stage.setTitle("HERB-Jass > Login");
-		//ServiceLocator.getServiceLocator().getLogger().info("Application view initialized");
+		ServiceLocator.getInstance().getLogger().info("Application view initialized");
 	}
 
 	@Override
 	protected Scene create_GUI() {
-		
-		/*
-		ServiceLocator sl = ServiceLocator.getServiceLocator();
-		Logger logger = sl.getLogger();
-		*/
+		ServiceLocator sl = ServiceLocator.getInstance();
+		Logger logger = sl.getLogger();		
 		
 		this.root = new BorderPane();
 
-		// Top Menuleiste auch so machen?
+		// Top menu for language, TODO for passwordChange
+		headMenu = new MenuBar();
+		
+		menuLanguage = new Menu();
+		menuLanguage.getItems().addAll();
 
-		/*
-		// define Locale
+		
+		// link to Locale
 		for (Locale locale : sl.getLocales()) {
 			MenuItem language = new MenuItem(locale.getLanguage());
 			this.menuLanguage.getItems().add(language);
 			language.setOnAction(event -> {
 				sl.getConfiguration().setLocalOption("Language", locale.getLanguage());
 				sl.setTranslator(new Translator(locale.getLanguage()));
-				updateTexts();
+				updateLabels();
 			});
 		}
-		 */
+		
+		headMenu.getMenus().addAll(menuLanguage);
 
 		//roesti > Center VBox
-		//TODO - translation - locale
 		centerBox = new VBox();
-		nameLabel = new Label("Nick-Name");
+		nameLabel = new Label();
 		nameField = new TextField();
-		pwLabel = new Label("Passwort");
+		pwLabel = new Label();
 		pwField = new PasswordField();
 		zero = new Region();
 		one = new Region();
@@ -86,9 +96,8 @@ public class LoginView extends View<LoginModel> {
 		pw.getChildren().addAll(zero, pwLabel, pwField);
 		
 		// roesti > Bottom HBox
-		//TODO - translation - locale
-		loginButton = new Button("einloggen");
-		createUserButton = new Button("Account anlegen");
+		loginButton = new Button();
+		createUserButton = new Button();
 		loginButton.setPrefSize(200, 30);
 		createUserButton.setPrefSize(200, 30);
 
@@ -118,19 +127,45 @@ public class LoginView extends View<LoginModel> {
 //		messageBox.getChildren().add(message);
 		
 		
-	// 	Borderpane anordnen
-	//	root.setTop(headMenu);
+	// 	roesti - fill LoginWindow
+		root.setTop(headMenu);
 		root.setCenter(centerBox);
 //		root.setBottom(messageBox);
 
-//		updateTexts();
-
-		Scene scene = new Scene(root);
-		
-		
+		updateLabels();
+		Scene scene = new Scene(root);	
 //		scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
-		
 		return scene;
 	}
+	
+	// roesti 
+	protected void updateLabels() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		
+		// language settings
+		menuLanguage.setText(t.getString("program.menu.file.language"));
+		
+		// screen labels
+		nameLabel.setText(t.getString("program.login.nameLabel"));
+		pwLabel.setText(t.getString("program.login.pwLabel"));
+		loginButton.setText(t.getString("Program.login.loginButton"));
+		createUserButton.setText(t.getString("Program.login.createUserButton"));
+		stage.setTitle(t.getString("program.name"));
+		
+	}
 
+	public Button getLoginButton() {
+		return loginButton;
+	}
+
+	public Button getCreateUserButton() {
+		return createUserButton;
+}
+	public TextField getNameField() {
+		return nameField;
+	}
+	
+	public PasswordField getPwField() {
+		return pwField;
+	}
 }

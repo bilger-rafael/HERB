@@ -1,23 +1,27 @@
 package herb.client.ui.login;
 
 
+import ch.qos.logback.core.net.server.Client;
+import herb.client.Main;
+import herb.client.ressources.Login;
 import herb.client.ui.core.Controller;
 import herb.client.utils.ServiceLocator;
 
 
 public class LoginController extends Controller<LoginModel, LoginView> {
 		
-		ServiceLocator serviceLocator;
-		private LoginModel loginModel;
+	ServiceLocator serviceLocator;
+	
+	private LoginModel loginModel;
 
 	public LoginController(LoginModel model, LoginView view) {
 		super(model, view);
 
-		// Aktion fuer LoginButton
-//		view.getLoginButton().setOnAction(e -> login());
+		// Event on LoginButton
+		view.getLoginButton().setOnAction(e -> login());
 
-		// Action fuer CreateUserButton
-//		view.getCreateUserButton().setOnAction(e -> createUserView());
+		// Action for CreateUserButton
+		view.getCreateUserButton().setOnAction(e -> createUserView());
 
 		// register ourselves to handle window-closing event
 //		view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -27,16 +31,15 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 //		}
 //	});
 		
-		/*
-			serviceLocator = ServiceLocator.getServiceLocator();
-			serviceLocator.getLogger().info("Application controller initialized");
-		*/	
+		serviceLocator = ServiceLocator.getInstance();
+		serviceLocator.getLogger().info("Application controller initialized");
+
 		}
 
-//		private void login() {
-//			String username = view.getNameField().getText();
-//			String password = view.getPwField().getText();
-//
+		private void login() {
+	//		String username = view.getNameField().getText();
+		//	String password = view.getPwField().getText();
+
 //			Login login = new Login(username, password);
 //			
 //			Client.getClient().addMsgListener(new MessageListener() {
@@ -69,13 +72,16 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 //			});
 //
 //			Client.getClient().send(login);
-//		}
-
-		/*
-		// Leitet zur CreatUserView
-		private void createUserView() {
-			JavaFX_App_Template.getMainProgram().startNewUser();
 		}
-*/
+
+		private void goToLauncher() {
+			this.view.stop();
+			Main.getMainProgram().getLauncher().start();
+		}
+		
+		// forwards to the CreatUserView
+		private void createUserView() {
+			Main.getMainProgram().startRegistration();
+		}
 //	}
 }

@@ -3,12 +3,18 @@ package herb.client;
 import java.util.UUID;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import herb.client.ressources.Game;
 import herb.client.ressources.Round;
+import herb.client.ui.core.View;
+import herb.client.ui.launcher.LauncherController;
+import herb.client.ui.launcher.LauncherModel;
+import herb.client.ui.launcher.LauncherView;
 import herb.client.ui.login.LoginController;
 import herb.client.ui.login.LoginModel;
 import herb.client.ui.login.LoginView;
+import herb.client.ui.registration.RegistrationController;
+import herb.client.ui.registration.RegistrationModel;
+import herb.client.ui.registration.RegistrationView;
 import herb.client.ui.splash.SplashController;
 import herb.client.ui.splash.SplashModel;
 import herb.client.ui.splash.SplashView;
@@ -22,6 +28,9 @@ public class Main extends Application {
 
 	private static Main main; // singleton
 	private SplashView splashView;
+	private LoginView loginView;
+	private RegistrationView registrationView;
+	private LauncherView launcherView;
 
 	private ServiceLocator serviceLocator; // resources, after initialization
 
@@ -95,10 +104,10 @@ public class Main extends Application {
 		serviceLocator = ServiceLocator.getInstance();
 
 
-//		View view = getLoginView();
-//
+		//View view = getLoginView();
+
 //		// Resources are now initialized
-//		serviceLocator = ServiceLocator.getServiceLocator();
+		serviceLocator = ServiceLocator.getInstance();
 //
 //		// Close the splash screen, and set the reference to null, so that all
 //		// Splash_XXX objects can be garbage collected
@@ -118,19 +127,18 @@ public class Main extends Application {
 		splashView.stop();
 		splashView = null;
 		
-		
-		// call login view
-		
-//		public LoginView getLoginView() {
-//			if (loginView == null) {
-//				Stage stage = new Stage();
-//				LoginModel loginModel = new LoginModel();
-//				loginView = new LoginView(stage, loginModel);
-//				new LoginController(loginModel, loginView);
-//			}
-//
-//			return loginView;
-//		}
+	}
+		// roesti - call login view	
+		public LoginView getLoginView() {
+			if (loginView == null) {
+				Stage stage = new Stage();
+				LoginModel loginModel = new LoginModel();
+				loginView = new LoginView(stage, loginModel);
+				new LoginController(loginModel, loginView);
+			}
+
+			return loginView;
+		//}
 		/*
 		serviceLocator = ServiceLocator.getServiceLocator();
 		String url = serviceLocator.getConfiguration().getOption("rootURL");
@@ -138,6 +146,7 @@ public class Main extends Application {
 		System.out.println(player.getName() + player.getRank());
 		*/
 	}
+
 
 	/**
 	 * The stop method is the opposite of the start method. It provides an
@@ -157,5 +166,34 @@ public class Main extends Application {
 	public static Main getMainProgram() {
 		return main;
 	}
+	
+	// roesti - open RegistrationWindow
+	public void startRegistration() {
+		Stage stage = new Stage();
+		RegistrationModel regModel = new RegistrationModel();
+		if (registrationView == null) {
+			registrationView = new RegistrationView(stage, regModel);
+		}
+		new RegistrationController(regModel, registrationView);
+		//loginView.stop();
+		registrationView.start();
+	}
 
+	// roesti - TODO connections?
+	public LauncherView getLauncher() {
+		if (launcherView == null) {
+			Stage stage = new Stage();
+			LauncherModel lauModel = new LauncherModel();
+			launcherView = new LauncherView(stage, lauModel);
+			new LauncherController(lauModel, launcherView);
+			
+			stage.setOnCloseRequest((e) -> {
+				launcherView.stop();
+			});
+		}
+
+		
+		
+		return null;
+	}
 }
