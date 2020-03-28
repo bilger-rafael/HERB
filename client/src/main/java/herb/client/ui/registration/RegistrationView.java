@@ -109,7 +109,8 @@ public class RegistrationView extends View<RegistrationModel> {
 	    errorLabel = new Label("Error");
 		errorLabel.setOpacity(0);
 	    
-		//Scene scene = new Scene(root);
+		root.setCenter(centerBox);
+		Scene scene = new Scene(root);
 		return scene;
 	}
 
