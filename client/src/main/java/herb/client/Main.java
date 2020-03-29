@@ -100,47 +100,31 @@ public class Main extends Application {
 		// can only be initialized now, because they may depend on the
 		// resources initialized by the splash screen
 		
+		// create LoginView
+		View view = getLoginView();
+
 		// Resources are now initialized
-		serviceLocator = ServiceLocator.getInstance();
-
-
-		//View view = getLoginView();
-
-//		// Resources are now initialized
-		serviceLocator = ServiceLocator.getInstance();
-//
-//		// Close the splash screen, and set the reference to null, so that all
-//		// Splash_XXX objects can be garbage collected
-//		splashView.stop();
-//		splashView = null;
-//
-//		view.start();
+		serviceLocator = ServiceLocator.getInstance();	
 		
-//		// create LoginView
-		Stage stage = new Stage();
-		LoginModel loginModel = new LoginModel();
-		LoginView loginView = new LoginView(stage, loginModel);
-		new LoginController(loginModel, loginView);
-		loginView.start();
-		
-		// clear splashView
+		// Close the splash screen, and set the reference to null, so that all
+		// Splash_XXX objects can be garbage collected
 		splashView.stop();
 		splashView = null;
-		
-	}
-		// roesti - call login view	
-		public LoginView getLoginView() {
-			if (loginView == null) {
-				Stage stage = new Stage();
-				LoginModel loginModel = new LoginModel();
-				loginView = new LoginView(stage, loginModel);
-				new LoginController(loginModel, loginView);
-			}
 
-			return loginView;
+		view.start();		
+	}
+	
+	// roesti - call login view	
+	public LoginView getLoginView() {
+		if (loginView == null) {
+			Stage stage = new Stage();
+			LoginModel loginModel = new LoginModel();
+			loginView = new LoginView(stage, loginModel);
+			new LoginController(loginModel, loginView);
+		}
+		return loginView;
 		//}
 		/*
-		serviceLocator = ServiceLocator.getServiceLocator();
 		String url = serviceLocator.getConfiguration().getOption("rootURL");
 		Player player = restTemplate.getForObject(url.concat("/player"), Player.class);
 		System.out.println(player.getName() + player.getRank());
@@ -166,7 +150,7 @@ public class Main extends Application {
 	public static Main getMainProgram() {
 		return main;
 	}
-	
+		
 	// roesti - open RegistrationWindow
 	public void startRegistration() {
 		Stage stage = new Stage();
@@ -186,14 +170,7 @@ public class Main extends Application {
 			LauncherModel lauModel = new LauncherModel();
 			launcherView = new LauncherView(stage, lauModel);
 			new LauncherController(lauModel, launcherView);
-			
-			stage.setOnCloseRequest((e) -> {
-				launcherView.stop();
-			});
-		}
-
-		
-		
-		return null;
+			}
+		return launcherView;
 	}
 }

@@ -37,11 +37,11 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 		}
 
 		private void login() {
-	//		String username = view.getNameField().getText();
-		//	String password = view.getPwField().getText();
+			String username = view.getNameField().getText();
+			String password = view.getPwField().getText();
 
-//			Login login = new Login(username, password);
-//			
+			Login login = new Login(username, password);
+			
 //			Client.getClient().addMsgListener(new MessageListener() {
 //				@Override
 //				public void receive(Message msg) {
@@ -53,7 +53,7 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 //								Client.getClient().setToken(r.getToken());
 //								Client.getClient().setUsername(username);
 //								Platform.runLater(() -> {
-//									goToChatRoom();
+									goToLauncher();
 //								});
 //							} else {
 //

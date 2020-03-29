@@ -42,8 +42,8 @@ public class SplashView extends View<SplashModel> {
 
         Scene scene = new Scene(root, 300, 300, Color.TRANSPARENT);
         
-        //scene.getStylesheets().addAll(
-        //        this.getClass().getResource("splash.css").toExternalForm());
+        scene.getStylesheets().addAll(
+        		this.getClass().getResource("splash.css").toExternalForm());
 
         return scene;
     }
