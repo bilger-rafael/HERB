@@ -163,7 +163,7 @@ public class Main extends Application {
 		registrationView.start();
 	}
 
-	// roesti - TODO connections?
+	// roesti - open Launcher
 	public LauncherView getLauncher() {
 		if (launcherView == null) {
 			Stage stage = new Stage();
