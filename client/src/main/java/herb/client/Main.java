@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import herb.client.ressources.Game;
 import herb.client.ressources.Round;
 import herb.client.ui.core.View;
+import herb.client.ui.game.GameController;
+import herb.client.ui.game.GameModel;
+import herb.client.ui.game.GameView;
 import herb.client.ui.launcher.LauncherController;
 import herb.client.ui.launcher.LauncherModel;
 import herb.client.ui.launcher.LauncherView;
@@ -34,6 +37,8 @@ public class Main extends Application {
 	private LoginView loginView;
 	private RegistrationView registrationView;
 	private LauncherView launcherView;
+	private LobbyView loView;
+	private GameView gameView;
 
 	private ServiceLocator serviceLocator; // resources, after initialization
 
@@ -181,9 +186,21 @@ public class Main extends Application {
 		// TODO correct, when lobbies work
 		Stage stage = new Stage();
 		LobbyModel model = new LobbyModel();
-		LobbyView loView = new LobbyView(stage, model);
+		loView = new LobbyView(stage, model);
 		new LobbyController(model, loView);
+		launcherView.stop();
 		
 		return loView;
+	}
+
+	public GameView getGameView() {
+			// TODO correct, when everything works
+			Stage stage = new Stage();
+			GameModel model = new GameModel();
+			gameView = new GameView(stage, model);
+			new GameController(model, gameView);
+			loView.stop();
+			
+			return gameView;
 	}
 }
