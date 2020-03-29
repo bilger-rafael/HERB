@@ -9,6 +9,9 @@ import herb.client.ui.core.View;
 import herb.client.ui.launcher.LauncherController;
 import herb.client.ui.launcher.LauncherModel;
 import herb.client.ui.launcher.LauncherView;
+import herb.client.ui.lobby.LobbyController;
+import herb.client.ui.lobby.LobbyModel;
+import herb.client.ui.lobby.LobbyView;
 import herb.client.ui.login.LoginController;
 import herb.client.ui.login.LoginModel;
 import herb.client.ui.login.LoginView;
@@ -172,5 +175,15 @@ public class Main extends Application {
 			new LauncherController(lauModel, launcherView);
 			}
 		return launcherView;
+	}
+
+	public LobbyView getLobbyView() {
+		// TODO correct, when lobbies work
+		Stage stage = new Stage();
+		LobbyModel model = new LobbyModel();
+		LobbyView loView = new LobbyView(stage, model);
+		new LobbyController(model, loView);
+		
+		return loView;
 	}
 }
