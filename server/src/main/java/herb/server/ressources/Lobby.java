@@ -17,9 +17,8 @@ public class Lobby extends LobbyBase {
 	}
 
 	@Override //Etter Spiel starten
-	public GameBase startGame() {
-		Game g = new Game(this.players);
-		return g;
+	public void startGame() {
+		runningGame = new Game(this.players);
 	}
 	
 	//Etter Spieler dem Array hinzufügen
@@ -29,6 +28,7 @@ public class Lobby extends LobbyBase {
 			int i = 0;
 			boolean found = false;
 				// TODO check if lobby already full, otherwise this will end in a endless loop
+				// TODO call startGame() if lobby is full
 				while(!found) {
 					if(this.players[i]== null) {
 						this.players[i] = player;
