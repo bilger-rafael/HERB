@@ -1,5 +1,6 @@
 package herb.client.ui.core;
 
+import herb.client.utils.ServiceLocator;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -26,6 +27,7 @@ public abstract class View<M extends Model> {
         this.model = model;
         stage.setTitle("Chat Bilger-Etter");
         scene = create_GUI(); // Create all controls within "root"
+        scene.getStylesheets().addAll(ServiceLocator.getInstance().getAPP_CLASS().getResource("Main.css").toExternalForm());
         stage.setScene(scene);
     }
 
