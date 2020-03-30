@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import herb.server.ressources.core.ExceptionBase;
 
-@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Server Error")
-public class LobbyAlreadyExistsException extends ExceptionBase {
+@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Unknown Server Error")
+public class ServerErrorException extends ExceptionBase {
 
 }
