@@ -46,12 +46,11 @@ public class Player extends PlayerBase {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 	@Override
-	public CardBase[] getPlayableCards() {
+	public CardBase[] determinPlayableCards() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }

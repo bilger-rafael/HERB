@@ -22,9 +22,8 @@ public class Lobby extends LobbyBase {
 	}
 
 	@Override
-	public GameBase startGame() {
+	public void startGame() {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
