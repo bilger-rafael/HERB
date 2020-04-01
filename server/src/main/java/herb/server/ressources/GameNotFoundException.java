@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import herb.server.ressources.core.ExceptionBase;
 
-@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Server Error")
-public class LobbyAlreadyExistsException extends ExceptionBase {
+@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Game Not Found")
+public class GameNotFoundException extends ExceptionBase {
 
 }

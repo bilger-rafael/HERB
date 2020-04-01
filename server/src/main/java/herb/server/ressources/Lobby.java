@@ -1,5 +1,10 @@
 package herb.server.ressources;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.server.Datastore;
@@ -17,18 +22,24 @@ public class Lobby extends LobbyBase {
 	}
 
 	@Override //Etter Spiel starten
-	public GameBase startGame() {
-		Game g = new Game(this.players);
-		return g;
+	public void startGame() {
+		runningGame = new Game(this.players);
 	}
 	
 	//Etter Spieler dem Array hinzufügen
 	public void addPlayer(PlayerBase player) throws ExceptionBase {
+		
+		//Stream<PlayerBase> s = Arrays.stream(players);
+		 
+		// check if player already in lobby
+		//if (Arrays.stream(players).anyMatch(p -> (p.equals(player)))) throw new ServerErrorException();
+		
 		// TODO prüfen ob player nicht bereits in lobby
 		try { 
 			int i = 0;
 			boolean found = false;
 				// TODO check if lobby already full, otherwise this will end in a endless loop
+				// TODO call startGame() if lobby is full
 				while(!found) {
 					if(this.players[i]== null) {
 						this.players[i] = player;
@@ -43,6 +54,10 @@ public class Lobby extends LobbyBase {
 		} catch (Exception e) {
 			// TODO: handle exception => Meldung auf UI
 		}
+		
+		// check if lobby is full, if so, start the game
+		//if (Arrays.stream(players).noneMatch(p -> (p == null))) startGame();
+		
 	}
 	
 	// Etter Spieler verlässt die Lobby

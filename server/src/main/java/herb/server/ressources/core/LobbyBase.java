@@ -3,6 +3,7 @@ package herb.server.ressources.core;
 public abstract class LobbyBase {
 	private final String name;
 	protected PlayerBase[] players = new PlayerBase[4];
+	protected GameBase runningGame;
 
 	protected LobbyBase(String name) {
 		this.name = name;
@@ -17,7 +18,7 @@ public abstract class LobbyBase {
 		return players;
 	}
 
-	public abstract GameBase startGame();
+	public abstract void startGame();
 
 	// Etter
 	public abstract void addPlayer(PlayerBase player) throws ExceptionBase;

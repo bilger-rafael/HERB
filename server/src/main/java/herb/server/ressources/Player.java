@@ -51,7 +51,7 @@ public class Player extends PlayerBase {
 	}
 
 	@Override //Gibt die Karten zurück, die gespielt werden dürfen
-	public CardBase[] getPlayableCards() {
+	public CardBase[] determinPlayableCards() {
 		//Lokale Var, damit nicht gesamter Pfad aufgerufen werden muss
 		PlayerBase[] players = new PlayerBase[this.getRound().getPlayers().length];
 		CardBase[] playableCards = new CardBase[9];
