@@ -2,6 +2,7 @@ package herb.server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,13 +29,13 @@ public class DataStore_Repository {
 
 
 	public void connectDatabase() {
-		 Statement stmt = null;
+		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 
         
         try {
             this.cn = DriverManager.getConnection(ipAdress, userDB, pwDB);
-                       
+           
             
         } catch (SQLException e) {
         		//TODO catch Exception
@@ -48,21 +49,20 @@ public class DataStore_Repository {
         }
     }
 	
+	//Fügt einen Player der DB mit PreparedStatment hinzu
 	public void addPlayerToDB(String playername, String password) {
-		 Statement stmt = null;
+		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     
 	     try {
-		 stmt = this.cn.createStatement();
-		 
-         // Query ausführen Player der Liste hinzufügen, falls noch nicht verhanden
-		 String query = "INSERT INTO Players (Name, Password) VALUES ( '"+ playername +"' , '"+ password +"' ) ON DUPLICATE KEY UPDATE Name='"+playername+"'";
-         System.out.println(query);
-		 stmt.execute(query);
-         stmt.close();
-		 
+	    	 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASS.Players (Name, Password) VALUES (?,?)");
+	    	 stmt.setString(1, playername);
+	    	 stmt.setString(2, password);
+	    	 int answer = stmt.executeUpdate();
+	    	 System.out.println(answer+" eingefügt");
 		 
 	     }catch (SQLException e) {
+	    	 System.out.println(e);
 	    	 
 	     }finally {
 	            if (rs != null) try {
@@ -74,21 +74,18 @@ public class DataStore_Repository {
 	     }
 	}
 	
-	public void deletePlayerToDB(String playername) {
-		 Statement stmt = null;
+	//Löscht einen Player der DB mit PreparedStatment
+	public void deletePlayerFromDB(String playername) {
+		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     
-	     try {
-		 stmt = this.cn.createStatement();
-		 
-        // Query ausführen
-		String query = "DELETE FROM Jass.Players WHERE Name= '"+ playername +"'";
-		System.out.println(query);
-        stmt.execute(query);
-        stmt.close();
-		 
-		 
+	     try { 
+	    	 stmt = this.cn.prepareStatement("DELETE FROM Jass.Players WHERE Name=?");
+	    	 stmt.setString(1, playername);
+	    	 int answer = stmt.executeUpdate();
+	    	 System.out.println(answer+" gelöscht");
 	     }catch (SQLException e) {
+	    	 System.out.println(e);
 	    	 
 	     }finally {
 	            if (rs != null) try {
@@ -99,27 +96,21 @@ public class DataStore_Repository {
 	            } catch (Exception e) {}
 	     }
 	}
-	
-	public String showPlayerfromDB(String playername) {
-		 Statement stmt = null;
+	//Gibt Player PW zurück der DB mit PreparedStatment
+	public String showPlayerPasswordfromDB(String playername) {
+		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     String password = null;
 	     
 	     try {
-		 stmt = this.cn.createStatement();
-		 
-         // Query ausführen Player der Liste hinzufügen, falls noch nicht verhanden
-		 String query = "SELECT * FROM Players WHERE name = '" + playername +"'";
-		 System.out.println(query);
-		 rs = stmt.executeQuery(query);
-         rs.next();
-         password = rs.getString(2);
-       
-         stmt.close();
-		 
+		     stmt = this.cn.prepareStatement("SELECT * FROM Players WHERE name=?");
+		     stmt.setString(1, playername);
+		   	 rs = stmt.executeQuery();
+		   	 rs.next();
+		   	 password = rs.getString(2);
 		 
 	     }catch (SQLException e) {
-	    	 
+	    	 System.out.println(e);
 	     }finally {
 	            if (rs != null) try {
 	                if (!rs.isClosed()) rs.close();
@@ -130,23 +121,19 @@ public class DataStore_Repository {
 	     }
 		return password;
 	}
-	
+	//Fügt einen Player HighScore der DB mit PreparedStatment hinzu
 	public void addPlayertoHighScore(String playername, String points) {
-		 Statement stmt = null;
+		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     
 	     try {
-		 stmt = this.cn.createStatement();
-		 
-         // Query ausführen Player der Liste hinzufügen, falls noch nicht verhanden
-		 String query = "INSERT HighScores  (PlayerName, Points) VALUES ( '"+ playername +"' , '"+ points +"' ) ON DUPLICATE KEY UPDATE PlayerName='"+playername+"'";
-		 System.out.println(query);
-		 stmt.execute(query);
-         stmt.close();
-		 
-		 
+			 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASS.HighScores (PlayerName, Points) VALUES (?,?)");
+			 stmt.setString(1, playername);
+			 stmt.setString(2, points);
+			 int answer = stmt.executeUpdate();
+			 System.out.println(answer+" eingefügt");
 	     }catch (SQLException e) {
-	    	 
+	    	 System.out.println(e);
 	     }finally {
 	            if (rs != null) try {
 	                if (!rs.isClosed()) rs.close();
@@ -156,23 +143,18 @@ public class DataStore_Repository {
 	            } catch (Exception e) {}
 	     }
 	}
-	
+	//Löscht einen Player HighScore der DB mit PreparedStatment
 	public void deletePlayerfromHighScore(String playername) {
-		 Statement stmt = null;
+		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     
 	     try {
-		 stmt = this.cn.createStatement();
-		 
-       // Query ausführen
-		String query = "DELETE FROM Jass.HighScore WHERE Name= '"+ playername +"'";
-		System.out.println(query);
-		stmt.execute(query);
-		stmt.close();
-		 
-		 
+		     stmt = this.cn.prepareStatement("DELETE FROM JASS.HighScores WHERE PlayerName=?");
+		     stmt.setString(1, playername);
+		   	 int answer = stmt.executeUpdate();
+			 System.out.println(answer+" gelöscht");	 
 	     }catch (SQLException e) {
-	    	 
+	    	 System.out.println(e);
 	     }finally {
 	            if (rs != null) try {
 	                if (!rs.isClosed()) rs.close();
@@ -182,23 +164,18 @@ public class DataStore_Repository {
 	            } catch (Exception e) {}
 	     }
 	}
-	
+	//Fügt eine Lobby der DB mit PreparedStatment hinzu
 	public void addLobby(String lobbyName) {
-		 Statement stmt = null;
+		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     
 	     try {
-		 stmt = this.cn.createStatement();
-		 
-         // Query ausführen Player der Liste hinzufügen, falls noch nicht verhanden
-		 String query = "INSERT INTO Lobbys (LobbyName) VALUES ( '"+ lobbyName +"' ) ON DUPLICATE KEY UPDATE LobbyName='"+lobbyName+"'";
-		 System.out.println(query);
-		 stmt.execute(query);
-         stmt.close();
-		 
-		 
+			 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASS.Lobbys (LobbyName) VALUES (?)");
+			 stmt.setString(1, lobbyName);
+			 int answer = stmt.executeUpdate();
+			 System.out.println(answer+" eingefügt");
 	     }catch (SQLException e) {
-	    	 
+	    	 System.out.println(e);
 	     }finally {
 	            if (rs != null) try {
 	                if (!rs.isClosed()) rs.close();
@@ -208,21 +185,16 @@ public class DataStore_Repository {
 	            } catch (Exception e) {}
 	     }
 	}
-
+	//Löscht eine Lobby der DB mit PreparedStatment
 	public void deleteLobby(String lobbyName) {
-		 Statement stmt = null;
+		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     
 	     try {
-		 stmt = this.cn.createStatement();
-		 
-        // Query ausführen
-		String query = "DELETE FROM Jass.Lobbys WHERE LobbyName= '"+ lobbyName +"'";
-		System.out.println(query);
-		stmt.execute(query);
-        stmt.close();
-		 
-		 
+		     stmt = this.cn.prepareStatement("DELETE FROM JASS.Lobbys WHERE LobbyName=?");
+		     stmt.setString(1, lobbyName);
+		   	 int answer = stmt.executeUpdate();
+			 System.out.println(answer+" gelöscht");
 	     }catch (SQLException e) {
 	    	 
 	     }finally {
@@ -234,31 +206,23 @@ public class DataStore_Repository {
 	            } catch (Exception e) {}
 	     }
 	}
-	
+	//Gibt die Lobbys der DB mit PreparedStatment zurück
 	public ArrayList<String> showLobbys(){
 		ArrayList<String> tempList = new ArrayList<>();
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 	    ResultSet rs = null;
 	    String tempLobbyName = null;
 	     
 	     try {
-		 stmt = this.cn.createStatement();
-		 
-         // Query ausführen Player der Liste hinzufügen, falls noch nicht verhanden
-		 String query = "SELECT * FROM Lobbys";
-		 System.out.println(query);
-		 rs = stmt.executeQuery(query);
-         while(rs.next()) {
+		     stmt = this.cn.prepareStatement("SELECT * FROM Lobbys");
+		   	 rs = stmt.executeQuery();
+		   	 while(rs.next()) {
         	 
-        	 tempLobbyName = rs.getString(1);
-        	 tempList.add(tempLobbyName);
-         	}
-       
-         stmt.close();
-		 
-		 
+		 		tempLobbyName = rs.getString(1);
+		 		tempList.add(tempLobbyName);
+         	}		  
 	     }catch (SQLException e) {
-	    	 
+	    	 System.out.println(e);
 	     }finally {
 	            if (rs != null) try {
 	                if (!rs.isClosed()) rs.close();
