@@ -16,14 +16,16 @@ public class TestDBConnection {
 		
 		db.addPlayerToDB(playername, pw);
 		
-		String s= db.showPlayerfromDB(playername);
+		String s= db.showPlayerPasswordfromDB(playername);
 		System.out.println(s);
 		
-		db.deletePlayerToDB(playername);
+		db.deletePlayerFromDB(playername);
 		
 		db.addLobby(lobbyName);
 		
+		
 		db.addPlayertoHighScore(playername, points);
+		
 		
 		db.deletePlayerfromHighScore(playername);
 		
@@ -33,6 +35,7 @@ public class TestDBConnection {
 		}
 		
 		db.deleteLobby(lobbyName);
+		
 		
 		db.stop();
 		
