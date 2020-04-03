@@ -13,6 +13,7 @@ public class Hand extends HandBase{
 	
 	public Hand() {
 		this.addIndex=0;
+		this.cards = new Card[9];
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class Hand extends HandBase{
 
 	@Override
 	public boolean cardsEmpty() {
-		if (cards.length==0) {
+		if (this.cards.length==0) {
 			return true;
 		}else {
 			return false;
@@ -51,7 +52,7 @@ public class Hand extends HandBase{
 
 	@Override //Sortiert das Array für das UI
 	public void sortCards() {
-		Arrays.sort(cards, new HandSorter());	
+		Arrays.sort(this.cards, new HandSorter());	
 	}
 	
 	//Gibt zurück ob eine Karte höher ist beim Einordnen
