@@ -20,6 +20,7 @@ public class Bot {
 	public Bot() {
 		String authToken = "AAA"+botNumber;
 		String botName = "Bot "+botNumber;
+		botNumber++;
 		
 		botPlayer = new Player(botName,authToken);
 	}
