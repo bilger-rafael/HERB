@@ -14,7 +14,7 @@ public class Player extends PlayerBase {
 	
 	public Player(String username, String authToken) {
 		super(username, authToken);
-		// TODO Auto-generated constructor stub
+		this.hand = new Hand();
 	}
 
 	@Override
