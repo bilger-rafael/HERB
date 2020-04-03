@@ -49,6 +49,8 @@ public abstract class PlayerBase {
 	public abstract boolean PlayerNoCards();
 
 	public abstract void clearHand();
+	
+	public abstract HandBase returnHand();
 
 	public abstract void sortHand();
 
