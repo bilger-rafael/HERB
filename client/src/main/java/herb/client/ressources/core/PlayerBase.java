@@ -2,6 +2,8 @@ package herb.client.ressources.core;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import herb.server.ressources.core.HandBase;
+
 public abstract class PlayerBase {
 	private final String username;
 	private final String authToken;
@@ -49,6 +51,8 @@ public abstract class PlayerBase {
 	public abstract boolean PlayerNoCards();
 
 	public abstract void clearHand();
+	
+	public abstract HandBase returnHand();
 
 	public abstract void sortHand();
 

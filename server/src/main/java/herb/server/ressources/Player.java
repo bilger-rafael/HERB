@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.server.Datastore;
 import herb.server.ressources.core.CardBase;
+import herb.server.ressources.core.HandBase;
 import herb.server.ressources.core.PlayerBase;
 
 //Etter
@@ -34,6 +35,12 @@ public class Player extends PlayerBase {
 	@Override
 	public void clearHand() {
 		this.hand.clearCards();
+	}
+	
+	@Override
+	public HandBase returnHand() {
+		return this.hand;
+		
 	}
 
 	@Override
