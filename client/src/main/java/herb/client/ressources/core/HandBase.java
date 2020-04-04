@@ -7,7 +7,7 @@ public abstract class HandBase {
 	public CardBase[] getCards() {
 		return cards;
 	}
-	
+
 	public abstract void play(CardBase card);
 	
 	public abstract void addCard(CardBase card);
@@ -17,6 +17,8 @@ public abstract class HandBase {
 	public abstract void sortCards();
 	
 	public abstract boolean cardsEmpty();
+	
+	public abstract CardBase getCard(int i);
 	
 	
 }

@@ -8,7 +8,7 @@ public abstract class PlayerBase {
 	private final String authToken;
 	@JsonIgnoreProperties({ "players", "currentStartingPlayer" })
 	private RoundBase round;
-	protected HandBase hand;
+	protected HandBase hand; //TODO make private and use GETTER
 
 	@JsonCreator
 	public PlayerBase(String username, String authToken) {

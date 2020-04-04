@@ -36,4 +36,10 @@ public class Hand extends HandBase {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public CardBase getCard(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
