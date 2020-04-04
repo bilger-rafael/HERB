@@ -1,10 +1,12 @@
 package herb.server.ressources.core;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public abstract class PlayerBase {
 	private final String username;
 	private final String authToken;
+	@JsonIgnoreProperties({ "players", "currentStartingPlayer" })
 	private RoundBase round;
 	protected HandBase hand;
 

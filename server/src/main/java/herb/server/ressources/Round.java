@@ -20,14 +20,14 @@ public class Round extends RoundBase implements Runnable{
 		this.currentStartingPlayer = this.players[0];
 		
 		Thread t = new Thread(this);
-		t.setDaemon(true);
+		//t.setDaemon(true);
 		t.start();
 	}
 	
 	@Override
-	public void run() {
+	public void run() {		
 		startRound();
-
+		
 		playTricks();
 
 		endRound();

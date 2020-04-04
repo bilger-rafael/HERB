@@ -2,6 +2,8 @@ package herb.server.ressources;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.TrickBase;

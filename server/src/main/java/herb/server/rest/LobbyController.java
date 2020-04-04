@@ -5,8 +5,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import herb.server.Datastore;
+import herb.server.ressources.GameNotFoundException;
 import herb.server.ressources.Lobby;
 import herb.server.ressources.Player;
+import herb.server.ressources.PlayerNotFoundException;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.LobbyBase;
 
@@ -30,7 +34,11 @@ public class LobbyController {
 
 	@PostMapping("/Lobby({name})/join")
 	public void joinLobby(@PathVariable String name, @RequestBody Player player) throws ExceptionBase {
-		getLobby(name).addPlayer(player);
+		//player has to be logged in to join lobby
+		Player p = Datastore.getInstance().players.get(player.getUsername());
+		if (p == null)
+			throw new PlayerNotFoundException();
+		getLobby(name).addPlayer(p);
 	}
 
 	@PostMapping("/Lobby({name})/leave")
