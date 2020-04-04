@@ -15,64 +15,54 @@ import herb.server.ressources.core.PlayerBase;
 
 public class Lobby extends LobbyBase {
 	private int index;
-	
+
 	@JsonCreator
 	public Lobby(String name) {
 		super(name);
 	}
 
-	@Override //Etter Spiel starten
+	@Override // Etter Spiel starten
 	public void startGame() {
 		runningGame = new Game(this.players);
 	}
-	
-	//Etter Spieler dem Array hinzufügen
+
+	// Etter Spieler dem Array hinzufügen
 	public void addPlayer(PlayerBase player) throws ExceptionBase {
+		if (isFull())
+			throw new ServerErrorException();
 		
-		//Stream<PlayerBase> s = Arrays.stream(players);
-		 
-		// check if player already in lobby
-		//if (Arrays.stream(players).anyMatch(p -> (p.equals(player)))) throw new ServerErrorException();
-		
-		// TODO prüfen ob player nicht bereits in lobby
-		try { 
-			int i = 0;
-			boolean found = false;
-				// TODO check if lobby already full, otherwise this will end in a endless loop
-				// TODO call startGame() if lobby is full
-				while(!found) {
-					if(this.players[i]== null) {
-						this.players[i] = player;
-						found = true;
-						if(i==3) 
-						{startGame();
-							} else {
-						}
-						i++;
-					}
-				}	
-		} catch (Exception e) {
-			// TODO: handle exception => Meldung auf UI
+		//TODO check if player is already in lobby
+
+		for (int i = 0; i < this.players.length; i++) {
+			if (this.players[i] == null) {
+				this.players[i] = player;
+				break;
+			}
 		}
-		
-		// check if lobby is full, if so, start the game
-		//if (Arrays.stream(players).noneMatch(p -> (p == null))) startGame();
-		
+
+		if (isFull())
+			startGame();
 	}
-	
+
 	// Etter Spieler verlässt die Lobby
 	public void removePlayer(PlayerBase player) throws ExceptionBase {
-		try { 
-			for (int i=0; i<this.players.length; i++) {
+		for (int i = 0; i < this.players.length; i++) {
 			if (this.players[i].equals(player)) {
 				this.players[i] = null;
-				}
 			}
-		} catch (Exception e) {
-			// TODO: handle exception => Meldung auf UI
 		}
 	}
-	
+
+	public boolean isFull() {
+		for (int i = 0; i < this.players.length; i++) {
+			if (this.players[i] == null) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public static Lobby createLobby(String name) throws ExceptionBase {
 		if (Datastore.getInstance().lobbys.containsKey(name))
 			throw new LobbyAlreadyExistsException();
@@ -85,7 +75,7 @@ public class Lobby extends LobbyBase {
 
 		return lobby;
 	}
-	
+
 	public static Lobby readLobby(String name) throws ExceptionBase {
 		Lobby lobby = Datastore.getInstance().lobbys.get(name);
 
@@ -98,6 +88,5 @@ public class Lobby extends LobbyBase {
 	public static Lobby[] readLobbyList() {
 		return (Lobby[]) Datastore.getInstance().lobbys.values().toArray(new Lobby[0]);
 	}
-	
 
 }

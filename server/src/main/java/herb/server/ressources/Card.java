@@ -133,7 +133,7 @@ public class Card extends CardBase {
 		else return false;
 	}
 
-	@Override //o ist die Karte vom vorherigen Spieler, this die neue Karte
+	@Override //o ist die Karte vom vorherigen Spieler, dies die neue Karte
 	public int compareTo(CardBase o) {
 		int result=0;
 		//normaler Trumpf

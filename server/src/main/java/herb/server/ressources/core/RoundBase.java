@@ -3,7 +3,8 @@ package herb.server.ressources.core;
 import java.util.LinkedList;
 import java.util.Map;
 
-import herb.server.ressources.Player;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //Etter
 public abstract class RoundBase {
@@ -11,7 +12,6 @@ public abstract class RoundBase {
 	private Trump trump;
 	protected PlayerBase[] players = new PlayerBase[4];
 	protected PlayerBase currentStartingPlayer;
-
 
 	protected Map<PlayerBase,Integer> actualScores;
 	
@@ -21,6 +21,7 @@ public abstract class RoundBase {
 	
 	protected abstract void addTrickScore(PlayerBase winner);
 	
+	@JsonIgnore
 	public abstract Map<PlayerBase, Integer> getScoreTable();
 	
 	public LinkedList<TrickBase> getTricks(){

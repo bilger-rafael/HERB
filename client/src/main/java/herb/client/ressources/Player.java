@@ -1,6 +1,7 @@
 package herb.client.ressources;
 
 import herb.client.ressources.core.CardBase;
+import herb.client.ressources.core.HandBase;
 import herb.client.ressources.core.PlayerBase;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -49,6 +50,12 @@ public class Player extends PlayerBase {
 
 	@Override
 	public CardBase[] determinPlayableCards() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HandBase getHand() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -2,66 +2,99 @@ package herb.server.ressources;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.TrickBase;
 
 //Etter
-public class Trick extends TrickBase{
+public class Trick extends TrickBase {
+	public boolean played;
+
 	public Trick(PlayerBase[] players, PlayerBase startingPlayer) {
 		super(players, startingPlayer);
 	}
-
+	
+	//Bilger
 	public PlayerBase playTrick() {
 		PlayerBase winner = null;
-		// TODO Logik wer ist dran und weitergabe implementieren!
-		// Am besten circular linked list verwenden, dann ist es möglich von einem beliebigen Player aus 3 mal getNext() aufzurufen
-		
+
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			//TODO wait for currentPlayer to play (Create Event in Player)
+			
+			((Player) this.currentPlayer.data).addPlayListener(() -> {
+				this.played = true;
+			});
+			
+			while(!played) {
+				try {
+				Thread.sleep(1000);
+				//this.wait(); //is it possible to wait on Object Round? 
+				} catch (InterruptedException e) {
+				}
+			}
+			
+			this.currentPlayer = this.currentPlayer.next;
+		}
+
 		winner = getWinner();
-		
+
 		return winner;
 	}
-	
 
 	@Override
 	public PlayerBase getWinner() {
-		this.winningPlayer=this.startingPlayer;
-		//Ort des Startspielers
-		for (int i =0; i<this.players.length;i++) {
-			if(this.startingPlayer==this.players[i]) {
-				//je nach dem welcher Spieler der Startspieler ist, wird in einer anderen Reihenfolge verglichen
+		this.winningPlayer = this.getStartingPlayer();
+		// Ort des Startspielers
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			if (this.getStartingPlayer() == this.getPlayers()[i]) {
+				// je nach dem welcher Spieler der Startspieler ist, wird in einer anderen
+				// Reihenfolge verglichen
 				switch (i) {
-				case(0):
-					if(playedCards.get(this.players[1]).compareTo(playedCards.get(this.players[0]))>0) {
-						this.winningPlayer=this.players[0];}
-					if(playedCards.get(this.players[2]).compareTo(playedCards.get(this.players[1]))>0) {
-						this.winningPlayer=this.players[0];}
-					if(playedCards.get(this.players[3]).compareTo(playedCards.get(this.players[2]))>0) {
-						this.winningPlayer=this.players[0];}
+				case (0):
+					if (playedCards.get(this.getPlayers()[1]).compareTo(playedCards.get(this.getPlayers()[0])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
+					if (playedCards.get(this.getPlayers()[2]).compareTo(playedCards.get(this.getPlayers()[1])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
+					if (playedCards.get(this.getPlayers()[3]).compareTo(playedCards.get(this.getPlayers()[2])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
 					break;
-				case(1):
-					if(playedCards.get(this.players[2]).compareTo(playedCards.get(this.players[1]))>0) {
-						this.winningPlayer=this.players[0];}
-					if(playedCards.get(this.players[3]).compareTo(playedCards.get(this.players[2]))>0) {
-						this.winningPlayer=this.players[0];}
-					if(playedCards.get(this.players[0]).compareTo(playedCards.get(this.players[3]))>0) {
-						this.winningPlayer=this.players[0];}
+				case (1):
+					if (playedCards.get(this.getPlayers()[2]).compareTo(playedCards.get(this.getPlayers()[1])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
+					if (playedCards.get(this.getPlayers()[3]).compareTo(playedCards.get(this.getPlayers()[2])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
+					if (playedCards.get(this.getPlayers()[0]).compareTo(playedCards.get(this.getPlayers()[3])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
 					break;
-				case(2):
-					if(playedCards.get(this.players[3]).compareTo(playedCards.get(this.players[2]))>0) {
-						this.winningPlayer=this.players[0];}
-					if(playedCards.get(this.players[0]).compareTo(playedCards.get(this.players[3]))>0) {
-						this.winningPlayer=this.players[0];}
-					if(playedCards.get(this.players[1]).compareTo(playedCards.get(this.players[0]))>0) {
-						this.winningPlayer=this.players[0];}
+				case (2):
+					if (playedCards.get(this.getPlayers()[3]).compareTo(playedCards.get(this.getPlayers()[2])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
+					if (playedCards.get(this.getPlayers()[0]).compareTo(playedCards.get(this.getPlayers()[3])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
+					if (playedCards.get(this.getPlayers()[1]).compareTo(playedCards.get(this.getPlayers()[0])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
 					break;
-				case(3):
-					if(playedCards.get(this.players[0]).compareTo(playedCards.get(this.players[3]))>0) {
-						this.winningPlayer=this.players[0];}
-					if(playedCards.get(this.players[1]).compareTo(playedCards.get(this.players[0]))>0) {
-						this.winningPlayer=this.players[0];}
-					if(playedCards.get(this.players[2]).compareTo(playedCards.get(this.players[1]))>0) {
-						this.winningPlayer=this.players[0];}
+				case (3):
+					if (playedCards.get(this.getPlayers()[0]).compareTo(playedCards.get(this.getPlayers()[3])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
+					if (playedCards.get(this.getPlayers()[1]).compareTo(playedCards.get(this.getPlayers()[0])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
+					if (playedCards.get(this.getPlayers()[2]).compareTo(playedCards.get(this.getPlayers()[1])) > 0) {
+						this.winningPlayer = this.getPlayers()[0];
+					}
 					break;
 				}
 			}
@@ -69,79 +102,30 @@ public class Trick extends TrickBase{
 		return this.winningPlayer;
 	}
 
+/*
 	@Override
-	public PlayerBase getNextPlayer(PlayerBase p) {
-		PlayerBase temp = p;
-	
-		for (int i =0; i<this.players.length;i++) {
-			if (temp == this.players[i] ) {
-				try{ temp = this.players[i+1];
-				}catch (ArrayIndexOutOfBoundsException e) {
-					temp = this.players[0]; 
-				}
-				break;
-			}
-		}
-		return temp;
-	}
-	
-	@Override
-	public PlayerBase getPrivousPlayer(PlayerBase p) {
-		PlayerBase temp = p;
-		
-		for (int i =0; i<this.players.length;i++) {
-			if (temp == this.players[i] ) {
-				try{ temp = this.players[i-1];
-				}catch (ArrayIndexOutOfBoundsException e) {
-					temp = this.players[3]; 
-				}
-				break;
-			}
-		}
-		return temp;
-	}
+	protected void clearTrick() {
+		this.playedCards.clear();
+		this.currentPlayer = this.getStartingPlayer();
 
-	@Override
-	protected PlayerBase setNextCurrentPlayer() {
-		for (int i =0; i<this.players.length;i++) {
-			if (this.currentPlayer == this.players[i] ) {
-				try{ this.currentPlayer = this.players[i+1];
-				}catch (ArrayIndexOutOfBoundsException e) {
-					this.currentPlayer = this.players[0]; 
-				}
-				break;
-			}
-		}
-		return this.currentPlayer;
 	}
+*/
 	
 	@Override
 	public void addCardtoTrick(CardBase c) {
-		this.playedCards.put(this.currentPlayer, c);
+		this.playedCards.put(this.currentPlayer.data, c);
 		setNextCurrentPlayer();
 	}
 
 	@Override
-	protected void clearTrick() {
-		this.playedCards.clear();
-		this.currentPlayer=this.startingPlayer;
-		
-	}
-
-	@Override
 	public int getTrickPoints() {
-		int trickPoints=0;
-		
-		for(int i=0; i<playedCards.size();i++) {
-			trickPoints+=playedCards.get(this.players[i]).getPoints();
-		}
-		
-		return trickPoints;
-	}
+		int trickPoints = 0;
 
-	@Override
-	public PlayerBase getStaringPlayer() {
-		return this.startingPlayer;
+		for (int i = 0; i < playedCards.size(); i++) {
+			trickPoints += playedCards.get(this.getPlayers()[i]).getPoints();
+		}
+
+		return trickPoints;
 	}
 
 	@Override
@@ -154,7 +138,86 @@ public class Trick extends TrickBase{
 		return this.playedCards.get(p);
 	}
 
+	@Override
+	protected void clearTrick() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public PlayerBase getStaringPlayer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PlayerBase getNextPlayer(PlayerBase p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PlayerBase getPrivousPlayer(PlayerBase p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected PlayerBase setNextCurrentPlayer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/*
+	@Override
+	public PlayerBase getNextPlayer(PlayerBase p) {
+		PlayerBase temp = p;
+
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			if (temp == this.getPlayers()[i]) {
+				try {
+					temp = this.getPlayers()[i + 1];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					temp = this.getPlayers()[0];
+				}
+				break;
+			}
+		}
+		return temp;
+	}
+
+	@Override
+	public PlayerBase getPrivousPlayer(PlayerBase p) {
+		PlayerBase temp = p;
+
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			if (temp == this.getPlayers()[i]) {
+				try {
+					temp = this.getPlayers()[i - 1];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					temp = this.getPlayers()[3];
+				}
+				break;
+			}
+		}
+		return temp;
+	}
+
+	@Override
+	protected PlayerBase setNextCurrentPlayer() {
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			if (this.currentPlayer == this.getPlayers()[i]) {
+				try {
+					this.currentPlayer = this.getPlayers()[i + 1];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					this.currentPlayer = this.getPlayers()[0];
+				}
+				break;
+			}
+		}
+		return this.currentPlayer;
+	}
+*/
+	
 
 }
-
-
