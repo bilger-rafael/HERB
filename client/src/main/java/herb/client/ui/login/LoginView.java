@@ -148,8 +148,8 @@ public class LoginView extends View<LoginModel> {
 		// screen labels
 		nameLabel.setText(t.getString("program.login.nameLabel"));
 		pwLabel.setText(t.getString("program.login.pwLabel"));
-		loginButton.setText(t.getString("Program.login.loginButton"));
-		createUserButton.setText(t.getString("Program.login.createUserButton"));
+		loginButton.setText(t.getString("program.login.loginButton"));
+		createUserButton.setText(t.getString("program.login.createUserButton"));
 		stage.setTitle(t.getString("program.name"));
 		
 	}
