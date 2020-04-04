@@ -29,11 +29,27 @@ public class RegistrationView extends View<RegistrationModel> {
 	private Menu menuLanguage;
 	
 	private Button cancelButton, registrationButton;
+	public Button getCancelButton() {
+		return cancelButton;
+	}
+
+	public Button getRegistrationButton() {
+		return registrationButton;
+	}
+
 	private Label nameLabel, passwordLabel, errorLabel;
 	private TextField nameTextField;
 	private PasswordField passwordField;
 	
 	
+	public TextField getNameTextField() {
+		return nameTextField;
+	}
+
+	public PasswordField getPasswordField() {
+		return passwordField;
+	}
+
 	public RegistrationView(Stage stage, RegistrationModel model) {
 		super(stage, model);
 		//Herren

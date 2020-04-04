@@ -30,15 +30,13 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 		String username = view.getNameField().getText();
 		String password = view.getPwField().getText();
 
-		goToLauncher();
-		
-//		try {
-//			model.login(username, password);
-//			goToLauncher();
-//		} catch (ExceptionBase e) {
-//			//TODO show error message
-//		}
-		
+		try {
+			model.login(username, password);
+			goToLauncher();
+		} catch (ExceptionBase e) {
+			// TODO show error message
+		}
+
 	}
 
 	private void goToLauncher() {
