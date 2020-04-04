@@ -1,12 +1,12 @@
 package herb.server.ressources;
 
 import java.util.ArrayList;
+
 import herb.server.ressources.core.CardBase;
-import herb.server.ressources.core.HandBase;
 import herb.server.ressources.core.PlayerBase;
 
 //Etter
-public class Player extends PlayerBase {
+public class Player extends PlayerBase<Hand> {
 	private ArrayList<PlayListener> playListeners;
 	
 	public Player(String username, String authToken) {
@@ -43,7 +43,7 @@ public class Player extends PlayerBase {
 	}
 	
 	@Override
-	public HandBase getHand() {
+	public Hand getHand() {
 		return this.hand;
 		
 	}

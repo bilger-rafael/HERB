@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.client.ressources.Player;
 
-public class Player extends PlayerBase {
+public class Player extends PlayerBase<Hand> {
 
 	// default constructor for json deserialization
 	public Player() {
@@ -55,7 +55,7 @@ public class Player extends PlayerBase {
 	}
 
 	@Override
-	public HandBase getHand() {
+	public Hand getHand() {
 		// TODO Auto-generated method stub
 		return null;
 	}
