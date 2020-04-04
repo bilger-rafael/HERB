@@ -52,7 +52,7 @@ public abstract class PlayerBase {
 
 	public abstract void clearHand();
 	
-	public abstract HandBase returnHand();
+	public abstract HandBase getHand();
 
 	public abstract void sortHand();
 
