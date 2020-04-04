@@ -1,21 +1,18 @@
 package herb.server.ressources;
 
-import java.util.Base64;
-import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import herb.server.Datastore;
+import java.util.ArrayList;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.HandBase;
 import herb.server.ressources.core.PlayerBase;
 
 //Etter
 public class Player extends PlayerBase {
+	private ArrayList<PlayListener> playListeners;
 	
 	public Player(String username, String authToken) {
 		super(username, authToken);
 		this.hand = new Hand();
+		this.playListeners = new ArrayList<PlayListener>();
 	}
 
 	@Override
@@ -24,12 +21,20 @@ public class Player extends PlayerBase {
 		this.hand.play(card);
 		// Karte dem Trick hinzufügen
 		this.getRound().getTricks().getLast().addCardtoTrick(card);
+		
+		//clone array to avoid exception when listener is removed in the for loop
+		ArrayList<PlayListener> listeners = new ArrayList<PlayListener>(this.playListeners); 
+		
+		for(PlayListener playListener : listeners) {
+			playListener.played();
+		}
+		
+		this.playListeners.clear();
 	}
 
 	@Override
 	public void addCardtoHand(CardBase card) {
 		this.hand.addCard(card);
-
 	}
 
 	@Override
@@ -164,5 +169,9 @@ public class Player extends PlayerBase {
 		}
 		return playableCards;
 	
+	}
+	
+	public void addPlayListener(PlayListener playListener) {
+		this.playListeners.add(playListener);
 	}
 }

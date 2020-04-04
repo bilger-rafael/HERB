@@ -9,18 +9,24 @@ import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
 //Etter
-public class Round extends RoundBase {
+public class Round extends RoundBase implements Runnable{
 	private DeckOfCards deck;
 
 	public Round(PlayerBase[] players) {
 		super(players);
 		this.setTrump(randomTrump());
 		this.deck = new DeckOfCards(this.getTrump());
-
-		startRound();
-
 		// set random player as starting player
 		this.currentStartingPlayer = this.players[0];
+		
+		Thread t = new Thread(this);
+		t.setDaemon(true);
+		t.start();
+	}
+	
+	@Override
+	public void run() {
+		startRound();
 
 		playTricks();
 
