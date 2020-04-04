@@ -43,7 +43,7 @@ public class Player extends PlayerBase {
 	}
 	
 	@Override
-	public HandBase returnHand() {
+	public HandBase getHand() {
 		return this.hand;
 		
 	}

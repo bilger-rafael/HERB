@@ -79,6 +79,8 @@ public class Round extends RoundBase implements Runnable{
 		}
 
 		getScoreTable();
+		
+		//TODO kill thread
 	}
 
 	private Trump randomTrump() {

@@ -51,8 +51,8 @@ public class Bot {
 		switch (NumberPlayedCards) {
 				//Bot ist der Startspieler, spielt eine Randomkarte
 				case(0): 
-						randInt =rand.nextInt(botPlayer.returnHand().getCards().length);
-						bestCard = botPlayer.returnHand().getCard(randInt);
+						randInt =rand.nextInt(botPlayer.getHand().getCards().length);
+						bestCard = botPlayer.getHand().getCard(randInt);
 						break;
 				//Bot ist 2. Spieler, spielt eine Randomkarte der spielbaren Karten aus
 				case(1): 	

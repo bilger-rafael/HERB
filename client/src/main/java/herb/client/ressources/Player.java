@@ -55,7 +55,7 @@ public class Player extends PlayerBase {
 	}
 
 	@Override
-	public HandBase returnHand() {
+	public HandBase getHand() {
 		// TODO Auto-generated method stub
 		return null;
 	}
