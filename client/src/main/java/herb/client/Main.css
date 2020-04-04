@@ -22,3 +22,8 @@
 #progressbox {
 	-fx-alignment: center;
 }
+#cardimage {
+	-fx-padding: 1;
+	-fx-background-color: firebrick;
+	-fx-background-radius: 20;
+}
