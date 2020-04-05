@@ -18,24 +18,26 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 		// Event on LoginButton
 		view.getLoginButton().setOnAction(e -> login());
 
-		// Action for CreateUserButton
+		// Event on CreateUserButton
 		view.getCreateUserButton().setOnAction(e -> createUserView());
 
 		serviceLocator = ServiceLocator.getInstance();
 		serviceLocator.getLogger().info("Application controller initialized");
-
 	}
 
 	private void login() {
 		String username = view.getNameField().getText();
 		String password = view.getPwField().getText();
 
-		try {
-			model.login(username, password);
+//		try {
+//			model.login(username, password);
 			goToLauncher();
-		} catch (ExceptionBase e) {
-			// TODO show error message
-		}
+			serviceLocator.getLogger().info("Login war erfolgreich.");
+			
+//		} catch (ExceptionBase e) {
+//			view.showError();
+//			serviceLocator.getLogger().info("Name oder Passwort falsch eingegeben.");
+//			}
 
 	}
 

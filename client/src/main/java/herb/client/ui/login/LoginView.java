@@ -35,10 +35,9 @@ public class LoginView extends View<LoginModel> {
 	private Label nameLabel, pwLabel, connectedLabel;
 	private Label message;
 //	private FadeTransition transition;
-//	private HBox messageBox;
+	private HBox messageBox;
 	private MenuBar headMenu;
 	private Menu menuLanguage;
-	//private Menu menuFile, menuEdit, menuLanguage, menuHelp;
 	
 	public LoginView(Stage stage, LoginModel model) {
 		super(stage, model);
@@ -55,10 +54,8 @@ public class LoginView extends View<LoginModel> {
 
 		// Top menu for language, TODO for passwordChange
 		headMenu = new MenuBar();
-		
 		menuLanguage = new Menu();
 		menuLanguage.getItems().addAll();
-
 		
 		// link to Locale
 		for (Locale locale : sl.getLocales()) {
@@ -73,7 +70,7 @@ public class LoginView extends View<LoginModel> {
 		
 		headMenu.getMenus().addAll(menuLanguage);
 
-		//roesti > Center VBox
+		// Roesti > VBox login data
 		centerBox = new VBox();
 		nameLabel = new Label();
 		nameField = new TextField();
@@ -82,7 +79,6 @@ public class LoginView extends View<LoginModel> {
 		zero = new Region();
 		one = new Region();
 		two = new Region();
-	
 		nameLabel.setPrefSize(100, 20);
 		pwLabel.setPrefSize(100, 20);
 		zero.setPrefSize(80, 20);
@@ -95,7 +91,7 @@ public class LoginView extends View<LoginModel> {
 		un.getChildren().addAll(one, nameLabel, nameField);
 		pw.getChildren().addAll(zero, pwLabel, pwField);
 		
-		// roesti > Bottom HBox
+		// Roesti > BorderPane login buttons
 		loginButton = new Button();
 		createUserButton = new Button();
 		loginButton.setPrefSize(200, 30);
@@ -108,33 +104,31 @@ public class LoginView extends View<LoginModel> {
 		loginButton.setAlignment(Pos.BASELINE_CENTER);
 		createUserButton.setAlignment(Pos.BASELINE_CENTER);
 		
-		//roesti - fill CenterBox
+		// Roesti - fill CenterBox
 		centerBox.getChildren().addAll(two, un, pw, bottomBox);
-//		centerBox.getChildren().addAll(nameLabel, getNameField(), pwLabel, getPwField(), bottomBox);
 		centerBox.setSpacing(10);
-		
-//		messageBox = new HBox();
+
+		// Roesti - messages
+		messageBox = new HBox();
 		connectedLabel = new Label();
 		connectedLabel.setId("connectedLabel");
-		connectedLabel.setOpacity(0);
-//		messageBox.getChildren().add(connectedLabel);
-
-		
-		//Nachricht, falls Login fehlgeschlagen ist
-		message = new Label("");
+//		connectedLabel.setOpacity(0);
+		messageBox.getChildren().add(connectedLabel);	
+		// message for failed login
+		message = new Label();
+		message.setPrefHeight(40);
 		message.setId("message");
-		message.setOpacity(0);
-//		messageBox.getChildren().add(message);
+//		message.setOpacity(0);
+		messageBox.getChildren().add(message);
 		
-		
-	// 	roesti - fill LoginWindow
+
 		root.setTop(headMenu);
 		root.setCenter(centerBox);
-//		root.setBottom(messageBox);
+		root.setBottom(messageBox);
 
 		updateLabels();
 		Scene scene = new Scene(root);	
-//		scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
+	//	scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
 		return scene;
 	}
 	
@@ -151,7 +145,7 @@ public class LoginView extends View<LoginModel> {
 		loginButton.setText(t.getString("program.login.loginButton"));
 		createUserButton.setText(t.getString("program.login.createUserButton"));
 		stage.setTitle(t.getString("program.name"));
-		
+		message.setText(t.getString("program.login.message"));
 	}
 
 	public Button getLoginButton() {
@@ -167,5 +161,10 @@ public class LoginView extends View<LoginModel> {
 	
 	public PasswordField getPwField() {
 		return pwField;
+	}
+
+	public void showError() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		message.setText(t.getString("program.login.message"));
 	}
 }
