@@ -61,9 +61,9 @@ public class Round extends RoundBase implements Runnable{
 		// Tricks spielen
 		while (!this.getPlayers()[0].PlayerNoCards()) {
 			// neuer Trick erstellen
-			this.tricks.add(new Trick(this.getPlayers(), this.getCurrentStartingPlayer()));
+			this.getTricks().add(new Trick(this.getPlayers(), this.getCurrentStartingPlayer()));
 			// Spielen
-			Trick trick = (Trick) this.tricks.getLast();
+			Trick trick = (Trick) this.getTricks().getLast();
 			PlayerBase winner = trick.playTrick();
 			// Punkte auswerten
 			addTrickScore(winner);
@@ -91,15 +91,15 @@ public class Round extends RoundBase implements Runnable{
 
 	@Override
 	protected void addTrickScore(PlayerBase winner) {
-		Integer additionalScore = this.tricks.getLast().getTrickPoints();
-		Integer oldScore = actualScores.get(winner);
-		actualScores.put(winner, (additionalScore + oldScore));
+		Integer additionalScore = this.getTricks().getLast().getTrickPoints();
+		Integer oldScore = getActualScores().get(winner);
+		getActualScores().put(winner, (additionalScore + oldScore));
 	}
 
 	@Override
 	public Map<PlayerBase, Integer> getScoreTable() {
 		Map<PlayerBase, Integer> sortedTable = new TreeMap<>();
-		actualScores.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+		getActualScores().entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
 				.forEachOrdered(x -> sortedTable.put(x.getKey(), x.getValue()));
 
 		return sortedTable;

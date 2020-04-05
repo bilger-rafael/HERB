@@ -8,11 +8,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //Etter
 public abstract class RoundBase {
-	protected LinkedList<TrickBase> tricks = new LinkedList<TrickBase>();
+	private LinkedList<TrickBase> tricks = new LinkedList<TrickBase>();
 	private Trump trump;
 	private PlayerBase[] players = new PlayerBase[4];
-	protected Map<PlayerBase,Integer> actualScores;
+	private Map<PlayerBase,Integer> actualScores;
 	
+	public Map<PlayerBase, Integer> getActualScores() {
+		return actualScores;
+	}
+
+	public void setActualScores(Map<PlayerBase, Integer> actualScores) {
+		this.actualScores = actualScores;
+	}
+
 	public RoundBase (PlayerBase[] players) {
 		this.players=players;
 	}
