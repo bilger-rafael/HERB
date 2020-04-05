@@ -23,7 +23,7 @@ public class Trick extends TrickBase {
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			//TODO wait for currentPlayer to play (Create Event in Player)
 			
-			((Player) this.currentPlayer.data).addPlayListener(() -> {
+			((Player) this.getCurrentPlayer().data).addPlayListener(() -> {
 				this.played = true;
 			});
 			
@@ -35,7 +35,7 @@ public class Trick extends TrickBase {
 				}
 			}
 			
-			this.currentPlayer = this.currentPlayer.next;
+			this.setCurrentPlayer(this.getCurrentPlayer().next);
 		}
 
 		winner = getWinner();
@@ -113,8 +113,7 @@ public class Trick extends TrickBase {
 	
 	@Override
 	public void addCardtoTrick(CardBase c) {
-		this.playedCards.put(this.currentPlayer.data, c);
-		setNextCurrentPlayer();
+		this.playedCards.put(this.getCurrentPlayer().data, c);
 	}
 
 	@Override
@@ -150,25 +149,7 @@ public class Trick extends TrickBase {
 		return null;
 	}
 
-	@Override
-	public PlayerBase getNextPlayer(PlayerBase p) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PlayerBase getPrivousPlayer(PlayerBase p) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected PlayerBase setNextCurrentPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	/*
 	@Override
 	public PlayerBase getNextPlayer(PlayerBase p) {
 		PlayerBase temp = p;
@@ -203,21 +184,6 @@ public class Trick extends TrickBase {
 		return temp;
 	}
 
-	@Override
-	protected PlayerBase setNextCurrentPlayer() {
-		for (int i = 0; i < this.getPlayers().length; i++) {
-			if (this.currentPlayer == this.getPlayers()[i]) {
-				try {
-					this.currentPlayer = this.getPlayers()[i + 1];
-				} catch (ArrayIndexOutOfBoundsException e) {
-					this.currentPlayer = this.getPlayers()[0];
-				}
-				break;
-			}
-		}
-		return this.currentPlayer;
-	}
-*/
-	
+
 
 }
