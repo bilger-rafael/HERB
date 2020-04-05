@@ -10,19 +10,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public abstract class RoundBase {
 	protected LinkedList<TrickBase> tricks = new LinkedList<TrickBase>();
 	private Trump trump;
-	protected PlayerBase[] players = new PlayerBase[4];
-	private PlayerBase currentStartingPlayer;
-
-	public void setCurrentStartingPlayer(PlayerBase currentStartingPlayer) {
-		this.currentStartingPlayer = currentStartingPlayer;
-	}
-
+	private PlayerBase[] players = new PlayerBase[4];
 	protected Map<PlayerBase,Integer> actualScores;
 	
 	public RoundBase (PlayerBase[] players) {
 		this.players=players;
 	}
 	
+	public void setPlayers(PlayerBase[] players) {
+		this.players = players;
+	}
+
+	private PlayerBase currentStartingPlayer;
+
+	public void setCurrentStartingPlayer(PlayerBase currentStartingPlayer) {
+		this.currentStartingPlayer = currentStartingPlayer;
+	}
+
+
 	protected abstract void addTrickScore(PlayerBase winner);
 	
 	@JsonIgnore

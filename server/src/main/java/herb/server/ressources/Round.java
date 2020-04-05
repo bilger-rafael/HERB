@@ -17,7 +17,7 @@ public class Round extends RoundBase implements Runnable{
 		this.setTrump(randomTrump());
 		this.deck = new DeckOfCards(this.getTrump());
 		// set player 0 as starting player
-		this.setCurrentStartingPlayer(this.players[0]);
+		this.setCurrentStartingPlayer(this.getPlayers()[0]);
 		
 		Thread t = new Thread(this);
 		//t.setDaemon(true);
@@ -35,33 +35,33 @@ public class Round extends RoundBase implements Runnable{
 
 	private void startRound() {
 		// Aktuelle Runde für Spieler setzten
-		for (int i = 0; i < this.players.length; i++) {
-			((Player) this.players[i]).setRound(this);
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			((Player) this.getPlayers()[i]).setRound(this);
 		}
 
 		// Hände leeren
-		for (int i = 0; i < this.players.length; i++) {
-			this.players[i].clearHand();
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			this.getPlayers()[i].clearHand();
 		}
 
 		// Karten verteilen
-		while (this.deck.getCardsRemaining() >= this.players.length) {
-			for (int i = 0; i < this.players.length; i++) {
-				this.players[i].addCardtoHand(this.deck.dealCard());
+		while (this.deck.getCardsRemaining() >= this.getPlayers().length) {
+			for (int i = 0; i < this.getPlayers().length; i++) {
+				this.getPlayers()[i].addCardtoHand(this.deck.dealCard());
 			}
 		}
 
 		// Hände sortieren
-		for (int i = 0; i < this.players.length; i++) {
-			this.players[i].sortHand();
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			this.getPlayers()[i].sortHand();
 		}
 	}
 
 	private void playTricks() {
 		// Tricks spielen
-		while (!this.players[0].PlayerNoCards()) {
+		while (!this.getPlayers()[0].PlayerNoCards()) {
 			// neuer Trick erstellen
-			this.tricks.add(new Trick(this.players, this.getCurrentStartingPlayer()));
+			this.tricks.add(new Trick(this.getPlayers(), this.getCurrentStartingPlayer()));
 			// Spielen
 			Trick trick = (Trick) this.tricks.getLast();
 			PlayerBase winner = trick.playTrick();
@@ -74,8 +74,8 @@ public class Round extends RoundBase implements Runnable{
 
 	private void endRound() {
 		// Aktuelle Runde für Spieler entfernen
-		for (int i = 0; i < this.players.length; i++) {
-			((Player) this.players[i]).setRound(null);
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			((Player) this.getPlayers()[i]).setRound(null);
 		}
 
 		getScoreTable();
