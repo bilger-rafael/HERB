@@ -7,7 +7,7 @@ import herb.client.ressources.core.Trump;
 
 public class Card extends CardBase {
 
-	public Card(Suit suit, Rank rank, Trump trump) {
+	public Card(String suit, String rank, String trump) {
 		super(suit, rank, trump);
 		// TODO Auto-generated constructor stub
 	}

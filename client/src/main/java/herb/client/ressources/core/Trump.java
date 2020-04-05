@@ -10,8 +10,8 @@ public enum Trump { Clubs, Diamonds, Hearts, Spades, TopsDown, BottomsUp;
         case Diamonds: trump = "diamonds"; break;
         case Hearts: trump = "hearts"; break;
         case Spades: trump = "spades"; break;
-        case TopsDown: trump = "Tops-Down"; break;
-        case BottomsUp: trump = "Bottoms-Up"; break;
+        case TopsDown: trump = "TopsDown"; break;
+        case BottomsUp: trump = "BottomsUp"; break;
         }
         return trump;
     }

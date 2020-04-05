@@ -6,10 +6,10 @@ public abstract class CardBase {
     protected final Rank rank;
     protected final Trump trump;
     
-    public CardBase(Suit suit, Rank rank, Trump trump) {
-    	this.suit = suit;
-    	this.rank = rank;
-    	this.trump = trump;
+    public CardBase(String suit, String rank, String trump) {
+    	this.suit = Suit.valueOf(suit);
+    	this.rank = Rank.valueOf(rank);
+    	this.trump = Trump.valueOf(trump);
     }
     
     public abstract int getPoints();
