@@ -13,15 +13,15 @@ public class Hand extends HandBase{
 	
 	public Hand() {
 		this.addIndex=0;
-		this.cards = new Card[9];
+		super.setCards(new Card[9]);
 	}
 
 	@Override
 	public void play(CardBase card) {
 		try { 
-			for (int i=0; i<this.cards.length; i++) {
-			if (this.cards[i] == card) {
-				this.cards[i] = null;
+			for (int i=0; i<this.getCards().length; i++) {
+			if (this.getCards()[i] == card) {
+				this.getCards()[i] = null;
 				}
 			}
 		} catch (Exception e) {
@@ -32,18 +32,18 @@ public class Hand extends HandBase{
 
 	@Override
 	public void addCard(CardBase card) {
-		this.cards[this.addIndex] = card;
+		this.getCards()[this.addIndex] = card;
 		this.addIndex++;
 	}
 
 	@Override
 	public void clearCards() {
-		Arrays.fill(this.cards, null);
+		Arrays.fill(this.getCards(), null);
 	}
 
 	@Override
 	public boolean cardsEmpty() {
-		if (this.cards.length==0) {
+		if (this.getCards().length==0) {
 			return true;
 		}else {
 			return false;
@@ -52,7 +52,7 @@ public class Hand extends HandBase{
 
 	@Override //Sortiert das Array für das UI
 	public void sortCards() {
-		Arrays.sort(this.cards, new HandSorter());	
+		Arrays.sort(this.getCards(), new HandSorter());	
 	}
 	
 	//Gibt zurück ob eine Karte höher ist beim Einordnen
@@ -86,7 +86,7 @@ public class Hand extends HandBase{
 
 	@Override
 	public CardBase getCard(int i) {
-		return this.cards[i];
+		return this.getCards()[i];
 	}
 
 

@@ -2,8 +2,12 @@ package herb.server.ressources.core;
 
 
 public abstract class HandBase {
-	protected CardBase[] cards;
+	private CardBase[] cards;
 	
+	public void setCards(CardBase[] cards) {
+		this.cards = cards;
+	}
+
 	public CardBase[] getCards() {
 		return cards;
 	}
