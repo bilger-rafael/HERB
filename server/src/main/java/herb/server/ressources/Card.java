@@ -10,7 +10,7 @@ public class Card extends CardBase {
 
 	public Card(Suit suit, Rank rank, Trump trump) {
 		super(suit, rank, trump);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	@Override //gibt den Punktewert der Karte zurück

@@ -11,7 +11,11 @@ public abstract class RoundBase {
 	protected LinkedList<TrickBase> tricks = new LinkedList<TrickBase>();
 	private Trump trump;
 	protected PlayerBase[] players = new PlayerBase[4];
-	protected PlayerBase currentStartingPlayer;
+	private PlayerBase currentStartingPlayer;
+
+	public void setCurrentStartingPlayer(PlayerBase currentStartingPlayer) {
+		this.currentStartingPlayer = currentStartingPlayer;
+	}
 
 	protected Map<PlayerBase,Integer> actualScores;
 	

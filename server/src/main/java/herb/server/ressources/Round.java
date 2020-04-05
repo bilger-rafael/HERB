@@ -16,8 +16,8 @@ public class Round extends RoundBase implements Runnable{
 		super(players);
 		this.setTrump(randomTrump());
 		this.deck = new DeckOfCards(this.getTrump());
-		// set random player as starting player
-		this.currentStartingPlayer = this.players[0];
+		// set player 0 as starting player
+		this.setCurrentStartingPlayer(this.players[0]);
 		
 		Thread t = new Thread(this);
 		//t.setDaemon(true);
@@ -61,14 +61,14 @@ public class Round extends RoundBase implements Runnable{
 		// Tricks spielen
 		while (!this.players[0].PlayerNoCards()) {
 			// neuer Trick erstellen
-			this.tricks.add(new Trick(this.players, this.currentStartingPlayer));
+			this.tricks.add(new Trick(this.players, this.getCurrentStartingPlayer()));
 			// Spielen
 			Trick trick = (Trick) this.tricks.getLast();
 			PlayerBase winner = trick.playTrick();
 			// Punkte auswerten
 			addTrickScore(winner);
 			// set winner as starting player
-			this.currentStartingPlayer = winner;
+			this.setCurrentStartingPlayer(winner);
 		}
 	}
 
