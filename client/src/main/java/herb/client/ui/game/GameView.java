@@ -7,6 +7,7 @@ import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
@@ -25,16 +26,17 @@ import javafx.scene.paint.ImagePattern;
 
 public class GameView extends View<GameModel> {
 	
-	private GridPane root; 
+	private AnchorPane root; 
 	private GridPane table;
-	private HBox ownCards;
+	private GridPane ownCards;
 	private VBox leftHandSide, rightHandSide;
 	private HBox oppositeSide;
-	private Label trickLabel, playerLabel, leftHand, rightHand, opposite;
-	private Region spacer, spacerTable, spacerRight, spacerOppo;
+	private Label trickLabel, trickLabel2, playerLabel, leftHand, rightHand, opposite;
+	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
+	private BorderPane upperPart;
+	private StackPane tablePart;
 	
-// etc.
-	
+
 	public GameView(Stage stage, GameModel model) {
 		super(stage, model);
 		stage.setTitle("HERB-Jass > Spieltisch");
@@ -46,29 +48,39 @@ public class GameView extends View<GameModel> {
 		ServiceLocator sl = ServiceLocator.getInstance();
 		
 		// create Panes and Controls
-		this.root = new GridPane();
+		this.root = new AnchorPane();
 		
+		upperPart = new BorderPane();
+		tablePart = new StackPane();
 		leftHandSide = new VBox();
 		rightHandSide = new VBox();
 		oppositeSide = new HBox();
 		leftHand = new Label("Spieler vor mir");
 		rightHand = new Label("Spieler nach mir");
 		opposite = new Label("Spieler gegenüber");
+		trickLabel2 = new Label("Oh come and play with me...\n" + 
+				"Lets play till we go crazy");
+		trickLabel = new Label();
+		trickLabel.setMinHeight(70);
+		playerLabel = new Label("I'm the best Jasser in the world!");
+		playerLabel.setMinHeight(20);
 		spacer = new Region();
 		spacerTable = new Region();
-		spacer.setMinWidth(400);
-		spacerTable.setMinWidth(200);
+		spacerTable2 = new Region();
+		spacer.setMinWidth(500d);
+		spacerTable.setMinWidth(200d);
+		spacerTable2.setMinWidth(200d);
 		spacerRight = new Region();
-		spacerRight.setMinWidth(100);
+		spacerRight.setMinWidth(100d);
 		spacerOppo= new Region();
-		spacerOppo.setMinWidth(400);
+		spacerOppo.setMinWidth(400d);
 		
 		leftHandSide.getChildren().add(leftHand);
 		rightHandSide.getChildren().add(rightHand);
 		oppositeSide.getChildren().add(opposite);
 		
 		table = new GridPane();
-		ownCards = new HBox();
+		ownCards = new GridPane();
 		ownCards.setMinHeight(300);
 		ownCards.setMinWidth(1300);
 		ownCards.getChildren().add(spacer);
@@ -84,117 +96,135 @@ public class GameView extends View<GameModel> {
 		// create hand (myCards)
 		for (int i=0; i<9; i++) {
 		      Rotate rotate = new Rotate();
-		      String rank = "Bube";
-		      String suit = "Ecke";
+		      String rank = "Dame";
+		      String suit = "Kreuz";
 		      String filename = suit + "_" + rank + ".jpg";
 		      System.out.println(filename);
 		      Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
 
-		      Rectangle rectangle = new Rectangle();
-		      rectangle.setHeight(514/2);
-		      rectangle.setWidth(322/2);		
-		      rectangle.setArcHeight(20);
-		      rectangle.setArcWidth(20);
+		      Rectangle rectangleCard = new Rectangle();
+		      rectangleCard.setHeight(514/2);
+		      rectangleCard.setWidth(322/2);		
+		      rectangleCard.setArcHeight(20);
+		      rectangleCard.setArcWidth(20);
 		      ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
-		      rectangle.setFill(pattern);
-		      rotate.setAngle(-10+2*i); 
-		      rotate.setPivotX(150); 	
-		      rotate.setPivotY(225); 
-		      rectangle.getTransforms().addAll(rotate); 
+		      rectangleCard.setFill(pattern);
+		      rotate.setAngle(-40+10*i); 
+		      rotate.setPivotX(322/2/2); 	
+		      rotate.setPivotY(257*2.2);
+		      rectangleCard.getTransforms().addAll(rotate); 
 
-		      ownCards.getChildren().add(rectangle);	
+		      ownCards.add(rectangleCard, i+1, 1);	
+
 		}
-		ownCards.setSpacing(-70.0);
-		ownCards.setStyle("-fx-background-color: tomato");
+		ownCards.add(playerLabel, 0, 0);
+		ownCards.setMinHeight(300);
+		ownCards.setHgap(-150);
+	//	ownCards.setVgap(10);
+
+		ownCards.setStyle("-fx-background-color: beige");
+
 		
 		// create trick (table)
+	    trickLabel.setStyle("-fx-font-weight: bold");
+	    trickLabel.setStyle("-fx-font-color: beige");	
+	    table.add(trickLabel, 1, 0, 1, 1);
+	    table.add(spacerTable, 0, 0, 1, 1);
+	    table.add(spacerTable2, 3, 0, 1, 1);
+		
 		for (int i = 0; i<4; i++) {
 		Card[] trickcards = new Card[4];
 			
 		Rectangle rectangle = new Rectangle();
-		rectangle.setHeight(259);
-		rectangle.setWidth(161);		
+		rectangle.setHeight(514/3);
+		rectangle.setWidth(322/3);		
         rectangle.setArcHeight(20);
         rectangle.setArcWidth(20);
 
-        Rank r1 = Rank.Ten;
-		Suit s1 = Suit.Diamonds;
+        Rank r1 = Rank.Ace;
+		Suit s1 = Suit.Hearts;
 		Trump t1 = Trump.TopsDown;
-		Card c1 = new Card(s1.toString(), "Ten", t1.toString());
+		Card c1 = new Card(s1.toString(), "Ace", t1.toString());
 		trickcards[i] = c1;
 		String filename = s1.toStringFr() + "_" + r1.toStringDE() + ".jpg";
 		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
-        ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/2, 514/2, false);
+        ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
         rectangle.setFill(pattern);
         rectangle.setId("cardimage");
         
 	    // Roesti - implement rotation 
         Rotate rotate = new Rotate();  
-        rotate.setAngle(((10+i) % 2)+1 *50); 
+        rotate.setAngle(((10+i) % 2)+1 *1); 
         rotate.setPivotX(150); 
 	    rotate.setPivotY(225); 
 	    rectangle.getTransforms().addAll(rotate); 	
-		
+				
 	    if(i == 0)
-	    	table.add(rectangle, 1, 0);
+	    	table.add(rectangle, 2, 0, 1, 2);
 	    if(i==1)
-	    	table.add(rectangle, 0, 1);
+	    	table.add(rectangle, 1, 1, 1, 2);
 	    if(i==2)
-	    	table.add(rectangle, 1, 2);
+	    	table.add(rectangle, 2, 2, 1, 2);
 	    if(i==3) {
-	    	table.add(rectangle, 2, 1);
+	    	table.add(rectangle, 3, 1, 1, 2);
 	    }
-		table.setStyle("-fx-background-color: gold");
+//		table.setStyle("-fx-background-color: gold");
+		table.setHgap(10);
+		table.setVgap(10);
+		table.setStyle("-fx-alignement: center");
 		}
+
 		
 		// leftHandSide TODO magic number!
 		for (int i= 0; i< 9; i++) {
 		Rotate rotateLeft = new Rotate();
 		Rectangle rectangleLeft = new Rectangle();
-		rectangleLeft.setHeight(514/4);
-		rectangleLeft.setWidth(322/4);		
+//		rectangleLeft.setHeight(514/4);
+//		rectangleLeft.setWidth(322/4);	
+		rectangleLeft.setHeight(322/4);
+		rectangleLeft.setWidth(514/4);
         rectangleLeft.setArcHeight(20);
         rectangleLeft.setArcWidth(20);
-        
-		String filenameLeft = "Rückseite.jpg";
+        String filenameLeft = "Rückseite.jpg";
 		Image imageLeft = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filenameLeft));
-        ImagePattern patternLeft = new ImagePattern(imageLeft, 0, 0, 322/4, 514/4, false);
+        ImagePattern patternLeft = new ImagePattern(imageLeft, 0, 0, 514/4,322/4, false);
         rectangleLeft.setFill(patternLeft);
-	    rotateLeft.setAngle(-270+5*i); 
-	    rotateLeft.setPivotX(50); 	
-	    rotateLeft.setPivotY(50); 
-	    rectangleLeft.getTransforms().addAll(rotateLeft);      
+	    
+//      rotateLeft.setAngle(-270+5*i); 
+//	    rotateLeft.setPivotX(322/4/2); 	
+//	    rotateLeft.setPivotY(-514/4); 
+//	    rectangleLeft.getTransforms().addAll(rotateLeft);      
         leftHandSide.getChildren().add(rectangleLeft);        
 	}
-		leftHandSide.setSpacing(-70.0);
-		leftHandSide.setStyle("-fx-background-color: blue");
-		leftHandSide.setMinWidth(200);
+		leftHandSide.setSpacing(-40.0);
+	//	leftHandSide.setStyle("-fx-background-color: blue");
+		leftHandSide.setMinWidth(100);
         
 		// rightHandSide
 		for (int i= 0; i< 9; i++) {
 		Rotate rotateRight = new Rotate();
 		Rectangle rectangleRight = new Rectangle();
-		rectangleRight.setHeight(514/4);
-		rectangleRight.setWidth(322/4);		
+		rectangleRight.setHeight(322/4);
+		rectangleRight.setWidth(514/4);		
 		rectangleRight.setArcHeight(20);
 		rectangleRight.setArcWidth(20);
-        
 		String filenameRight = "Rückseite.jpg";
 		Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filenameRight));
-        ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 322/4, 514/4, false);
+        ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
         rectangleRight.setFill(patternRight);
         
-	    rotateRight.setAngle(-80+5*i); 
-	    rotateRight.setPivotX(150); 	
-	    rotateRight.setPivotY(150); 
-	    rectangleRight.getTransforms().addAll(rotateRight);      
+//	    rotateRight.setAngle(-70+5*i); 
+//	    rotateRight.setPivotX(322/4/2); 	
+//	    rotateRight.setPivotY(-514/4); 
+//	    rectangleRight.getTransforms().addAll(rotateRight);      
         rightHandSide.getChildren().add(rectangleRight);        
 	}
-		rightHandSide.setSpacing(-70.0);
-		rightHandSide.setMinWidth(200);
-		rightHandSide.setStyle("-fx-background-color: blue");
+		rightHandSide.setSpacing(-40.0);
+		rightHandSide.setMinWidth(100);
+//		rightHandSide.setStyle("-fx-background-color: blue");
         
 		// oppositeHandSide
+		oppositeSide.getChildren().add(spacerOppo); 
 		for (int i = 0; i<9; i++) {
         Rotate rotateOppo = new Rotate();
         Rectangle rectangleOppo = new Rectangle();
@@ -207,35 +237,62 @@ public class GameView extends View<GameModel> {
 		Image imageOppo = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filenameOppo));
         ImagePattern patternOppo = new ImagePattern(imageOppo, 0, 0, 322/4, 514/4, false);
         rectangleOppo.setFill(patternOppo);
-	    rotateOppo.setAngle(-10+5*i); 
-	    rotateOppo.setPivotX(50); 	
-	    rotateOppo.setPivotY(50); 
+	    rotateOppo.setAngle(20-5*i); 
+	    rotateOppo.setPivotX(322/4/2); 	
+	    rotateOppo.setPivotY(-514/4); 
 	    rectangleOppo.getTransforms().addAll(rotateOppo);      
         oppositeSide.getChildren().add(rectangleOppo);  
 		}
 		oppositeSide.setSpacing(-70.0);
-		oppositeSide.setStyle("-fx-background-color: red");
-		oppositeSide.setMinHeight(200);
+		oppositeSide.setMinHeight(70);
+//		oppositeSide.setStyle("-fx-background-color: red");
+
 		
-		root.add(table, 1, 1);
-		root.add(leftHandSide, 0, 1);
-		root.add(rightHandSide, 2, 1);
-		root.add(oppositeSide, 1, 0);
-		root.add(ownCards, 1, 2);
+		//BorderPane
+		upperPart.setCenter(trickLabel2);
+		upperPart.setBottom(table);
+//		upperPart.setLeft(leftHandSide);
+		upperPart.setTop(oppositeSide);
+//		upperPart.setRight(rightHandSide);
 		
+//		tablePart.getChildren().addAll(upperPart, table);
+//		tablePart.setAlignment(table, Pos.CENTER);
+//		tablePart.setAlignment(upperPart, Pos.TOP_RIGHT);
+
+		//GridPane
+//		root.add(table, 1, 1, 1, 1);
+//		root.add(leftHandSide, 0, 1, 1, 1);
+//		root.add(rightHandSide, 3, 1, 1, 1);
+//		root.add(oppositeSide, 1, 0, 1, 1);
+//		root.add(ownCards, 0, 2, 3, 1);
+		
+		//AnchorPane
+		root.getChildren().addAll(upperPart, ownCards, leftHandSide, rightHandSide);
 //		root.getChildren().addAll(table, leftHandSide, rightHandSide, oppositeSide, ownCards);
-//		root.setLeftAnchor(table, 100d);
-//		root.setTopAnchor(table, 100d);
-//		root.setLeftAnchor(leftHandSide, 10d);
-//		root.setTopAnchor(leftHandSide, 40d);
-//		root.setRightAnchor(rightHandSide, 10d);
-//		root.setTopAnchor(rightHandSide, 100d);
+//		root.setLeftAnchor(table, 200d);
+//		root.setTopAnchor(table, 150d);
+//		root.setRightAnchor(table, 200d);
+//
+		root.setLeftAnchor(leftHandSide, 10d);
+		root.setTopAnchor(leftHandSide, 200d);
+		root.setBottomAnchor(leftHandSide, 200d);
+		root.setRightAnchor(rightHandSide, 10d);
+		root.setTopAnchor(rightHandSide, 200d);
+		root.setBottomAnchor(rightHandSide, 200d);
 //		root.setTopAnchor(oppositeSide, 10d);
-//		root.setLeftAnchor(oppositeSide, 60d);
-//		root.setBottomAnchor(ownCards, 10d);
-//		root.setLeftAnchor(ownCards, 60d);
+//		root.setLeftAnchor(oppositeSide, 200d);
+
+		root.setStyle("-fx-background-color: bisque");
+		root.setTopAnchor(upperPart, 10d);
+		root.setLeftAnchor(upperPart, 100d);
+		root.setBottomAnchor(upperPart, 200d);
 		
-		Scene scene = new Scene(root);
+		root.setBottomAnchor(ownCards, 10d);
+		root.setLeftAnchor(ownCards, 10d);
+		root.setRightAnchor(ownCards, 10d);
+
+		
+		Scene scene = new Scene(root, 1000, 1000);
 		return scene;
 	}
 	
@@ -256,6 +313,10 @@ public class GameView extends View<GameModel> {
 	
 	private void clearTrick() {
 		//TODO let the played cards disappear, show the next player
+	}
+	public Rectangle getPlayedCard() {
+		// do I need 9 specific rectangles?
+		return null;
 	}
 
 }
