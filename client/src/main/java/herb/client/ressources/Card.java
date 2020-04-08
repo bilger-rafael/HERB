@@ -51,19 +51,19 @@ public class Card extends CardBase {
 	@Override
 	public Suit getSuit() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.suit;
 	}
 
 	@Override
 	public Rank getRank() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.rank;
 	}
 
 	@Override
 	public Trump getTrump() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.trump;
 	}
 
 	@Override

@@ -19,10 +19,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Color; 
+
 
 public class GameView extends View<GameModel> {
 	
@@ -35,7 +37,6 @@ public class GameView extends View<GameModel> {
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart;
 	private StackPane tablePart;
-	
 
 	public GameView(Stage stage, GameModel model) {
 		super(stage, model);
@@ -47,7 +48,7 @@ public class GameView extends View<GameModel> {
 	protected Scene create_GUI() {
 		ServiceLocator sl = ServiceLocator.getInstance();
 		
-		// create Panes and Controls
+		// Roesti - create gui elements
 		this.root = new AnchorPane();
 		
 		upperPart = new BorderPane();
@@ -55,6 +56,12 @@ public class GameView extends View<GameModel> {
 		leftHandSide = new VBox();
 		rightHandSide = new VBox();
 		oppositeSide = new HBox();
+		table = new GridPane();
+		ownCards = new GridPane();
+		
+		ownCards.setMinHeight(300);
+		ownCards.setMinWidth(1300);
+		
 		leftHand = new Label("Spieler vor mir");
 		rightHand = new Label("Spieler nach mir");
 		opposite = new Label("Spieler gegenüber");
@@ -64,6 +71,9 @@ public class GameView extends View<GameModel> {
 		trickLabel.setMinHeight(70);
 		playerLabel = new Label("I'm the best Jasser in the world!");
 		playerLabel.setMinHeight(20);
+		//playerLabel.setMinWidth(1300);
+		playerLabel.setTextAlignment(TextAlignment.CENTER);
+		
 		spacer = new Region();
 		spacerTable = new Region();
 		spacerTable2 = new Region();
@@ -79,55 +89,64 @@ public class GameView extends View<GameModel> {
 		rightHandSide.getChildren().add(rightHand);
 		oppositeSide.getChildren().add(opposite);
 		
-		table = new GridPane();
-		ownCards = new GridPane();
-		ownCards.setMinHeight(300);
-		ownCards.setMinWidth(1300);
-		ownCards.getChildren().add(spacer);
-		
-		// image
-		//String rank = Card.getRank();
-		//String suit = Card.getSuit().toString();
-		
- 
+	
 		// create MenuBar - language and cardSet (fr vs. de) TODO
 		
+	
+		// get players, myCards and my playable cards from server (GameModel)  TODO
+		model.getLobbyPlayers();
 		
-		// create hand (myCards)
+		// Roesti - card images from herb / client / ui / images / fr OR de TODO
+		Card[] cardAreas = new Card[9];
+		cardAreas = model.getMyCards();
+		
+		// show, if it works
+//		String writeCardsOut = "Jetzt";
+//		for (int i = 0; i < 9; i++) {
+//			writeCardsOut += cardAreas[i].getSuit();
+//			writeCardsOut += cardAreas[i].getRank();	
+//			} System.out.println(writeCardsOut);
+		
+		
+		// Roesti - create hand: ownCards GridPane
 		for (int i=0; i<9; i++) {
-		      Rotate rotate = new Rotate();
-		      String rank = "Dame";
-		      String suit = "Kreuz";
-		      String filename = suit + "_" + rank + ".jpg";
-		      System.out.println(filename);
-		      Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
+			String rank = ""+cardAreas[i].getRank().toStringDE();
+			String suit = ""+cardAreas[i].getSuit().toStringFr();
+		    String filename = suit + "_" + rank + ".jpg";
+		    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
 
-		      Rectangle rectangleCard = new Rectangle();
-		      rectangleCard.setHeight(514/2);
-		      rectangleCard.setWidth(322/2);		
-		      rectangleCard.setArcHeight(20);
-		      rectangleCard.setArcWidth(20);
-		      ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
-		      rectangleCard.setFill(pattern);
-		      rotate.setAngle(-40+10*i); 
-		      rotate.setPivotX(322/2/2); 	
-		      rotate.setPivotY(257*2.2);
-		      rectangleCard.getTransforms().addAll(rotate); 
+		    // rectangle with ImagePattern (imageview cannot be fanned out)
+		    Rectangle rectangleCard = new Rectangle();
+		    rectangleCard.setHeight(514/2);
+		    rectangleCard.setWidth(322/2);		
+		    rectangleCard.setArcHeight(20);
+		    rectangleCard.setArcWidth(20);
+		    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
+		    rectangleCard.setFill(pattern);
+		     
+		      //  fan out cards
+		    Rotate rotate = new Rotate();
+		    rotate.setAngle(-40+10*i); 
+		    rotate.setPivotX(322/2/2); 	
+		    rotate.setPivotY(257*2.2);
+		    rectangleCard.getTransforms().addAll(rotate); 
 
-		      ownCards.add(rectangleCard, i+1, 1);	
-
+		    ownCards.add(rectangleCard, i+1, 1);	
 		}
-		ownCards.add(playerLabel, 0, 0);
+
 		ownCards.setMinHeight(300);
 		ownCards.setHgap(-150);
-	//	ownCards.setVgap(10);
-
 		ownCards.setStyle("-fx-background-color: beige");
 
+		// show playername
+		ownCards.add(playerLabel, 5, 0, 1, 1);
+		// center Cards
+		ownCards.getChildren().add(spacer);
 		
-		// create trick (table)
+		// Roesti - create trick: table GridPane 
 	    trickLabel.setStyle("-fx-font-weight: bold");
-	    trickLabel.setStyle("-fx-font-color: beige");	
+	    trickLabel.setTextFill(Color.RED);
+	    trickLabel.setTextAlignment(TextAlignment.CENTER);
 	    table.add(trickLabel, 1, 0, 1, 1);
 	    table.add(spacerTable, 0, 0, 1, 1);
 	    table.add(spacerTable2, 3, 0, 1, 1);
@@ -152,6 +171,10 @@ public class GameView extends View<GameModel> {
         rectangle.setFill(pattern);
         rectangle.setId("cardimage");
         
+	    // better ImagePattern or ImageView? TODO
+//        ImageView imView = new ImageView(imageTable);
+//        imView.setPreserveRatio(true);
+        
 	    // Roesti - implement rotation 
         Rotate rotate = new Rotate();  
         rotate.setAngle(((10+i) % 2)+1 *1); 
@@ -168,7 +191,10 @@ public class GameView extends View<GameModel> {
 	    if(i==3) {
 	    	table.add(rectangle, 3, 1, 1, 2);
 	    }
-//		table.setStyle("-fx-background-color: gold");
+
+	    // better ImagePattern or ImageView? TODO
+//	    table.add(imView, 4, 0, 1, 2);
+	    
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
@@ -179,8 +205,6 @@ public class GameView extends View<GameModel> {
 		for (int i= 0; i< 9; i++) {
 		Rotate rotateLeft = new Rotate();
 		Rectangle rectangleLeft = new Rectangle();
-//		rectangleLeft.setHeight(514/4);
-//		rectangleLeft.setWidth(322/4);	
 		rectangleLeft.setHeight(322/4);
 		rectangleLeft.setWidth(514/4);
         rectangleLeft.setArcHeight(20);
@@ -197,7 +221,6 @@ public class GameView extends View<GameModel> {
         leftHandSide.getChildren().add(rectangleLeft);        
 	}
 		leftHandSide.setSpacing(-40.0);
-	//	leftHandSide.setStyle("-fx-background-color: blue");
 		leftHandSide.setMinWidth(100);
         
 		// rightHandSide
@@ -221,7 +244,6 @@ public class GameView extends View<GameModel> {
 	}
 		rightHandSide.setSpacing(-40.0);
 		rightHandSide.setMinWidth(100);
-//		rightHandSide.setStyle("-fx-background-color: blue");
         
 		// oppositeHandSide
 		oppositeSide.getChildren().add(spacerOppo); 
@@ -245,8 +267,6 @@ public class GameView extends View<GameModel> {
 		}
 		oppositeSide.setSpacing(-70.0);
 		oppositeSide.setMinHeight(70);
-//		oppositeSide.setStyle("-fx-background-color: red");
-
 		
 		//BorderPane
 		upperPart.setCenter(trickLabel2);
@@ -273,17 +293,17 @@ public class GameView extends View<GameModel> {
 //		root.setTopAnchor(table, 150d);
 //		root.setRightAnchor(table, 200d);
 //
-		root.setLeftAnchor(leftHandSide, 10d);
+		root.setLeftAnchor(leftHandSide, -10d);
 		root.setTopAnchor(leftHandSide, 200d);
 		root.setBottomAnchor(leftHandSide, 200d);
-		root.setRightAnchor(rightHandSide, 10d);
+		root.setRightAnchor(rightHandSide, -10d);
 		root.setTopAnchor(rightHandSide, 200d);
 		root.setBottomAnchor(rightHandSide, 200d);
 //		root.setTopAnchor(oppositeSide, 10d);
 //		root.setLeftAnchor(oppositeSide, 200d);
 
 		root.setStyle("-fx-background-color: bisque");
-		root.setTopAnchor(upperPart, 10d);
+		root.setTopAnchor(upperPart, -10d);
 		root.setLeftAnchor(upperPart, 100d);
 		root.setBottomAnchor(upperPart, 200d);
 		
@@ -294,6 +314,9 @@ public class GameView extends View<GameModel> {
 		
 		Scene scene = new Scene(root, 1000, 1000);
 		return scene;
+		
+    	
+		
 	}
 	
 	private void showPlayerPane() {

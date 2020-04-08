@@ -1,5 +1,9 @@
 package herb.client.ui.game;
 
+import herb.client.ressources.Card;
+import herb.client.ressources.core.Rank;
+import herb.client.ressources.core.Suit;
+import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Controller;
 import javafx.event.EventHandler;
 
@@ -17,6 +21,8 @@ public class GameController extends Controller<GameModel, GameView> {
 		//TODO forward Card-Info to Server
 		System.out.println("It happened");
 	}
+	
+
 	
 
 	
