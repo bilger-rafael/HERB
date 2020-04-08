@@ -11,12 +11,31 @@ import java.util.ArrayList;
 //ETTER
 public class DataStore_Repository {
 	Connection cn = null;
-	String ipAdress = "jdbc:mysql://localhost/JASS?useLegacyDatetimeCode=false&serverTimezone=UTC";
-	String userDB = "root";
-	String pwDB = "A01051991";
 	
+	//Test Infos
+	private String ipAdress = "jdbc:mysql://localhost/JASS?useLegacyDatetimeCode=false&serverTimezone=UTC";
+	private String userDB = "root";
+	private String pwDB = "A01051991";
+	
+	//Input Parameter
+	private String ip = null;
+	private String user = null;
+	private String pw = null;
+	
+	
+	
+	//Test Konstructor
 	public DataStore_Repository(){
-		connectDatabase();
+		connectDatabase(ipAdress, userDB, pwDB);
+	}
+	
+	//Konstruktur mit Input
+	public DataStore_Repository(String ip, String user, String pw) {
+		this.ip = ip;
+		this.user = user;
+		this.pw = pw;
+		
+		
 	}
 		
 
@@ -28,17 +47,18 @@ public class DataStore_Repository {
 
 
 
-	public void connectDatabase() {
+	//Verbindet mit der DB und gibt eine Rückmeldung
+	public boolean connectDatabase(String ip, String user, String pw) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
-
-        
         try {
-            this.cn = DriverManager.getConnection(ipAdress, userDB, pwDB);
-           
+            this.cn = DriverManager.getConnection(ip, user, pw);
+            return true;
             
         } catch (SQLException e) {
-        		//TODO catch Exception
+        	e.getMessage();
+        	e.printStackTrace();
+        	return false;
         } finally {
             if (rs != null) try {
                 if (!rs.isClosed()) rs.close();
@@ -48,6 +68,32 @@ public class DataStore_Repository {
             } catch (Exception e) {}
         }
     }
+	
+	//Testet, ob es die DB bereits gibt, Idee von StackOverflow
+	public boolean dbExist(String ip, String user, String pw) {
+		 PreparedStatement stmt = null;
+	     ResultSet rs = null;
+	     String dbName="JASSHERB";
+       try {
+           this.cn = DriverManager.getConnection(ip, user, pw);
+           ResultSet resultSet = this.cn.getMetaData().getCatalogs();
+
+           while (resultSet.next()) {
+
+             String databaseName = resultSet.getString(1);
+               if(databaseName.equals(dbName)){
+                   return true;
+               }
+           }
+           resultSet.close();
+
+       }
+       catch(Exception e){
+           e.printStackTrace();
+           
+       }
+       return false;
+   }
 	
 	//Fügt einen Player der DB mit PreparedStatment hinzu
 	public void addPlayerToDB(String playername, String password) {

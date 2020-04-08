@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,10 +13,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RestServer {
 	static Connection cn = null;
-	static String ipAdress = "jdbc:mysql://127.0.0.1:3306/";
-	static String userDB = "root";
-	static String pwDB = "JASS";
-	static String optionInfo = "?connectTimeout=5000";
+	static String ip = null;
+	static String user = null;
+	static String pw = null;
+	static DataStore_Repository db;
 
 	public static void main(String[] args) throws Exception {
 
@@ -29,43 +30,51 @@ public class RestServer {
 	
     public static void start() throws Exception {
     	
-		//ETTER DB verbinden
-		connectDatabase();
+		//TODO ETTER DB verbinden => Driver wird nicht gefunden, warum?
+		//startDatabase();
     }
 	
-    private static void connectDatabase() {
-        Statement stmt = null;
-        ResultSet rs = null;
-        
-        try {
-            cn = DriverManager.getConnection(ipAdress + optionInfo, userDB, pwDB);
-            System.out.print(cn);
-            
-            // Execute some SQL
-            stmt = cn.createStatement();
-            stmt.execute("USE JASS");
-
-            // Add some data
-            stmt.execute("INSERT INTO Players (idPlayers, Name, Password) VALUES (1, 'Etter', '123')");
-            stmt.close();
-            
-        } catch (SQLException e) {
-        		//TODO catch Exception
-        } finally {
-            if (rs != null) try {
-                if (!rs.isClosed()) rs.close();
-            } catch (Exception e) {}
-            if (stmt != null) try {
-                if (!stmt.isClosed()) stmt.close();
-            } catch (Exception e) {}
-        }
+    //ETTER Verbindung zur Server DB erstellen
+    private static void startDatabase() {
+    	boolean valid = false;
+    	Scanner scan = new Scanner(System.in);
+    	
+    	while(!valid) {
+    		System.out.println("Geben Sie den Pfad zur MySQL-Datenbank ein");
+    		System.out.println(" Für Mac User: jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC");
+    		ip = scan.nextLine();
+    		
+    		System.out.println("Geben Sie ihren MySQL-User ein");
+    		System.out.println("Üblicherweise root");
+    		user = scan.nextLine();
+    		
+    		System.out.println("Geben Sie ihr MySQL-Passwort ein");
+    		pw = scan.nextLine();
+    		
+    		System.out.println("Die Eingaben werden nun geprüft");
+    		
+    		db = new DataStore_Repository(ip, user, pw);
+    			
+    		valid = db.connectDatabase(ip, user, pw);
+    		
+    		if(!valid) {
+    			System.out.println("Eigaben haben nicht funktioniert, wiederholen");
+    		}
+    	}
+    	
+    	//Teste, ob es DB bereits gibt
+    	if(db.dbExist(ip, user, pw)) {
+    		
+    		//TODO Testen, ob Tabellen bestehen
+    		
+    		
+    		
+    	}else {
+    		//DB mit Tabellen erstellen und Grunddaten reinladen
+    		
+    	}
+    	
+    	
+    	
     }
-   
-    
-    public void stop() {
-        if (cn != null) try {
-            if (!cn.isClosed()) cn.close();
-        } catch (Exception e) {}
-    }
-
 }
