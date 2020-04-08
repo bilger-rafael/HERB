@@ -31,7 +31,7 @@ public class RestServer {
     public static void start() throws Exception {
     	
 		//TODO ETTER DB verbinden => Driver wird nicht gefunden, warum?
-		//startDatabase();
+		startDatabase();
     }
 	
     //ETTER Verbindung zur Server DB erstellen
@@ -59,6 +59,8 @@ public class RestServer {
     		
     		if(!valid) {
     			System.out.println("Eigaben haben nicht funktioniert, wiederholen");
+    		}else {
+    			System.out.println("Verbindungsaufbau hat funktioniert");
     		}
     	}
     	
