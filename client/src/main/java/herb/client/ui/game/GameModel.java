@@ -37,7 +37,7 @@ public class GameModel extends Model{
     }
     
     
-    // Player zuweisen
+    // Player zuweisen - Linked List on server, here array?
     private Player identifyPlayer() {
     	Player p1 = new Player();
     	// usernames abgleichen
@@ -49,10 +49,10 @@ public class GameModel extends Model{
 		Card[] currentCards = new Card[9];
 		
 		for (int i = 0; i<9; i++) {
-		Rank r1 = Rank.Eight;
-		Suit s1 = Suit.Clubs;
+		Rank r1 = Rank.Queen;
+		Suit s1 = Suit.Hearts;
 		Trump t1 = Trump.TopsDown;
-		Card c1 = new Card(s1.toString(), "Eight", t1.toString());
+		Card c1 = new Card(s1.toString(), "Queen", t1.toString());
 		currentCards[i] = c1;
 		}
 		
@@ -63,6 +63,26 @@ public class GameModel extends Model{
 			}
 		System.out.println(writeCardsOut);
 		return currentCards;
+	}
+	
+	public Card[] getTrickCards() {
+		Card[] trickCards = new Card[4];
+		
+		for (int i = 0; i<4; i++) {
+		Rank r1 = Rank.Ten;
+		Suit s1 = Suit.Spades;
+		Trump t1 = Trump.TopsDown;
+		Card c1 = new Card(s1.toString(), "Ten", t1.toString());
+		trickCards[i] = c1;
+		}
+		
+		String writeCardsOut = "Trick-Karten...";
+		for (int i = 0; i < 4; i++) {
+			writeCardsOut += trickCards[i].getSuit();
+			writeCardsOut += trickCards[i].getRank();	
+			}
+		System.out.println(writeCardsOut);
+		return trickCards;
 	}
 
 }
