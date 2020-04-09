@@ -26,6 +26,7 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 		view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
+				view.stop();
 				Platform.exit();
 			}
 	});
@@ -49,10 +50,12 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 
 	}
 	/**
-	 * 
+	 * Herren
 	 */
 	private void getBackLoginView() {
 		this.view.stop();
+		this.view.resetNameField();
+		this.view.resetPasswordField();
 		Main.getMainProgram().getLoginView().start();
 	}
 

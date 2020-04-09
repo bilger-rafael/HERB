@@ -2,6 +2,7 @@
 package herb.client.ui.registration;
 
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -9,6 +10,7 @@ import java.util.logging.Logger;
 import herb.client.utils.Translator;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
+import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -38,12 +40,13 @@ public class RegistrationView extends View<RegistrationModel> {
 	private TextField nameTextField;
 	private PasswordField passwordField;
 	
+	private FadeTransition transition;
+	
 	
 
 	public RegistrationView(Stage stage, RegistrationModel model) {
 		super(stage, model);
 		//Herren
-//		stage.setTitle("HERB-Jass > Registration");
 		ServiceLocator.getInstance().getLogger().info("Registration window initialized");
 		
 
@@ -137,7 +140,7 @@ public class RegistrationView extends View<RegistrationModel> {
 	     * if registration/login fails
 	     * Herren
 	     */
-	    errorLabel = new Label("Error");
+	    errorLabel = new Label();
 		errorLabel.setId("errorLabel");
 		errorLabel.setOpacity(0);
 	    
@@ -148,9 +151,15 @@ public class RegistrationView extends View<RegistrationModel> {
         
         updateLabels();     
 		Scene scene = new Scene(root);
+//        scene.getStylesheets().add(
+//                getClass().getResource("app.css").toExternalForm());		
 		return scene;
 	}
 	
+	/**
+	 * names given by translator
+	 * Herren
+	 */
 	protected void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
@@ -166,7 +175,9 @@ public class RegistrationView extends View<RegistrationModel> {
         stage.setTitle(t.getString("program.registration.stage"));
 	}
 		
-	
+	/**
+	 * 
+	 */
 	public Button getCancelButton() {
 		return cancelButton;
 	}
@@ -181,6 +192,29 @@ public class RegistrationView extends View<RegistrationModel> {
 
 	public PasswordField getPasswordField() {
 		return passwordField;
+	}
+	
+	public void showError() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		errorLabel.setText(t.getString("Programm.newUser.errorLabel"));
+		
+		if( transition == null ) {
+			transition = new FadeTransition(Duration.millis(2000), errorLabel);
+			transition.setFromValue(1.0);
+			transition.setToValue(0);
+			transition.setDelay(Duration.millis(2000));
+		}
+		
+		transition.stop();
+		errorLabel.setOpacity(1);
+		transition.play();
+	}
+	public void resetPasswordField() {
+		passwordField.setText("");
+	}
+	
+	public void resetNameField() {
+		nameTextField.setText("");
 	}
 	
 }
