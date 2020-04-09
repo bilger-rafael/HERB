@@ -17,6 +17,7 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 		String username = view.getNameTextField().getText();
 		String password = view.getPasswordField().getText();
 
+
 		try {
 			model.register(username, password);
 			this.view.stop();
