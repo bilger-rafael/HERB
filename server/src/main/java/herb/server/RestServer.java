@@ -64,19 +64,8 @@ public class RestServer {
     		}
     	}
     	
-    	//Teste, ob es DB bereits gibt
-    	if(db.dbExist(ip, user, pw)) {
-    		
-    		//TODO Testen, ob Tabellen bestehen
-    		
-    		
-    		
-    	}else {
-    		//DB mit Tabellen erstellen und Grunddaten reinladen
-    		
-    	}
-    	
-    	
+    	//DB initialisieren
+    	db.dbInitialize();
     	
     }
 }
