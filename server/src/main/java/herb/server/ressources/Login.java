@@ -31,7 +31,7 @@ public class Login extends LoginBase {
 				throw new PlayerNotFoundException();
 			}
 			//Check Passwort stimmt
-			if(this.getPassword()!= DataStore_Repository.getDB().showPlayerPasswordfromDB(this.getUsername())) {
+			if(!this.getPassword().equals(DataStore_Repository.getDB().showPlayerPasswordfromDB(this.getUsername()))) {
 				throw new PlayerLoginFailedException();
 			}
 			
