@@ -3,7 +3,7 @@ package herb.server;
 import java.util.ArrayList;
 
 public class TestDBConnection {
-
+	
 	public static void main(String[] args) {
 		String playername = "Etter";
 		String pw = "123";
@@ -11,7 +11,8 @@ public class TestDBConnection {
 		String points ="120";
 		ArrayList<String> temp = new ArrayList<>();
 		
-		DataStore_Repository db = new DataStore_Repository();
+		System.out.print("test");
+		/*
 		System.out.println("verbunden");
 		
 		db.addPlayerToDB(playername, pw);
@@ -39,7 +40,7 @@ public class TestDBConnection {
 		
 		db.stop();
 		
-		
+		*/
 	}
 
 }

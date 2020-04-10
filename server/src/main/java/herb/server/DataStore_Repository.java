@@ -8,36 +8,54 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-//ETTER
+
+//ETTER fast Singleton
 public class DataStore_Repository {
-	Connection cn = null;
+	private Connection cn = null;
+	private static DataStore_Repository db; // singleton
 	
-	//Test Infos
+	/*Test Infos
 	private String ipAdress = "jdbc:mysql://localhost/JASS?useLegacyDatetimeCode=false&serverTimezone=UTC";
 	private String userDB = "root";
 	private String pwDB = "A01051991";
+	*/
 	
 	//Input Parameter
 	private String ip = null;
 	private String user = null;
 	private String pw = null;
 	
+	//Idee von Factory Methode App aus SE HS19 übernommen
+    /** 
+     * Factory method for returning the singleton
+     */
+    public static DataStore_Repository getDB() {
+        if (db == null)
+        	db = new DataStore_Repository();
+        return db;
+    }
+    
+    //Falls Anmelde-Infos falsch sind, zurücksetzen
+    protected static void resetDB() {
+    	db=null;
+    }
 
 
-	
-	
-	//Test Konstructor
+	/*Test Konstructor
 	public DataStore_Repository(){
 		connectDatabase(ipAdress, userDB, pwDB);
-	}
+	}*/
 	
-	//Konstruktur mit Input
-	public DataStore_Repository(String ip, String user, String pw) {
+	/*Private Konstruktur mit Input
+	private DataStore_Repository(String ip, String user, String pw) {
 		this.ip = ip;
 		this.user = user;
 		this.pw = pw;
-		
-		
+	}*/
+	
+	//Private Konstruktur ohne Input
+	private DataStore_Repository() {
+		//Nichts benötigt, Variablen bereits gesetzt
 	}
 		
 
@@ -48,11 +66,11 @@ public class DataStore_Repository {
 	}
 
 	//Verbindet mit der DB und gibt eine Rückmeldung
-	public boolean connectDatabase(String ip, String user, String pw) {
+	protected boolean connectDatabase() {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
         try {
-            this.cn = DriverManager.getConnection(ip, user, pw);
+            this.cn = DriverManager.getConnection(this.ip, this.user, this.pw);
             return true;
             
         } catch (SQLException e) {
@@ -70,7 +88,7 @@ public class DataStore_Repository {
     }
 	
 	
-	public void dbInitialize() {
+	protected void dbInitialize() {
 		try {
 			//Teste, ob es DB bereits gibt
 			if(this.dbExist()) {
@@ -166,22 +184,24 @@ public class DataStore_Repository {
 	    stmt.execute(sqlCreate);
 	}
 		
-	//Fügt einen Player der DB mit PreparedStatment hinzu
-	public void addPlayerToDB(String playername, String password) {
+	//Fügt einen Player der DB mit PreparedStatment hinzu gibt 1 zurück falls erfolgreich
+	public int addPlayerToDB(String playername, String password) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
+	     int answer = 0;
 	     
 	     try {
 	    	 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Players (Name, Password) VALUES (?,?)");
 	    	 stmt.setString(1, playername);
 	    	 stmt.setString(2, password);
-	    	 int answer = stmt.executeUpdate();
+	    	 answer = stmt.executeUpdate();
 	    	 System.out.println(answer+" eingefügt");
-		 
+	    	 
 	     }catch (SQLException e) {
 	    	 System.out.println(e);
 	    	 
 	     }finally {
+	    	 	
 	            if (rs != null) try {
 	                if (!rs.isClosed()) rs.close();
 	            } catch (Exception e) {}
@@ -189,17 +209,19 @@ public class DataStore_Repository {
 	                if (!stmt.isClosed()) stmt.close();
 	            } catch (Exception e) {}
 	     }
+	     return answer;
 	}
 	
-	//Löscht einen Player der DB mit PreparedStatment
-	public void deletePlayerFromDB(String playername) {
+	//Löscht einen Player der DB mit PreparedStatment, gibt 1 zurück wenn gelöscht
+	public int deletePlayerFromDB(String playername) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
+	     int answer = 0;
 	     
 	     try { 
 	    	 stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Players WHERE Name=?");
 	    	 stmt.setString(1, playername);
-	    	 int answer = stmt.executeUpdate();
+	    	 answer = stmt.executeUpdate();
 	    	 System.out.println(answer+" gelöscht");
 	     }catch (SQLException e) {
 	    	 System.out.println(e);
@@ -212,6 +234,7 @@ public class DataStore_Repository {
 	                if (!stmt.isClosed()) stmt.close();
 	            } catch (Exception e) {}
 	     }
+	     return answer;
 	}
 	
 	//Gibt Player PW zurück der DB mit PreparedStatment
@@ -240,16 +263,17 @@ public class DataStore_Repository {
 		return password;
 	}
 	
-	//Fügt einen Player HighScore der DB mit PreparedStatment hinzu
-	public void addPlayertoHighScore(String playername, String points) {
+	//Fügt einen Player HighScore der DB mit PreparedStatment hinzu, gibt 1 zurück wenn hinzugefügt
+	public int addPlayertoHighScore(String playername, String points) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
+	     int answer = 0;
 	     
 	     try {
 			 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.HighScores (PlayerName, Points) VALUES (?,?)");
 			 stmt.setString(1, playername);
 			 stmt.setString(2, points);
-			 int answer = stmt.executeUpdate();
+			 answer = stmt.executeUpdate();
 			 System.out.println(answer+" eingefügt");
 	     }catch (SQLException e) {
 	    	 System.out.println(e);
@@ -261,17 +285,19 @@ public class DataStore_Repository {
 	                if (!stmt.isClosed()) stmt.close();
 	            } catch (Exception e) {}
 	     }
+	     return answer;
 	}
 	
-	//Löscht einen Player HighScore der DB mit PreparedStatment
-	public void deletePlayerfromHighScore(String playername) {
+	//Löscht einen Player HighScore der DB mit PreparedStatment, gibt 1 zurück wenn gelöscht
+	public int deletePlayerfromHighScore(String playername) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
+	     int answer=0;
 	     
 	     try {
 		     stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.HighScores WHERE PlayerName=?");
 		     stmt.setString(1, playername);
-		   	 int answer = stmt.executeUpdate();
+		   	 answer = stmt.executeUpdate();
 			 System.out.println(answer+" gelöscht");	 
 	     }catch (SQLException e) {
 	    	 System.out.println(e);
@@ -283,17 +309,19 @@ public class DataStore_Repository {
 	                if (!stmt.isClosed()) stmt.close();
 	            } catch (Exception e) {}
 	     }
+	     return answer;
 	}
 	
-	//Fügt eine Lobby der DB mit PreparedStatment hinzu
-	public void addLobby(String lobbyName) {
+	//Fügt eine Lobby der DB mit PreparedStatment hinzu, gibt 1 zurück wenn hinzugefügt
+	public int addLobby(String lobbyName) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
+	     int answer = 0;
 	     
 	     try {
 			 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Lobbys (LobbyName) VALUES (?)");
 			 stmt.setString(1, lobbyName);
-			 int answer = stmt.executeUpdate();
+			 answer = stmt.executeUpdate();
 			 System.out.println(answer+" eingefügt");
 	     }catch (SQLException e) {
 	    	 System.out.println(e);
@@ -305,17 +333,19 @@ public class DataStore_Repository {
 	                if (!stmt.isClosed()) stmt.close();
 	            } catch (Exception e) {}
 	     }
+	     return answer;
 	}
 	
-	//Löscht eine Lobby der DB mit PreparedStatment
-	public void deleteLobby(String lobbyName) {
+	//Löscht eine Lobby der DB mit PreparedStatment, gibt 1 zurück wenn gelöscht
+	public int deleteLobby(String lobbyName) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
+	     int answer = 0;
 	     
 	     try {
 		     stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Lobbys WHERE LobbyName=?");
 		     stmt.setString(1, lobbyName);
-		   	 int answer = stmt.executeUpdate();
+		   	 answer = stmt.executeUpdate();
 			 System.out.println(answer+" gelöscht");
 	     }catch (SQLException e) {
 	    	 
@@ -327,6 +357,7 @@ public class DataStore_Repository {
 	                if (!stmt.isClosed()) stmt.close();
 	            } catch (Exception e) {}
 	     }
+	     return answer;
 	}
 	
 	//Gibt die Lobbys der DB mit PreparedStatment zurück
@@ -362,7 +393,7 @@ public class DataStore_Repository {
 		return ip;
 	}
 
-	public void setIp(String ip) {
+	protected void setIp(String ip) {
 		this.ip = ip;
 	}
 
@@ -370,7 +401,7 @@ public class DataStore_Repository {
 		return user;
 	}
 
-	public void setUser(String user) {
+	protected void setUser(String user) {
 		this.user = user;
 	}
 
@@ -378,7 +409,7 @@ public class DataStore_Repository {
 		return pw;
 	}
 
-	public void setPw(String pw) {
+	protected void setPw(String pw) {
 		this.pw = pw;
 	}
 }

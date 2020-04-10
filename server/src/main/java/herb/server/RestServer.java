@@ -16,7 +16,6 @@ public class RestServer {
 	static String ip = null;
 	static String user = null;
 	static String pw = null;
-	static DataStore_Repository db;
 
 	public static void main(String[] args) throws Exception {
 
@@ -53,19 +52,24 @@ public class RestServer {
     		
     		System.out.println("Die Eingaben werden nun geprüft");
     		
-    		db = new DataStore_Repository(ip, user, pw);
-    			
-    		valid = db.connectDatabase(ip, user, pw);
+    		//DB erstellen
+    		DataStore_Repository.getDB();
+    		DataStore_Repository.getDB().setIp(ip);
+    		DataStore_Repository.getDB().setUser(user);
+    		DataStore_Repository.getDB().setPw(pw);
+    		
+    		valid = DataStore_Repository.getDB().connectDatabase();
     		
     		if(!valid) {
     			System.out.println("Eigaben haben nicht funktioniert, wiederholen");
+				DataStore_Repository.resetDB();
     		}else {
     			System.out.println("Verbindungsaufbau hat funktioniert");
     		}
     	}
     	
     	//DB initialisieren
-    	db.dbInitialize();
+    	DataStore_Repository.getDB().dbInitialize();
     	
     }
 }
