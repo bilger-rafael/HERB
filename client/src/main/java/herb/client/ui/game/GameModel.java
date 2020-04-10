@@ -1,5 +1,7 @@
 package herb.client.ui.game;
 
+import java.util.ArrayList;
+
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
 import herb.client.ressources.core.Rank;
@@ -29,10 +31,7 @@ public class GameModel extends Model{
     	plys[2] = p3;
     	plys[3] = p4;
     	System.out.println(plys[0].getUsername());
-    	
-    //	plys.getCard(int i);
-    	
-    	
+ 	
     	return plys;
     }
     
@@ -45,23 +44,53 @@ public class GameModel extends Model{
     }
     
     // Roesti - card array  TODO receive from server
-	public Card[] getMyCards() {
-		Card[] currentCards = new Card[9];
+	public ArrayList<Card> getMyCards() {
+		ArrayList<Card> currentCards = new ArrayList();
 		
-		for (int i = 0; i<9; i++) {
+		for (int i = 0; i<4; i++) {
 		Rank r1 = Rank.Queen;
 		Suit s1 = Suit.Hearts;
 		Trump t1 = Trump.TopsDown;
 		Card c1 = new Card(s1.toString(), "Queen", t1.toString());
-		currentCards[i] = c1;
+		currentCards.add(c1);
 		}
 		
-		String writeCardsOut = "Spieler-Karten...";
-		for (int i = 0; i < 9; i++) {
-			writeCardsOut += currentCards[i].getSuit();
-			writeCardsOut += currentCards[i].getRank();	
-			}
-		System.out.println(writeCardsOut);
+		Rank r2 = Rank.Six;
+		Suit s2 = Suit.Hearts;
+		Trump t2 = Trump.TopsDown;
+		Card c2 = new Card(s2.toString(), "Six", t2.toString());
+		currentCards.add(c2);
+		
+		Rank r3 = Rank.Seven;
+		Suit s3 = Suit.Diamonds;
+		Trump t3 = Trump.TopsDown;
+		Card c3 = new Card(s3.toString(), "Seven", t3.toString());
+		currentCards.add(c3);
+		
+		Rank r4 = Rank.Ace;
+		Suit s4 = Suit.Spades;
+		Trump t4 = Trump.TopsDown;
+		Card c4 = new Card(s4.toString(), "Ace", t4.toString());
+		currentCards.add(c4);
+		
+		Rank r5 = Rank.King;
+		Suit s5 = Suit.Clubs;
+		Trump t5 = Trump.TopsDown;
+		Card c5 = new Card(s5.toString(), "King", t5.toString());
+		currentCards.add(c5);
+		
+		Rank r6 = Rank.Nine;
+		Suit s6 = Suit.Clubs;
+		Trump t6 = Trump.TopsDown;
+		Card c6 = new Card(s6.toString(), "Nine", t6.toString());
+		currentCards.add(c6);
+		
+//		String writeCardsOut = "Spieler-Karten...";
+//		for (int i = 0; i < 9; i++) {
+//			writeCardsOut += currentCards[i].getSuit();
+//			writeCardsOut += currentCards[i].getRank();	
+//			}
+//		System.out.println(writeCardsOut);
 		return currentCards;
 	}
 	

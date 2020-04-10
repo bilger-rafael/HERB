@@ -1,6 +1,9 @@
 package herb.client.ui.game;
 
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
 import herb.client.ressources.core.Rank;
@@ -41,6 +44,10 @@ public class GameView extends View<GameModel> {
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart;
 	private StackPane tablePart;
+	private Rectangle rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8, rect9;
+	private Rectangle[] rects;
+	private Card[] cardAreas;
+	private ArrayList<Card> cardAreas1;
 
 
 	public GameView(Stage stage, GameModel model) {
@@ -60,13 +67,15 @@ public class GameView extends View<GameModel> {
     	plys = model.getLobbyPlayers();
 	
 		// Roesti - card images from herb / client / ui / images / fr OR de TODO
-		Card[] cardAreas = new Card[9];
-		cardAreas = model.getMyCards();
+//		cardAreas = new Card[9];
+//		cardAreas = model.getMyCards();
+    	cardAreas1 = new ArrayList();
+    	cardAreas1 = model.getMyCards();
 		
 		Card[] trickCardAreas = new Card[4];
 		trickCardAreas = model.getTrickCards();
 		
-	    Rectangle[] rects = new Rectangle[13];
+	    rects = new Rectangle[cardAreas1.size()];
 		
 		// Roesti - create gui elements
 		this.root = new AnchorPane();
@@ -130,15 +139,14 @@ public class GameView extends View<GameModel> {
 		
 		
 		// Roesti - create hand: ownCards GridPane
-		for (int i=0; i<9; i++) {
-			String rank = ""+cardAreas[i].getRank().toStringDE();
-			String suit = ""+cardAreas[i].getSuit().toStringFr();
+		for (int i=0; i< cardAreas1.size(); i++) {
+			String rank = ""+cardAreas1.get(i).getRank().toStringDE();
+			String suit = ""+cardAreas1.get(i).getSuit().toStringFr();
 		    String filename = suit + "_" + rank + ".jpg";
 		    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
 
 		    // rectangle with ImagePattern (imageview cannot be fanned out)
 		    Rectangle rectangleCard = new Rectangle();
-	//	    Rectangle[] rects = new Rectangle[9];
 		    rectangleCard.setHeight(514/2);
 		    rectangleCard.setWidth(322/2);		
 		    rectangleCard.setArcHeight(20);
@@ -152,11 +160,20 @@ public class GameView extends View<GameModel> {
 		    rotate.setAngle(-40+10*i); 
 		    rotate.setPivotX(322/2/2); 	
 		    rotate.setPivotY(257*2.2);
-		    rectangleCard.getTransforms().addAll(rotate); 
-
-		    rects[i] =rectangleCard;
+		    rectangleCard.getTransforms().addAll(rotate);   
 		    ownCards.add(rectangleCard, i+1, 1);	
+		    rects[i] =rectangleCard;  
 		}
+		rect1 = rects[0];
+		rect2 = rects[1];
+		rect3 = rects[2];
+		rect4 = rects[3];
+		rect5 = rects[4];
+		rect6 = rects[5];
+		rect7 = rects[6];
+		rect8 = rects[7];
+		rect9 = rects[8];
+		
 
 		ownCards.setMinHeight(250);
 		ownCards.setHgap(-150);
@@ -338,7 +355,7 @@ public class GameView extends View<GameModel> {
 		root.setTopAnchor(upperPart, -10d);
 		root.setLeftAnchor(upperPart, 200d);
 		root.setRightAnchor(upperPart, 200d);
-		root.setBottomAnchor(upperPart, 200d);
+	//	root.setBottomAnchor(upperPart, 200d);
 		
 		root.setBottomAnchor(bottom, 10d);
 		root.setLeftAnchor(bottom, 10d);
@@ -370,10 +387,45 @@ public class GameView extends View<GameModel> {
 	private void clearTrick() {
 		//TODO let the played cards disappear, show the next player
 	}
-//	public Rectangle getPlayedCard(int i) {
-		// give back suit and rank or arrayNumber??
-		//playedCard = rects[i];	
-	//	return playedCard;
-	//}
-
+	
+	// Roesti - chosen card sending back to controller
+	public Rectangle getPlayedCard1() {
+		return rect1;
+	}
+	public Rectangle getPlayedCard2() {
+		return rect2;
+	}
+	public Rectangle getPlayedCard3() {
+		return rect3;
+	}
+	public Rectangle getPlayedCard4() {
+		return rect4;
+	}
+	public Rectangle getPlayedCard5() {
+		return rect5;
+	}
+	public Rectangle getPlayedCard6() {
+		return rect6;
+	}
+	public Rectangle getPlayedCard7() {
+		return rect7;
+	}
+	public Rectangle getPlayedCard8() {
+		return rect8;
+	}
+	public Rectangle getPlayedCard9() {
+		return rect9;
+	}
+	
+	public Card[] getCardAreas() {
+		return cardAreas;
+	}
+	public ArrayList<Card> getCardAreas1(){
+		return cardAreas1;
+	}
+	
+	// evtl. mit Liste
+	public Rectangle[] getRects() {
+		return rects;
+	}
 }
