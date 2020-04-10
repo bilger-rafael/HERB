@@ -42,12 +42,6 @@ public class Player extends PlayerBase<Hand> {
 	public void clearHand() {
 		this.getHand().clearCards();
 	}
-	
-	@Override
-	public Hand getHand() {
-		return this.getHand();
-		
-	}
 
 	@Override
 	public boolean PlayerNoCards() {
