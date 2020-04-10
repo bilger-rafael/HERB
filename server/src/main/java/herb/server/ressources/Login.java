@@ -17,32 +17,32 @@ public class Login extends LoginBase {
 
 	@Override
 	public PlayerBase login() throws ExceptionBase {
-		Login login = Datastore.getInstance().logins.get(this.getUsername());
 
-		if (login == null)
+		// TODO delete later
+		/*
+		 * Login login = Datastore.getInstance().logins.get(this.getUsername());
+		 * 
+		 * if (login == null) throw new PlayerNotFoundException();
+		 * 
+		 * if (!login.getPassword().equals(this.getPassword())) throw new
+		 * PlayerLoginFailedException();
+		 */
+
+		// Etter Login mit MySQL DB
+		// Check User existiert
+		if (!DataStore_Repository.getDB().checkPlayerExist(this.getUsername())) {
 			throw new PlayerNotFoundException();
-
-		if (!login.getPassword().equals(this.getPassword()))
+		}
+		
+		// Check Passwort stimmt
+		if (!this.getPassword().equals(DataStore_Repository.getDB().showPlayerPasswordfromDB(this.getUsername()))) {
 			throw new PlayerLoginFailedException();
-		
-		//Etter Login mit MySQL DB
-			//Check User existiert
-			if(!DataStore_Repository.getDB().checkPlayerExist(this.getUsername())) {
-				throw new PlayerNotFoundException();
-			}
-			//Check Passwort stimmt
-			if(!this.getPassword().equals(DataStore_Repository.getDB().showPlayerPasswordfromDB(this.getUsername()))) {
-				throw new PlayerLoginFailedException();
-			}
-			
-		
+		}
 
 		// return player
-		Player player = new Player(login.getUsername(), UUID.randomUUID().toString().toUpperCase());
+		Player player = new Player(this.getUsername(), UUID.randomUUID().toString().toUpperCase());
 		Datastore.getInstance().players.put(player.getUsername(), player);
 		return player;
-		
-		
 
 	}
 
@@ -53,14 +53,17 @@ public class Login extends LoginBase {
 
 		// TODO check username and password length, if needed
 
-		Datastore.getInstance().logins.put(this.getUsername(), this);
-		
-		//Etter Eintrag in MYSQL-DB
+		// TODO delete later
+		/*
+		 * Datastore.getInstance().logins.put(this.getUsername(), this);
+		 */
+
+		// Etter Eintrag in MYSQL-DB
 		int i = DataStore_Repository.getDB().addPlayerToDB(this.getUsername(), this.getPassword());
-		if(i==0) {
+		if (i == 0) {
 			throw new PlayerAlreadyExistsException();
 		}
-	
+
 	}
 
 }
