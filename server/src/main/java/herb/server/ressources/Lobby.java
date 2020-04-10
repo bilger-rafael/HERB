@@ -30,9 +30,16 @@ public class Lobby extends LobbyBase {
 	public void addPlayer(PlayerBase player) throws ExceptionBase {
 		if (isFull())
 			throw new ServerErrorException();
-		
-		//TODO check if player is already in lobby
 
+		// check if player is already in the lobby
+		for (int i = 0; i < this.players.length; i++) {
+			if (this.players[i] != null) {
+				if (player.equals(this.players[i]))
+					throw new ServerErrorException();
+			}
+		}
+		
+		// add player to the lobby
 		for (int i = 0; i < this.players.length; i++) {
 			if (this.players[i] == null) {
 				this.players[i] = player;
