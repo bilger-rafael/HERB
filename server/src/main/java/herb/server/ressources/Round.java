@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
+
+import herb.server.DataStore_Repository;
 import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
@@ -71,14 +73,16 @@ public class Round extends RoundBase implements Runnable{
 			this.setCurrentStartingPlayer(winner);
 		}
 	}
-
-	private void endRound() {
+	
+	//Gibt eine Map mit den Spielern und den Spielständen zurück
+	private Map<PlayerBase, Integer> endRound() {
 		// Aktuelle Runde für Spieler entfernen
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			((Player) this.getPlayers()[i]).setRound(null);
 		}
-
-		getScoreTable();
+		
+		Map<PlayerBase, Integer> temp = getScoreTable();
+		return temp;
 		
 		//TODO kill thread
 	}

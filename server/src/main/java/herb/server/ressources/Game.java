@@ -12,6 +12,7 @@ public class Game extends GameBase{
 	public Game(PlayerBase[] players) {
 		super(UUID.randomUUID(), players);
 		startRound();
+		
 	}
 
 	@Override
@@ -22,5 +23,5 @@ public class Game extends GameBase{
 	}
 
 
-
+	
 }

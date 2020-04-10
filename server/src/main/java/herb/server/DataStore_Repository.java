@@ -263,6 +263,33 @@ public class DataStore_Repository {
 		return password;
 	}
 	
+	//Überprüft, ob ein Spieler existiert
+	public boolean checkPlayerExist(String playername) {
+		 PreparedStatement stmt = null;
+	     ResultSet rs = null;
+	     boolean b = false;
+	     
+	     try {
+		     stmt = this.cn.prepareStatement("SELECT COUNT(Name) FROM JASSHERB.Players WHERE Name = ?");
+		     stmt.setString(1, playername);
+		   	 rs = stmt.executeQuery();
+		   	 rs.next();
+		   	 int i = rs.getInt(1);
+		   	 if(i==1)b=true;
+		 
+	     }catch (SQLException e) {
+	    	 System.out.println(e);
+	     }finally {
+	            if (rs != null) try {
+	                if (!rs.isClosed()) rs.close();
+	            } catch (Exception e) {}
+	            if (stmt != null) try {
+	                if (!stmt.isClosed()) stmt.close();
+	            } catch (Exception e) {}
+	     }
+		return b;
+	}
+	
 	//Fügt einen Player HighScore der DB mit PreparedStatment hinzu, gibt 1 zurück wenn hinzugefügt
 	public int addPlayertoHighScore(String playername, String points) {
 		 PreparedStatement stmt = null;
