@@ -2,9 +2,12 @@ package herb.client.ui.registration;
 
 import herb.client.utils.ServiceLocator;
 import herb.client.Main;
+import herb.client.ressources.Login;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Controller;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 
@@ -23,6 +26,9 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 		 */
 		view.getCancelButton().setOnAction(e -> getBackLoginView());
 		
+		/**
+		 * register ourselves to handle window-closing event
+		 */
 		view.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
@@ -30,6 +36,7 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 				Platform.exit();
 			}
 	});
+		
 		serviceLocator = ServiceLocator.getInstance();
 		serviceLocator.getLogger().info("Application controller initialized");
 	
@@ -39,7 +46,13 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 	private void registration() {
 		String username = view.getNameTextField().getText();
 		String password = view.getPasswordField().getText();
-
+		/**
+		 * new login
+		 * Herren
+		 */
+		
+		Login createLogin = new Login(username, password);
+		
 
 		try {
 			model.register(username, password);

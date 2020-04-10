@@ -27,8 +27,7 @@ public class RegistrationView extends View<RegistrationModel> {
 	//Herren
 	private RegistrationModel model;
 	
-	private BorderPane root;
-	private BorderPane bottomBox;
+	private BorderPane root, bottomBox;
 	private VBox centerBox;
 	
 	private MenuBar menuBar;
