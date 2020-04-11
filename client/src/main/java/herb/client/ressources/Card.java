@@ -7,7 +7,7 @@ import herb.client.ressources.core.Trump;
 
 public class Card extends CardBase {
 
-	public Card(String suit, String rank, String trump) {
+	public Card(Suit suit, Rank rank, Trump trump) {
 		super(suit, rank, trump);
 		// TODO Auto-generated constructor stub
 	}
@@ -48,29 +48,10 @@ public class Card extends CardBase {
 		return false;
 	}
 
-	@Override
-	public Suit getSuit() {
-		// TODO Auto-generated method stub
-		return this.suit;
-	}
 
-	@Override
-	public Rank getRank() {
-		// TODO Auto-generated method stub
-		return this.rank;
-	}
 
-	@Override
-	public Trump getTrump() {
-		// TODO Auto-generated method stub
-		return this.trump;
-	}
 
-	@Override
-	public CardBase getCard(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 
 }

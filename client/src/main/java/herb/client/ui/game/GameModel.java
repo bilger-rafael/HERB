@@ -51,38 +51,38 @@ public class GameModel extends Model{
 		Rank r1 = Rank.Queen;
 		Suit s1 = Suit.Hearts;
 		Trump t1 = Trump.TopsDown;
-		Card c1 = new Card(s1.toString(), "Queen", t1.toString());
+		Card c1 = new Card(s1, r1, t1);
 		currentCards.add(c1);
 		}
 		
 		Rank r2 = Rank.Six;
 		Suit s2 = Suit.Hearts;
 		Trump t2 = Trump.TopsDown;
-		Card c2 = new Card(s2.toString(), "Six", t2.toString());
+		Card c2 = new Card(s2, r2, t2);
 		currentCards.add(c2);
 		
 		Rank r3 = Rank.Seven;
 		Suit s3 = Suit.Diamonds;
 		Trump t3 = Trump.TopsDown;
-		Card c3 = new Card(s3.toString(), "Seven", t3.toString());
+		Card c3 = new Card(s3, r3, t3);
 		currentCards.add(c3);
 		
 		Rank r4 = Rank.Ace;
 		Suit s4 = Suit.Spades;
 		Trump t4 = Trump.TopsDown;
-		Card c4 = new Card(s4.toString(), "Ace", t4.toString());
+		Card c4 = new Card(s4, r4, t4);
 		currentCards.add(c4);
 		
 		Rank r5 = Rank.King;
 		Suit s5 = Suit.Clubs;
 		Trump t5 = Trump.TopsDown;
-		Card c5 = new Card(s5.toString(), "King", t5.toString());
+		Card c5 = new Card(s5, r5, t5);
 		currentCards.add(c5);
 		
 		Rank r6 = Rank.Nine;
 		Suit s6 = Suit.Clubs;
 		Trump t6 = Trump.TopsDown;
-		Card c6 = new Card(s6.toString(), "Nine", t6.toString());
+		Card c6 = new Card(s6, r6, t6);
 		currentCards.add(c6);
 		
 //		String writeCardsOut = "Spieler-Karten...";
@@ -101,7 +101,7 @@ public class GameModel extends Model{
 		Rank r1 = Rank.Ten;
 		Suit s1 = Suit.Spades;
 		Trump t1 = Trump.TopsDown;
-		Card c1 = new Card(s1.toString(), "Ten", t1.toString());
+		Card c1 = new Card(s1, r1, t1);
 		trickCards[i] = c1;
 		}
 		

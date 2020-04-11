@@ -4,16 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class CardBase {
     protected final Suit suit;
-    protected final Rank rank;
+	protected final Rank rank;
     protected final Trump trump;
+    
     
     public CardBase(Suit suit, Rank rank, Trump trump) {
     	this.suit = suit;
     	this.rank = rank;
     	this.trump = trump;
-    }
-    
-    @JsonIgnore
+	}
+
+	@JsonIgnore
     public abstract int getPoints();
     
     protected abstract boolean isTrump();
@@ -25,10 +26,19 @@ public abstract class CardBase {
 	public abstract int compareTo(CardBase o);
 	
 	public abstract boolean compareToPlayable(CardBase o);
+	
+    public Suit getSuit() {
+		return suit;
+	}
 
-	public abstract Suit getSuit();
-	
-	public abstract Rank getRank();
-	
-	public abstract Trump getTrump();
+	public Rank getRank() {
+		return rank;
+	}
+
+	public Trump getTrump() {
+		return trump;
+	}
+
+
+
 }

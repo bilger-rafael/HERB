@@ -6,6 +6,8 @@ import java.util.UUID;
 public abstract class GameBase {
 	private final UUID uuid;
 	protected PlayerBase[] players = new PlayerBase[4];
+
+
 	protected ArrayList<RoundBase> rounds = new ArrayList<RoundBase>();
 	
 	public GameBase(UUID uuid, PlayerBase[] players) {
@@ -17,5 +19,13 @@ public abstract class GameBase {
 
 	public UUID getUuid() {
 		return uuid;
+	}
+	
+	public PlayerBase[] getPlayers() {
+		return players;
+	}
+
+	public ArrayList<RoundBase> getRounds() {
+		return rounds;
 	}
 }
