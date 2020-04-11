@@ -20,6 +20,9 @@ public class GameController extends Controller<GameModel, GameView> {
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
 
+		// Simulation
+		view.getSimulationButton().setOnAction(e -> simulate());
+		
 		// Event when card is chosen
         view.getPlayedCard1().setOnMouseClicked(e -> forwardPlayedCard(e));
 		view.getPlayedCard2().setOnMouseClicked(e -> forwardPlayedCard(e));	
@@ -32,6 +35,10 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.getPlayedCard9().setOnMouseClicked(e -> forwardPlayedCard(e));
 	}
 	
+	public void simulate() {
+	//	updateMyCards();
+	//	updateTable();
+	}
 	
 	public Card forwardPlayedCard(MouseEvent mouseEvent){
 		//TODO forward Card-Info to Server
@@ -74,7 +81,5 @@ public class GameController extends Controller<GameModel, GameView> {
 		
 		return playedCard;
 	}		
-	
-
 	
 }

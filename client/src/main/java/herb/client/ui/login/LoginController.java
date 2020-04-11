@@ -29,15 +29,15 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 		String username = view.getNameField().getText();
 		String password = view.getPwField().getText();
 
-//		try {
-//			model.login(username, password);
+		try {
+			model.login(username, password);
 			goToLauncher();
 			serviceLocator.getLogger().info("Login war erfolgreich.");
 			
-//		} catch (ExceptionBase e) {
-//			view.showError();
-//			serviceLocator.getLogger().info("Name oder Passwort falsch eingegeben.");
-//			}
+		} catch (ExceptionBase e) {
+			view.showError();
+			serviceLocator.getLogger().info("Name oder Passwort falsch eingegeben.");
+			}
 
 	}
 
