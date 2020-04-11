@@ -32,7 +32,7 @@ public class LauncherView extends View<LauncherModel> {
 	private MenuBar menuBar;
 	private Menu menuLanguage;
 	
-	protected ListView<Lobby> lobbyRoomCenter;
+	protected ListView<String> lobbyRoomCenter;
 	
 	private Lobby lobby;
 	
@@ -78,16 +78,16 @@ public class LauncherView extends View<LauncherModel> {
 	     * Herren
 	     */
 	    
-	    lobbyRoomCenter = new ListView<Lobby>();
+	    lobbyRoomCenter = new ListView<String>();
 	    lobbyRoomCenter.setPrefWidth(500);
 	    
 	    Lobby lobby1 = new Lobby("new");
-	    Lobby lobby2 = new Lobby("new");
-	    Lobby lobby3 = new Lobby("new");
+	    Lobby lobby2 = new Lobby("new2");
+	    Lobby lobby3 = new Lobby("new3");
 	    
-	    ObservableList<Lobby> lobbys = FXCollections.observableArrayList(lobby1,lobby2,lobby3);
+	    ObservableList<String> lobbys = FXCollections.observableArrayList(lobby1.getName(),lobby2.getName(),lobby3.getName());
 	    
-	    ListView<Lobby> lobbyRoomCenter = new ListView<Lobby>(lobbys);
+	    ListView<String> lobbyRoomCenter = new ListView<String>(lobbys);
 	    
 	    StackPane stPane = new StackPane();
 	    stPane.getChildren().add(lobbyRoomCenter);
@@ -115,7 +115,7 @@ public class LauncherView extends View<LauncherModel> {
 		
 
 		root.setTop(menuBar);
-		root.setCenter(stPane);
+		root.setCenter(lobbyRoomCenter);
 		root.setBottom(bottomBox);
 		
 		Scene scene = new Scene(root);
