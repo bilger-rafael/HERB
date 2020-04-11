@@ -1,5 +1,7 @@
 package herb.server.ressources.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public abstract class CardBase {
     protected final Suit suit;
     protected final Rank rank;
@@ -11,6 +13,7 @@ public abstract class CardBase {
     	this.trump = trump;
     }
     
+    @JsonIgnore
     public abstract int getPoints();
     
     protected abstract boolean isTrump();

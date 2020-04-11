@@ -1,7 +1,10 @@
 package herb.client.ressources.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public abstract class LobbyBase {
 	private final String name;
+	@JsonIgnoreProperties({ "round" })
 	protected PlayerBase[] players = new PlayerBase[4];
 	protected GameBase runningGame;
 

@@ -1,17 +1,19 @@
 package herb.client.ressources.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class CardBase {
     protected final Suit suit;
     protected final Rank rank;
     protected final Trump trump;
     
-    public CardBase(String suit, String rank, String trump) {
-    	this.suit = Suit.valueOf(suit);
-    	this.rank = Rank.valueOf(rank);
-    	this.trump = Trump.valueOf(trump);
+    public CardBase(Suit suit, Rank rank, Trump trump) {
+    	this.suit = suit;
+    	this.rank = rank;
+    	this.trump = trump;
     }
     
+    @JsonIgnore
     public abstract int getPoints();
     
     protected abstract boolean isTrump();
@@ -29,6 +31,4 @@ public abstract class CardBase {
 	public abstract Rank getRank();
 	
 	public abstract Trump getTrump();
-	
-	public abstract CardBase getCard(int i);
 }
