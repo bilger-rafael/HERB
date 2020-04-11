@@ -9,16 +9,16 @@ import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.TrickBase;
 
 //Etter
-public class Trick extends TrickBase {
+public class Trick extends TrickBase <Player> {
 	public boolean played;
 
-	public Trick(PlayerBase[] players, PlayerBase startingPlayer) {
+	public Trick(Player[] players, Player startingPlayer) {
 		super(players, startingPlayer);
 	}
 	
 	//Bilger
-	public PlayerBase playTrick() {
-		PlayerBase winner = null;
+	public Player playTrick() {
+		Player winner = null;
 
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			//TODO wait for currentPlayer to play (Create Event in Player)
@@ -44,7 +44,7 @@ public class Trick extends TrickBase {
 	}
 
 	@Override
-	public PlayerBase getWinner() {
+	public Player getWinner() {
 		this.winningPlayer = this.getStartingPlayer();
 		// Ort des Startspielers
 		for (int i = 0; i < this.getPlayers().length; i++) {
@@ -128,12 +128,12 @@ public class Trick extends TrickBase {
 	}
 
 	@Override
-	public Map<PlayerBase, CardBase> getPlayedCards() {
+	public Map<Player, CardBase> getPlayedCards() {
 		return this.playedCards;
 	}
 
 	@Override
-	public CardBase getPlayedCard(PlayerBase p) {
+	public CardBase getPlayedCard(Player p) {
 		return this.playedCards.get(p);
 	}
 
@@ -144,15 +144,15 @@ public class Trick extends TrickBase {
 	}
 
 	@Override
-	public PlayerBase getStaringPlayer() {
+	public Player getStaringPlayer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
 	@Override
-	public PlayerBase getNextPlayer(PlayerBase p) {
-		PlayerBase temp = p;
+	public Player getNextPlayer(Player p) {
+		Player temp = p;
 
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			if (temp == this.getPlayers()[i]) {
@@ -168,8 +168,8 @@ public class Trick extends TrickBase {
 	}
 
 	@Override
-	public PlayerBase getPrivousPlayer(PlayerBase p) {
-		PlayerBase temp = p;
+	public Player getPrivousPlayer(Player p) {
+		Player temp = p;
 
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			if (temp == this.getPlayers()[i]) {

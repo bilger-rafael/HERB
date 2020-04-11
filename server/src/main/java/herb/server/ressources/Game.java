@@ -17,7 +17,7 @@ public class Game extends GameBase{
 
 	@Override
 	public RoundBase startRound() {
-		Round r = new Round(this.players);
+		Round r = new Round((Player[]) this.players);
 		this.rounds.add(r);		
 		return r;
 	}

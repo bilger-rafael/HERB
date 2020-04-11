@@ -25,36 +25,6 @@ public class Player extends PlayerBase<Hand> {
 	}
 
 	@Override
-	public void addCardtoHand(CardBase card) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean PlayerNoCards() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void clearHand() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sortHand() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public CardBase[] determinPlayableCards() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Hand getHand() {
 		// TODO Auto-generated method stub
 		return null;

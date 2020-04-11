@@ -7,41 +7,41 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //Etter
-public abstract class RoundBase {
-	private LinkedList<TrickBase> tricks = new LinkedList<TrickBase>();
+public abstract class RoundBase <Player extends PlayerBase> {
+	private LinkedList<TrickBase<Player>> tricks = new LinkedList<TrickBase<Player>>();
 	private Trump trump;
-	private PlayerBase[] players = new PlayerBase[4];
-	private Map<PlayerBase,Integer> actualScores;
+	private Player[] players;
+	private Map<Player,Integer> actualScores;
 	
-	public Map<PlayerBase, Integer> getActualScores() {
+	public Map<Player, Integer> getActualScores() {
 		return actualScores;
 	}
 
-	public void setActualScores(Map<PlayerBase, Integer> actualScores) {
+	public void setActualScores(Map<Player, Integer> actualScores) {
 		this.actualScores = actualScores;
 	}
 
-	public RoundBase (PlayerBase[] players) {
+	public RoundBase (Player[] players) {
 		this.players=players;
 	}
 	
-	public void setPlayers(PlayerBase[] players) {
+	public void setPlayers(Player[] players) {
 		this.players = players;
 	}
 
-	private PlayerBase currentStartingPlayer;
+	private Player currentStartingPlayer;
 
-	public void setCurrentStartingPlayer(PlayerBase currentStartingPlayer) {
+	public void setCurrentStartingPlayer(Player currentStartingPlayer) {
 		this.currentStartingPlayer = currentStartingPlayer;
 	}
 
 
-	protected abstract void addTrickScore(PlayerBase winner);
+	protected abstract void addTrickScore(Player winner);
 	
 	@JsonIgnore
-	public abstract Map<PlayerBase, Integer> getScoreTable();
+	public abstract Map<Player, Integer> getScoreTable();
 	
-	public LinkedList<TrickBase> getTricks(){
+	public LinkedList<TrickBase<Player>> getTricks(){
 		return tricks;
 	}
 	
@@ -53,11 +53,11 @@ public abstract class RoundBase {
 		this.trump = trump;
 	}
 	
-	public PlayerBase[] getPlayers() {
+	public Player[] getPlayers() {
 		return players;
 	}
 	
-	public PlayerBase getCurrentStartingPlayer() {
+	public Player getCurrentStartingPlayer() {
 		return currentStartingPlayer;
 	}
 	

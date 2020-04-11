@@ -4,6 +4,7 @@ import java.util.Random;
 
 import herb.server.ressources.Card;
 import herb.server.ressources.Player;
+import herb.server.ressources.Trick;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.PlayerBase;
 
@@ -46,7 +47,7 @@ public class Bot {
 		
 		
 		//Logik
-		int NumberPlayedCards = botPlayer.getRound().getTricks().getLast().getPlayedCards().size();
+		int NumberPlayedCards = ((Trick) botPlayer.getRound().getTricks().getLast()).getPlayedCards().size();
 			
 		switch (NumberPlayedCards) {
 				//Bot ist der Startspieler, spielt eine Randomkarte

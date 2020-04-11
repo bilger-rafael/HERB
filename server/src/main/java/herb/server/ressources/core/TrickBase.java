@@ -3,19 +3,19 @@ package herb.server.ressources.core;
 import java.util.Map;
 
 //Bilger/Etter
-public abstract class TrickBase {
+public abstract class TrickBase <Player extends PlayerBase> {
 
 	protected class PlayerNode {
-		public PlayerBase data;
+		public Player data;
 		public PlayerNode next;
 
-		public PlayerNode(PlayerBase players) {
+		public PlayerNode(Player players) {
 			this.data = players;
 		}
 	}
 
-	private final PlayerBase[] players;
-	private final PlayerBase startingPlayer;
+	private final Player[] players;
+	private final Player startingPlayer;
 	private PlayerNode currentPlayer;
 	
 	
@@ -27,22 +27,22 @@ public abstract class TrickBase {
 		this.currentPlayer = currentPlayer;
 	}
 
-	public PlayerBase getWinningPlayer() {
+	public Player getWinningPlayer() {
 		return winningPlayer;
 	}
 
-	public void setWinningPlayer(PlayerBase winningPlayer) {
+	public void setWinningPlayer(Player winningPlayer) {
 		this.winningPlayer = winningPlayer;
 	}
 
-	public void setPlayedCards(Map<PlayerBase, CardBase> playedCards) {
+	public void setPlayedCards(Map<Player, CardBase> playedCards) {
 		this.playedCards = playedCards;
 	}
 
-	protected Map<PlayerBase, CardBase> playedCards;
-	protected PlayerBase winningPlayer;
+	protected Map<Player, CardBase> playedCards;
+	protected Player winningPlayer;
 
-	public TrickBase(PlayerBase[] players, PlayerBase startingPlayer) {
+	public TrickBase(Player[] players, Player startingPlayer) {
 		this.players = players;
 		this.startingPlayer = startingPlayer;
 
@@ -63,19 +63,19 @@ public abstract class TrickBase {
 		}
 	}
 	
-	public PlayerBase[] getPlayers() {
+	public Player[] getPlayers() {
 		return players;
 	}
 	
-	public PlayerBase getStartingPlayer() {
+	public Player getStartingPlayer() {
 		return startingPlayer;
 	}
 
-	public abstract PlayerBase getWinner();
+	public abstract Player getWinner();
 
-	public abstract PlayerBase getNextPlayer(PlayerBase p);
+	public abstract Player getNextPlayer(Player p);
 
-	public abstract PlayerBase getPrivousPlayer(PlayerBase p);
+	public abstract Player getPrivousPlayer(Player p);
 
 	public abstract void addCardtoTrick(CardBase c);
 
@@ -83,10 +83,10 @@ public abstract class TrickBase {
 
 	public abstract int getTrickPoints();
 
-	public abstract PlayerBase getStaringPlayer();
+	public abstract Player getStaringPlayer();
 
-	public abstract Map<PlayerBase, CardBase> getPlayedCards();
+	public abstract Map<Player, CardBase> getPlayedCards();
 
-	public abstract CardBase getPlayedCard(PlayerBase p);
+	public abstract CardBase getPlayedCard(Player p);
 
 }

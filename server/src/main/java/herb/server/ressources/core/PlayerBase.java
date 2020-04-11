@@ -9,14 +9,10 @@ public abstract class PlayerBase <Hand extends HandBase> {
 	@JsonIgnoreProperties({ "players", "currentStartingPlayer" })
 	private RoundBase round;
 	private Hand hand;
-	private CardBase[] playableHandCards;
+	protected CardBase[] playableHandCards;
 
 	public CardBase[] getPlayableHand() {
 		return playableHandCards;
-	}
-
-	public void updatePlayableHand() {
-		this.playableHandCards = determinPlayableCards();
 	}
 
 	public void setHand(Hand hand) {
@@ -62,17 +58,6 @@ public abstract class PlayerBase <Hand extends HandBase> {
 	public void setRound(RoundBase round) {
 		this.round = round;
 	}
-
-	public abstract void addCardtoHand(CardBase card);
-
-	public abstract boolean PlayerNoCards();
-
-	public abstract void clearHand();
-	
-
-	public abstract void sortHand();
-
-	public abstract CardBase[] determinPlayableCards();
 
 	public RoundBase getRound() {
 		return round;

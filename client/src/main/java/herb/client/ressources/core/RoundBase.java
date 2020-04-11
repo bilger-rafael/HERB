@@ -3,23 +3,45 @@ package herb.client.ressources.core;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 //Etter
-public abstract class RoundBase {
-	protected LinkedList<TrickBase> tricks = new LinkedList<TrickBase>();
+public abstract class RoundBase <Player extends PlayerBase> {
+	private LinkedList<TrickBase<Player>> tricks = new LinkedList<TrickBase<Player>>();
 	private Trump trump;
-	protected PlayerBase[] players = new PlayerBase[4];
-	protected Map<PlayerBase,Integer> actualScores;
-	protected PlayerBase currentStartingPlayer;
+	private Player[] players;
+	private Map<Player,Integer> actualScores;
 	
-	public RoundBase (PlayerBase[] players) {
+	public Map<Player, Integer> getActualScores() {
+		return actualScores;
+	}
+
+	public void setActualScores(Map<Player, Integer> actualScores) {
+		this.actualScores = actualScores;
+	}
+
+	public RoundBase (Player[] players) {
 		this.players=players;
 	}
 	
-	protected abstract void addTrickScore(PlayerBase winner);
+	public void setPlayers(Player[] players) {
+		this.players = players;
+	}
+
+	private Player currentStartingPlayer;
+
+	public void setCurrentStartingPlayer(Player currentStartingPlayer) {
+		this.currentStartingPlayer = currentStartingPlayer;
+	}
+
+
+	protected abstract void addTrickScore(Player winner);
 	
-	public abstract Map<PlayerBase, Integer> getScoreTable();
+	@JsonIgnore
+	public abstract Map<Player, Integer> getScoreTable();
 	
-	public LinkedList<TrickBase> getTricks(){
+	public LinkedList<TrickBase<Player>> getTricks(){
 		return tricks;
 	}
 	
@@ -31,7 +53,11 @@ public abstract class RoundBase {
 		this.trump = trump;
 	}
 	
-	public PlayerBase getCurrentStartingPlayer() {
+	public Player[] getPlayers() {
+		return players;
+	}
+	
+	public Player getCurrentStartingPlayer() {
 		return currentStartingPlayer;
 	}
 	

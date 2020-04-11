@@ -3,24 +3,23 @@ package herb.client.ressources;
 import java.util.Map;
 
 import herb.client.ressources.core.CardBase;
-import herb.client.ressources.core.PlayerBase;
 import herb.client.ressources.core.TrickBase;
 
-public class Trick extends TrickBase{
+public class Trick extends TrickBase<Player>{
 
-	public Trick(PlayerBase[] players, PlayerBase startingPlayer) {
+	public Trick(Player[] players, Player startingPlayer) {
 		super(players, startingPlayer);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public PlayerBase getWinner() {
+	public Player getWinner() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public PlayerBase getNextPlayer(PlayerBase p) {
+	public Player getNextPlayer(Player p) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -31,14 +30,13 @@ public class Trick extends TrickBase{
 		
 	}
 
-	@Override
-	protected PlayerBase setNextCurrentPlayer() {
+	protected Player setNextCurrentPlayer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public PlayerBase getPrivousPlayer(PlayerBase p) {
+	public Player getPrivousPlayer(Player p) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,7 +48,7 @@ public class Trick extends TrickBase{
 	}
 
 	@Override
-	public PlayerBase getStaringPlayer() {
+	public Player getStaringPlayer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -62,13 +60,13 @@ public class Trick extends TrickBase{
 	}
 
 	@Override
-	public Map<PlayerBase, CardBase> getPlayedCards() {
+	public Map<Player, CardBase> getPlayedCards() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CardBase getPlayedCard(PlayerBase p) {
+	public CardBase getPlayedCard(Player p) {
 		// TODO Auto-generated method stub
 		return null;
 	}

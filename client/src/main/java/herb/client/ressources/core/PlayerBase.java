@@ -8,7 +8,20 @@ public abstract class PlayerBase <Hand extends HandBase> {
 	private final String authToken;
 	@JsonIgnoreProperties({ "players", "currentStartingPlayer" })
 	private RoundBase round;
-	protected Hand hand; //TODO make private and use GETTER
+	private Hand hand;
+	protected CardBase[] playableHandCards;
+
+	public CardBase[] getPlayableHand() {
+		return playableHandCards;
+	}
+
+	public void setHand(Hand hand) {
+		this.hand = hand;
+	}
+
+	public Hand getHand() {
+		return hand;
+	}
 
 	@JsonCreator
 	public PlayerBase(String username, String authToken) {
@@ -45,18 +58,6 @@ public abstract class PlayerBase <Hand extends HandBase> {
 	public void setRound(RoundBase round) {
 		this.round = round;
 	}
-
-	public abstract void addCardtoHand(CardBase card);
-
-	public abstract boolean PlayerNoCards();
-
-	public abstract void clearHand();
-	
-	public abstract Hand getHand();
-
-	public abstract void sortHand();
-
-	public abstract CardBase[] determinPlayableCards();
 
 	public RoundBase getRound() {
 		return round;

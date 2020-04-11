@@ -11,10 +11,10 @@ import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
 //Etter
-public class Round extends RoundBase implements Runnable{
+public class Round extends RoundBase<Player> implements Runnable{
 	private DeckOfCards deck;
 
-	public Round(PlayerBase[] players) {
+	public Round(Player[] players) {
 		super(players);
 		this.setTrump(randomTrump());
 		this.deck = new DeckOfCards(this.getTrump());
@@ -66,7 +66,7 @@ public class Round extends RoundBase implements Runnable{
 			this.getTricks().add(new Trick(this.getPlayers(), this.getCurrentStartingPlayer()));
 			// Spielen
 			Trick trick = (Trick) this.getTricks().getLast();
-			PlayerBase winner = trick.playTrick();
+			Player winner = (Player) trick.playTrick();
 			// Punkte auswerten
 			addTrickScore(winner);
 			// set winner as starting player
@@ -75,13 +75,13 @@ public class Round extends RoundBase implements Runnable{
 	}
 	
 	//Gibt eine Map mit den Spielern und den Spielständen zurück
-	private Map<PlayerBase, Integer> endRound() {
+	private Map<Player, Integer> endRound() {
 		// Aktuelle Runde für Spieler entfernen
 		for (int i = 0; i < this.getPlayers().length; i++) {
-			((Player) this.getPlayers()[i]).setRound(null);
+			this.getPlayers()[i].setRound(null);
 		}
 		
-		Map<PlayerBase, Integer> temp = getScoreTable();
+		Map<Player, Integer> temp = getScoreTable();
 		return temp;
 		
 		//TODO kill thread
@@ -94,15 +94,15 @@ public class Round extends RoundBase implements Runnable{
 	}
 
 	@Override
-	protected void addTrickScore(PlayerBase winner) {
+	protected void addTrickScore(Player winner) {
 		Integer additionalScore = this.getTricks().getLast().getTrickPoints();
 		Integer oldScore = getActualScores().get(winner);
 		getActualScores().put(winner, (additionalScore + oldScore));
 	}
 
 	@Override
-	public Map<PlayerBase, Integer> getScoreTable() {
-		Map<PlayerBase, Integer> sortedTable = new TreeMap<>();
+	public Map<Player, Integer> getScoreTable() {
+		Map<Player, Integer> sortedTable = new TreeMap<>();
 		getActualScores().entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
 				.forEachOrdered(x -> sortedTable.put(x.getKey(), x.getValue()));
 
