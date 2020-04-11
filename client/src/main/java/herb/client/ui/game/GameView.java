@@ -14,6 +14,7 @@ import herb.client.utils.ServiceLocator;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.BorderPane;
@@ -48,6 +49,7 @@ public class GameView extends View<GameModel> {
 	private Rectangle[] rects;
 	private Card[] cardAreas;
 	private ArrayList<Card> cardAreas1;
+	private Button simButton;
 
 
 	public GameView(Stage stage, GameModel model) {
@@ -124,6 +126,7 @@ public class GameView extends View<GameModel> {
 		rightPoints = new Label("99");
 		oppoPoints = new Label("111");
 		
+		simButton = new Button("simulation");
 	
 		// create MenuBar - language and cardSet (fr vs. de) TODO
 		
@@ -342,7 +345,7 @@ public class GameView extends View<GameModel> {
 
 		
 		//AnchorPane
-		root.getChildren().addAll(upperPart, bottom, left, right, pointPane);
+		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, simButton);
 		root.setLeftAnchor(left, -10d);
 		root.setTopAnchor(left, 70d);
 		root.setBottomAnchor(left, 200d);
@@ -363,6 +366,9 @@ public class GameView extends View<GameModel> {
 		
 		root.setTopAnchor(pointPane, 10d);
 		root.setRightAnchor(pointPane, 10d);
+		
+		root.setTopAnchor(simButton, 10d);
+		root.setLeftAnchor(simButton, 10d);
 	
 		Scene scene = new Scene(root, 1000, 1000);
 		return scene;
@@ -427,5 +433,8 @@ public class GameView extends View<GameModel> {
 	// evtl. mit Liste
 	public Rectangle[] getRects() {
 		return rects;
+	}
+	public Button getSimulationButton() {
+		return simButton;
 	}
 }
