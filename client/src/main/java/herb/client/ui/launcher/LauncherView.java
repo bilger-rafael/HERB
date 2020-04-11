@@ -8,15 +8,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+
+import java.util.Locale;
+
+import herb.client.utils.Translator;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 
 public class LauncherView extends View<LauncherModel> {
 	
 	private BorderPane root, bottomBox;
 	private VBox centerBox;
-	private Button joinButton, newLobbyButton;
+	private Button joinButton,createButton, newLobbyButton;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -47,6 +53,20 @@ public class LauncherView extends View<LauncherModel> {
 	    menuBar.getMenus().add(menuLanguage);
 	    
 	    /**
+	     * set local
+	     */
+		for (Locale locale : sl.getLocales()) {
+			MenuItem language = new MenuItem(locale.getLanguage());
+			this.menuLanguage.getItems().add(language);
+			language.setOnAction(event -> {
+				sl.getConfiguration().setLocalOption("Language", locale.getLanguage());
+				sl.setTranslator(new Translator(locale.getLanguage()));
+				updateLabels();
+			});
+		}
+	    
+	    
+	    /**
 	     * list
 	     * Herren
 	     */
@@ -54,22 +74,51 @@ public class LauncherView extends View<LauncherModel> {
 	    lobbyRoomCenter = new ListView<String>();
 	    lobbyRoomCenter.setPrefWidth(500);
 		
-		// Buttons
-		joinButton = new Button("join");
-		joinButton.setPrefSize(500, 30);
+	    /**
+	     * Buttons with bottomBox
+	     * Herren
+	     */
 		bottomBox = new BorderPane();
+		joinButton = new Button("join");		
+		createButton = new Button("create");
 		
 		bottomBox.setRight(joinButton);
+		bottomBox.setLeft(createButton);
+		
+		joinButton.setAlignment(Pos.BASELINE_CENTER);
+		createButton.setAlignment(Pos.BASELINE_CENTER);
+		
+		joinButton.setPrefWidth(100);
+		createButton.setPrefWidth(100);
+		
+
 		root.setTop(menuBar);
 		root.setCenter(lobbyRoomCenter);
 		root.setBottom(bottomBox);
 		
 		Scene scene = new Scene(root);
 		return scene;
+		
+	/**
+	 * names given by translator
+	 * Herren
+	 */
+		
+	}
+	protected void updateLabels() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		
+		joinButton.setText(t.getString("program.launcher.joinButton"));
+		createButton.setText(t.getString("program.launcher.createButton"));
+		menuLanguage.setText(t.getString("program.launcher.menuLanguage"));
 	}
 	
 	public Button getJoinButton() {
 		return joinButton;
+	}
+	
+	public Button getCreateButton() {
+		return createButton;
 	}
 
 }
