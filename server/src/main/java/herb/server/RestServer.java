@@ -41,6 +41,7 @@ public class RestServer {
     	while(!valid) {
     		System.out.println("Geben Sie den Pfad zur MySQL-Datenbank ein");
     		System.out.println(" Für Mac User: jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC");
+    		System.out.println(" Für Windows User: jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC");
     		ip = scan.nextLine();
     		
     		System.out.println("Geben Sie ihren MySQL-User ein");
