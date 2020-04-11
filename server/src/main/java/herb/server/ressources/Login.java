@@ -30,12 +30,12 @@ public class Login extends LoginBase {
 
 		// Etter Login mit MySQL DB
 		// Check User existiert
-		if (!DataStore_Repository.getDB().checkPlayerExist(this.getUsername())) {
+		if (!DataStore_Repository.getDB().checkLoginExist(this.getUsername())) {
 			throw new PlayerNotFoundException();
 		}
 		
 		// Check Passwort stimmt
-		if (!this.getPassword().equals(DataStore_Repository.getDB().showPlayerPasswordfromDB(this.getUsername()))) {
+		if (!this.getPassword().equals(DataStore_Repository.getDB().showLoginPasswordfromDB(this.getUsername()))) {
 			throw new PlayerLoginFailedException();
 		}
 
@@ -59,7 +59,7 @@ public class Login extends LoginBase {
 		 */
 
 		// Etter Eintrag in MYSQL-DB
-		int i = DataStore_Repository.getDB().addPlayerToDB(this.getUsername(), this.getPassword());
+		int i = DataStore_Repository.getDB().addLoginToDB(this.getUsername(), this.getPassword());
 		if (i == 0) {
 			throw new PlayerAlreadyExistsException();
 		}

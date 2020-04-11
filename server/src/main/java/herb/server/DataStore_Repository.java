@@ -93,22 +93,22 @@ public class DataStore_Repository {
 			//Teste, ob es DB bereits gibt
 			if(this.dbExist()) {
 				//Tabellen wenn nötig erstellen
-				this.createPlayerTable();
+				this.createLoginTable();
 				this.createLobbyTable();
 				this.createHighScoresTable();
     		
 			}else {
 				//DB mit Tabellen erstellen 
 				this.createSchema();
-				this.createPlayerTable();
+				this.createLoginTable();
 				this.createLobbyTable();
 				this.createHighScoresTable();
 				
 				//Grunddaten erstellen
-				this.addPlayerToDB("Etter", "Etter");
-				this.addPlayerToDB("Bilger", "Bilger");
-				this.addPlayerToDB("Rösti", "Rösti");
-				this.addPlayerToDB("Herren", "Herren");
+				this.addLoginToDB("Etter", "Etter");
+				this.addLoginToDB("Bilger", "Bilger");
+				this.addLoginToDB("Rösti", "Rösti");
+				this.addLoginToDB("Herren", "Herren");
 				this.addLobby("BaseLobby");
 				this.addLobby("LobbySonntag");
 				this.addPlayertoHighScore("Etter", "123");
@@ -155,8 +155,8 @@ public class DataStore_Repository {
 	    stmt.execute(sqlCreate);
 	}
 	
-	private void createPlayerTable() throws SQLException {
-	    String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.Players (" 
+	private void createLoginTable() throws SQLException {
+	    String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.Login (" 
 	            + "   Name VARCHAR(45) NOT NULL,"
 	            + "   Password VARCHAR(45) NOT NULL,"
 	            + "   PRIMARY KEY (Name))";
@@ -166,7 +166,7 @@ public class DataStore_Repository {
 	}
 	
 	private void createLobbyTable() throws SQLException{
-	    String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.Lobbys (" 
+	    String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.Lobby (" 
 	            + "   LobbyName VARCHAR(45) NOT NULL,"
 	            + "   PRIMARY KEY (LobbyName))";
 	    
@@ -175,7 +175,7 @@ public class DataStore_Repository {
 	}
 	
 	private void createHighScoresTable() throws SQLException{
-	    String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.HighScores (" 
+	    String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.HighScore (" 
 	            + "   PlayerName VARCHAR(45) NOT NULL,"
 	            + "   Points INT NOT NULL,"
 	            + "   PRIMARY KEY (PlayerName))";
@@ -185,13 +185,13 @@ public class DataStore_Repository {
 	}
 		
 	//Fügt einen Player der DB mit PreparedStatment hinzu gibt 1 zurück falls erfolgreich
-	public int addPlayerToDB(String playername, String password) {
+	public int addLoginToDB(String playername, String password) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     int answer = 0;
 	     
 	     try {
-	    	 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Players (Name, Password) VALUES (?,?)");
+	    	 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Login (Name, Password) VALUES (?,?)");
 	    	 stmt.setString(1, playername);
 	    	 stmt.setString(2, password);
 	    	 answer = stmt.executeUpdate();
@@ -213,13 +213,13 @@ public class DataStore_Repository {
 	}
 	
 	//Löscht einen Player der DB mit PreparedStatment, gibt 1 zurück wenn gelöscht
-	public int deletePlayerFromDB(String playername) {
+	public int deleteLoginFromDB(String playername) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     int answer = 0;
 	     
 	     try { 
-	    	 stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Players WHERE Name=?");
+	    	 stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Login WHERE Name=?");
 	    	 stmt.setString(1, playername);
 	    	 answer = stmt.executeUpdate();
 	    	 System.out.println(answer+" gelöscht");
@@ -238,13 +238,13 @@ public class DataStore_Repository {
 	}
 	
 	//Gibt Player PW zurück der DB mit PreparedStatment
-	public String showPlayerPasswordfromDB(String playername) {
+	public String showLoginPasswordfromDB(String playername) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     String password = null;
 	     
 	     try {
-		     stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.Players WHERE name=?");
+		     stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.Login WHERE name=?");
 		     stmt.setString(1, playername);
 		   	 rs = stmt.executeQuery();
 		   	 rs.next();
@@ -264,13 +264,13 @@ public class DataStore_Repository {
 	}
 	
 	//Überprüft, ob ein Spieler existiert
-	public boolean checkPlayerExist(String playername) {
+	public boolean checkLoginExist(String playername) {
 		 PreparedStatement stmt = null;
 	     ResultSet rs = null;
 	     boolean b = false;
 	     
 	     try {
-		     stmt = this.cn.prepareStatement("SELECT COUNT(Name) FROM JASSHERB.Players WHERE Name = ?");
+		     stmt = this.cn.prepareStatement("SELECT COUNT(Name) FROM JASSHERB.Login WHERE Name = ?");
 		     stmt.setString(1, playername);
 		   	 rs = stmt.executeQuery();
 		   	 rs.next();
@@ -297,7 +297,7 @@ public class DataStore_Repository {
 	     int answer = 0;
 	     
 	     try {
-			 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.HighScores (PlayerName, Points) VALUES (?,?)");
+			 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.HighScore (PlayerName, Points) VALUES (?,?)");
 			 stmt.setString(1, playername);
 			 stmt.setString(2, points);
 			 answer = stmt.executeUpdate();
@@ -322,7 +322,7 @@ public class DataStore_Repository {
 	     int answer=0;
 	     
 	     try {
-		     stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.HighScores WHERE PlayerName=?");
+		     stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.HighScore WHERE PlayerName=?");
 		     stmt.setString(1, playername);
 		   	 answer = stmt.executeUpdate();
 			 System.out.println(answer+" gelöscht");	 
@@ -346,7 +346,7 @@ public class DataStore_Repository {
 	     int answer = 0;
 	     
 	     try {
-			 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Lobbys (LobbyName) VALUES (?)");
+			 stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Lobby (LobbyName) VALUES (?)");
 			 stmt.setString(1, lobbyName);
 			 answer = stmt.executeUpdate();
 			 System.out.println(answer+" eingefügt");
@@ -370,7 +370,7 @@ public class DataStore_Repository {
 	     int answer = 0;
 	     
 	     try {
-		     stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Lobbys WHERE LobbyName=?");
+		     stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Lobby WHERE LobbyName=?");
 		     stmt.setString(1, lobbyName);
 		   	 answer = stmt.executeUpdate();
 			 System.out.println(answer+" gelöscht");
@@ -395,7 +395,7 @@ public class DataStore_Repository {
 	    String tempLobbyName = null;
 	     
 	     try {
-		     stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.Lobbys");
+		     stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.Lobby");
 		   	 rs = stmt.executeQuery();
 		   	 while(rs.next()) {
         	 
