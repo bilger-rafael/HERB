@@ -8,6 +8,7 @@ import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Model;
+import herb.client.utils.Datastore;
 
 public class GameModel extends Model{
 
@@ -20,6 +21,10 @@ public class GameModel extends Model{
     // Roesti > receive cards for this player 
     // TODO Input von Server Player[] players
     public Player[] getLobbyPlayers() {
+    	
+    	// Datastore.getInstance().getMainPlayer().getHand().getCards();
+    	// Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast().getPlayedCards();
+    	
     	Player[] plys = new Player[4];
     	
     	Player p1 = new Player ("Mea", "passwort");
