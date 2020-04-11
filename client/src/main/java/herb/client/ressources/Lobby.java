@@ -10,7 +10,7 @@ import herb.client.ressources.core.LobbyBase;
 import herb.client.ressources.core.PlayerBase;
 import herb.client.rest.RestClient;
 
-public class Lobby extends LobbyBase {
+public class Lobby extends LobbyBase<Player> {
 	
 	// default constructor for json deserialization
 	public Lobby() {
@@ -19,7 +19,12 @@ public class Lobby extends LobbyBase {
 	
 	@Override
 	public String toString() {
-		return this.getName();
+		int number = 0;
+		for (int i = 0; i < this.players.length; i++) {
+			if (this.players[i] != null) number++;
+		}
+		
+		return this.getName() + "(" + number + "/4)";
 	}
 	
 	public Lobby(String name) {
@@ -32,7 +37,7 @@ public class Lobby extends LobbyBase {
 	}
 
 	@Override
-	public void addPlayer(PlayerBase player) throws ExceptionBase {
+	public void addPlayer(Player player) throws ExceptionBase {
 		try {
 			RestClient.getClient()
 					.post()
@@ -51,7 +56,7 @@ public class Lobby extends LobbyBase {
 	}
 
 	@Override
-	public void removePlayer(PlayerBase player) throws ExceptionBase {
+	public void removePlayer(Player player) throws ExceptionBase {
 		// TODO implement (copy addPlayer and change join to leave
 	}
 	
