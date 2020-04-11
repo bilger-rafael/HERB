@@ -17,6 +17,11 @@ public class Lobby extends LobbyBase {
 		super("");
 	}
 	
+	@Override
+	public String toString() {
+		return this.getName();
+	}
+	
 	public Lobby(String name) {
 		super(name);
 	}

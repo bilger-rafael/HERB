@@ -80,14 +80,11 @@ public class LauncherView extends View<LauncherModel> {
 	    
 	    lobbyRoomCenter = new ListView<String>();
 	    lobbyRoomCenter.setPrefWidth(500);
+	    	    
+	    //ObservableList<String> lobbys = FXCollections.observableArrayList(lobby1.getName(),lobby2.getName(),lobby3.getName());
+	    ObservableList<Lobby> lobbys = FXCollections.observableArrayList(model.getLobbys());
 	    
-	    Lobby lobby1 = new Lobby("new");
-	    Lobby lobby2 = new Lobby("new2");
-	    Lobby lobby3 = new Lobby("new3");
-	    
-	    ObservableList<String> lobbys = FXCollections.observableArrayList(lobby1.getName(),lobby2.getName(),lobby3.getName());
-	    
-	    ListView<String> lobbyRoomCenter = new ListView<String>(lobbys);
+	    ListView<Lobby> lobbyRoomCenter = new ListView<Lobby>(lobbys);
 	    
 	    StackPane stPane = new StackPane();
 	    stPane.getChildren().add(lobbyRoomCenter);
