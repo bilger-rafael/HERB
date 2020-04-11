@@ -3,18 +3,23 @@ package herb.client.ui.launcher;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 
 import java.util.Locale;
 
 import herb.client.utils.Translator;
+import herb.client.ressources.Lobby;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 
@@ -27,7 +32,9 @@ public class LauncherView extends View<LauncherModel> {
 	private MenuBar menuBar;
 	private Menu menuLanguage;
 	
-	protected ListView<String> lobbyRoomCenter;
+	protected ListView<Lobby> lobbyRoomCenter;
+	
+	private Lobby lobby;
 	
 
 	
@@ -71,9 +78,24 @@ public class LauncherView extends View<LauncherModel> {
 	     * Herren
 	     */
 	    
-	    lobbyRoomCenter = new ListView<String>();
+	    lobbyRoomCenter = new ListView<Lobby>();
 	    lobbyRoomCenter.setPrefWidth(500);
-		
+	    
+	    Lobby lobby1 = new Lobby("new");
+	    Lobby lobby2 = new Lobby("new");
+	    Lobby lobby3 = new Lobby("new");
+	    
+	    ObservableList<Lobby> lobbys = FXCollections.observableArrayList(lobby1,lobby2,lobby3);
+	    
+	    ListView<Lobby> lobbyRoomCenter = new ListView<Lobby>(lobbys);
+	    
+	    StackPane stPane = new StackPane();
+	    stPane.getChildren().add(lobbyRoomCenter);
+	    
+	    lobbyRoomCenter.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); 
+
+	    lobbyRoomCenter.getSelectionModel().selectIndices(1, 2);
+	    
 	    /**
 	     * Buttons with bottomBox
 	     * Herren
@@ -93,7 +115,7 @@ public class LauncherView extends View<LauncherModel> {
 		
 
 		root.setTop(menuBar);
-		root.setCenter(lobbyRoomCenter);
+		root.setCenter(stPane);
 		root.setBottom(bottomBox);
 		
 		Scene scene = new Scene(root);
