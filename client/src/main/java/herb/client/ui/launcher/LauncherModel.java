@@ -1,5 +1,6 @@
 package herb.client.ui.launcher;
 
+import chat.commonClasses.Client;
 import herb.client.ressources.Lobby;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Model;
@@ -10,8 +11,6 @@ public class LauncherModel extends Model{
     public LauncherModel() {
     	super();
     	refreshLobbyList();
-    	
-    	//TODO refresh via button click or all 5 min
     }
     
     public void refreshLobbyList() {
@@ -22,6 +21,23 @@ public class LauncherModel extends Model{
 			e.printStackTrace();
 		}
     }
+    
+    // Create thread to update Lobby periodically
+	private void startLobbyUpdater() {
+	Runnable r = new Runnable() {
+		boolean b = false;
+		@Override
+		public void run() {
+			while (b) {
+				refreshLobbyList();
+				try {
+					Thread.sleep(60000);
+				} catch (InterruptedException e) {
+					}
+				}
+			}
+		};
+	}
 
 	public Lobby[] getLobbys() {
 		return lobbys;
