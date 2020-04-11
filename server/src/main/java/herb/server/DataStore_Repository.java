@@ -105,10 +105,10 @@ public class DataStore_Repository {
 				this.createHighScoresTable();
 				
 				//Grunddaten erstellen
-				this.addLoginToDB("Etter", "Etter");
-				this.addLoginToDB("Bilger", "Bilger");
-				this.addLoginToDB("Rösti", "Rösti");
-				this.addLoginToDB("Herren", "Herren");
+				this.addLoginToDB("Etter", "UlhSMFpYST0=");
+				this.addLoginToDB("Bilger", "UW1sc1oyVnk=");
+				this.addLoginToDB("Rösti", "VXNPMmMzUnA=");
+				this.addLoginToDB("Herren", "U0dWeWNtVnU=");
 				this.addLobby("BaseLobby");
 				this.addLobby("LobbySonntag");
 				this.addPlayertoHighScore("Etter", "123");
