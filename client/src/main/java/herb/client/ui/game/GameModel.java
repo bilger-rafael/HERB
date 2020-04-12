@@ -11,12 +11,12 @@ import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Model;
 import herb.client.utils.Datastore;
+import herb.client.utils.ServiceLocator;
 
 public class GameModel extends Model {
 
 	public GameModel() {
 		super();
-
 	}
 
 	// Roesti > receive cards for this player
@@ -26,10 +26,13 @@ public class GameModel extends Model {
 		// Datastore.getInstance().getMainPlayer().getHand().getCards();
 		// Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast().getPlayedCards();
 		
+		try {
 		Player[] players = (Player[]) Datastore.getInstance().getMainPlayer().getRound().getPlayers();
-		
 		if (players[0] != null)
 			return players;
+		} catch (Exception e) {
+			System.out.println("Fehler");
+		}
 
 		Player[] plys = new Player[4];
 
@@ -60,7 +63,7 @@ public class GameModel extends Model {
 
 		Card[] cards = (Card[]) Datastore.getInstance().getMainPlayer().getHand().getCards();
 		
-		//if cards recived from server, use them instead of the testdata
+		//if cards received from server, use them instead of the testdata
 		if (cards[0] != null)
 			return new ArrayList<Card>(Arrays.asList(cards));
 
