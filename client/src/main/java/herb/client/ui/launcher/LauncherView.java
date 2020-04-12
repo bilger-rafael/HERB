@@ -160,6 +160,10 @@ public class LauncherView extends View<LauncherModel> {
 	public Button getSkipButton() {
 		return skipButton;
 	}
+	
+	public Button getRefreshButton() {
+		return refreshButton;
+	}
 
 
 }
