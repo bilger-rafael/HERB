@@ -13,6 +13,7 @@ public abstract class RoundBase <Player extends PlayerBase> {
 	private Player[] players;
 	private Map<Player,Integer> actualScores;
 	
+	@JsonIgnore
 	public Map<Player, Integer> getActualScores() {
 		return actualScores;
 	}
