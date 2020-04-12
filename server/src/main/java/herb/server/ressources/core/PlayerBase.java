@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public abstract class PlayerBase <Hand extends HandBase> {
 	private final String username;
 	private final String authToken;
-	@JsonIgnoreProperties({ "players", "currentStartingPlayer" })
+	@JsonIgnoreProperties({ "players", "currentStartingPlayer", "tricks" })
 	private RoundBase round;
 	private Hand hand;
 	protected CardBase[] playableHandCards;
