@@ -10,7 +10,6 @@ public abstract class LobbyBase <Player extends PlayerBase> {
 
 	public LobbyBase(String name) {
 		this.name = name;
-		this.players = (Player[]) new PlayerBase[4];
 	}
 
 	public String getName() {

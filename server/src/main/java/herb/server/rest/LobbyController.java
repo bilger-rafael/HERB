@@ -38,7 +38,8 @@ public class LobbyController {
 		Player p = Datastore.getInstance().players.get(player.getUsername());
 		if (p == null)
 			throw new PlayerNotFoundException();
-		getLobby(name).addPlayer(p);
+		Lobby.readLobby(name).addPlayer(p);
+		//((Lobby) getLobby(name)).addPlayer(p);
 	}
 
 	@PostMapping("/Lobby({name})/leave")

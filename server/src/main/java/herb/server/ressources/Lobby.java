@@ -1,24 +1,17 @@
 package herb.server.ressources;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.server.Datastore;
 import herb.server.ressources.core.ExceptionBase;
-import herb.server.ressources.core.GameBase;
 import herb.server.ressources.core.LobbyBase;
-import herb.server.ressources.core.PlayerBase;
 
-public class Lobby extends LobbyBase {
-	private int index;
+public class Lobby extends LobbyBase<Player> {
 
 	@JsonCreator
 	public Lobby(String name) {
 		super(name);
+		this.players = new Player[4];
 	}
 
 	@Override // Etter Spiel starten
@@ -27,7 +20,7 @@ public class Lobby extends LobbyBase {
 	}
 
 	// Etter Spieler dem Array hinzufügen
-	public void addPlayer(PlayerBase player) throws ExceptionBase {
+	public void addPlayer(Player player) throws ExceptionBase {
 		if (isFull())
 			throw new ServerErrorException();
 
@@ -52,7 +45,7 @@ public class Lobby extends LobbyBase {
 	}
 
 	// Etter Spieler verlässt die Lobby
-	public void removePlayer(PlayerBase player) throws ExceptionBase {
+	public void removePlayer(Player player) throws ExceptionBase {
 		for (int i = 0; i < this.players.length; i++) {
 			if (this.players[i].equals(player)) {
 				this.players[i] = null;
