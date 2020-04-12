@@ -11,7 +11,7 @@ public abstract class LoginBase {
 	@JsonCreator	
 	public LoginBase(String username, String password) {
 		this.username = username;
-		this.password = Base64.getEncoder().encodeToString(password.getBytes());
+		this.password = password;
 	}
 
 	public String getUsername() {
