@@ -14,12 +14,15 @@ import herb.client.utils.Datastore;
 import herb.client.utils.ServiceLocator;
 
 public class GameModel extends Model {
+	private Player[] plys;
+	private ArrayList<Card> currentCards;
+	private ArrayList<Card> playables;
+	
 
 	public GameModel() {
 		super();
 	}
 
-	// Roesti > receive cards for this player
 	// TODO Input von Server Player[] players
 	public Player[] getLobbyPlayers() {
 
@@ -34,7 +37,7 @@ public class GameModel extends Model {
 			System.out.println("Fehler");
 		}
 
-		Player[] plys = new Player[4];
+		plys = new Player[4];
 
 		Player p1 = new Player("Mea", "passwort");
 		Player p2 = new Player("Etter", "passwort");
@@ -67,7 +70,7 @@ public class GameModel extends Model {
 		if (cards[0] != null)
 			return new ArrayList<Card>(Arrays.asList(cards));
 
-		ArrayList<Card> currentCards = new ArrayList();
+		currentCards = new ArrayList();
 
 		for (int i = 0; i < 4; i++) {
 			Rank r1 = Rank.Queen;
@@ -115,6 +118,23 @@ public class GameModel extends Model {
 //		System.out.println(writeCardsOut);
 		return currentCards;
 	}
+	
+	public ArrayList<Card> getCurrentCards(){
+		return this.currentCards;
+	}
+	
+	public ArrayList<Card> getPlayableCards(){
+		playables = new ArrayList();
+		// TODO
+		// for testing
+		Rank r1 = Rank.Nine;
+		Suit s1 = Suit.Clubs;
+		Trump t1 = Trump.TopsDown;
+		Card c1 = new Card(s1, r1, t1);
+		playables.add(c1);
+		
+		return playables;
+	}
 
 	public ArrayList<Card> getTrickCards() {
 		ArrayList<Card> trickCards = new ArrayList();
@@ -125,23 +145,23 @@ public class GameModel extends Model {
 		Card card1 = new Card(suit1, rank1, trump1);
 		trickCards.add(card1);
 		
-//		Rank rank2 = Rank.Ace;
-//		Suit suit2 = Suit.Spades;
-//		Trump trump2 = Trump.TopsDown;
-//		Card card2 = new Card(suit2, rank2, trump2);
-//		trickCards.add(card2);
-//		
-//		Rank rank3 = Rank.Queen;
-//		Suit suit3 = Suit.Spades;
-//		Trump trump3 = Trump.TopsDown;
-//		Card card3 = new Card(suit3, rank3, trump3);
-//		trickCards.add(card3);
-//		
-//		Rank rank4 = Rank.Ten;
-//		Suit suit4 = Suit.Spades;
-//		Trump trump4 = Trump.TopsDown;
-//		Card card4 = new Card(suit4, rank4, trump4);
-//		trickCards.add(card4);
+		Rank rank2 = Rank.Ace;
+		Suit suit2 = Suit.Spades;
+		Trump trump2 = Trump.TopsDown;
+		Card card2 = new Card(suit2, rank2, trump2);
+		trickCards.add(card2);
+		
+		Rank rank3 = Rank.Queen;
+		Suit suit3 = Suit.Spades;
+		Trump trump3 = Trump.TopsDown;
+		Card card3 = new Card(suit3, rank3, trump3);
+		trickCards.add(card3);
+		
+		Rank rank4 = Rank.Ten;
+		Suit suit4 = Suit.Spades;
+		Trump trump4 = Trump.TopsDown;
+		Card card4 = new Card(suit4, rank4, trump4);
+		trickCards.add(card4);
 
 //		String writeCardsOut = "Trick-Karten...";
 //		for (int i = 0; i < 4; i++) {
@@ -150,5 +170,13 @@ public class GameModel extends Model {
 //		}
 //		System.out.println(writeCardsOut);
 		return trickCards;
+	}
+	
+	// only for testing
+	public ArrayList<Card> setMyCards(Card card){
+		ArrayList<Card> lessCards = new ArrayList();
+		lessCards = getMyCards();
+		lessCards.remove(card);
+		return lessCards;
 	}
 }

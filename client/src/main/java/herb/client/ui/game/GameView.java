@@ -3,6 +3,7 @@ package herb.client.ui.game;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
@@ -11,9 +12,13 @@ import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
+import herb.client.utils.Translator;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Region;
@@ -41,14 +46,19 @@ public class GameView extends View<GameModel> {
 	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points;
 	private HBox oppositeSide, left, right, pointPane;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel;
-	private Label playerPoints, leftPoints, rightPoints, oppoPoints;
+	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart;
 	private StackPane tablePart;
 	private Rectangle rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8, rect9;
-	private Rectangle[] rects;
+	private ArrayList<Rectangle> rects;
 	private ArrayList<Card> cardAreas;
+ 	private ArrayList<Card> playables;
+ 	private ArrayList<Card> trickCardAreas;
 	private Button simButton;
+	private Player[] plys;
+	private MenuBar headMenu;
+	private Menu menuLanguage;
 
 
 	public GameView(Stage stage, GameModel model) {
@@ -61,25 +71,10 @@ public class GameView extends View<GameModel> {
 	protected Scene create_GUI() {
 		ServiceLocator sl = ServiceLocator.getInstance();
 		
-		// get players, myCards and my playable cards from server (GameModel)  TODO
-		
-		// Roesti - get lobby players
-    	Player[] plys = new Player[4];
-    	plys = model.getLobbyPlayers();
-	
-		// Roesti - card images from herb / client / ui / images / fr OR de TODO
-    	cardAreas = new ArrayList();
-    	cardAreas = model.getMyCards();
-		
-		ArrayList<Card> trickCardAreas = new ArrayList();
-		trickCardAreas = model.getTrickCards();
-		
-	    rects = new Rectangle[cardAreas.size()];
-		
 		// Roesti - create ui-elements
 		this.root = new AnchorPane();
-		upperPart = new BorderPane();
-		tablePart = new StackPane();
+		this.upperPart = new BorderPane();
+		this.tablePart = new StackPane();
 		left = new HBox();
 		right = new HBox();
 		opposite = new VBox();
@@ -91,21 +86,10 @@ public class GameView extends View<GameModel> {
 		ownCards = new GridPane();
 		pointPane = new HBox();
 		names = new VBox();
-		points = new VBox();
-		
+		points = new VBox();		
 		ownCards.setMinHeight(300);
 		ownCards.setMinWidth(1300);
-		
-		leftHandLabel = new Label(plys[3].getUsername());
-		rightHandLabel = new Label(plys[1].getUsername());
-		oppositeLabel = new Label(plys[2].getUsername());
-		trickLabel2 = new Label("Oh come and play with me...   Lets play till we go crazy");
-		trickLabel = new Label();
-		trickLabel.setMinHeight(70);
-		playerLabel = new Label(plys[0].getUsername());
-		playerLabel.setMinHeight(20);
-		playerLabel.setTextAlignment(TextAlignment.CENTER);
-		
+				
 		spacer = new Region();
 		spacerTable = new Region();
 		spacerTable2 = new Region();
@@ -123,19 +107,128 @@ public class GameView extends View<GameModel> {
 		
 		simButton = new Button("simulation");
 	
-		// create MenuBar - language and cardSet (fr vs. de) TODO
-		
+		// Roesti - get lobby players
+    	plys = new Player[4];
+    	plys = model.getLobbyPlayers();
 	
+		// Roesti - get MainCards
+    	// card images from herb / client / ui / images / fr OR de TODO
+    	cardAreas = new ArrayList();
+    	cardAreas = model.getMyCards();
+    	
+    	// Roesti - get PlayableCards
+    	playables = new ArrayList();
+    	playables = model.getPlayableCards();
+    	System.out.println(playables.toString());
+		
+    	// Roesti - get trickCards
+		trickCardAreas = new ArrayList();
+		trickCardAreas = model.getTrickCards();
+		
+	    rects = new ArrayList();
+		
+		// Roesti - create labels
+		playerLabel = new Label(plys[0].getUsername());
+		playerLabel.setMinHeight(20);
+		leftHandLabel = new Label(plys[3].getUsername());
+		rightHandLabel = new Label(plys[1].getUsername());
+		oppositeLabel = new Label(plys[2].getUsername());
+		trickLabel2 = new Label();
+		trickLabel = new Label();
+		trickLabel.setMinHeight(70);
+	    
+		// create MenuBar - language and cardSet (fr vs. de) TODO
+		headMenu = new MenuBar();
+		menuLanguage = new Menu();	
+		menuLanguage.getItems().addAll();
+		
+		// link to Locale
+		for (Locale locale : sl.getLocales()) {
+			MenuItem language = new MenuItem(locale.getLanguage());
+			this.menuLanguage.getItems().add(language);
+			language.setOnAction(event -> {
+				sl.getConfiguration().setLocalOption("Language", locale.getLanguage());
+				sl.setTranslator(new Translator(locale.getLanguage()));
+				updateLabels();
+			});
+		}	
+		headMenu.getMenus().addAll(menuLanguage);
+
+		System.out.println("Fenster erstellt");
+		updateMyCards();
+		
+	if (rects.size() > 0)
+		rect1 = rects.get(0);
+	if (rects.size()>1)	
+		rect2 = rects.get(1);
+	if (rects.size()>2)			
+		rect3 = rects.get(2);
+	if (rects.size()>3)	
+		rect4 = rects.get(3);
+	if (rects.size()>4)			
+		rect5 = rects.get(4);
+	if (rects.size()>5)		
+		rect6 = rects.get(5);
+	if (rects.size()>6)		
+		rect7 = rects.get(6);
+	if (rects.size()>7)			
+		rect8 = rects.get(7);
+	if (rects.size()>8)	
+		rect9 = rects.get(8);
+	System.out.println("Rechteck: "+rects.get(8).getFill());
+		
+		updateTrick();
+		
+		updateLeftPlayer();
+		updateRightPlayer();
+        updateOppoPlayer();
+
+       		
+		//BorderPane
+		upperPart.setCenter(table);
+		upperPart.setBottom(trickLabel2);
+		upperPart.setTop(opposite);
+		upperPart.setMinWidth(400d);
+		
+		updatePointPane();
 
 		
-	//	 show, if it works
-		String writeCardsOut = "Jetzt";
-		for (int i = 0; i < 9; i++) {
-			writeCardsOut += cardAreas.get(i).getSuit();
-			writeCardsOut += cardAreas.get(i).getRank();	
-			} System.out.println(writeCardsOut);
+		//AnchorPane
+		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, simButton, headMenu);
+		root.setLeftAnchor(headMenu, 0d);
+		root.setTopAnchor(headMenu, 0d);
+		root.setRightAnchor(headMenu, 0d);
 		
+		root.setLeftAnchor(left, -10d);
+		root.setTopAnchor(left, 70d);
+		root.setBottomAnchor(left, 200d);
+		root.setRightAnchor(right, -10d);
+		root.setTopAnchor(right, 70d);
+		root.setBottomAnchor(right, 200d);
+
+		root.setStyle("-fx-background-color: darksalmon");
+//		upperPart.setStyle("-fx-background-color: red");
+		root.setTopAnchor(upperPart, -40d);
+		root.setLeftAnchor(upperPart, 200d);
+		root.setRightAnchor(upperPart, 200d);
+	//	root.setBottomAnchor(upperPart, 200d);
 		
+		root.setBottomAnchor(bottom, 10d);
+		root.setLeftAnchor(bottom, 10d);
+		root.setRightAnchor(bottom, 10d);
+		
+		root.setTopAnchor(pointPane, 50d);
+		root.setRightAnchor(pointPane, 10d);
+		
+		root.setTopAnchor(simButton, 50d);
+		root.setLeftAnchor(simButton, 10d);
+	
+		Scene scene = new Scene(root, 1000, 1000);
+		return scene;
+	}
+///////////////////////////////////////////////////////////////
+	
+	private void updateMyCards() {
 		// Roesti - create hand: ownCards GridPane
 		for (int i=0; i< cardAreas.size(); i++) {
 			String rank = cardAreas.get(i).getRank().toStringDE();
@@ -160,17 +253,8 @@ public class GameView extends View<GameModel> {
 		    rotate.setPivotY(257*2.2);
 		    rectangleCard.getTransforms().addAll(rotate);   
 		    ownCards.add(rectangleCard, i+1, 1);	
-		    rects[i] =rectangleCard;  
+		    rects.add(rectangleCard);  
 		}
-		rect1 = rects[0];
-		rect2 = rects[1];
-		rect3 = rects[2];
-		rect4 = rects[3];
-		rect5 = rects[4];
-		rect6 = rects[5];
-		rect7 = rects[6];
-		rect8 = rects[7];
-		rect9 = rects[8];
 
 		ownCards.setMinHeight(250);
 		ownCards.setHgap(-150);
@@ -180,7 +264,14 @@ public class GameView extends View<GameModel> {
 		bottom.setAlignment(Pos.CENTER);
 		// center Cards
 		ownCards.getChildren().add(spacer);
-		
+	}
+	
+	private void updatePlayableCards() {
+		//TODO - update playable cards after every played card
+	}
+	
+	private void updateTrick() {
+		//TODO - add every played card
 		// Roesti - create trick: table GridPane 
 	    trickLabel.setStyle("-fx-font-weight: bold");
 	    table.add(trickLabel, 1, 0, 1, 1);
@@ -234,8 +325,10 @@ public class GameView extends View<GameModel> {
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
-		
-		
+	}
+	
+	private void updateLeftPlayer() {
+		//TODO reduce cards
 		// leftHandSide TODO magic number!
 		for (int i= 0; i< 9; i++) {
 		Rotate rotateLeft = new Rotate();
@@ -262,7 +355,10 @@ public class GameView extends View<GameModel> {
 		left.getChildren().add(leftHandLabel);
 	    left.setSpacing(10.0);
 		left.setAlignment(Pos.CENTER_RIGHT);
-        
+	}
+	
+	private void updateRightPlayer() {
+		// TODO reduce cards
 		// rightHandSide - cards in VBox, together with name in HBox
 		for (int i= 0; i< 9; i++) {
 		Rotate rotateRight = new Rotate();
@@ -290,7 +386,10 @@ public class GameView extends View<GameModel> {
 		right.setSpacing(10.0);
 		right.setPadding(new Insets(10, 10, 10, 10));
 		right.setAlignment(Pos.CENTER_RIGHT);
-        
+	}
+	
+	private void updateOppoPlayer() {
+		// TODO reduce cards
 		// oppositeHandSide - cards in VBox, with name in HBox
 		oppositeSide.getChildren().add(spacerOppo); 
 		for (int i = 0; i<9; i++) {
@@ -316,74 +415,35 @@ public class GameView extends View<GameModel> {
 		opposite.getChildren().add(oppositeSide);
 		opposite.getChildren().add(oppositeLabel);	
 		opposite.setAlignment(Pos.CENTER);
-		
-		//BorderPane
-		upperPart.setCenter(table);
-		upperPart.setBottom(trickLabel2);
-		upperPart.setTop(opposite);
-		upperPart.setMinWidth(400d);
-		
+	}
+	
+	private void updatePointPane() {
+		// TODO 
 		// realise with StackPane? TODO
 		// realise with Binding TODO
 		//names.getChildren().addAll(oppositeLabel, leftHandLabel, rightHandLabel, playerLabel);
+		pointsLabel = new Label();
 		names.setMinSize(80, 20);
 		points.getChildren().addAll(oppoPoints, leftPoints, rightPoints, playerPoints);
 		points.setMinSize(40, 20);
 		points.setAlignment(Pos.CENTER_RIGHT);
-		pointPane.getChildren().addAll(names, points);
+		pointPane.getChildren().addAll(pointsLabel, names, points);
 		pointPane.toFront();
 		pointPane.setPadding(new Insets(20, 20, 20, 20));
 		pointPane.setStyle("-fx-background-color: aliceblue");
-
+	}
+	
+	// Roesti 
+	protected void updateLabels() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
 		
-		//AnchorPane
-		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, simButton);
-		root.setLeftAnchor(left, -10d);
-		root.setTopAnchor(left, 70d);
-		root.setBottomAnchor(left, 200d);
-		root.setRightAnchor(right, -10d);
-		root.setTopAnchor(right, 70d);
-		root.setBottomAnchor(right, 200d);
-
-		root.setStyle("-fx-background-color: darksalmon");
-//		upperPart.setStyle("-fx-background-color: red");
-		root.setTopAnchor(upperPart, -10d);
-		root.setLeftAnchor(upperPart, 200d);
-		root.setRightAnchor(upperPart, 200d);
-	//	root.setBottomAnchor(upperPart, 200d);
-		
-		root.setBottomAnchor(bottom, 10d);
-		root.setLeftAnchor(bottom, 10d);
-		root.setRightAnchor(bottom, 10d);
-		
-		root.setTopAnchor(pointPane, 10d);
-		root.setRightAnchor(pointPane, 10d);
-		
-		root.setTopAnchor(simButton, 10d);
-		root.setLeftAnchor(simButton, 10d);
-	
-		Scene scene = new Scene(root, 1000, 1000);
-		return scene;
-	}
-
-	
-	private void showPlayerPane() {
-		//TODO - nine cards, ...
-	}
-	
-	private void updatePlayerPane() {
-		//TODO - update playable cards after every played card
-	}
-	
-	private void showTrick() {
-		//TODO - four cards, one of each player
-	}
-	private void updateTrick() {
-		//TODO - add every played card
-	}
-	
-	private void clearTrick() {
-		//TODO let the played cards disappear, show the next player
+		// language settings
+		menuLanguage.setText(t.getString("program.game.menuLanguage"));
+		// screen labels
+		trickLabel2.setText(t.getString("program.game.order"));
+		pointsLabel.setText(t.getString("program.game.pointsLabel"));
+		stage.setTitle(t.getString("program.name"));
+		// tbd
 	}
 	
 	// Roesti - chosen card sending back to controller
@@ -420,7 +480,7 @@ public class GameView extends View<GameModel> {
 	}
 	
 	// evtl. mit Liste
-	public Rectangle[] getRects() {
+	public ArrayList<Rectangle> getRects() {
 		return rects;
 	}
 	public Button getSimulationButton() {
