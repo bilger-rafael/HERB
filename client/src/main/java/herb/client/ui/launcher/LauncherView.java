@@ -79,7 +79,7 @@ public class LauncherView extends View<LauncherModel> {
 	     * Herren
 	     */
    
-	    lobbyRoomCenter = new ListView<>(model.lobbysName);
+	    lobbyRoomCenter = new ListView<>(model.getLobbys());
 	    
 	    StackPane stPane = new StackPane();
 	    stPane.getChildren().add(lobbyRoomCenter);

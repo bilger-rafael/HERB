@@ -8,8 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class LauncherModel extends Model{
-	private Lobby[] lobbys;
-    ObservableList<Lobby> lobbysName = FXCollections.observableArrayList();
+	private ObservableList<Lobby> lobbys = FXCollections.observableArrayList();
 	ServiceLocator servicelocator;
 
 
@@ -17,12 +16,12 @@ public class LauncherModel extends Model{
     	super();
     	refreshLobbyList();
     	startLobbyUpdater();
-	    ObservableList<Lobby> lobbys = FXCollections.observableArrayList();
     }
     
     public void refreshLobbyList() {
     	try {
-			this.lobbys = Lobby.readLobbyList();
+			this.lobbys.clear();
+			this.lobbys.addAll(Lobby.readLobbyList());
 		} catch (ExceptionBase e) {
 			// TODO show error message
 			e.printStackTrace();
@@ -49,13 +48,9 @@ public class LauncherModel extends Model{
 			}
 		};
 	}
-
-	public Lobby[] getLobbys() {
-		return lobbys;
-	}
 	
-	public ObservableList<Lobby> getLobbyName() {
-		return lobbysName;
+	public ObservableList<Lobby> getLobbys() {
+		return lobbys;
 	}
     
 }

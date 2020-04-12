@@ -30,7 +30,7 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 	private void joinLobby() {
 		// choose lobby TODO
 		if (view.lobbyRoomCenter.getSelectionModel().isEmpty()) return;
-		String lobbyName = view.lobbyRoomCenter.getSelectionModel().getSelectedItem();
+		String lobbyName = view.lobbyRoomCenter.getSelectionModel().getSelectedItem().getName();
 		Main.getMainProgram().getLobbyView(lobbyName).start();
 
 		}
