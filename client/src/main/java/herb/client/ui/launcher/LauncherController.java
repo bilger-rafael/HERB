@@ -17,6 +17,12 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		
 		// got to lobby create view
 		view.getCreateButton().setOnAction(e -> getLobbyCreaterView());
+		
+		/**
+		 * refresh the launcher
+		 */
+		
+		view.getRefreshButton().setOnAction(e -> model.refreshLobbyList());
 	
 	}
 	
@@ -35,6 +41,7 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		Main.getMainProgram().getLobbyCreater().start();
 	}
 	
+
 	//Skip for Daniela
 	private void getGameView() {
 		this.view.stop();

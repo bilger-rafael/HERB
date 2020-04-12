@@ -27,9 +27,12 @@ public class LauncherModel extends Model{
     // Create thread to update Lobby periodically
 	private void startLobbyUpdater() {
 	Runnable r = new Runnable() {
-		boolean b = false;
+		boolean b = true;
 		@Override
 		public void run() {
+			Thread t = new Thread ();
+			t.setDaemon(true);
+			t.start();
 			while (b) {
 				refreshLobbyList();
 				servicelocator.getLogger().info("Launcher refreshed");
