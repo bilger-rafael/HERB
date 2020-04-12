@@ -7,9 +7,9 @@ import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.RoundBase;
 
 //Etter
-public class Game extends GameBase{
+public class Game extends GameBase<Player>{
 
-	public Game(PlayerBase[] players) {
+	public Game(Player[] players) {
 		super(UUID.randomUUID(), players);
 		startRound();
 		
