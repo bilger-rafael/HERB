@@ -4,7 +4,7 @@ import herb.client.ressources.core.HandBase;
 
 //Etter
 public class Hand extends HandBase<Card> {
-	
+
 	@Override
 	public void play(Card card) {
 		// TODO Auto-generated method stub

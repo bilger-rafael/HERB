@@ -24,10 +24,4 @@ public class Player extends PlayerBase<Hand> {
 		
 	}
 
-	@Override
-	public Hand getHand() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
