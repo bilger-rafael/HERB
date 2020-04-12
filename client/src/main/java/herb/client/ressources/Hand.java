@@ -1,20 +1,18 @@
 package herb.client.ressources;
 
-import herb.client.ressources.core.CardBase;
 import herb.client.ressources.core.HandBase;
 
 //Etter
-public class Hand extends HandBase {
-	private CardBase[] cards;
+public class Hand extends HandBase<Card> {
 	
 	@Override
-	public void play(CardBase card) {
+	public void play(Card card) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void addCard(CardBase card) {
+	public void addCard(Card card) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -38,7 +36,7 @@ public class Hand extends HandBase {
 	}
 
 	@Override
-	public CardBase getCard(int i) {
+	public Card getCard(int i) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,20 +1,20 @@
 package herb.server.ressources.core;
 
 
-public abstract class HandBase {
-	private CardBase[] cards;
+public abstract class HandBase <Card extends CardBase> {
+	protected Card[] cards;
 	
-	public void setCards(CardBase[] cards) {
+	public void setCards(Card[] cards) {
 		this.cards = cards;
 	}
-
-	public CardBase[] getCards() {
+	
+	public Card[] getCards() {
 		return cards;
 	}
 
-	public abstract void play(CardBase card);
+	public abstract void play(Card card);
 	
-	public abstract void addCard(CardBase card);
+	public abstract void addCard(Card card);
 	
 	public abstract void clearCards();
 	
@@ -22,7 +22,7 @@ public abstract class HandBase {
 	
 	public abstract boolean cardsEmpty();
 	
-	public abstract CardBase getCard(int i);
+	public abstract Card getCard(int i);
 	
 	
 }

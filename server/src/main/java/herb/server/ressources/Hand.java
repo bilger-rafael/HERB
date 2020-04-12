@@ -1,14 +1,12 @@
 package herb.server.ressources;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 
-import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.HandBase;
 
 //Etter
-public class Hand extends HandBase{
+public class Hand extends HandBase<Card>{
 	private int addIndex;
 	
 	public Hand() {
@@ -17,7 +15,7 @@ public class Hand extends HandBase{
 	}
 
 	@Override
-	public void play(CardBase card) {
+	public void play(Card card) {
 		try { 
 			for (int i=0; i<this.getCards().length; i++) {
 			if (this.getCards()[i] == card) {
@@ -31,7 +29,7 @@ public class Hand extends HandBase{
 	}
 
 	@Override
-	public void addCard(CardBase card) {
+	public void addCard(Card card) {
 		this.getCards()[this.addIndex] = card;
 		this.addIndex++;
 	}
@@ -56,9 +54,9 @@ public class Hand extends HandBase{
 	}
 	
 	//Gibt zurück ob eine Karte höher ist beim Einordnen
-	private class HandSorter implements Comparator<CardBase>{
+	private class HandSorter implements Comparator<Card>{
 		@Override
-			public int compare(CardBase o1, CardBase o2) {
+			public int compare(Card o1, Card o2) {
 				int score = 0;
 				int suitValue = o1.getSuit().ordinal();
 			
@@ -85,7 +83,7 @@ public class Hand extends HandBase{
 	}
 
 	@Override
-	public CardBase getCard(int i) {
+	public Card getCard(int i) {
 		return this.getCards()[i];
 	}
 
