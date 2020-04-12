@@ -55,7 +55,8 @@ public class GameModel extends Model {
 
 		Card[] cards = (Card[]) Datastore.getInstance().getMainPlayer().getHand().getCards();
 		
-		if (true)
+		//if cards recived from server, use them instead of the testdata
+		if (cards[0] != null)
 			return new ArrayList<Card>(Arrays.asList(cards));
 
 		ArrayList<Card> currentCards = new ArrayList();
