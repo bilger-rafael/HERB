@@ -11,6 +11,9 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		// join a lobby
 		view.getJoinButton().setOnAction(e -> joinLobby());
 		
+		
+		// got to lobby create view
+		view.getCreateButton().setOnAction(e -> getLobbyCreaterView());
 	
 	}
 	
@@ -22,5 +25,11 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		Main.getMainProgram().getLobbyView(lobbyName).start();
 
 		}
+	
+	//got to Lobby create view
+	private void getLobbyCreaterView() {
+		this.view.stop();
+		Main.getMainProgram().getLobbyCreater().start();
+	}
 			
 }

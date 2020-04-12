@@ -16,6 +16,9 @@ import herb.client.ui.launcher.LauncherView;
 import herb.client.ui.lobby.LobbyController;
 import herb.client.ui.lobby.LobbyModel;
 import herb.client.ui.lobby.LobbyView;
+import herb.client.ui.lobbyCreater.LobbyCreaterController;
+import herb.client.ui.lobbyCreater.LobbyCreaterModel;
+import herb.client.ui.lobbyCreater.LobbyCreaterView;
 import herb.client.ui.login.LoginController;
 import herb.client.ui.login.LoginModel;
 import herb.client.ui.login.LoginView;
@@ -40,6 +43,7 @@ public class Main extends Application {
 	private LauncherView launcherView;
 	private LobbyView loView;
 	private GameView gameView;
+	private LobbyCreaterView lobbyCreaterView;
 
 	private ServiceLocator serviceLocator; // resources, after initialization
 
@@ -182,6 +186,17 @@ public class Main extends Application {
 			serviceLocator.getLogger().info("Launcher started");
 			}
 		return launcherView;
+	}
+	
+	public LobbyCreaterView getLobbyCreater() {
+		if (lobbyCreaterView == null) {
+			Stage stage = new Stage();
+			LobbyCreaterModel lobbyCreaterModel = new LobbyCreaterModel();
+			lobbyCreaterView = new LobbyCreaterView(stage, lobbyCreaterModel);
+			new LobbyCreaterController(lobbyCreaterModel, lobbyCreaterView);
+			serviceLocator.getLogger().info("LobbyCreater started");
+			}
+		return lobbyCreaterView;
 	}
 
 	public LobbyView getLobbyView(String lobbyName) {
