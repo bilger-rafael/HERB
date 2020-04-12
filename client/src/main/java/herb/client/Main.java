@@ -212,7 +212,7 @@ public class Main extends Application {
 		
 		//getLobbyViews().put(lobbyName, loView);
 		
-		return loView;
+		return loView; 
 		// return getLobbyViews().get(lobbyName);
 	}
 	

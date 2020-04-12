@@ -26,7 +26,8 @@ import javafx.scene.Scene;
 public class LauncherView extends View<LauncherModel> {
 	
 	private BorderPane root, bottomBox;
-	private VBox centerBox, rightBox;
+	private VBox centerBox;
+	private HBox rightBox;
 	private Button joinButton,createButton, newLobbyButton, skipButton, refreshButton;
 	
 	private MenuBar menuBar;
@@ -77,11 +78,7 @@ public class LauncherView extends View<LauncherModel> {
 	     * list
 	     * Herren
 	     */
-	    
-	    lobbyRoomCenter = new ListView<String>();
-	    lobbyRoomCenter.setPrefWidth(500);
-	    	    
-	    //ObservableList<String> lobbys = FXCollections.observableArrayList(lobby1.getName(),lobby2.getName(),lobby3.getName());
+
 	    ObservableList<Lobby> lobbys = FXCollections.observableArrayList(model.getLobbys());
 	    
 	    ListView<Lobby> lobbyRoomCenter = new ListView<Lobby>(lobbys);
@@ -93,6 +90,8 @@ public class LauncherView extends View<LauncherModel> {
 
 	    lobbyRoomCenter.getSelectionModel().selectIndices(1, 2);
 	    
+	    lobbyRoomCenter.setPrefWidth(300);
+	    
 	    /**
 	     * Buttons with bottomBox
 	     * Herren
@@ -100,23 +99,29 @@ public class LauncherView extends View<LauncherModel> {
 		bottomBox = new BorderPane();
 		joinButton = new Button();	
 		refreshButton = new Button();
-		rightBox = new VBox();
 		createButton = new Button();
-		skipButton = new Button("skip");
-		rightBox.getChildren().addAll(joinButton, skipButton);
 		
-		bottomBox.setRight(rightBox);
+		//skip button for Daniela
+		skipButton = new Button("skip");
+		rightBox = new HBox();
+		rightBox.getChildren().add(skipButton);
+
+		
+		bottomBox.setRight(joinButton);
 		bottomBox.setLeft(createButton);
 		bottomBox.setCenter(refreshButton);
+		bottomBox.setBottom(rightBox);
 		
 		
 		joinButton.setAlignment(Pos.BASELINE_CENTER);
 		createButton.setAlignment(Pos.BASELINE_CENTER);
 		refreshButton.setAlignment(Pos.BASELINE_CENTER);
+		skipButton.setAlignment(Pos.BASELINE_CENTER);
 		
 		joinButton.setPrefWidth(100);
 		createButton.setPrefWidth(100);
 		refreshButton.setPrefWidth(100);
+		skipButton.setPrefWidth(300);
 		
 
 		root.setTop(menuBar);

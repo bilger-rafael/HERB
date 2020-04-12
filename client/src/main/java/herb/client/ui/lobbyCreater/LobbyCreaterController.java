@@ -12,8 +12,10 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 		// Create Lobby
 		view.getOkButton().setOnAction(e -> createLobby());
 		
+		view.getOkButton().disableProperty().bind(view.getTextField().textProperty().isEmpty());
 		
 	}
+	
 	
 	private void createLobby() {
 		//TODO logic implementation for Lobby creation
