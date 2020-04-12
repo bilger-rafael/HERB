@@ -26,8 +26,8 @@ import javafx.scene.Scene;
 public class LauncherView extends View<LauncherModel> {
 	
 	private BorderPane root, bottomBox;
-	private VBox centerBox;
-	private Button joinButton,createButton, newLobbyButton;
+	private VBox centerBox, rightBox;
+	private Button joinButton,createButton, newLobbyButton, skipButton;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -98,11 +98,15 @@ public class LauncherView extends View<LauncherModel> {
 	     * Herren
 	     */
 		bottomBox = new BorderPane();
-		joinButton = new Button("join");		
-		createButton = new Button("create");
+		joinButton = new Button();	
+		rightBox = new VBox();
+		createButton = new Button();
+		skipButton = new Button("skip");
+		rightBox.getChildren().addAll(joinButton, skipButton);
 		
-		bottomBox.setRight(joinButton);
+		bottomBox.setRight(rightBox);
 		bottomBox.setLeft(createButton);
+		
 		
 		joinButton.setAlignment(Pos.BASELINE_CENTER);
 		createButton.setAlignment(Pos.BASELINE_CENTER);
@@ -124,6 +128,7 @@ public class LauncherView extends View<LauncherModel> {
 	 */
 		
 	}
+
 	protected void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
@@ -139,5 +144,10 @@ public class LauncherView extends View<LauncherModel> {
 	public Button getCreateButton() {
 		return createButton;
 	}
+	
+	public Button getSkipButton() {
+		return skipButton;
+	}
+
 
 }

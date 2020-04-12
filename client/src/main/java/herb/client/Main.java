@@ -223,7 +223,7 @@ public class Main extends Application {
 			GameModel model = new GameModel();
 			gameView = new GameView(stage, model);
 			new GameController(model, gameView);
-			loView.stop();
+			//loView.stop();
 			
 			return gameView;
 	}

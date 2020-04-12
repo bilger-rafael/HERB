@@ -17,6 +17,7 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 	
 	private void createLobby() {
 		//TODO logic implementation for Lobby creation
+		model.createLobby(view.getTextField().getText());
 		
 		//TODO if created back to Launcher
 		this.view.stop();
