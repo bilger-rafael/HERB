@@ -33,7 +33,7 @@ public class LauncherView extends View<LauncherModel> {
 	private MenuBar menuBar;
 	private Menu menuLanguage;
 	
-	protected ListView<String> lobbyRoomCenter;
+	protected ListView<Lobby> lobbyRoomCenter;
 	
 	private Lobby lobby;
 	
@@ -78,10 +78,8 @@ public class LauncherView extends View<LauncherModel> {
 	     * list
 	     * Herren
 	     */
-
-	    ObservableList<Lobby> lobbys = FXCollections.observableArrayList(model.getLobbys());
-	    
-	    ListView<Lobby> lobbyRoomCenter = new ListView<Lobby>(lobbys);
+   
+	    lobbyRoomCenter = new ListView<>(model.lobbysName);
 	    
 	    StackPane stPane = new StackPane();
 	    stPane.getChildren().add(lobbyRoomCenter);

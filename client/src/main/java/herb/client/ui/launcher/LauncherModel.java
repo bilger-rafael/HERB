@@ -4,15 +4,20 @@ import herb.client.ressources.Lobby;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Model;
 import herb.client.utils.ServiceLocator;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class LauncherModel extends Model{
 	private Lobby[] lobbys;
+    ObservableList<Lobby> lobbysName = FXCollections.observableArrayList();
 	ServiceLocator servicelocator;
+
 
     public LauncherModel() {
     	super();
     	refreshLobbyList();
     	startLobbyUpdater();
+	    ObservableList<Lobby> lobbys = FXCollections.observableArrayList();
     }
     
     public void refreshLobbyList() {
@@ -47,6 +52,10 @@ public class LauncherModel extends Model{
 
 	public Lobby[] getLobbys() {
 		return lobbys;
+	}
+	
+	public ObservableList<Lobby> getLobbyName() {
+		return lobbysName;
 	}
     
 }
