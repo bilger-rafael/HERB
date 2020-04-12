@@ -113,24 +113,39 @@ public class GameModel extends Model {
 		return currentCards;
 	}
 
-	public Card[] getTrickCards() {
-		Card[] trickCards = new Card[4];
+	public ArrayList<Card> getTrickCards() {
+		ArrayList<Card> trickCards = new ArrayList();
+		
+		Rank rank1 = Rank.Ten;
+		Suit suit1 = Suit.Spades;
+		Trump trump1 = Trump.TopsDown;
+		Card card1 = new Card(suit1, rank1, trump1);
+		trickCards.add(card1);
+		
+//		Rank rank2 = Rank.Ace;
+//		Suit suit2 = Suit.Spades;
+//		Trump trump2 = Trump.TopsDown;
+//		Card card2 = new Card(suit2, rank2, trump2);
+//		trickCards.add(card2);
+//		
+//		Rank rank3 = Rank.Queen;
+//		Suit suit3 = Suit.Spades;
+//		Trump trump3 = Trump.TopsDown;
+//		Card card3 = new Card(suit3, rank3, trump3);
+//		trickCards.add(card3);
+//		
+//		Rank rank4 = Rank.Ten;
+//		Suit suit4 = Suit.Spades;
+//		Trump trump4 = Trump.TopsDown;
+//		Card card4 = new Card(suit4, rank4, trump4);
+//		trickCards.add(card4);
 
-		for (int i = 0; i < 4; i++) {
-			Rank r1 = Rank.Ten;
-			Suit s1 = Suit.Spades;
-			Trump t1 = Trump.TopsDown;
-			Card c1 = new Card(s1, r1, t1);
-			trickCards[i] = c1;
-		}
-
-		String writeCardsOut = "Trick-Karten...";
-		for (int i = 0; i < 4; i++) {
-			writeCardsOut += trickCards[i].getSuit();
-			writeCardsOut += trickCards[i].getRank();
-		}
-		System.out.println(writeCardsOut);
+//		String writeCardsOut = "Trick-Karten...";
+//		for (int i = 0; i < 4; i++) {
+//			writeCardsOut += trickCards.get(i).getSuit();
+//			writeCardsOut += trickCards.get(i).getRank();
+//		}
+//		System.out.println(writeCardsOut);
 		return trickCards;
 	}
-
 }

@@ -37,7 +37,7 @@ public class GameController extends Controller<GameModel, GameView> {
 	
 	public void simulate() {
 	//	updateMyCards();
-	//	updateTable();
+	//	updateTrick();
 	}
 	
 	public Card forwardPlayedCard(MouseEvent mouseEvent){
@@ -50,31 +50,31 @@ public class GameController extends Controller<GameModel, GameView> {
 //		System.out.println(view.getPlayedCard1().getFill());
 		
 		if ((recti).getFill().equals(view.getPlayedCard1().getFill())) {
-			playedCard = view.getCardAreas1().get(0);
+			playedCard = view.getCardAreas().get(0);
 		}
 		if ((recti).getFill().equals(view.getPlayedCard2().getFill())) {
-			playedCard = view.getCardAreas1().get(1);
+			playedCard = view.getCardAreas().get(1);
 		}
 		if ((recti).getFill().equals(view.getPlayedCard3().getFill())) {
-			playedCard = view.getCardAreas1().get(2);
+			playedCard = view.getCardAreas().get(2);
 		}
 		if ((recti).getFill().equals(view.getPlayedCard4().getFill())) {
-			playedCard = view.getCardAreas1().get(3);
+			playedCard = view.getCardAreas().get(3);
 		}
 		if ((recti).getFill().equals(view.getPlayedCard5().getFill())) {
-			playedCard = view.getCardAreas1().get(4);
+			playedCard = view.getCardAreas().get(4);
 		}
 		if ((recti).getFill().equals(view.getPlayedCard6().getFill())) {
-			playedCard = view.getCardAreas1().get(5);
+			playedCard = view.getCardAreas().get(5);
 		}
 		if ((recti).getFill().equals(view.getPlayedCard7().getFill())) {
-			playedCard = view.getCardAreas1().get(6);
+			playedCard = view.getCardAreas().get(6);
 		}
 		if ((recti).getFill().equals(view.getPlayedCard8().getFill())) {
-			playedCard = view.getCardAreas1().get(7);
+			playedCard = view.getCardAreas().get(7);
 		}	
 		if ((recti).getFill().equals(view.getPlayedCard9().getFill())) {
-			playedCard = view.getCardAreas1().get(8);
+			playedCard = view.getCardAreas().get(8);
 		}	
 			
 		System.out.println(playedCard.getSuit().toStringFr()+" "+playedCard.getRank().toStringDE());

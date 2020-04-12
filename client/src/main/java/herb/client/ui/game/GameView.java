@@ -47,8 +47,7 @@ public class GameView extends View<GameModel> {
 	private StackPane tablePart;
 	private Rectangle rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8, rect9;
 	private Rectangle[] rects;
-	private Card[] cardAreas;
-	private ArrayList<Card> cardAreas1;
+	private ArrayList<Card> cardAreas;
 	private Button simButton;
 
 
@@ -69,19 +68,16 @@ public class GameView extends View<GameModel> {
     	plys = model.getLobbyPlayers();
 	
 		// Roesti - card images from herb / client / ui / images / fr OR de TODO
-//		cardAreas = new Card[9];
-//		cardAreas = model.getMyCards();
-    	cardAreas1 = new ArrayList();
-    	cardAreas1 = model.getMyCards();
+    	cardAreas = new ArrayList();
+    	cardAreas = model.getMyCards();
 		
-		Card[] trickCardAreas = new Card[4];
+		ArrayList<Card> trickCardAreas = new ArrayList();
 		trickCardAreas = model.getTrickCards();
 		
-	    rects = new Rectangle[cardAreas1.size()];
+	    rects = new Rectangle[cardAreas.size()];
 		
-		// Roesti - create gui elements
+		// Roesti - create ui-elements
 		this.root = new AnchorPane();
-		
 		upperPart = new BorderPane();
 		tablePart = new StackPane();
 		left = new HBox();
@@ -117,7 +113,6 @@ public class GameView extends View<GameModel> {
 		spacerTable.setMinWidth(200d);
 		spacerTable2.setMinWidth(200d);
 		spacerRight = new Region();
-	//	spacerRight.setMinWidth(100d);
 		spacerOppo= new Region();
 		spacerOppo.setMinWidth(300d);
 		
@@ -133,18 +128,18 @@ public class GameView extends View<GameModel> {
 	
 
 		
-		// show, if it works
-//		String writeCardsOut = "Jetzt";
-//		for (int i = 0; i < 9; i++) {
-//			writeCardsOut += cardAreas[i].getSuit();
-//			writeCardsOut += cardAreas[i].getRank();	
-//			} System.out.println(writeCardsOut);
+	//	 show, if it works
+		String writeCardsOut = "Jetzt";
+		for (int i = 0; i < 9; i++) {
+			writeCardsOut += cardAreas.get(i).getSuit();
+			writeCardsOut += cardAreas.get(i).getRank();	
+			} System.out.println(writeCardsOut);
 		
 		
 		// Roesti - create hand: ownCards GridPane
-		for (int i=0; i< cardAreas1.size(); i++) {
-			String rank = ""+cardAreas1.get(i).getRank().toStringDE();
-			String suit = ""+cardAreas1.get(i).getSuit().toStringFr();
+		for (int i=0; i< cardAreas.size(); i++) {
+			String rank = cardAreas.get(i).getRank().toStringDE();
+			String suit = cardAreas.get(i).getSuit().toStringFr();
 		    String filename = suit + "_" + rank + ".jpg";
 		    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
 
@@ -176,7 +171,6 @@ public class GameView extends View<GameModel> {
 		rect7 = rects[6];
 		rect8 = rects[7];
 		rect9 = rects[8];
-		
 
 		ownCards.setMinHeight(250);
 		ownCards.setHgap(-150);
@@ -184,8 +178,6 @@ public class GameView extends View<GameModel> {
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
-
-
 		// center Cards
 		ownCards.getChildren().add(spacer);
 		
@@ -194,54 +186,55 @@ public class GameView extends View<GameModel> {
 	    table.add(trickLabel, 1, 0, 1, 1);
 	    table.add(spacerTable, 0, 0, 1, 1);
 	    table.add(spacerTable2, 3, 0, 1, 1);
-		
-		for (int i = 0; i<4; i++) {
-	//	Card[] trickcards = new Card[4];
-			
+	    	    
+		// set played cards
+		for (int i = 0; i< trickCardAreas.size(); i++) {
 		Rectangle rectangle = new Rectangle();
 		rectangle.setHeight(514/3);
 		rectangle.setWidth(322/3);		
-        rectangle.setArcHeight(20);
-        rectangle.setArcWidth(20);
-
-		String r1 = ""+trickCardAreas[i].getRank().toStringDE();
-		String s1 = ""+trickCardAreas[i].getSuit().toStringFr();
+		rectangle.setArcHeight(20);
+		rectangle.setArcWidth(20);
+		String r1 = trickCardAreas.get(i).getRank().toStringDE();
+		String s1 = trickCardAreas.get(i).getSuit().toStringFr();
 		Trump t1 = Trump.TopsDown;
 		String filename = s1 + "_" + r1 + ".jpg";
 		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
-        ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
-        rectangle.setFill(pattern);
-        rectangle.setId("cardimage");
-        
-	    // better ImagePattern or ImageView? TODO
-//        ImageView imView = new ImageView(imageTable);
-//        imView.setPreserveRatio(true);
-        
+		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+		rectangle.setFill(pattern);
+		rectangle.setId("cardimage");             
 	    // Roesti - implement rotation  TODO implement Random()
-        Rotate rotate = new Rotate();  
-        rotate.setAngle(((10+i) % 2)+183-2*i); 
-        rotate.setPivotX(30); 
-        rotate.setPivotY(322/3+30); 
-	    rectangle.getTransforms().addAll(rotate); 	
-				
+		Rotate rotate = new Rotate();  
+		rotate.setAngle(((10+i) % 2)+183-2*i); 
+		rotate.setPivotX(30); 
+		rotate.setPivotY(322/3+30); 
+	    rectangle.getTransforms().addAll(rotate); 			
 	    if(i == 0)
 	    	table.add(rectangle, 2, 0, 1, 2);
 	    if(i==1)
 	    	table.add(rectangle, 1, 1, 1, 2);
 	    if(i==2)
 	    	table.add(rectangle, 2, 2, 1, 2);
-	    if(i==3) {
+	    if(i==3)
 	    	table.add(rectangle, 3, 1, 1, 2);
-	    }
-
-	    // better ImagePattern or ImageView? TODO
-//	    table.add(imView, 4, 0, 1, 2);
-	    
+		}
+		
+        // fill up with void cards
+//	    if ()
+//		for (int j = 0; j< 4-trickCardAreas.size(); j++) {
+//		Rectangle rectangleJ = new Rectangle();
+//		rectangleJ.setHeight(514/3);
+//		rectangleJ.setWidth(322/3);	
+//		rectangleJ.setArcHeight(20);
+//		rectangleJ.setArcWidth(20);
+//		String filename = "Rückseite.jpg";
+//		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
+//        ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+//        rectangleJ.setFill(pattern);
+		
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
-		}
-
+		
 		
 		// leftHandSide TODO magic number!
 		for (int i= 0; i< 9; i++) {
@@ -293,7 +286,6 @@ public class GameView extends View<GameModel> {
 		rightHandSide.setMinWidth(100);
 		rightHandSide.setMaxHeight(500);
 		right.getChildren().add(rightHandLabel);
-	//    rightHandLabel.setTextAlignment(TextAlignment.CENTER);
 		right.getChildren().add(rightHandSide);
 		right.setSpacing(10.0);
 		right.setPadding(new Insets(10, 10, 10, 10));
@@ -423,11 +415,8 @@ public class GameView extends View<GameModel> {
 		return rect9;
 	}
 	
-	public Card[] getCardAreas() {
+	public ArrayList<Card> getCardAreas(){
 		return cardAreas;
-	}
-	public ArrayList<Card> getCardAreas1(){
-		return cardAreas1;
 	}
 	
 	// evtl. mit Liste
