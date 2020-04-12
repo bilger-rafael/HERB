@@ -1,5 +1,7 @@
 package herb.client.ressources;
 
+import java.util.Base64;
+
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -12,7 +14,7 @@ import herb.client.rest.RestClient;
 public class Login extends LoginBase {
 
 	public Login(String username, String password) {
-		super(username, password);
+		super(username, Base64.getEncoder().encodeToString(password.getBytes()));
 	}
 
 	@Override

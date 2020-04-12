@@ -38,8 +38,12 @@ public class Login extends LoginBase {
 		if (!this.getPassword().equals(DataStore_Repository.getDB().showLoginPasswordfromDB(this.getUsername()))) {
 			throw new PlayerLoginFailedException();
 		}
+		
+		// check if player is already logged in
+		if (Datastore.getInstance().players.get(this.getUsername()) != null) 
+			return Datastore.getInstance().players.get(this.getUsername());
 
-		// return player
+		// add player and return it
 		Player player = new Player(this.getUsername(), UUID.randomUUID().toString().toUpperCase());
 		Datastore.getInstance().players.put(player.getUsername(), player);
 		return player;
