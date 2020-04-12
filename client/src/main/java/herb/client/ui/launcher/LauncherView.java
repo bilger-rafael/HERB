@@ -27,7 +27,7 @@ public class LauncherView extends View<LauncherModel> {
 	
 	private BorderPane root, bottomBox;
 	private VBox centerBox, rightBox;
-	private Button joinButton,createButton, newLobbyButton, skipButton;
+	private Button joinButton,createButton, newLobbyButton, skipButton, refreshButton;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -99,6 +99,7 @@ public class LauncherView extends View<LauncherModel> {
 	     */
 		bottomBox = new BorderPane();
 		joinButton = new Button();	
+		refreshButton = new Button();
 		rightBox = new VBox();
 		createButton = new Button();
 		skipButton = new Button("skip");
@@ -106,19 +107,24 @@ public class LauncherView extends View<LauncherModel> {
 		
 		bottomBox.setRight(rightBox);
 		bottomBox.setLeft(createButton);
+		bottomBox.setCenter(refreshButton);
 		
 		
 		joinButton.setAlignment(Pos.BASELINE_CENTER);
 		createButton.setAlignment(Pos.BASELINE_CENTER);
+		refreshButton.setAlignment(Pos.BASELINE_CENTER);
 		
 		joinButton.setPrefWidth(100);
 		createButton.setPrefWidth(100);
+		refreshButton.setPrefWidth(100);
 		
 
 		root.setTop(menuBar);
 		root.setCenter(lobbyRoomCenter);
 		root.setBottom(bottomBox);
 		
+		
+        updateLabels();     
 		Scene scene = new Scene(root);
 		return scene;
 		
@@ -135,6 +141,7 @@ public class LauncherView extends View<LauncherModel> {
 		joinButton.setText(t.getString("program.launcher.joinButton"));
 		createButton.setText(t.getString("program.launcher.createButton"));
 		menuLanguage.setText(t.getString("program.launcher.menuLanguage"));
+		refreshButton.setText(t.getString("program.launcher.refreshButton"));
 	}
 	
 	public Button getJoinButton() {
