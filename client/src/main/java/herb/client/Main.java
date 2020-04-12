@@ -3,6 +3,7 @@ package herb.client;
 import java.util.UUID;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import herb.client.ressources.Game;
 import herb.client.ressources.Round;
 import herb.client.ui.core.View;
@@ -178,20 +179,28 @@ public class Main extends Application {
 			LauncherModel lauModel = new LauncherModel();
 			launcherView = new LauncherView(stage, lauModel);
 			new LauncherController(lauModel, launcherView);
+			serviceLocator.getLogger().info("Launcher started");
 			}
 		return launcherView;
 	}
 
-	public LobbyView getLobbyView() {
-		// TODO correct, when lobbies work
+	public LobbyView getLobbyView(String lobbyName) {
+		// TODO correct, when lobbies work => multiple Lobbies possible
+		
+		//if(!getlobbyViews().containsKey(loobyName)) {
 		Stage stage = new Stage();
-		LobbyModel model = new LobbyModel();
+		LobbyModel model = new LobbyModel(lobbyName);
 		loView = new LobbyView(stage, model);
+		// LobbyView loView = new LobbyView(stage, model);
 		new LobbyController(model, loView);
 		launcherView.stop();
 		
+		//getLobbyViews().put(lobbyName, loView);
+		
 		return loView;
+		// return getLobbyViews().get(lobbyName);
 	}
+	
 
 	public GameView getGameView() {
 			// TODO correct, when everything works

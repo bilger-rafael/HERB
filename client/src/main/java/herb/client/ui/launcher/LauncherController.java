@@ -11,15 +11,16 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		// join a lobby
 		view.getJoinButton().setOnAction(e -> joinLobby());
 		
-		
+	
 	}
 	
 	// join a lobby
 	private void joinLobby() {
-		// choose chat program TODO
-		
-		
-		Main.getMainProgram().getLobbyView().start();
-	}
+		// choose lobby TODO
+		if (view.lobbyRoomCenter.getSelectionModel().isEmpty()) return;
+		String lobbyName = view.lobbyRoomCenter.getSelectionModel().getSelectedItem();
+		Main.getMainProgram().getLobbyView(lobbyName).start();
 
+		}
+			
 }
