@@ -21,7 +21,7 @@ public class Player extends PlayerBase<Hand> {
 	@Override
 	public void play(CardBase card) {
 		// Aus Hand entfernen
-		this.getHand().play(card);
+		this.getHand().play((Card) card);
 		// Karte dem Trick hinzufügen
 
 		getLastTrick().addCardtoTrick(card);
@@ -37,7 +37,7 @@ public class Player extends PlayerBase<Hand> {
 	}
 
 	public void addCardtoHand(CardBase card) {
-		this.getHand().addCard(card);
+		this.getHand().addCard((Card) card);
 	}
 
 	public void clearHand() {
