@@ -8,7 +8,7 @@ import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.TrickBase;
 
 //Etter
-public class Player extends PlayerBase<Hand> {
+public class Player extends PlayerBase<Hand, Round> {
 	private ArrayList<PlayListener> playListeners;
 	
 	

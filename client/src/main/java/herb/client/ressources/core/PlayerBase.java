@@ -3,11 +3,11 @@ package herb.client.ressources.core;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public abstract class PlayerBase <Hand extends HandBase> {
+public abstract class PlayerBase <Hand extends HandBase, Round extends RoundBase> {
 	private final String username;
 	private final String authToken;
 	@JsonIgnoreProperties({ "players", "currentStartingPlayer", "tricks" })
-	private RoundBase round;
+	private Round round;
 	private Hand hand;
 	protected CardBase[] playableHandCards;
 
@@ -55,11 +55,11 @@ public abstract class PlayerBase <Hand extends HandBase> {
 		return authToken;
 	}
 
-	public void setRound(RoundBase round) {
+	public void setRound(Round round) {
 		this.round = round;
 	}
 
-	public RoundBase getRound() {
+	public Round getRound() {
 		return round;
 	}
 

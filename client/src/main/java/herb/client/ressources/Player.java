@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.client.ressources.Player;
 
-public class Player extends PlayerBase<Hand> {
+public class Player extends PlayerBase<Hand, Round> {
 
 	// default constructor for json deserialization
 	public Player() {
