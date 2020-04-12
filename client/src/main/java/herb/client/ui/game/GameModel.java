@@ -25,6 +25,11 @@ public class GameModel extends Model {
 
 		// Datastore.getInstance().getMainPlayer().getHand().getCards();
 		// Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast().getPlayedCards();
+		
+		Player[] players = (Player[]) Datastore.getInstance().getMainPlayer().getRound().getPlayers();
+		
+		if (players[0] != null)
+			return players;
 
 		Player[] plys = new Player[4];
 

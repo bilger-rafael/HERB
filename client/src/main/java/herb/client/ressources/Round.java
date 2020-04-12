@@ -7,26 +7,26 @@ import herb.client.ressources.core.RoundBase;
 import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 
-public class Round extends RoundBase{
+public class Round extends RoundBase<Player>{
 
 	// default constructor for json deserialization
 	public Round() {
 		super(null);
 	}
 	
-	public Round(PlayerBase[] players) {
+	public Round(Player[] players) {
 		super(players);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	protected void addTrickScore(PlayerBase winner) {
+	protected void addTrickScore(Player winner) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Map<PlayerBase, Integer> getScoreTable() {
+	public Map<Player, Integer> getScoreTable() {
 		// TODO Auto-generated method stub
 		return null;
 	}
