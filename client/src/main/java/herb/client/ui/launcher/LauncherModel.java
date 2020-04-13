@@ -4,6 +4,7 @@ import herb.client.ressources.Lobby;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Model;
 import herb.client.utils.ServiceLocator;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -34,7 +35,7 @@ public class LauncherModel extends Model {
 			@Override
 			public void run() {
 				while (b) {
-					refreshLobbyList();
+					Platform.runLater(() -> refreshLobbyList());
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
@@ -44,7 +45,7 @@ public class LauncherModel extends Model {
 		};
 
 		Thread t = new Thread(r);
-		//t.setDaemon(true);
+		// t.setDaemon(true);
 		t.start();
 
 	}

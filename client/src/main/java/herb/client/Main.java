@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import herb.client.ressources.Game;
+import herb.client.ressources.Lobby;
 import herb.client.ressources.Round;
 import herb.client.ui.core.View;
 import herb.client.ui.game.GameController;
@@ -199,12 +200,12 @@ public class Main extends Application {
 		return lobbyCreaterView;
 	}
 
-	public LobbyView getLobbyView(String lobbyName) {
+	public LobbyView getLobbyView(Lobby lobby) {
 		// TODO correct, when lobbies work => multiple Lobbies possible
 		
 		//if(!getlobbyViews().containsKey(loobyName)) {
 		Stage stage = new Stage();
-		LobbyModel model = new LobbyModel(lobbyName);
+		LobbyModel model = new LobbyModel(lobby);
 		loView = new LobbyView(stage, model);
 		// LobbyView loView = new LobbyView(stage, model);
 		new LobbyController(model, loView);

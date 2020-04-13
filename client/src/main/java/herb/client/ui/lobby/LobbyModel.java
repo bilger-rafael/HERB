@@ -1,13 +1,14 @@
 package herb.client.ui.lobby;
 
+import herb.client.ressources.Lobby;
 import herb.client.ui.core.Model;
 
 public class LobbyModel extends Model{
-	private String lobbyName;
+	private Lobby lobby;
 
-    public LobbyModel(String lobbyName) {
+    public LobbyModel(Lobby lobby) {
     	super();
-    	this.lobbyName = lobbyName;
+    	this.lobby = lobby;
     }
     
 }
