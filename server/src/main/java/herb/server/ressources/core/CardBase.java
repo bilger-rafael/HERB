@@ -13,6 +13,23 @@ public abstract class CardBase {
     	this.trump = trump;
     }
     
+	@Override
+	public boolean equals(Object o) {
+		// self check
+		if (this == o)
+			return true;
+		// null check
+		if (o == null)
+			return false;
+		// type check and cast
+		if (getClass() != o.getClass())
+			return false;
+		CardBase c = (CardBase) o;
+		// field comparison	
+		return this.getSuit().equals(c.getSuit()) && 
+			   this.getRank().equals(c.getRank());
+	}
+    
     @JsonIgnore
     public abstract int getPoints();
     
