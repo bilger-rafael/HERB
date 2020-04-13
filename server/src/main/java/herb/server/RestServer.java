@@ -52,6 +52,7 @@ public class RestServer {
 			valid = DataStore_Repository.getDB().connectDatabase();
 			break;
 		default:
+			System.out.println(System.getProperty("user.name"));
 		}
 
 		while (!valid) {
