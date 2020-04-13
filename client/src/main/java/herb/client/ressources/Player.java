@@ -24,6 +24,11 @@ public class Player extends PlayerBase<Hand, Round> {
 	public Player(String username, String authToken) {
 		super(username, authToken);
 	}
+	
+	@Override
+	public String toString() {
+		return this.getUsername();
+	}
 
 	@Override
 	public void play(CardBase card) throws ExceptionBase {
