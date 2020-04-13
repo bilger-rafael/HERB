@@ -89,8 +89,8 @@ public class GameController extends Controller<GameModel, GameView> {
 			
 		System.out.println(playedCard.getSuit().toStringFr()+" "+playedCard.getRank().toStringDE());
 		
-		playedCardIndex = model.getCurrentCards().indexOf(playedCard); 
-		System.out.println("Array-Index: "+ playedCardIndex);
+		//playedCardIndex = model.getCurrentCards().indexOf(playedCard); 
+		//System.out.println("Array-Index: "+ playedCardIndex);
 		
 		model.playCard(playedCard);
 		
