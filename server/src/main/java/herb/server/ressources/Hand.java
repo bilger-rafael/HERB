@@ -79,6 +79,7 @@ public class Hand extends HandBase<Card>{
 					score= score+(o1.getRank().ordinal()-o2.getRank().ordinal());	
 					break;
 			}
+			System.out.println(score);
 			return score;
 		}
 	}

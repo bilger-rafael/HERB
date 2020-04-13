@@ -20,6 +20,18 @@ public abstract class LobbyBase <Player extends PlayerBase> {
 	public Player[] getPlayers() {
 		return players;
 	}
+	
+	public boolean isFull() {
+		if(this.players == null) return false;
+		
+		for (int i = 0; i < this.players.length; i++) {
+			if (this.players[i] == null) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 
 	public abstract void startGame();
 

@@ -1,9 +1,9 @@
 package herb.server.ressources.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
-public abstract class LobbyBase <Player extends PlayerBase> {
+public abstract class LobbyBase<Player extends PlayerBase> {
 	private final String name;
 	@JsonIgnoreProperties({ "round" })
 	protected Player[] players;
@@ -19,6 +19,17 @@ public abstract class LobbyBase <Player extends PlayerBase> {
 
 	public Player[] getPlayers() {
 		return players;
+	}
+
+	@JsonIgnore
+	public boolean isFull() {
+		for (int i = 0; i < this.players.length; i++) {
+			if (this.players[i] == null) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public abstract void startGame();
