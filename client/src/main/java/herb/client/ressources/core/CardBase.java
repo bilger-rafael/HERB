@@ -43,9 +43,15 @@ public abstract class CardBase {
 	
 	public abstract boolean compareToPlayable(CardBase o);
 
-	public abstract Suit getSuit();
+	public Suit getSuit() {
+		return this.suit;
+	}
 	
-	public abstract Rank getRank();
+	public Rank getRank() {
+		return this.rank;
+	}
 	
-	public abstract Trump getTrump();
+	public Trump getTrump() {
+		return this.trump;
+	}
 }
