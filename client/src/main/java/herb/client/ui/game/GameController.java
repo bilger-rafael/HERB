@@ -50,7 +50,7 @@ public class GameController extends Controller<GameModel, GameView> {
 			writeCardsOut += reducedArray.get(i).getRank();	
 			}
 		System.out.println(writeCardsOut);
-	//	updateMyCards();
+		view.updateMyCards();
 	//	updateTrick();
 	}
 	

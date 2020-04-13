@@ -113,10 +113,7 @@ public class GameView extends View<GameModel> {
     	plys = new Player[4];
     	plys = model.getLobbyPlayers();
 	
-		// Roesti - get MainCards
-    	// card images from herb / client / ui / images / fr OR de TODO
-    	cardAreas = new ArrayList();
-    	cardAreas = model.getMyCards();
+
     	
     	// Roesti - get PlayableCards
     	playables = new ArrayList();
@@ -157,7 +154,8 @@ public class GameView extends View<GameModel> {
 		headMenu.getMenus().addAll(menuLanguage);
 
 		System.out.println("Fenster erstellt");
-		updateMyCards();
+		
+		setMyCards();
 		
 	if (rects.size() > 0)
 		rect1 = rects.get(0);
@@ -237,8 +235,25 @@ public class GameView extends View<GameModel> {
 	}
 ///////////////////////////////////////////////////////////////
 	
-	private void updateMyCards() {
-		// Roesti - create hand: ownCards GridPane
+	private void setMyCards() {
+		updateMyCards();
+			
+		ownCards.setMinHeight(250);
+		ownCards.setHgap(-150);
+		bottom.setStyle("-fx-background-color: beige");
+		bottom.getChildren().add(playerLabel);
+		bottom.getChildren().add(ownCards);
+		bottom.setAlignment(Pos.CENTER);
+		// center Cards
+		ownCards.getChildren().add(spacer);
+	}
+	
+	// Roesti - create hand of MainPlayer: ownCards GridPane
+	// card images from herb / client / ui / images / fr OR de TODO
+	protected void updateMyCards() {
+    	cardAreas = new ArrayList();
+    	cardAreas = model.getMyCards();
+    	
 		for (int i=0; i< cardAreas.size(); i++) {
 			String rank = cardAreas.get(i).getRank().toStringDE();
 			String suit = cardAreas.get(i).getSuit().toStringFr();
@@ -265,14 +280,7 @@ public class GameView extends View<GameModel> {
 		    rects.add(rectangleCard);  
 		}
 
-		ownCards.setMinHeight(250);
-		ownCards.setHgap(-150);
-		bottom.setStyle("-fx-background-color: beige");
-		bottom.getChildren().add(playerLabel);
-		bottom.getChildren().add(ownCards);
-		bottom.setAlignment(Pos.CENTER);
-		// center Cards
-		ownCards.getChildren().add(spacer);
+
 	}
 	
 	private void updatePlayableCards() {
