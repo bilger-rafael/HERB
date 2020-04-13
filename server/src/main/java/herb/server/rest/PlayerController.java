@@ -36,6 +36,9 @@ public class PlayerController {
 
 	@PostMapping("/Player({username})/play")
 	public void play(@PathVariable String username, @RequestBody Card card) throws ExceptionBase {
+		
+		//TODO check if its players turn and if card is in his hand
+		
 		CardBase[] cards = getPlayer(username).getHand().getCards();
 
 		for (int i = 0; i < cards.length; i++) {

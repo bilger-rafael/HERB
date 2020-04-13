@@ -23,6 +23,7 @@ public class Trick extends TrickBase <Player> {
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			//TODO wait for currentPlayer to play (Create Event in Player)
 			
+			this.played = false;
 			((Player) this.getCurrentPlayer().data).addPlayListener(() -> {
 				this.played = true;
 			});
