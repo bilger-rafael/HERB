@@ -12,7 +12,7 @@ public class Hand extends HandBase<Card>{
 	public Hand() {
 		this.addIndex=0;
 		super.setCards(new Card[9]);
-		sortCards();
+		//sortCards();
 	}
 
 	@Override
