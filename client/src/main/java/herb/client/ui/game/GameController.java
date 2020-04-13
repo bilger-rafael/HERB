@@ -37,6 +37,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.getSimulationButton().setOnAction(e -> simulate());
 	}
 	
+	// Roesti - only for testing
 	public void simulate() {
 		
 		ArrayList<Card> reducedArray = new ArrayList();
@@ -44,21 +45,20 @@ public class GameController extends Controller<GameModel, GameView> {
 		reducedArray = model.setMyCards(playedCard);
 		
 		String writeCardsOut = "Array-Karten...";
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < reducedArray.size(); i++) {
 			writeCardsOut += reducedArray.get(i).getSuit();
 			writeCardsOut += reducedArray.get(i).getRank();	
 			}
 		System.out.println(writeCardsOut);
-	//	updateMyCards();
+		view.updateMyCards();
 	//	updateTrick();
 	}
 	
-	public Card forwardPlayedCard(MouseEvent mouseEvent){
-		//TODO forward Card-Info to Server
-		System.out.println("It happened");
+	// Roesti - identify clicked Card, check if playable, if so: playCard() = back to server
+	public void forwardPlayedCard(MouseEvent mouseEvent){
 		
+		System.out.println("It happened");
 		Rectangle recti = (Rectangle) mouseEvent.getSource();
-					
 		if ((recti).getFill().equals(view.getPlayedCard1().getFill())) {
 			playedCard = view.getCardAreas().get(0);
 		}
@@ -89,15 +89,11 @@ public class GameController extends Controller<GameModel, GameView> {
 			
 		System.out.println(playedCard.getSuit().toStringFr()+" "+playedCard.getRank().toStringDE());
 		
-		Rank r1 = Rank.Six;
-		Suit s1 = Suit.Hearts;
-		Trump t1 = Trump.TopsDown;
-		Card c1 = new Card(s1, r1, t1);
-
-		playedCardIndex = model.getCurrentCards().indexOf(c1); 
+		playedCardIndex = model.getCurrentCards().indexOf(playedCard); 
 		System.out.println("Array-Index: "+ playedCardIndex);
-				
-		return playedCard;
+		
+		model.playCard(playedCard);
+		
 	}		
 	
 }
