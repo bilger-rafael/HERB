@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 
 public class LauncherModel extends Model {
 	private ObservableList<Lobby> lobbys = FXCollections.observableArrayList();
-	ServiceLocator servicelocator;
 
 	public LauncherModel() {
 		super();
@@ -36,7 +35,7 @@ public class LauncherModel extends Model {
 			public void run() {
 				while (b) {
 					refreshLobbyList();
-					servicelocator.getLogger().info("Launcher refreshed");
+					//servicelocator.getLogger().info("Launcher refreshed");
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
@@ -46,7 +45,7 @@ public class LauncherModel extends Model {
 		};
 
 		Thread t = new Thread(r);
-		t.setDaemon(true);
+		//t.setDaemon(true);
 		t.start();
 
 	}
