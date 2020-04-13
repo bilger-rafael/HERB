@@ -154,6 +154,7 @@ public class GameView extends View<GameModel> {
 		headMenu.getMenus().addAll(menuLanguage);
 
 		System.out.println("Fenster erstellt");
+		System.out.println("Finally me");
 		
 		setMyCards();
 		
