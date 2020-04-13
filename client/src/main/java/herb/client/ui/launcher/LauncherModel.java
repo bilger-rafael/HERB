@@ -35,7 +35,6 @@ public class LauncherModel extends Model {
 			public void run() {
 				while (b) {
 					refreshLobbyList();
-					//servicelocator.getLogger().info("Launcher refreshed");
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
