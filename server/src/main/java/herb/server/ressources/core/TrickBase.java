@@ -1,5 +1,6 @@
 package herb.server.ressources.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,7 +49,7 @@ public abstract class TrickBase <Player extends PlayerBase> {
 	}
 	
 	@JsonIgnore
-	protected Map<Player, CardBase> playedCards;
+	protected Map<Player, CardBase> playedCards = new HashMap<Player, CardBase>();
 	@JsonIgnore
 	protected Player winningPlayer;
 
