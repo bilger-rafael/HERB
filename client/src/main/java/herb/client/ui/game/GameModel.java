@@ -6,6 +6,7 @@ import java.util.List;
 
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
+import herb.client.ressources.core.ExceptionBase;
 import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.Trump;
@@ -79,7 +80,12 @@ public class GameModel extends Model {
 	public Card playCard(Card playedCard) {
 		
 		// TODO server ....?
-		
+		try {
+			Datastore.getInstance().getMainPlayer().play(playedCard);
+		} catch (ExceptionBase e) {
+			// TODO show error message
+			e.printStackTrace();
+		}
 		return playedCard;
 	}
 	
