@@ -78,8 +78,6 @@ public class GameModel extends Model {
 	}
 	
 	public Card playCard(Card playedCard) {
-		
-		// TODO server ....?
 		try {
 			Datastore.getInstance().getMainPlayer().play(playedCard);
 		} catch (ExceptionBase e) {
