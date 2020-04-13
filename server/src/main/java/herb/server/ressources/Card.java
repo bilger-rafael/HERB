@@ -197,17 +197,4 @@ public class Card extends CardBase {
 		 }else return false;
 	}
 
-	public Suit getSuit() {
-		return this.suit;
-	}
-	
-	public Rank getRank() {
-		return this.rank;
-	}
-	
-	public Trump getTrump() {
-		return this.trump;
-	}
-
-
 }
