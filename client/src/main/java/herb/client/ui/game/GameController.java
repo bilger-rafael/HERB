@@ -45,7 +45,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		reducedArray = model.setMyCards(playedCard);
 		
 		String writeCardsOut = "Array-Karten...";
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < reducedArray.size(); i++) {
 			writeCardsOut += reducedArray.get(i).getSuit();
 			writeCardsOut += reducedArray.get(i).getRank();	
 			}

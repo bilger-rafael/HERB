@@ -40,6 +40,7 @@ import javafx.geometry.Insets;
 
 public class GameView extends View<GameModel> {
 	
+	//private BorderPane root;
 	private AnchorPane root; 
 	private GridPane table;
 	private GridPane ownCards;
@@ -73,6 +74,7 @@ public class GameView extends View<GameModel> {
 		
 		// Roesti - create ui-elements
 		this.root = new AnchorPane();
+		//this.root = new BorderPane();
 		this.upperPart = new BorderPane();
 		this.tablePart = new StackPane();
 		left = new HBox();
@@ -193,6 +195,13 @@ public class GameView extends View<GameModel> {
 		updatePointPane();
 
 		
+//		//BorderPane for the whole - just testing
+//		root.setTop(headMenu);
+//		root.setLeft(left);
+//		root.setRight(right);
+//		root.setCenter(upperPart);
+//		root.setBottom(bottom);
+		
 		//AnchorPane
 		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, simButton, headMenu);
 		root.setLeftAnchor(headMenu, 0d);
@@ -223,7 +232,7 @@ public class GameView extends View<GameModel> {
 		root.setTopAnchor(simButton, 50d);
 		root.setLeftAnchor(simButton, 10d);
 	
-		Scene scene = new Scene(root, 1000, 1000);
+		Scene scene = new Scene(root);
 		return scene;
 	}
 ///////////////////////////////////////////////////////////////
