@@ -45,7 +45,7 @@ public abstract class PlayerBase <Hand extends HandBase, Round extends RoundBase
 		return this.getUsername().equals(p.getUsername());
 	}
 
-	public abstract void play(CardBase card);
+	public abstract void play(CardBase card) throws ExceptionBase;
 
 	public String getUsername() {
 		return username;

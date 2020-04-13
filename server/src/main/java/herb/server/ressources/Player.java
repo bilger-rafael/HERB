@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import herb.server.ressources.core.CardBase;
+import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.TrickBase;
 
@@ -19,7 +20,7 @@ public class Player extends PlayerBase<Hand, Round> {
 	}
 
 	@Override
-	public void play(CardBase card) {
+	public void play(CardBase card) throws ExceptionBase {
 		// Aus Hand entfernen
 		this.getHand().play((Card) card);
 		// Karte dem Trick hinzufügen
