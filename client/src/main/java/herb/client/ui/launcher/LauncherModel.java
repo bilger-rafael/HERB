@@ -30,11 +30,9 @@ public class LauncherModel extends Model {
 	// Create thread to update Lobby periodically
 	private void startLobbyUpdater() {
 		Runnable r = new Runnable() {
-			boolean b = true;
-
 			@Override
 			public void run() {
-				while (b) {
+				while (true) {
 					Platform.runLater(() -> refreshLobbyList());
 					try {
 						Thread.sleep(10000);
@@ -45,7 +43,7 @@ public class LauncherModel extends Model {
 		};
 
 		Thread t = new Thread(r);
-		// t.setDaemon(true);
+		t.setDaemon(true);
 		t.start();
 
 	}
