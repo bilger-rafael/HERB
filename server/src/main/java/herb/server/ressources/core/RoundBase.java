@@ -7,9 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //Etter
-public abstract class RoundBase <Player extends PlayerBase> {
-	@JsonIgnore
-	private LinkedList<TrickBase<Player>> tricks = new LinkedList<TrickBase<Player>>();
+public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickBase> {
+	private LinkedList<Trick> tricks = new LinkedList<Trick>();
 	private Trump trump;
 	@JsonIgnoreProperties({ "round", "hand" })
 	private Player[] players;
@@ -44,7 +43,7 @@ public abstract class RoundBase <Player extends PlayerBase> {
 	@JsonIgnore
 	public abstract Map<Player, Integer> getScoreTable();
 	
-	public LinkedList<TrickBase<Player>> getTricks(){
+	public LinkedList<Trick> getTricks(){
 		return tricks;
 	}
 	

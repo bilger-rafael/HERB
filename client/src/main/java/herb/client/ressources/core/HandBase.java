@@ -1,7 +1,9 @@
 package herb.client.ressources.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public abstract class HandBase <Card extends CardBase> {
+	@JsonIgnoreProperties({ "trump" })
 	protected Card[] cards;
 	
 	public void setCards(Card[] cards) {

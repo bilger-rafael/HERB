@@ -2,18 +2,43 @@ package herb.server.ressources;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import herb.server.ressources.core.CardBase;
-import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.TrickBase;
 
 //Etter
 public class Trick extends TrickBase <Player> {
+	
+	private class PlayerNode {
+		public Player data;
+		public PlayerNode next;
+
+		public PlayerNode(Player players) {
+			this.data = players;
+		}
+	}
+	private PlayerNode nodeCurrentPlayer;
 	public boolean played;
 
 	public Trick(Player[] players, Player startingPlayer) {
 		super(players, startingPlayer);
+		
+		PlayerNode pnPrevious = null;
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			Player p = this.getPlayers()[i];
+			PlayerNode pn = new PlayerNode(p);
+
+			if (p.equals(this.getStartingPlayer())) {
+				nodeCurrentPlayer = pn;
+			}
+
+			if (pnPrevious != null) {
+				pnPrevious.next = pn;
+			}
+
+			pnPrevious = pn;
+		}
 	}
 	
 	//Bilger
@@ -24,7 +49,7 @@ public class Trick extends TrickBase <Player> {
 			//TODO wait for currentPlayer to play (Create Event in Player)
 			
 			this.played = false;
-			((Player) this.getCurrentPlayer().data).addPlayListener(() -> {
+			((Player) this.getCurrentPlayer()).addPlayListener(() -> {
 				this.played = true;
 			});
 			
@@ -36,15 +61,15 @@ public class Trick extends TrickBase <Player> {
 				}
 			}
 			
-			this.setCurrentPlayer(this.getCurrentPlayer().next);
+			this.setCurrentPlayer(this.determinNextPlayer());
 		}
 
 		winner = getWinner();
 
 		return winner;
 	}
-
-	@Override
+	
+	@JsonIgnore
 	public Player getWinner() {
 		this.winningPlayer = this.getStartingPlayer();
 		// Ort des Startspielers
@@ -112,12 +137,10 @@ public class Trick extends TrickBase <Player> {
 	}
 */
 	
-	@Override
 	public void addCardtoTrick(CardBase c) {
-		this.playedCards.put(this.getCurrentPlayer().data, c);
+		this.playedCards.put(this.getCurrentPlayer(), c);
 	}
 
-	@Override
 	public int getTrickPoints() {
 		int trickPoints = 0;
 
@@ -128,30 +151,14 @@ public class Trick extends TrickBase <Player> {
 		return trickPoints;
 	}
 
-	@Override
 	public Map<Player, CardBase> getPlayedCards() {
 		return this.playedCards;
 	}
 
-	@Override
 	public CardBase getPlayedCard(Player p) {
 		return this.playedCards.get(p);
 	}
-
-	@Override
-	protected void clearTrick() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Player getStaringPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	
-	@Override
 	public Player getNextPlayer(Player p) {
 		Player temp = p;
 
@@ -168,7 +175,6 @@ public class Trick extends TrickBase <Player> {
 		return temp;
 	}
 
-	@Override
 	public Player getPrivousPlayer(Player p) {
 		Player temp = p;
 
@@ -183,6 +189,12 @@ public class Trick extends TrickBase <Player> {
 			}
 		}
 		return temp;
+	}
+
+	@Override
+	public Player determinNextPlayer() {
+		this.nodeCurrentPlayer = this.nodeCurrentPlayer.next;
+		return nodeCurrentPlayer.data;
 	}
 
 

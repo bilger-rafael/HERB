@@ -175,6 +175,6 @@ public class Player extends PlayerBase<Hand, Round> {
 	}
 	
 	private Trick getLastTrick() {
-		return (Trick) ((LinkedList<TrickBase<Player>>) this.getRound().getTricks()).getLast();
+		return (Trick) ((LinkedList<Trick>) this.getRound().getTricks()).getLast();
 	}
 }

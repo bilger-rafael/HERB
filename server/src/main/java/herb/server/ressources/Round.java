@@ -11,7 +11,7 @@ import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
 //Etter
-public class Round extends RoundBase<Player> implements Runnable{
+public class Round extends RoundBase<Player, Trick> implements Runnable{
 	private DeckOfCards deck;
 
 	public Round(Player[] players) {

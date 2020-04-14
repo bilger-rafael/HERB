@@ -7,7 +7,7 @@ import herb.client.ressources.core.RoundBase;
 import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 
-public class Round extends RoundBase<Player>{
+public class Round extends RoundBase<Player, Trick>{
 
 	// default constructor for json deserialization
 	public Round() {
