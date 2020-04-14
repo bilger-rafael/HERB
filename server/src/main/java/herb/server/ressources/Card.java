@@ -115,10 +115,10 @@ public class Card extends CardBase {
 		return points;
 	}
 	
-	protected boolean isTrump() {
-		if(this.suit.name() == this.trump.name())
+	public boolean isTrump() {
+		if(this.suit.ordinal() == this.trump.ordinal()) {
 			return true;
-		else return false;
+		}else { return false;}
 	}
 	
 	protected  boolean isTopDown() {

@@ -17,7 +17,7 @@ public class DeckOfCards {
     
     //Erstellen und mischen
     public DeckOfCards(Trump trump) {
-    	
+    	this.trump = trump;
         initializeCards();
         shuffle();
     }
