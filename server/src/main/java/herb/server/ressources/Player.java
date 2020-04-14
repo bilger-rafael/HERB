@@ -25,7 +25,7 @@ public class Player extends PlayerBase<Hand, Round> {
 		this.getHand().play((Card) card);
 		// Karte dem Trick hinzufügen
 
-		getLastTrick().addCardtoTrick(card);
+		getLastTrick().addCardtoTrick((Card) card);
 		
 		//clone array to avoid exception when listener is removed in the for loop
 		ArrayList<PlayListener> listeners = new ArrayList<PlayListener>(this.playListeners); 
@@ -94,7 +94,7 @@ public class Player extends PlayerBase<Hand, Round> {
 			
 
 		//Logik
-		int NumberPlayedCards = getLastTrick().getPlayedCards().size();
+		int NumberPlayedCards = getLastTrick().getPlayedCards().length;
 			
 		switch (NumberPlayedCards) {
 				//Ich bin der Startspieler
