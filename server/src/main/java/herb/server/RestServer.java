@@ -51,6 +51,16 @@ public class RestServer {
 			DataStore_Repository.getDB().setPw(pw);
 			valid = DataStore_Repository.getDB().connectDatabase();
 			break;
+		case "etterdominic":
+			ip = "jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC";
+			user = "root";
+			pw = "A01051991";
+			DataStore_Repository.getDB();
+			DataStore_Repository.getDB().setIp(ip);
+			DataStore_Repository.getDB().setUser(user);
+			DataStore_Repository.getDB().setPw(pw);
+			valid = DataStore_Repository.getDB().connectDatabase();
+			break;
 		default:
 			System.out.println(System.getProperty("user.name"));
 		}

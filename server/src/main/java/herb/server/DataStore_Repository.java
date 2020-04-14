@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import herb.server.ressources.Lobby;
+import herb.server.ressources.core.ExceptionBase;
+
 
 //ETTER fast Singleton
 public class DataStore_Repository {
@@ -96,6 +99,20 @@ public class DataStore_Repository {
 				this.createLoginTable();
 				this.createLobbyTable();
 				this.createHighScoresTable();
+				
+				//Lobbys aus DB in Datastore laden
+				ArrayList<String> list = this.showLobbys();
+				for (String s:list){
+					Lobby temp;
+					try {
+						temp = Lobby.createLobby(s);
+						Datastore.getInstance().lobbys.put(s, temp);
+					} catch (ExceptionBase e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
     		
 			}else {
 				//DB mit Tabellen erstellen 
