@@ -176,7 +176,7 @@ public class GameView extends View<GameModel> {
 		rect8 = rects.get(7);
 	if (rects.size()>8)	
 		rect9 = rects.get(8);
-	System.out.println("Rechteck: "+rects.get(8).getFill());
+	//System.out.println("Rechteck: "+rects.get(8).getFill());
 		
 		updateTrick();
 		

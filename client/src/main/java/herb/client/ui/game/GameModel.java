@@ -3,9 +3,11 @@ package herb.client.ui.game;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
+import herb.client.ressources.Trick;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
@@ -29,7 +31,8 @@ public class GameModel extends Model {
 	public Player[] getLobbyPlayers() {
 
 		// Datastore.getInstance().getMainPlayer().getHand().getCards();
-		// Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast().getPlayedCards();	
+		// Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast().getPlayedCards();
+		//TODO remove try catch later
 		try {
 		Player[] players = (Player[]) Datastore.getInstance().getMainPlayer().getRound().getPlayers();
 		if (players[0] != null)
@@ -51,13 +54,11 @@ public class GameModel extends Model {
 	// Roesti - TODO - new Thread for updated server input
 	public ArrayList<Card> getMyCards() {
 
-		Datastore.getInstance().getMainPlayer().getHand().getCards();
-
 		Card[] cards = (Card[]) Datastore.getInstance().getMainPlayer().getHand().getCards();
 		
 		//if cards received from server, use them instead of the testdata
-		if (cards[0] != null)
-			return new ArrayList<Card>(Arrays.asList(cards));
+		if (cards[0] != null || cards[8] != null)
+			return new ArrayList<Card>(Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList()));
 
 		// Roesti - ArrayList only for testing
 		currentCards = new ArrayList();
@@ -107,6 +108,15 @@ public class GameModel extends Model {
 	public ArrayList<Card> getTrickCards() {
 		
 		// server...
+		//TODO remove try catch later
+		try {
+			Trick trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
+			Card[] cards = (Card[]) trick.getPlayedCards();
+			if (trick != null)
+				return new ArrayList<Card>(Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList()));
+		} catch (Exception e) {
+			System.out.println("Fehler"); 
+		}
 		
 		// for testing
 		ArrayList<Card> trickCards = new ArrayList();
