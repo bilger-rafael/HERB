@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class CardBase {
     protected final Suit suit;
     protected final Rank rank;
+    @JsonIgnore
     protected final Trump trump;
     
     public CardBase(Suit suit, Rank rank, Trump trump) {
