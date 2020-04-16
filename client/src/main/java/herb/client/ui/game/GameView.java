@@ -42,10 +42,10 @@ public class GameView extends View<GameModel> {
 	
 	//private BorderPane root;
 	private AnchorPane root; 
-	private GridPane table;
-	private GridPane ownCards;
+	private GridPane table, ownCards;
 	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points;
 	private HBox oppositeSide, left, right, pointPane;
+	private HBox tMain, tRight, tOppo, tLeft;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel;
 	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
@@ -53,13 +53,12 @@ public class GameView extends View<GameModel> {
 	private StackPane tablePart;
 	private Rectangle rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8, rect9;
 	private ArrayList<Rectangle> rects;
-	private ArrayList<Card> cardAreas;
- 	private ArrayList<Card> playables;
- 	private ArrayList<Card> trickCardAreas;
+	private ArrayList<Card> cardAreas, playables, trickCardAreas;
 	private Button simButton;
 	private Player[] plys;
 	private MenuBar headMenu;
 	private Menu menuLanguage;
+	private ArrayList<Card> cards = new ArrayList();
 
 
 	public GameView(Stage stage, GameModel model) {
@@ -91,11 +90,16 @@ public class GameView extends View<GameModel> {
 		points = new VBox();		
 		ownCards.setMinHeight(300);
 		ownCards.setMinWidth(1300);
+		tMain = new HBox();
+		tRight = new HBox();
+		tOppo = new HBox();
+		tLeft = new HBox();
 				
 		spacer = new Region();
 		spacerTable = new Region();
 		spacerTable2 = new Region();
-		spacer.setMinWidth(670d);
+	//	spacer.setMinWidth(670d);
+		spacer.setMinWidth(200d);
 		spacerTable.setMinWidth(200d);
 		spacerTable2.setMinWidth(200d);
 		spacerRight = new Region();
@@ -112,9 +116,7 @@ public class GameView extends View<GameModel> {
 		// Roesti - get lobby players
     	plys = new Player[4];
     	plys = model.getLobbyPlayers();
-	
-
-    	
+	    	
     	// Roesti - get PlayableCards
     	playables = new ArrayList();
     	playables = model.getPlayableCards();
@@ -132,6 +134,7 @@ public class GameView extends View<GameModel> {
 		leftHandLabel = new Label(plys[3].getUsername());
 		rightHandLabel = new Label(plys[1].getUsername());
 		oppositeLabel = new Label(plys[2].getUsername());
+		oppositeLabel.setMinHeight(60);
 		trickLabel2 = new Label();
 		trickLabel = new Label();
 		trickLabel.setMinHeight(70);
@@ -153,53 +156,23 @@ public class GameView extends View<GameModel> {
 		}	
 		headMenu.getMenus().addAll(menuLanguage);
 
+		System.out.println();
 		System.out.println("Fenster erstellt");
-		System.out.println("Finally me");
 		
 		setMyCards();
-		
-	if (rects.size() > 0)
-		rect1 = rects.get(0);
-	if (rects.size()>1)	
-		rect2 = rects.get(1);
-	if (rects.size()>2)			
-		rect3 = rects.get(2);
-	if (rects.size()>3)	
-		rect4 = rects.get(3);
-	if (rects.size()>4)			
-		rect5 = rects.get(4);
-	if (rects.size()>5)		
-		rect6 = rects.get(5);
-	if (rects.size()>6)		
-		rect7 = rects.get(6);
-	if (rects.size()>7)			
-		rect8 = rects.get(7);
-	if (rects.size()>8)	
-		rect9 = rects.get(8);
-	//System.out.println("Rechteck: "+rects.get(8).getFill());
-		
-		updateTrick();
-		
+		setTrick();
+				
 		updateLeftPlayer();
 		updateRightPlayer();
         updateOppoPlayer();
-
        		
-		//BorderPane
+		//BorderPane opposite Player and Table
 		upperPart.setCenter(table);
 		upperPart.setBottom(trickLabel2);
 		upperPart.setTop(opposite);
 		upperPart.setMinWidth(400d);
 		
 		updatePointPane();
-
-		
-//		//BorderPane for the whole - just testing
-//		root.setTop(headMenu);
-//		root.setLeft(left);
-//		root.setRight(right);
-//		root.setCenter(upperPart);
-//		root.setBottom(bottom);
 		
 		//AnchorPane
 		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, simButton, headMenu);
@@ -215,11 +188,9 @@ public class GameView extends View<GameModel> {
 		root.setBottomAnchor(right, 200d);
 
 		root.setStyle("-fx-background-color: darksalmon");
-//		upperPart.setStyle("-fx-background-color: red");
 		root.setTopAnchor(upperPart, -40d);
 		root.setLeftAnchor(upperPart, 200d);
 		root.setRightAnchor(upperPart, 200d);
-	//	root.setBottomAnchor(upperPart, 200d);
 		
 		root.setBottomAnchor(bottom, 10d);
 		root.setLeftAnchor(bottom, 10d);
@@ -231,33 +202,55 @@ public class GameView extends View<GameModel> {
 		root.setTopAnchor(simButton, 50d);
 		root.setLeftAnchor(simButton, 10d);
 	
-		Scene scene = new Scene(root);
+		Scene scene = new Scene(root, 1000, 1000);
 		return scene;
 	}
+	
 ///////////////////////////////////////////////////////////////
 	
 	private void setMyCards() {
-		updateMyCards();
+    	cardAreas = new ArrayList();
+    	cardAreas = model.getMyCards();
+		updateMyCards(cardAreas);
 			
 		ownCards.setMinHeight(250);
-		ownCards.setHgap(-150);
+		ownCards.setHgap(-50);
 		bottom.setStyle("-fx-background-color: beige");
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
-		// center Cards
-		ownCards.getChildren().add(spacer);
+	}
+	
+	private void setTrick() {
+		table.add(trickLabel, 1, 0, 1, 1);
+	    table.add(spacerTable, 0, 0, 1, 1);
+	    table.add(spacerTable2, 3, 0, 1, 1);
+	    tOppo.setPrefSize(322/3,  514/3);
+	    tLeft.setPrefSize(322/3,  514/3);
+	    tMain.setPrefSize(322/3,  514/3);
+	    tRight.setPrefSize(322/3,  514/3);
+	    table.add(tOppo, 2,  0, 1, 2);
+	    table.add(tLeft,  1,  1, 1, 2);
+	    table.add(tMain, 2,  2, 1, 2);
+	    table.add(tRight,  3,  1, 1, 2);
+		
+		updateTrick(trickCardAreas);
+		
 	}
 	
 	// Roesti - create hand of MainPlayer: ownCards GridPane
 	// card images from herb / client / ui / images / fr OR de TODO
-	protected void updateMyCards() {
-    	cardAreas = new ArrayList();
-    	cardAreas = model.getMyCards();
-    	
-		for (int i=0; i< cardAreas.size(); i++) {
-			String rank = cardAreas.get(i).getRank().toStringDE();
-			String suit = cardAreas.get(i).getSuit().toStringFr();
+	protected void updateMyCards(ArrayList<Card> cardSet) {
+		
+		cards = cardSet;
+		this.cardAreas = cards; 
+		
+		ownCards.getChildren().clear();
+		rects.clear();
+		
+		for (int i=0; i< cards.size(); i++) {
+			String rank = cards.get(i).getRank().toStringDE();
+			String suit = cards.get(i).getSuit().toStringFr();
 		    String filename = suit + "_" + rank + ".jpg";
 		    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
 
@@ -272,39 +265,60 @@ public class GameView extends View<GameModel> {
 		    rectangleCard.setStroke(Color.BROWN);
 		     
 		      //  fan out cards
-		    Rotate rotate = new Rotate();
-		    rotate.setAngle(-40+10*i); 
-		    rotate.setPivotX(322/2/2); 	
-		    rotate.setPivotY(257*2.2);
-		    rectangleCard.getTransforms().addAll(rotate);   
+//		    Rotate rotate = new Rotate();
+//		    rotate.setAngle(-40+10*i); 
+//		    rotate.setPivotX(322/2/2); 	
+//		    rotate.setPivotY(257*2.2);
+//		    rectangleCard.getTransforms().addAll(rotate);   
 		    ownCards.add(rectangleCard, i+1, 1);	
 		    rects.add(rectangleCard);  
-		}
-
-
+		}			
+		// center fanned out Cards
+		ownCards.getChildren().add(spacer);
+//		if (rects.size() > 0)
+//			rect1 = rects.get(0);
+//		if (rects.size()>1)	
+//			rect2 = rects.get(1);
+//		if (rects.size()>2)			
+//			rect3 = rects.get(2);
+//		if (rects.size()>3)	
+//			rect4 = rects.get(3);
+//		if (rects.size()>4)			
+//			rect5 = rects.get(4);
+//		if (rects.size()>5)		
+//			rect6 = rects.get(5);
+//		if (rects.size()>6)		
+//			rect7 = rects.get(6);
+//		if (rects.size()>7)			
+//			rect8 = rects.get(7);
+//		if (rects.size()>8)	
+//			rect9 = rects.get(8);
 	}
 	
 	private void updatePlayableCards() {
 		//TODO - update playable cards after every played card
 	}
 	
-	private void updateTrick() {
-		//TODO - add every played card
-		// Roesti - create trick: table GridPane 
-	    trickLabel.setStyle("-fx-font-weight: bold");
-	    table.add(trickLabel, 1, 0, 1, 1);
-	    table.add(spacerTable, 0, 0, 1, 1);
-	    table.add(spacerTable2, 3, 0, 1, 1);
+	// Roesti - create trick: table GridPane 
+	//TODO - add every played card
+	public void updateTrick(ArrayList<Card> cardSet) {
+		ArrayList<Card> trick = new ArrayList();
+		trick = cardSet;
+	    
+		tOppo.getChildren().clear();
+		tLeft.getChildren().clear();
+		tMain.getChildren().clear();
+		tRight.getChildren().clear();
 	    	    
 		// set played cards
-		for (int i = 0; i< trickCardAreas.size(); i++) {
+		for (int i = 0; i< trick.size(); i++) {
 		Rectangle rectangle = new Rectangle();
 		rectangle.setHeight(514/3);
 		rectangle.setWidth(322/3);		
 		rectangle.setArcHeight(20);
 		rectangle.setArcWidth(20);
-		String r1 = trickCardAreas.get(i).getRank().toStringDE();
-		String s1 = trickCardAreas.get(i).getSuit().toStringFr();
+		String r1 = trick.get(i).getRank().toStringDE();
+		String s1 = trick.get(i).getSuit().toStringFr();
 		Trump t1 = Trump.TopsDown;
 		String filename = s1 + "_" + r1 + ".jpg";
 		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
@@ -312,34 +326,21 @@ public class GameView extends View<GameModel> {
 		rectangle.setFill(pattern);
 		rectangle.setId("cardimage");             
 	    // Roesti - implement rotation  TODO implement Random()
-		Rotate rotate = new Rotate();  
-		rotate.setAngle(((10+i) % 2)+183-2*i); 
-		rotate.setPivotX(30); 
-		rotate.setPivotY(322/3+30); 
-	    rectangle.getTransforms().addAll(rotate); 			
+//		Rotate rotate = new Rotate();  
+//		rotate.setAngle(((10+i) % 2)+183-2*i); 
+//		rotate.setPivotX(30); 
+//		rotate.setPivotY(322/3+30); 
+//	    rectangle.getTransforms().addAll(rotate); 			
 	    if(i == 0)
-	    	table.add(rectangle, 2, 0, 1, 2);
+	    	tOppo.getChildren().add(rectangle);
 	    if(i==1)
-	    	table.add(rectangle, 1, 1, 1, 2);
+	    	tLeft.getChildren().add(rectangle);
 	    if(i==2)
-	    	table.add(rectangle, 2, 2, 1, 2);
+	    	tMain.getChildren().add(rectangle);
 	    if(i==3)
-	    	table.add(rectangle, 3, 1, 1, 2);
-		}
-		
-        // fill up with void cards
-//	    if ()
-//		for (int j = 0; j< 4-trickCardAreas.size(); j++) {
-//		Rectangle rectangleJ = new Rectangle();
-//		rectangleJ.setHeight(514/3);
-//		rectangleJ.setWidth(322/3);	
-//		rectangleJ.setArcHeight(20);
-//		rectangleJ.setArcWidth(20);
-//		String filename = "Rückseite.jpg";
-//		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
-//        ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
-//        rectangleJ.setFill(pattern);
-		
+	    	tRight.getChildren().add(rectangle);
+	    }
+				
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
@@ -464,42 +465,18 @@ public class GameView extends View<GameModel> {
 		// tbd
 	}
 	
-	// Roesti - chosen card sending back to controller
-	public Rectangle getPlayedCard1() {
-		return rect1;
-	}
-	public Rectangle getPlayedCard2() {
-		return rect2;
-	}
-	public Rectangle getPlayedCard3() {
-		return rect3;
-	}
-	public Rectangle getPlayedCard4() {
-		return rect4;
-	}
-	public Rectangle getPlayedCard5() {
-		return rect5;
-	}
-	public Rectangle getPlayedCard6() {
-		return rect6;
-	}
-	public Rectangle getPlayedCard7() {
-		return rect7;
-	}
-	public Rectangle getPlayedCard8() {
-		return rect8;
-	}
-	public Rectangle getPlayedCard9() {
-		return rect9;
-	}
-	
 	public ArrayList<Card> getCardAreas(){
 		return cardAreas;
 	}
 	
-	// evtl. mit Liste
+	// current cardSet
+	public ArrayList<Card> getCards(){
+		return cards;
+	}
+	
+	// Roesti - chosen card disposable for controller
 	public ArrayList<Rectangle> getRects() {
-		return rects;
+		return this.rects;
 	}
 	public Button getSimulationButton() {
 		return simButton;
