@@ -11,7 +11,9 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		super(model, view);
 		
 		// enter the game directly - finally waiting for 4 players
-		view.getWaitButton().setOnAction(e -> enterGame());
+		view.getSkipButton().setOnAction(e -> enterGame());
+		
+		view.getCancelButton().setOnAction(e -> getBackLauncherView());
 		
 		model.getPlayers().addListener((ListChangeListener.Change<? extends Player> c) -> {
 			if(this.model.getLobby().isFull()) enterGame();
@@ -19,6 +21,11 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		
 	}
 	
+	private void getBackLauncherView() {
+			this.view.stop();
+			Main.getMainProgram().getLauncher().start();
+	}
+
 	// enter the game - must be programmed differently in the end
 	private void enterGame() {
 		// automatically, when 4 players chose that lobby TODO
