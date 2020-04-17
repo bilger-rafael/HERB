@@ -21,10 +21,11 @@ public class Trick extends TrickBase<Player, Card> {
 
 	public Trick(Player[] players, Player startingPlayer) {
 		super(players, startingPlayer);
-
+		
 		this.playedCards = new Card[4];
-
 		this.nodeCurrentPlayer = buildCircularLinkedList();
+		
+		this.setCurrentPlayer(startingPlayer);
 	}
 
 	private PlayerNode buildCircularLinkedList() {
@@ -221,5 +222,10 @@ public class Trick extends TrickBase<Player, Card> {
 		this.nodeCurrentPlayer = this.nodeCurrentPlayer.next;
 		return nodeCurrentPlayer.data;
 	}
-
+	
+	@Override
+	public void setCurrentPlayer(Player p) {
+		super.setCurrentPlayer(p);
+		p.updatePlayableHand(this);
+	}
 }

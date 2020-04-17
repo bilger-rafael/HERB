@@ -57,12 +57,12 @@ public class Player extends PlayerBase<Hand, Round> {
 		this.getHand().sortCards();
 	}
 
-	public void updatePlayableHand() {
-		this.playableHandCards = determinPlayableCards();
+	public void updatePlayableHand(Trick t) {
+		this.playableHandCards = determinPlayableCards(t);
 	}
 	
 	//Gibt die Karten zurück, die gespielt werden dürfen
-	public CardBase[] determinPlayableCards() {
+	private CardBase[] determinPlayableCards(Trick t) {
 		//Lokale Var, damit nicht gesamter Pfad aufgerufen werden muss
 		Player[] players = new Player[this.getRound().getPlayers().length];
 		CardBase[] playableCards = new CardBase[9];
@@ -77,7 +77,7 @@ public class Player extends PlayerBase<Hand, Round> {
 		}
 		//ZweiterSpieler auslesen
 		int secoundPlayerIndex=0;
-		Player secoundPlayer = getLastTrick().getNextPlayer(startingPlayer);
+		Player secoundPlayer = t.getNextPlayer(startingPlayer);
 		for (int i =0; i<this.getRound().getPlayers().length;i++) {
 			if(secoundPlayer == players[i]) {
 				secoundPlayerIndex = i;
@@ -85,7 +85,7 @@ public class Player extends PlayerBase<Hand, Round> {
 		}
 		//DritterSpieler auslesen
 		int thirdPlayerIndex=0;
-		Player thirdPlayer = getLastTrick().getNextPlayer(secoundPlayer);
+		Player thirdPlayer = t.getNextPlayer(secoundPlayer);
 		for (int i =0; i<this.getRound().getPlayers().length;i++) {
 			if(thirdPlayer == players[i]) {
 				thirdPlayerIndex = i;
@@ -94,7 +94,7 @@ public class Player extends PlayerBase<Hand, Round> {
 			
 
 		//Logik
-		int NumberPlayedCards = getLastTrick().getPlayedCards().length;
+		int NumberPlayedCards = t.getPlayedCards().length;
 			
 		switch (NumberPlayedCards) {
 				//Ich bin der Startspieler
@@ -107,7 +107,7 @@ public class Player extends PlayerBase<Hand, Round> {
 				case(1): 
 					//Spielen kann ich Trümpfe und gleiche Farbe, falls keine alles spielbar
 					for (int j = 0; j<this.getHand().getCards().length;j++) {
-						if(this.getHand().getCard(j).getSuit()== getLastTrick().getPlayedCard(players[startingPlayerIndex]).getSuit() 
+						if(this.getHand().getCard(j).getSuit()== t.getPlayedCard(players[startingPlayerIndex]).getSuit() 
 								|| this.getHand().getCard(j).getTrump().ordinal()==this.getHand().getCard(j).getSuit().ordinal()) {
 							playableCards[counterPlayableCards] = this.getHand().getCard(j);
 							counterPlayableCards++;		
@@ -127,9 +127,9 @@ public class Player extends PlayerBase<Hand, Round> {
 					//gleiche Farbe wie StartSpieler oder man gewinnt (höchster Trumpf), sonst alles erlaubt
 				case(2):
 					for (int j = 0; j<this.getHand().getCards().length;j++) {
-						if(this.getHand().getCard(j).getSuit()== getLastTrick().getPlayedCard(players[startingPlayerIndex]).getSuit() 
-							|| (this.getHand().getCard(j).compareToPlayable(getLastTrick().getPlayedCard(players[startingPlayerIndex])) 
-								&& this.getHand().getCard(j).compareToPlayable(getLastTrick().getPlayedCard(players[secoundPlayerIndex]))
+						if(this.getHand().getCard(j).getSuit()== t.getPlayedCard(players[startingPlayerIndex]).getSuit() 
+							|| (this.getHand().getCard(j).compareToPlayable(t.getPlayedCard(players[startingPlayerIndex])) 
+								&& this.getHand().getCard(j).compareToPlayable(t.getPlayedCard(players[secoundPlayerIndex]))
 								)){
 							playableCards[counterPlayableCards] = this.getHand().getCard(j);
 							counterPlayableCards++;	
@@ -148,10 +148,10 @@ public class Player extends PlayerBase<Hand, Round> {
 					//gleiche Farbe wie StartSpieler oder man gewinnt (höchster Trumpf), sonst alles erlaubt
 				case(3): 
 					for (int j = 0; j<this.getHand().getCards().length;j++) {
-						if(this.getHand().getCard(j).getSuit()== getLastTrick().getPlayedCard(players[startingPlayerIndex]).getSuit() 
-							|| (this.getHand().getCard(j).compareToPlayable(getLastTrick().getPlayedCard(players[startingPlayerIndex])) 
-								&& this.getHand().getCard(j).compareToPlayable(getLastTrick().getPlayedCard(players[secoundPlayerIndex]))
-								&& this.getHand().getCard(j).compareToPlayable(getLastTrick().getPlayedCard(players[thirdPlayerIndex]))
+						if(this.getHand().getCard(j).getSuit()== t.getPlayedCard(players[startingPlayerIndex]).getSuit() 
+							|| (this.getHand().getCard(j).compareToPlayable(t.getPlayedCard(players[startingPlayerIndex])) 
+								&& this.getHand().getCard(j).compareToPlayable(t.getPlayedCard(players[secoundPlayerIndex]))
+								&& this.getHand().getCard(j).compareToPlayable(t.getPlayedCard(players[thirdPlayerIndex]))
 								)){
 							playableCards[counterPlayableCards] = this.getHand().getCard(j);
 							counterPlayableCards++;	
