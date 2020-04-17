@@ -49,7 +49,7 @@ public class GameController extends Controller<GameModel, GameView> {
 	// Roesti - only for testing
 	public void simulate() {	
 		reducedArray = model.setMyCards(playedCard);
-		
+				
 		String writeCardsOut = "Meine Karten...";
 		for (int i = 0; i < reducedArray.size(); i++) {
 			writeCardsOut += reducedArray.get(i).getSuit();
@@ -58,7 +58,8 @@ public class GameController extends Controller<GameModel, GameView> {
 		System.out.println();
 		System.out.println(writeCardsOut);
 		System.out.println();
-		view.updateMyCards(model.getCurrentCards());
+		
+		view.updateImagePatterns();
 		
 		ArrayList<Card> trickAdded = new ArrayList();
 		trickAdded = model.setTrick(playedCard);
@@ -72,9 +73,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		System.out.println(writeCardsOutT);
 		System.out.println();
 		
-		view.updateTrick(trickAdded);
-		
-		
+		view.updateTrick(trickAdded);	
 	}
 	
 	// Roesti - identify clicked Card
@@ -137,6 +136,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		System.out.println("Array-Index: "+ playedCardIndex);
 		
 		model.playCard(playedCard);
+		simulate();
 	}		
 	
 }

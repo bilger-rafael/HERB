@@ -38,7 +38,7 @@ public class GameModel extends Model {
 		if (players[0] != null)
 			return players;
 		} catch (Exception e) {
-			System.out.println("Fehler");
+			System.out.println("Fehler bei den Spielern");
 		}
 
 		// Roesti - ArrayList only for testing
@@ -60,19 +60,24 @@ public class GameModel extends Model {
 
 		// Roesti - ArrayList only for testing
 		currentCards = new ArrayList();
-		for (int i = 0; i < 4; i++) {
 			Rank r1 = Rank.Queen; Suit s1 = Suit.Hearts;  Trump t1 = Trump.TopsDown; Card c1 = new Card(s1, r1, t1);
-			currentCards.add(c1); }
+			currentCards.add(c1); 
 			Rank r2 = Rank.Six;		Suit s2 = Suit.Hearts;	Trump t2 = Trump.TopsDown;	Card c2 = new Card(s2, r2, t2);
 			currentCards.add(c2);
 			Rank r3 = Rank.Seven;	Suit s3 = Suit.Diamonds; Trump t3 = Trump.TopsDown;	Card c3 = new Card(s3, r3, t3);
 			currentCards.add(c3);
 			Rank r4 = Rank.Ace;	Suit s4 = Suit.Spades;	Trump t4 = Trump.TopsDown;	Card c4 = new Card(s4, r4, t4);
 			currentCards.add(c4);
-			Rank r5 = Rank.King;	Suit s5 = Suit.Clubs;	Trump t5 = Trump.TopsDown;	Card c5 = new Card(s5, r5, t5);
+			Rank r5 = Rank.King;	Suit s5 = Suit.Spades;	Trump t5 = Trump.TopsDown;	Card c5 = new Card(s5, r5, t5);
 			currentCards.add(c5);
 			Rank r6 = Rank.Nine;	Suit s6 = Suit.Clubs;	Trump t6 = Trump.TopsDown;	Card c6 = new Card(s6, r6, t6);
 			currentCards.add(c6);
+			Rank r7 = Rank.Ten; Suit s7 = Suit.Clubs;  Trump t7 = Trump.TopsDown; Card c7 = new Card(s7, r7, t7);
+			currentCards.add(c7);
+			Rank r8 = Rank.Jack; Suit s8 = Suit.Clubs;  Trump t8 = Trump.TopsDown; Card c8 = new Card(s8, r8, t8);
+			currentCards.add(c8);
+			Rank r9 = Rank.Ace; Suit s9 = Suit.Clubs;  Trump t9 = Trump.TopsDown; Card c9 = new Card(s9, r9, t9);
+			currentCards.add(c9);
 			return currentCards;
 	}
 	
@@ -86,26 +91,15 @@ public class GameModel extends Model {
 		return playedCard;
 	}
 	
+	// temporary
 	public ArrayList<Card> getCurrentCards(){
 		return this.currentCards;
-	}
-	
-	// TODO - Input from Server
-	public ArrayList<Card> getPlayableCards(){
-		playables = new ArrayList();
-		// TODO
-		
-		// for testing
-		Rank r1 = Rank.King;	Suit s1 = Suit.Clubs;	Trump t1 = Trump.TopsDown;	Card c1 = new Card(s1, r1, t1);
-		playables.add(c1);
-		return playables;
 	}
 
 	// Bilger - TODO Server input
 	// Roesti - ArrayList only for testing
 	public ArrayList<Card> getTrickCards() {
 		
-		// server...
 		//TODO remove try catch later
 		try {
 			Trick trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
@@ -122,10 +116,8 @@ public class GameModel extends Model {
 		Card card1 = new Card(suit1, rank1, trump1);	trickCards.add(card1);	
 		Rank rank2 = Rank.Ace;	Suit suit2 = Suit.Spades;	Trump trump2 = Trump.TopsDown;
 		Card card2 = new Card(suit2, rank2, trump2);	trickCards.add(card2);
-//		Rank rank3 = Rank.Queen;	Suit suit3 = Suit.Spades;	Trump trump3 = Trump.TopsDown;
-//		Card card3 = new Card(suit3, rank3, trump3);	trickCards.add(card3);
-//		Rank rank4 = Rank.Ten;	Suit suit4 = Suit.Spades;	Trump trump4 = Trump.TopsDown;
-//		Card card4 = new Card(suit4, rank4, trump4);	trickCards.add(card4);
+		Rank rank3 = Rank.Queen;	Suit suit3 = Suit.Spades;	Trump trump3 = Trump.TopsDown;
+		Card card3 = new Card(suit3, rank3, trump3);	trickCards.add(card3);
 		String writeCardsOut = "Trick-Karten...";
 		for (int i = 0; i < trickCards.size(); i++) {writeCardsOut += trickCards.get(i).getSuit();	writeCardsOut += trickCards.get(i).getRank();	}
 		System.out.println(writeCardsOut);
@@ -137,6 +129,7 @@ public class GameModel extends Model {
 		ArrayList<Card> lessCards = new ArrayList();
 		lessCards = getMyCards();
 		lessCards.remove(card);
+		currentCards = lessCards;
 		return lessCards;
 	}
 	// only for testing

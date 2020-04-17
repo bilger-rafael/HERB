@@ -76,7 +76,7 @@ public class GameView extends View<GameModel> {
 		//this.root = new BorderPane();
 		this.upperPart = new BorderPane();
 		this.tablePart = new StackPane();
-		left = new HBox();
+		left = new HBox(); 
 		right = new HBox();
 		opposite = new VBox();
 		bottom = new VBox();
@@ -85,11 +85,12 @@ public class GameView extends View<GameModel> {
 		oppositeSide = new HBox();
 		table = new GridPane();
 		ownCards = new GridPane();
+		ownCards.setMinHeight(300);
+		ownCards.setMinWidth(1300);
 		pointPane = new HBox();
 		names = new VBox();
 		points = new VBox();		
-		ownCards.setMinHeight(300);
-		ownCards.setMinWidth(1300);
+
 		tMain = new HBox();
 		tRight = new HBox();
 		tOppo = new HBox();
@@ -116,11 +117,6 @@ public class GameView extends View<GameModel> {
 		// Roesti - get lobby players
     	plys = new Player[4];
     	plys = model.getLobbyPlayers();
-	    	
-    	// Roesti - get PlayableCards
-    	playables = new ArrayList();
-    	playables = model.getPlayableCards();
-    	System.out.println(playables.toString());
 		
     	// Roesti - get trickCards
 		trickCardAreas = new ArrayList();
@@ -205,11 +201,39 @@ public class GameView extends View<GameModel> {
 	
 ///////////////////////////////////////////////////////////////
 	
+	
+	// Roesti - create hand of MainPlayer: ownCards GridPane
 	private void setMyCards() {
-    	cardAreas = new ArrayList();
-    	cardAreas = model.getMyCards();
-		updateMyCards(cardAreas);
-			
+    	cards = model.getMyCards();
+				
+		for (int i=0; i< cards.size(); i++) {
+
+		    // rectangle with ImagePattern (imageview cannot be fanned out)
+		    Rectangle rectangleCard = new Rectangle();
+		    rectangleCard.setHeight(514/2);
+		    rectangleCard.setWidth(322/2);		
+		    rectangleCard.setArcHeight(20);
+		    rectangleCard.setArcWidth(20);
+		    rectangleCard.setStroke(Color.GREY);	    		    
+
+		      //  fan out cards
+//		    Rotate rotate = new Rotate();
+//		    rotate.setAngle(-40+10*i); 
+//		    rotate.setPivotX(322/2/2); 	
+//		    rotate.setPivotY(257*2.2);
+//		    rectangleCard.getTransforms().addAll(rotate);   
+		    ownCards.add(rectangleCard, i+1, 1);	
+		    rects.add(rectangleCard); 
+		}			
+		// center fanned out Cards
+		updateImagePatterns();
+		ownCards.add(spacer, 0, 0);
+		
+		System.out.println();
+		System.out.println("Rects nach füllen: "+rects.toString());
+		System.out.println("Karten-Array nach Update: "+ cards.toString());
+		
+		
 		ownCards.setMinHeight(250);
 		ownCards.setHgap(-50);
 		bottom.setStyle("-fx-background-color: beige");
@@ -235,49 +259,30 @@ public class GameView extends View<GameModel> {
 		
 	}
 	
-	// Roesti - create hand of MainPlayer: ownCards GridPane
-	// card images from herb / client / ui / images / fr OR de TODO
-	protected void updateMyCards(ArrayList<Card> cardSet) {
-		cards = cardSet;
-	//	this.cardAreas = cards; 
-		
-		ownCards.getChildren().clear();
-		
-		System.out.println("Rects vor Update: "+ rects.toString());
-		rects.clear();
-		
-		for (int i=0; i< cards.size(); i++) {
-			String rank = cards.get(i).getRank().toStringDE();
-			String suit = cards.get(i).getSuit().toStringFr();
-		    String filename = suit + "_" + rank + ".jpg";
-		    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
-
-		    // rectangle with ImagePattern (imageview cannot be fanned out)
-		    Rectangle rectangleCard = new Rectangle();
-		    rectangleCard.setHeight(514/2);
-		    rectangleCard.setWidth(322/2);		
-		    rectangleCard.setArcHeight(20);
-		    rectangleCard.setArcWidth(20);
-		    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
-		    rectangleCard.setFill(pattern);
-		    rectangleCard.setStroke(Color.BROWN);
-		     
-		      //  fan out cards
-//		    Rotate rotate = new Rotate();
-//		    rotate.setAngle(-40+10*i); 
-//		    rotate.setPivotX(322/2/2); 	
-//		    rotate.setPivotY(257*2.2);
-//		    rectangleCard.getTransforms().addAll(rotate);   
-		    ownCards.add(rectangleCard, i+1, 1);	
-		    rects.add(rectangleCard);  
-		}			
-		// center fanned out Cards
-		ownCards.getChildren().add(spacer);
+	// Roesti - card images from herb / client / ui / images / fr OR de TODO	
+	public void updateImagePatterns() {
 		
 		System.out.println();
-		System.out.println("Rects nach füllen: "+rects.toString());
-		System.out.println("Karten-Array nach Update: "+ cards.toString());
+		System.out.println("Vor Update: "+rects.toString());
+		
+		for (int d = 0; d<9; d++)   {		
+			rects.get(d).setFill(null);
+		}
+		System.out.println("Nach Null: "+rects.toString());
+		
+		cards = model.getCurrentCards();
+		
+		for(int j=0; j<cards.size(); j++) {
+		String rank = cards.get(j).getRank().toStringDE();
+		String suit = cards.get(j).getSuit().toStringFr();
+	    String filename = suit + "_" + rank + ".jpg";
+	    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
+		
+	    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
+	    rects.get(j).setFill(pattern);
+		}
 	}
+
 	
 	private void updatePlayableCards() {
 		//TODO - update playable cards after every played card
@@ -328,9 +333,6 @@ public class GameView extends View<GameModel> {
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
-		System.out.println();
-		System.out.println("Do I ever finish the Update?");
-		System.out.println(getRects());
 	}
 	
 	private void updateLeftPlayer() {
