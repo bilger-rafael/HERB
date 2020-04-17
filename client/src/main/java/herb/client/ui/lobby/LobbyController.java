@@ -6,24 +6,32 @@ import herb.client.ui.core.Controller;
 import javafx.collections.ListChangeListener;
 
 public class LobbyController extends Controller<LobbyModel, LobbyView> {
+	private ListChangeListener<Player> changeListener;
 
 	public LobbyController(LobbyModel model, LobbyView view) {
 		super(model, view);
-		
+
 		// enter the game directly - finally waiting for 4 players
 		view.getSkipButton().setOnAction(e -> enterGame());
-		
+
 		view.getCancelButton().setOnAction(e -> getBackLauncherView());
-		
-		model.getPlayers().addListener((ListChangeListener.Change<? extends Player> c) -> {
-			if(this.model.getLobby().isFull()) enterGame();
-		});
-		
+
+		changeListener = new ListChangeListener<Player>() {
+			public void onChanged(Change<? extends Player> c) {
+				if (model.getLobby().isFull()) {
+					model.getPlayers().removeListener(changeListener);
+					enterGame();
+				}
+			}
+		};
+
+		model.getPlayers().addListener(changeListener);
+
 	}
-	
+
 	private void getBackLauncherView() {
-			this.view.stop();
-			Main.getMainProgram().getLauncher().start();
+		this.view.stop();
+		Main.getMainProgram().getLauncher().start();
 	}
 
 	// enter the game - must be programmed differently in the end
