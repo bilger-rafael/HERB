@@ -7,7 +7,7 @@ import herb.server.ressources.core.TrickBase;
 //Etter
 public class Trick extends TrickBase<Player, Card> {
 
-	private class PlayerNode {
+	public class PlayerNode {
 		public Player data;
 		public PlayerNode next;
 
@@ -28,7 +28,7 @@ public class Trick extends TrickBase<Player, Card> {
 		this.setCurrentPlayer(startingPlayer);
 	}
 
-	private PlayerNode buildCircularLinkedList() {
+	public PlayerNode buildCircularLinkedList() {
 		PlayerNode pnStarting = null;
 		PlayerNode pnPrevious = null;
 		for (int i = 0; i < this.getPlayers().length; i++) {
