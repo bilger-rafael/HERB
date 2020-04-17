@@ -1,56 +1,29 @@
 package herb.server.ressources;
 
-import java.util.Arrays;
 import java.util.Comparator;
 
 import herb.server.ressources.core.HandBase;
 
 //Etter
 public class Hand extends HandBase<Card>{
-	private int addIndex;
-	
-	public Hand() {
-		this.addIndex=0;
-		super.setCards(new Card[9]);
-	}
-
 	@Override
 	public void play(Card card) {
-		try { 
-			for (int i=0; i<this.getCards().length; i++) {
-			if (this.getCards()[i] == card) {
-				this.getCards()[i] = null;
-				}
-			}
-		} catch (Exception e) {
-			// TODO: handle exception => Meldung auf UI
-		}
-		
+		this.cards.remove(card);
 	}
 
 	@Override
 	public void addCard(Card card) {
-		this.getCards()[this.addIndex] = card;
-		this.addIndex++;
+		this.cards.add(card);
 	}
 
 	@Override
 	public void clearCards() {
-		Arrays.fill(this.getCards(), null);
-	}
-
-	@Override
-	public boolean cardsEmpty() {
-		if (this.getCards().length==0) {
-			return true;
-		}else {
-			return false;
-		}
+		this.cards.clear();
 	}
 
 	@Override //Sortiert das Array für das UI
 	public void sortCards() {
-		Arrays.sort(this.getCards(), new HandSorter());	
+		this.cards.sort(new HandSorter());
 	}
 	
 	//Gibt zurück ob eine Karte höher ist beim Einordnen
@@ -122,15 +95,7 @@ public class Hand extends HandBase<Card>{
 					}
 				}
 				
-			//System.out.println("Karte "+score+"andere Karte"+scoreO);
 			return score-scoreO;
 		}
 	}
-
-	@Override
-	public Card getCard(int i) {
-		return this.getCards()[i];
-	}
-
-
 }

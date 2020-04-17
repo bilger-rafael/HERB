@@ -1,29 +1,28 @@
 package herb.server.ressources.core;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.ArrayList;
 
-public abstract class HandBase <Card extends CardBase> {
-	protected Card[] cards;
-	
-	public void setCards(Card[] cards) {
+public abstract class HandBase<Card extends CardBase> {
+	protected ArrayList<Card> cards;
+
+	public HandBase() {
+		this.cards = new ArrayList<Card>(9);
+	}
+
+	public void setCards(ArrayList<Card> cards) {
 		this.cards = cards;
 	}
-	
-	public Card[] getCards() {
+
+	public ArrayList<Card> getCards() {
 		return cards;
 	}
 
 	public abstract void play(Card card);
-	
+
 	public abstract void addCard(Card card);
-	
+
 	public abstract void clearCards();
-	
+
 	public abstract void sortCards();
-	
-	public abstract boolean cardsEmpty();
-	
-	public abstract Card getCard(int i);
-	
-	
+
 }

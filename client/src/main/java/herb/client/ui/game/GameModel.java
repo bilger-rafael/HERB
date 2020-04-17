@@ -54,11 +54,9 @@ public class GameModel extends Model {
 	// Roesti - TODO - new Thread for updated server input
 	public ArrayList<Card> getMyCards() {
 
-		Card[] cards = (Card[]) Datastore.getInstance().getMainPlayer().getHand().getCards();
-		
 		//if cards received from server, use them instead of the testdata
-		if (cards[0] != null || cards[8] != null)
-			return new ArrayList<Card>(Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList()));
+		if (!Datastore.getInstance().getMainPlayer().getHand().getCards().isEmpty())
+			return Datastore.getInstance().getMainPlayer().getHand().getCards();
 
 		// Roesti - ArrayList only for testing
 		currentCards = new ArrayList();

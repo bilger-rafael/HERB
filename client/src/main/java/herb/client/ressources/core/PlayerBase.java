@@ -9,11 +9,6 @@ public abstract class PlayerBase <Hand extends HandBase, Round extends RoundBase
 	@JsonIgnoreProperties({ "currentStartingPlayer" })
 	private Round round;
 	private Hand hand;
-	protected CardBase[] playableHandCards;
-
-	public CardBase[] getPlayableHand() {
-		return playableHandCards;
-	}
 
 	public void setHand(Hand hand) {
 		this.hand = hand;

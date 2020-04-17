@@ -21,10 +21,10 @@ public class Trick extends TrickBase<Player, Card> {
 
 	public Trick(Player[] players, Player startingPlayer) {
 		super(players, startingPlayer);
-		
+
 		this.playedCards = new Card[4];
 		this.nodeCurrentPlayer = buildCircularLinkedList();
-		
+
 		this.setCurrentPlayer(startingPlayer);
 	}
 
@@ -88,76 +88,51 @@ public class Trick extends TrickBase<Player, Card> {
 			}
 			pnStarting = pnStarting.next;
 		}
-		
+
 		return this.winningPlayer;
 		/*
-		// Ort des Startspielers
-		for (int i = 0; i < this.getPlayers().length; i++) {
-			if (this.getStartingPlayer() == this.getPlayers()[i]) {
-				// je nach dem welcher Spieler der Startspieler ist, wird in einer anderen
-				// Reihenfolge verglichen
-				switch (i) {
-				case (0):
-					if (getPlayedCards().get(this.getPlayers()[1])
-							.compareTo(getPlayedCards().get(this.getPlayers()[0])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					if (getPlayedCards().get(this.getPlayers()[2])
-							.compareTo(getPlayedCards().get(this.getPlayers()[1])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					if (getPlayedCards().get(this.getPlayers()[3])
-							.compareTo(getPlayedCards().get(this.getPlayers()[2])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					break;
-				case (1):
-					if (getPlayedCards().get(this.getPlayers()[2])
-							.compareTo(getPlayedCards().get(this.getPlayers()[1])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					if (getPlayedCards().get(this.getPlayers()[3])
-							.compareTo(getPlayedCards().get(this.getPlayers()[2])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					if (getPlayedCards().get(this.getPlayers()[0])
-							.compareTo(getPlayedCards().get(this.getPlayers()[3])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					break;
-				case (2):
-					if (getPlayedCards().get(this.getPlayers()[3])
-							.compareTo(getPlayedCards().get(this.getPlayers()[2])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					if (getPlayedCards().get(this.getPlayers()[0])
-							.compareTo(getPlayedCards().get(this.getPlayers()[3])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					if (getPlayedCards().get(this.getPlayers()[1])
-							.compareTo(getPlayedCards().get(this.getPlayers()[0])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					break;
-				case (3):
-					if (getPlayedCards().get(this.getPlayers()[0])
-							.compareTo(getPlayedCards().get(this.getPlayers()[3])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					if (getPlayedCards().get(this.getPlayers()[1])
-							.compareTo(getPlayedCards().get(this.getPlayers()[0])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					if (getPlayedCards().get(this.getPlayers()[2])
-							.compareTo(getPlayedCards().get(this.getPlayers()[1])) > 0) {
-						this.winningPlayer = this.getPlayers()[0];
-					}
-					break;
-				}
-			}
-		}
-		return this.winningPlayer;
-		*/
+		 * // Ort des Startspielers for (int i = 0; i < this.getPlayers().length; i++) {
+		 * if (this.getStartingPlayer() == this.getPlayers()[i]) { // je nach dem
+		 * welcher Spieler der Startspieler ist, wird in einer anderen // Reihenfolge
+		 * verglichen switch (i) { case (0): if
+		 * (getPlayedCards().get(this.getPlayers()[1])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[0])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } if
+		 * (getPlayedCards().get(this.getPlayers()[2])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[1])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } if
+		 * (getPlayedCards().get(this.getPlayers()[3])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[2])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } break; case (1): if
+		 * (getPlayedCards().get(this.getPlayers()[2])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[1])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } if
+		 * (getPlayedCards().get(this.getPlayers()[3])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[2])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } if
+		 * (getPlayedCards().get(this.getPlayers()[0])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[3])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } break; case (2): if
+		 * (getPlayedCards().get(this.getPlayers()[3])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[2])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } if
+		 * (getPlayedCards().get(this.getPlayers()[0])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[3])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } if
+		 * (getPlayedCards().get(this.getPlayers()[1])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[0])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } break; case (3): if
+		 * (getPlayedCards().get(this.getPlayers()[0])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[3])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } if
+		 * (getPlayedCards().get(this.getPlayers()[1])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[0])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } if
+		 * (getPlayedCards().get(this.getPlayers()[2])
+		 * .compareTo(getPlayedCards().get(this.getPlayers()[1])) > 0) {
+		 * this.winningPlayer = this.getPlayers()[0]; } break; } } } return
+		 * this.winningPlayer;
+		 */
 	}
 
 	/*
@@ -173,7 +148,7 @@ public class Trick extends TrickBase<Player, Card> {
 				this.playedCards[i] = c;
 		}
 	}
-	
+
 	@JsonIgnore
 	public int getTrickPoints() {
 		int trickPoints = 0;
@@ -222,10 +197,12 @@ public class Trick extends TrickBase<Player, Card> {
 		this.nodeCurrentPlayer = this.nodeCurrentPlayer.next;
 		return nodeCurrentPlayer.data;
 	}
-	
+
 	@Override
 	public void setCurrentPlayer(Player p) {
 		super.setCurrentPlayer(p);
-		p.updatePlayableHand(this);
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			this.getPlayers()[i].updatePlayableHand(this);
+		}
 	}
 }

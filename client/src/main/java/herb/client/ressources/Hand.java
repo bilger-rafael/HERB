@@ -29,15 +29,4 @@ public class Hand extends HandBase<Card> {
 		
 	}
 
-	@Override
-	public boolean cardsEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Card getCard(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
