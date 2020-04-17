@@ -17,8 +17,7 @@ public class LobbyController {
 
 	@GetMapping("/Lobby({name})")
 	public Lobby getLobby(@PathVariable String name) throws ExceptionBase {
-		return new Lobby(name);
-		//return Lobby.readLobby(name);
+		return Lobby.readLobby(name);
 	}
 
 	@GetMapping("/LobbyList")
