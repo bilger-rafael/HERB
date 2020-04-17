@@ -7,8 +7,17 @@ public abstract class CardBase {
     protected final Rank rank;
     @JsonIgnore
     protected final Trump trump;
+    protected boolean playable;
     
-    public CardBase(Suit suit, Rank rank, Trump trump) {
+    public void setPlayable(boolean playable) {
+		this.playable = playable;
+	}
+
+	public boolean isPlayable() {
+		return playable;
+	}
+
+	public CardBase(Suit suit, Rank rank, Trump trump) {
     	this.suit = suit;
     	this.rank = rank;
     	this.trump = trump;
