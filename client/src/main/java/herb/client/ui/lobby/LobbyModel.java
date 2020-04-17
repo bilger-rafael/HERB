@@ -10,18 +10,11 @@ import javafx.collections.ObservableList;
 
 public class LobbyModel extends Model {
 	private Lobby lobby;
-//	protected String name;
-
-
 	private ObservableList<Player> players = FXCollections.observableArrayList();
-	private ObservableList<Lobby> lobbys = FXCollections.observableArrayList();
-
-
 
 	public LobbyModel(Lobby lobby) {
 		super();
 		this.lobby = lobby;
-//		this.name = name;
 		startLobbyUpdater();
 	}
 
@@ -57,10 +50,6 @@ public class LobbyModel extends Model {
 	}
 	public Lobby getLobby() {
 		return lobby;
-	}
-	
-	public ObservableList<Lobby> getLobbys() {
-		return lobbys;
 	}
 	
 	public ObservableList<Player> getPlayers() {

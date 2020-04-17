@@ -35,7 +35,7 @@ public class LobbyView extends View<LobbyModel> {
 	
 	public LobbyView(Stage stage, LobbyModel model) {
 		super(stage, model);
-		stage.setTitle("HERB-Jass > Lobby: " + model.getLobbys() );
+		stage.setTitle("HERB-Jass > Lobby: " + model.getLobby() );
 		ServiceLocator.getInstance().getLogger().info("Application view initialized");
 	}
 
