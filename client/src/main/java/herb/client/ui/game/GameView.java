@@ -155,9 +155,6 @@ public class GameView extends View<GameModel> {
 			});
 		}	
 		headMenu.getMenus().addAll(menuLanguage);
-
-		System.out.println();
-		System.out.println("Fenster erstellt");
 		
 		setMyCards();
 		setTrick();
@@ -241,11 +238,12 @@ public class GameView extends View<GameModel> {
 	// Roesti - create hand of MainPlayer: ownCards GridPane
 	// card images from herb / client / ui / images / fr OR de TODO
 	protected void updateMyCards(ArrayList<Card> cardSet) {
-		
 		cards = cardSet;
-		this.cardAreas = cards; 
+	//	this.cardAreas = cards; 
 		
 		ownCards.getChildren().clear();
+		
+		System.out.println("Rects vor Update: "+ rects.toString());
 		rects.clear();
 		
 		for (int i=0; i< cards.size(); i++) {
@@ -275,24 +273,10 @@ public class GameView extends View<GameModel> {
 		}			
 		// center fanned out Cards
 		ownCards.getChildren().add(spacer);
-//		if (rects.size() > 0)
-//			rect1 = rects.get(0);
-//		if (rects.size()>1)	
-//			rect2 = rects.get(1);
-//		if (rects.size()>2)			
-//			rect3 = rects.get(2);
-//		if (rects.size()>3)	
-//			rect4 = rects.get(3);
-//		if (rects.size()>4)			
-//			rect5 = rects.get(4);
-//		if (rects.size()>5)		
-//			rect6 = rects.get(5);
-//		if (rects.size()>6)		
-//			rect7 = rects.get(6);
-//		if (rects.size()>7)			
-//			rect8 = rects.get(7);
-//		if (rects.size()>8)	
-//			rect9 = rects.get(8);
+		
+		System.out.println();
+		System.out.println("Rects nach füllen: "+rects.toString());
+		System.out.println("Karten-Array nach Update: "+ cards.toString());
 	}
 	
 	private void updatePlayableCards() {
@@ -344,6 +328,9 @@ public class GameView extends View<GameModel> {
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
+		System.out.println();
+		System.out.println("Do I ever finish the Update?");
+		System.out.println(getRects());
 	}
 	
 	private void updateLeftPlayer() {

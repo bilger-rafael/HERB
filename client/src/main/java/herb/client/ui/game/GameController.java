@@ -22,35 +22,32 @@ public class GameController extends Controller<GameModel, GameView> {
 	
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
-		
-		reducedArray = new ArrayList();
-		
+				
 		// Event when card is chosen
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));
-        view.getRects().get(1).setOnMouseClicked(e -> forwardPlayedCard(e));
-        view.getRects().get(2).setOnMouseClicked(e -> forwardPlayedCard(e));
-        view.getRects().get(3).setOnMouseClicked(e -> forwardPlayedCard(e));
-        view.getRects().get(4).setOnMouseClicked(e -> forwardPlayedCard(e));
-        view.getRects().get(5).setOnMouseClicked(e -> forwardPlayedCard(e));
-        view.getRects().get(6).setOnMouseClicked(e -> forwardPlayedCard(e));
-        view.getRects().get(7).setOnMouseClicked(e -> forwardPlayedCard(e));
-        view.getRects().get(8).setOnMouseClicked(e -> forwardPlayedCard(e));	
-//        if (model.getCurrentCards().size()>1) view.getRects().get(1).setOnMouseClicked(e -> forwardPlayedCard(e));
-//        if (model.getCurrentCards().size()>2) view.getRects().get(2).setOnMouseClicked(e -> forwardPlayedCard(e));
-//        if (model.getCurrentCards().size()>3) view.getRects().get(3).setOnMouseClicked(e -> forwardPlayedCard(e));
-//        if (model.getCurrentCards().size()>4) view.getRects().get(4).setOnMouseClicked(e -> forwardPlayedCard(e));
-//        if (model.getCurrentCards().size()>5) view.getRects().get(5).setOnMouseClicked(e -> forwardPlayedCard(e));
-//        if (model.getCurrentCards().size()>6) view.getRects().get(6).setOnMouseClicked(e -> forwardPlayedCard(e));
-//        if (model.getCurrentCards().size()>7) view.getRects().get(7).setOnMouseClicked(e -> forwardPlayedCard(e));
-//        if (model.getCurrentCards().size()>8) view.getRects().get(8).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>1) 
+        	view.getRects().get(1).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>2) 
+        	view.getRects().get(2).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>3) 
+        	view.getRects().get(3).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>4) 
+        	view.getRects().get(4).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>5) 
+        	view.getRects().get(5).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>6) 
+        	view.getRects().get(6).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>7) 
+        	view.getRects().get(7).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>8) 
+        	view.getRects().get(8).setOnMouseClicked(e -> forwardPlayedCard(e));
 	
 		// Simulation
 		view.getSimulationButton().setOnAction(e -> simulate());
 	}
 	
 	// Roesti - only for testing
-	public void simulate() {
-			
+	public void simulate() {	
 		reducedArray = model.setMyCards(playedCard);
 		
 		String writeCardsOut = "Meine Karten...";
@@ -61,7 +58,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		System.out.println();
 		System.out.println(writeCardsOut);
 		System.out.println();
-		view.updateMyCards(reducedArray);
+		view.updateMyCards(model.getCurrentCards());
 		
 		ArrayList<Card> trickAdded = new ArrayList();
 		trickAdded = model.setTrick(playedCard);
@@ -76,52 +73,69 @@ public class GameController extends Controller<GameModel, GameView> {
 		System.out.println();
 		
 		view.updateTrick(trickAdded);
+		
+		
 	}
 	
 	// Roesti - identify clicked Card
 	// TODO check if playable
-	public void forwardPlayedCard(MouseEvent mouseEvent){
+	public void forwardPlayedCard(MouseEvent e){
 		
 		System.out.println();
 		System.out.println("It happened");
 		System.out.println();
 		
-		Rectangle recti = (Rectangle) mouseEvent.getSource();
+		Rectangle recti = (Rectangle) e.getSource();
+		
 		if ((recti).getFill().equals(view.getRects().get(0).getFill())) {
-			playedCard = view.getCardAreas().get(0);
+			playedCard = model.getCurrentCards().get(0);
 		}
+		
+		if (view.getRects().size()>1) {
 		if ((recti).getFill().equals(view.getRects().get(1).getFill())) {
-			playedCard = view.getCardAreas().get(1);
+			playedCard = model.getCurrentCards().get(1);
 		}
+	}
+	if (view.getRects().size()>2) {
 		if ((recti).getFill().equals(view.getRects().get(2).getFill())) {
-			playedCard = view.getCardAreas().get(2);
+			playedCard = model.getCurrentCards().get(2);
 		}
+	}
+	if (view.getRects().size()>3) {
 		if ((recti).getFill().equals(view.getRects().get(3).getFill())) {
-			playedCard = view.getCardAreas().get(3);
+			playedCard = model.getCurrentCards().get(3);
 		}
+	}
+	if (view.getRects().size()>4) {
 		if ((recti).getFill().equals(view.getRects().get(4).getFill())) {
-			playedCard = view.getCardAreas().get(4);
+			playedCard = model.getCurrentCards().get(4);
 		}
+	}
+	if (view.getRects().size()>5) {
 		if ((recti).getFill().equals(view.getRects().get(5).getFill())) {
-			playedCard = view.getCardAreas().get(5);
+			playedCard = model.getCurrentCards().get(5);
 		}
+	}
+	if (view.getRects().size()>6) {
 		if ((recti).getFill().equals(view.getRects().get(6).getFill())) {
-			playedCard = view.getCardAreas().get(6);
+			playedCard = model.getCurrentCards().get(6);
 		}
+	}
+	if (view.getRects().size()>7) {
 		if ((recti).getFill().equals(view.getRects().get(7).getFill())) {
-			playedCard = view.getCardAreas().get(7);
+			playedCard = model.getCurrentCards().get(7);
 		}	
+	}
+	if (view.getRects().size()>8) {
 		if ((recti).getFill().equals(view.getRects().get(8).getFill())) {
-			playedCard = view.getCardAreas().get(8);
-		}	
+			playedCard = model.getCurrentCards().get(8);
+		}}	
 		
 		System.out.println();	
 		System.out.println(playedCard.getSuit().toStringFr()+" "+playedCard.getRank().toStringDE());
-		System.out.println();
-		
 		playedCardIndex = model.getCurrentCards().indexOf(playedCard); 
 		System.out.println("Array-Index: "+ playedCardIndex);
-	
+		
 		model.playCard(playedCard);
 	}		
 	
