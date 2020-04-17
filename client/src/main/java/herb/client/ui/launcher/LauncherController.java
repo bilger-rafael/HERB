@@ -25,6 +25,8 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		 */
 
 		view.getRefreshButton().setOnAction(e -> model.refreshLobbyList());
+		
+		view.getJoinButton().disableProperty().bind(view.lobbyRoomCenter.getSelectionModel().selectedItemProperty().isNull());
 
 	}
 
