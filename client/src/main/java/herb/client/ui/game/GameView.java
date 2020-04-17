@@ -47,7 +47,7 @@ public class GameView extends View<GameModel> {
 	private HBox oppositeSide, left, right, pointPane;
 	private HBox tMain, tRight, tOppo, tLeft;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel;
-	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel;
+	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel, trumpLabel;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart;
 	private StackPane tablePart;
@@ -58,24 +58,41 @@ public class GameView extends View<GameModel> {
 	private Player[] plys;
 	private MenuBar headMenu;
 	private Menu menuLanguage;
-	private ArrayList<Card> cards = new ArrayList();
+	private ArrayList<Card> cards;
 
 
 	public GameView(Stage stage, GameModel model) {
 		super(stage, model);
 		stage.setTitle("HERB-Jass > Spieltisch");
-		ServiceLocator.getInstance().getLogger().info("Application view initialized");
+		ServiceLocator.getInstance().getLogger().info("GameView initialized");
 	}
 
 	@Override
 	protected Scene create_GUI() {
 		ServiceLocator sl = ServiceLocator.getInstance();
 		
-		// Roesti - create ui-elements
 		this.root = new AnchorPane();
-		//this.root = new BorderPane();
-		this.upperPart = new BorderPane();
-		this.tablePart = new StackPane();
+		
+		// create MenuBar - language and cardSet (fr vs. de) TODO
+		headMenu = new MenuBar();
+		menuLanguage = new Menu();	
+		menuLanguage.getItems().addAll();
+				
+		// link to Locale
+		for (Locale locale : sl.getLocales()) {
+			MenuItem language = new MenuItem(locale.getLanguage());
+			this.menuLanguage.getItems().add(language);
+			language.setOnAction(event -> {
+			sl.getConfiguration().setLocalOption("Language", locale.getLanguage());
+			sl.setTranslator(new Translator(locale.getLanguage()));
+			updateLabels();
+			});
+		}	
+				headMenu.getMenus().addAll(menuLanguage);
+		
+		// Roesti - create ui-elements
+		upperPart = new BorderPane();
+		tablePart = new StackPane();
 		left = new HBox(); 
 		right = new HBox();
 		opposite = new VBox();
@@ -134,25 +151,15 @@ public class GameView extends View<GameModel> {
 		trickLabel2 = new Label();
 		trickLabel = new Label();
 		trickLabel.setMinHeight(70);
+		trumpLabel = new Label();
 	    
-		// create MenuBar - language and cardSet (fr vs. de) TODO
-		headMenu = new MenuBar();
-		menuLanguage = new Menu();	
-		menuLanguage.getItems().addAll();
 		
-		// link to Locale
-		for (Locale locale : sl.getLocales()) {
-			MenuItem language = new MenuItem(locale.getLanguage());
-			this.menuLanguage.getItems().add(language);
-			language.setOnAction(event -> {
-				sl.getConfiguration().setLocalOption("Language", locale.getLanguage());
-				sl.setTranslator(new Translator(locale.getLanguage()));
-				updateLabels();
-			});
-		}	
-		headMenu.getMenus().addAll(menuLanguage);
 		
 		setMyCards();
+		
+		trumpLabel.setText(cards.get(0).getTrump().toString());
+		trumpLabel.setStyle("-fx-font-weight: bold");
+		
 		setTrick();
 				
 		updateLeftPlayer();
@@ -168,7 +175,7 @@ public class GameView extends View<GameModel> {
 		updatePointPane();
 		
 		//AnchorPane
-		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, simButton, headMenu);
+		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, simButton, headMenu, trumpLabel);
 		root.setLeftAnchor(headMenu, 0d);
 		root.setTopAnchor(headMenu, 0d);
 		root.setRightAnchor(headMenu, 0d);
@@ -194,6 +201,8 @@ public class GameView extends View<GameModel> {
 		
 		root.setTopAnchor(simButton, 50d);
 		root.setLeftAnchor(simButton, 10d);
+		root.setTopAnchor(trumpLabel, 90d);
+		root.setLeftAnchor(trumpLabel, 30d);
 	
 		Scene scene = new Scene(root, 1000, 1000);
 		return scene;
@@ -204,9 +213,10 @@ public class GameView extends View<GameModel> {
 	
 	// Roesti - create hand of MainPlayer: ownCards GridPane
 	private void setMyCards() {
-    	cards = model.getMyCards();
-				
-		for (int i=0; i< cards.size(); i++) {
+		
+		cards = model.getMyCards();
+		
+		for (int i=0; i<9; i++) {
 
 		    // rectangle with ImagePattern (imageview cannot be fanned out)
 		    Rectangle rectangleCard = new Rectangle();
@@ -261,9 +271,10 @@ public class GameView extends View<GameModel> {
 	
 	// Roesti - card images from herb / client / ui / images / fr OR de TODO	
 	public void updateImagePatterns() {
-		
+    	cards = model.getCurrentCards(); 
 		System.out.println();
 		System.out.println("Vor Update: "+rects.toString());
+		System.out.println(cards.toString());
 		
 		for (int d = 0; d<9; d++)   {		
 			rects.get(d).setFill(null);

@@ -60,23 +60,23 @@ public class GameModel extends Model {
 
 		// Roesti - ArrayList only for testing
 		currentCards = new ArrayList();
-			Rank r1 = Rank.Queen; Suit s1 = Suit.Hearts;  Trump t1 = Trump.TopsDown; Card c1 = new Card(s1, r1, t1);
+			Rank r1 = Rank.Queen; Suit s1 = Suit.Hearts;  Trump t1 = Trump.Hearts; Card c1 = new Card(s1, r1, t1);
 			currentCards.add(c1); 
-			Rank r2 = Rank.Six;		Suit s2 = Suit.Hearts;	Trump t2 = Trump.TopsDown;	Card c2 = new Card(s2, r2, t2);
+			Rank r2 = Rank.Six;		Suit s2 = Suit.Hearts;	Trump t2 = Trump.Hearts;	Card c2 = new Card(s2, r2, t2);
 			currentCards.add(c2);
-			Rank r3 = Rank.Seven;	Suit s3 = Suit.Diamonds; Trump t3 = Trump.TopsDown;	Card c3 = new Card(s3, r3, t3);
+			Rank r3 = Rank.Seven;	Suit s3 = Suit.Diamonds; Trump t3 = Trump.Hearts;	Card c3 = new Card(s3, r3, t3);
 			currentCards.add(c3);
-			Rank r4 = Rank.Ace;	Suit s4 = Suit.Spades;	Trump t4 = Trump.TopsDown;	Card c4 = new Card(s4, r4, t4);
+			Rank r4 = Rank.Ace;	Suit s4 = Suit.Spades;	Trump t4 = Trump.Hearts;	Card c4 = new Card(s4, r4, t4);
 			currentCards.add(c4);
-			Rank r5 = Rank.King;	Suit s5 = Suit.Spades;	Trump t5 = Trump.TopsDown;	Card c5 = new Card(s5, r5, t5);
+			Rank r5 = Rank.King;	Suit s5 = Suit.Spades;	Trump t5 = Trump.Hearts;	Card c5 = new Card(s5, r5, t5);
 			currentCards.add(c5);
-			Rank r6 = Rank.Nine;	Suit s6 = Suit.Clubs;	Trump t6 = Trump.TopsDown;	Card c6 = new Card(s6, r6, t6);
+			Rank r6 = Rank.Nine;	Suit s6 = Suit.Clubs;	Trump t6 = Trump.Hearts;	Card c6 = new Card(s6, r6, t6);
 			currentCards.add(c6);
-			Rank r7 = Rank.Ten; Suit s7 = Suit.Clubs;  Trump t7 = Trump.TopsDown; Card c7 = new Card(s7, r7, t7);
+			Rank r7 = Rank.Ten; Suit s7 = Suit.Clubs;  Trump t7 = Trump.Hearts; Card c7 = new Card(s7, r7, t7);
 			currentCards.add(c7);
-			Rank r8 = Rank.Jack; Suit s8 = Suit.Clubs;  Trump t8 = Trump.TopsDown; Card c8 = new Card(s8, r8, t8);
+			Rank r8 = Rank.Jack; Suit s8 = Suit.Clubs;  Trump t8 = Trump.Hearts; Card c8 = new Card(s8, r8, t8);
 			currentCards.add(c8);
-			Rank r9 = Rank.Ace; Suit s9 = Suit.Clubs;  Trump t9 = Trump.TopsDown; Card c9 = new Card(s9, r9, t9);
+			Rank r9 = Rank.Ace; Suit s9 = Suit.Clubs;  Trump t9 = Trump.Hearts; Card c9 = new Card(s9, r9, t9);
 			currentCards.add(c9);
 			return currentCards;
 	}
@@ -112,11 +112,11 @@ public class GameModel extends Model {
 		
 		// for testing
 		ArrayList<Card> trickCards = new ArrayList();
-		Rank rank1 = Rank.Ten;	Suit suit1 = Suit.Spades;	Trump trump1 = Trump.TopsDown;
+		Rank rank1 = Rank.Ten;	Suit suit1 = Suit.Spades;	Trump trump1 = Trump.Hearts;
 		Card card1 = new Card(suit1, rank1, trump1);	trickCards.add(card1);	
-		Rank rank2 = Rank.Ace;	Suit suit2 = Suit.Spades;	Trump trump2 = Trump.TopsDown;
+		Rank rank2 = Rank.Ace;	Suit suit2 = Suit.Spades;	Trump trump2 = Trump.Hearts;
 		Card card2 = new Card(suit2, rank2, trump2);	trickCards.add(card2);
-		Rank rank3 = Rank.Queen;	Suit suit3 = Suit.Spades;	Trump trump3 = Trump.TopsDown;
+		Rank rank3 = Rank.Queen;	Suit suit3 = Suit.Spades;	Trump trump3 = Trump.Hearts;
 		Card card3 = new Card(suit3, rank3, trump3);	trickCards.add(card3);
 		String writeCardsOut = "Trick-Karten...";
 		for (int i = 0; i < trickCards.size(); i++) {writeCardsOut += trickCards.get(i).getSuit();	writeCardsOut += trickCards.get(i).getRank();	}
