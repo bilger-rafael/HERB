@@ -40,7 +40,7 @@ public class LobbyModel extends Model {
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				while (!getLobby().isFull()) {
 					Platform.runLater(() -> refreshLobby());
 					try {
 						Thread.sleep(10000);
