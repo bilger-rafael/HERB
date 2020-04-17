@@ -12,103 +12,49 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class RestServer {
-	static Connection cn = null;
-	static String ip = null;
-	static String user = null;
-	static String pw = null;
+	// static Connection cn = null;
+	static String dbUrl = null;
+	static String dbUser = null;
+	static String dbPassword = null;
 
 	public static void main(String[] args) throws Exception {
 
+		readArguments(args);
+
+		startDatabase();
+
 		SpringApplication.run(RestServer.class, args);
-		try {
-			start();
-		} catch (Exception e) {
-			// TODO catch
-		}
-		;
 
 	}
 
-	public static void start() throws Exception {
+	// Bilger
+	private static void readArguments(String[] args) throws Exception {
+		// TODO if args are missing (length < 3), show explanation: first arg = dbUrl second arg = dbUser etc.
+		// Help for URL:
+		// Mac:     "jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC";
+		// Windoof: "jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC";
+		if (args.length < 3)
+			throw new Exception();
 
-		// TODO ETTER DB verbinden => Driver wird nicht gefunden, warum?
-		startDatabase();
+		dbUrl = args[0];
+		dbUser = args[1];
+		dbPassword = args[2];
 	}
 
 	// ETTER Verbindung zur Server DB erstellen
-	private static void startDatabase() {
-		boolean valid = false;
-		Scanner scan = new Scanner(System.in);
+	private static void startDatabase() throws Exception {
+		// DB erstellen
+		DataStore_Repository.getDB();
+		DataStore_Repository.getDB().setIp(dbUrl);
+		DataStore_Repository.getDB().setUser(dbUser);
+		DataStore_Repository.getDB().setPw(dbPassword);
 
-		switch (System.getProperty("user.name")) {
-		case "bodybilger":
-			ip = "jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC";
-			user = "root";
-			pw = "BUvfgqoyU9LGhkWb";
-			DataStore_Repository.getDB();
-			DataStore_Repository.getDB().setIp(ip);
-			DataStore_Repository.getDB().setUser(user);
-			DataStore_Repository.getDB().setPw(pw);
-			valid = DataStore_Repository.getDB().connectDatabase();
-			break;
-		case "etterdominic":
-			ip = "jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC";
-			user = "root";
-			pw = "A01051991";
-			DataStore_Repository.getDB();
-			DataStore_Repository.getDB().setIp(ip);
-			DataStore_Repository.getDB().setUser(user);
-			DataStore_Repository.getDB().setPw(pw);
-			valid = DataStore_Repository.getDB().connectDatabase();
-			break;
-		case "RO":
-			ip = "jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC";
-			user = "root";
-			pw = "Dantina1*";
-			DataStore_Repository.getDB();
-			DataStore_Repository.getDB().setIp(ip);
-			DataStore_Repository.getDB().setUser(user);
-			DataStore_Repository.getDB().setPw(pw);
-			valid = DataStore_Repository.getDB().connectDatabase();
-			break;
-		default:
-			System.out.println(System.getProperty("user.name"));
-		}
-
-		while (!valid) {
-
-			// Testdata for
-
-			System.out.println("Geben Sie den Pfad zur MySQL-Datenbank ein");
-			System.out.println(" Für Mac User: jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC");
-			System.out.println(
-					" Für Windows User: jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC");
-			ip = scan.nextLine();
-
-			System.out.println("Geben Sie ihren MySQL-User ein");
-			System.out.println("Üblicherweise root");
-			user = scan.nextLine();
-
-			System.out.println("Geben Sie ihr MySQL-Passwort ein");
-			pw = scan.nextLine();
-
-			System.out.println("Die Eingaben werden nun geprüft");
-
-			// DB erstellen
-			DataStore_Repository.getDB();
-			DataStore_Repository.getDB().setIp(ip);
-			DataStore_Repository.getDB().setUser(user);
-			DataStore_Repository.getDB().setPw(pw);
-
-			valid = DataStore_Repository.getDB().connectDatabase();
-
-			if (!valid) {
-				System.out.println("Eigaben haben nicht funktioniert, wiederholen");
-				DataStore_Repository.resetDB();
-			} else {
-				System.out.println("Verbindungsaufbau hat funktioniert");
-			}
-		}
+		// TODO if args are not valid, show explanation: first arg = dbUrl second arg = dbUser etc.
+		// Help for URL:
+		// Mac:     "jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC";
+		// Windoof: "jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC";
+		if (!DataStore_Repository.getDB().connectDatabase())
+			throw new Exception();
 
 		// DB initialisieren
 		DataStore_Repository.getDB().dbInitialize();
