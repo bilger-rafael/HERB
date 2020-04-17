@@ -24,7 +24,6 @@ public class LobbyView extends View<LobbyModel> {
 	
 	private BorderPane root, bottomBox; 
 	private Button skipButton, cancelButton;
-	private Label lobbyName;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -89,6 +88,7 @@ public class LobbyView extends View<LobbyModel> {
 		bottomBox = new BorderPane();
 		skipButton = new Button("skip");
 		cancelButton = new Button("cancel");
+		
 
 		bottomBox.setRight(skipButton);
 		bottomBox.setLeft(cancelButton);
@@ -99,6 +99,7 @@ public class LobbyView extends View<LobbyModel> {
 		skipButton.setPrefWidth(100);
 		cancelButton.setPrefWidth(100);
 		
+		root.setTop(menuBar);
 		root.setCenter(playerOverview);
 		root.setBottom(bottomBox);
 		
@@ -109,6 +110,9 @@ public class LobbyView extends View<LobbyModel> {
 	
 	private void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
+		
+		cancelButton.setText(t.getString("program.lobby.cancelButton"));
+		menuLanguage.setText(t.getString("program.lobby.menuLanguage"));
 		
 	}
 
