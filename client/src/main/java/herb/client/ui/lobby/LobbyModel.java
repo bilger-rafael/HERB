@@ -1,5 +1,8 @@
 package herb.client.ui.lobby;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import herb.client.ressources.Lobby;
 import herb.client.ressources.Player;
 import herb.client.ressources.core.ExceptionBase;
@@ -26,7 +29,7 @@ public class LobbyModel extends Model {
 			e.printStackTrace();
 		}
 		this.players.clear();
-		this.players.addAll(lobby.getPlayers());
+		this.players.addAll(Arrays.asList(lobby.getPlayers()).stream().filter(x -> x != null).collect(Collectors.toList()));
 	}
 
 	private void startLobbyUpdater() {

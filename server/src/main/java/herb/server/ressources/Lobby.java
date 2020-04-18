@@ -47,6 +47,7 @@ public class Lobby extends LobbyBase<Player> {
 	// Etter Spieler verlässt die Lobby
 	public void removePlayer(Player player) throws ExceptionBase {
 		for (int i = 0; i < this.players.length; i++) {
+			if (this.players[i] == null) continue;
 			if (this.players[i].equals(player)) {
 				this.players[i] = null;
 			}
