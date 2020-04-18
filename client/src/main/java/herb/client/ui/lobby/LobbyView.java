@@ -105,6 +105,7 @@ public class LobbyView extends View<LobbyModel> {
 		
         updateLabels();  
 		Scene scene = new Scene(root);
+		//	scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
 		return scene;
 	}
 	

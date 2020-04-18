@@ -129,6 +129,7 @@ public class LauncherView extends View<LauncherModel> {
 		
         updateLabels();     
 		Scene scene = new Scene(root);
+		//	scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
 		return scene;
 		
 	/**
