@@ -82,7 +82,6 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		
 		cancelButton.setText(t.getString("program.lobbyCreater.cancelButton"));
 		okButton.setText(t.getString("program.lobbyCreater.okButton"));
-		text.setText(t.getString("program.lobbyCreater.text"));
 		menuLanguage.setText(t.getString("program.lobbyCreater.menuLanguage"));
 		
 	}
