@@ -14,6 +14,8 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 		
 		view.getOkButton().disableProperty().bind(view.getTextField().textProperty().isEmpty());
 		
+		view.getCancelButton().setOnAction(e -> getBackLauncherView());
+		
 	}
 	
 	
@@ -23,6 +25,12 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 		
 		//TODO if created back to Launcher
 		this.view.stop();
+		Main.getMainProgram().getLauncher().start();
+	}
+	
+	private void getBackLauncherView() {
+		this.view.stop();
+		this.view.resetTextField();
 		Main.getMainProgram().getLauncher().start();
 	}
 

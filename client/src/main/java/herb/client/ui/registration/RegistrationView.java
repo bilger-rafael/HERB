@@ -150,8 +150,7 @@ public class RegistrationView extends View<RegistrationModel> {
         
         updateLabels();     
 		Scene scene = new Scene(root);
-//        scene.getStylesheets().add(
-//                getClass().getResource("app.css").toExternalForm());		
+		//	scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
 		return scene;
 	}
 	
