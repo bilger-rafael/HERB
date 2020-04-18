@@ -22,12 +22,8 @@ public class RestServer {
 
 	// Bilger
 	private static void readArguments(String[] args) throws Exception {
-		// TODO if args are missing (length < 3), show explanation: first arg = dbUrl second arg = dbUser etc.
-		// Help for URL:
-		// Mac:     "jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC";
-		// Windoof: "jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC";
 		if (args.length < 3)
-			throw new Exception();
+			throw new Exception("Program Arguments missing \n" + getArgumentsDescription());
 
 		dbUrl = args[0];
 		dbUser = args[1];
@@ -42,15 +38,18 @@ public class RestServer {
 		DataStore_Repository.getDB().setUser(dbUser);
 		DataStore_Repository.getDB().setPw(dbPassword);
 
-		// TODO if args are not valid, show explanation: first arg = dbUrl second arg = dbUser etc.
-		// Help for URL:
-		// Mac:     "jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC";
-		// Windoof: "jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC";
 		if (!DataStore_Repository.getDB().connectDatabase())
-			throw new Exception();
+			throw new Exception("Program Arguments invalid \n" + getArgumentsDescription());
 
 		// DB initialisieren
 		DataStore_Repository.getDB().dbInitialize();
-
+	}
+	
+	private static String getArgumentsDescription() {
+		return "1. Argument: Database Url \n" +
+			   "\t Mac: \t\t \"jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC\" \n" +
+			   "\t Windoof: \t \"jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&serverTimezone=UTC\" \n" +
+			   "2. Argument: Database User \n" +
+			   "3. Argument: Database Password \n";
 	}
 }
