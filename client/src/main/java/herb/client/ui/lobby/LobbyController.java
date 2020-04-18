@@ -2,7 +2,9 @@ package herb.client.ui.lobby;
 
 import herb.client.Main;
 import herb.client.ressources.Player;
+import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Controller;
+import herb.client.utils.Datastore;
 import javafx.collections.ListChangeListener;
 
 public class LobbyController extends Controller<LobbyModel, LobbyView> {
@@ -30,6 +32,12 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 	}
 
 	private void getBackLauncherView() {
+		try {
+			this.model.getLobby().removePlayer(Datastore.getInstance().getMainPlayer());
+		} catch (ExceptionBase e) {
+			// TODO if exception occurs, DONT LEAVE, bc game is already started
+			return;
+		}
 		this.view.stop();
 		Main.getMainProgram().getLauncher().start();
 	}
