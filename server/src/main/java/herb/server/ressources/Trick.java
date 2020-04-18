@@ -32,10 +32,9 @@ public class Trick extends TrickBase<Player, Card> {
 		PlayerNode pnStarting = null;
 		PlayerNode pnPrevious = null;
 		for (int i = 0; i < this.getPlayers().length; i++) {
-			Player p = this.getPlayers()[i];
-			PlayerNode pn = new PlayerNode(p);
+			PlayerNode pn = new PlayerNode(this.getPlayers()[i]);
 
-			if (p.equals(this.getStartingPlayer())) {
+			if (pn.data.equals(this.getStartingPlayer())) {
 				pnStarting = pn;
 			}
 
@@ -45,6 +44,7 @@ public class Trick extends TrickBase<Player, Card> {
 
 			pnPrevious = pn;
 		}
+		pnPrevious.next = pnStarting;
 		return pnStarting;
 	}
 
@@ -53,7 +53,6 @@ public class Trick extends TrickBase<Player, Card> {
 		Player winner = null;
 
 		for (int i = 0; i < this.getPlayers().length; i++) {
-			// TODO wait for currentPlayer to play (Create Event in Player)
 
 			this.played = false;
 			((Player) this.getCurrentPlayer()).addPlayListener(() -> {
@@ -68,7 +67,7 @@ public class Trick extends TrickBase<Player, Card> {
 				}
 			}
 
-			this.setCurrentPlayer(this.determinNextPlayer());
+			this.determinNextPlayer();
 		}
 
 		winner = getWinner();
@@ -192,10 +191,9 @@ public class Trick extends TrickBase<Player, Card> {
 		return temp;
 	}
 
-	@Override
-	public Player determinNextPlayer() {
+	public void determinNextPlayer() {
 		this.nodeCurrentPlayer = this.nodeCurrentPlayer.next;
-		return nodeCurrentPlayer.data;
+		this.setCurrentPlayer(nodeCurrentPlayer.data);
 	}
 
 	@Override

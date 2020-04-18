@@ -14,10 +14,4 @@ public class Trick extends TrickBase<Player, Card>{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public Player determinNextPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }
