@@ -3,6 +3,7 @@ package herb.client.ui.game;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import herb.client.ressources.Card;
@@ -16,6 +17,7 @@ import herb.client.utils.Translator;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -34,7 +36,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Color; 
+import javafx.scene.paint.Color;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
 import javafx.geometry.Insets;
 
 
@@ -53,9 +57,9 @@ public class GameView extends View<GameModel> {
 	private StackPane tablePart;
 	private Rectangle rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8, rect9;
 	private ArrayList<Rectangle> rects;
-	private ArrayList<Card> cardAreas, playables, trickCardAreas;
+	private ArrayList<Card> cardAreas, playables;
 	private Button simButton;
-	private Player[] plys;
+	private ArrayList<Player> plys;
 	private MenuBar headMenu;
 	private Menu menuLanguage;
 	private ArrayList<Card> cards;
@@ -132,21 +136,16 @@ public class GameView extends View<GameModel> {
 		simButton = new Button("simulation");
 	
 		// Roesti - get lobby players
-    	plys = new Player[4];
-    	plys = model.getLobbyPlayers();
-		
-    	// Roesti - get trickCards
-		trickCardAreas = new ArrayList();
-		trickCardAreas = model.getTrickCards();
+		plys = model.getLobbyPlayers();
 		
 	    rects = new ArrayList();
 		
 		// Roesti - create labels
-		playerLabel = new Label(plys[0].getUsername());
+		playerLabel = new Label(plys.get(0).getUsername());
 		playerLabel.setMinHeight(20);
-		leftHandLabel = new Label(plys[3].getUsername());
-		rightHandLabel = new Label(plys[1].getUsername());
-		oppositeLabel = new Label(plys[2].getUsername());
+		leftHandLabel = new Label(plys.get(3).getUsername());
+		rightHandLabel = new Label(plys.get(1).getUsername());
+		oppositeLabel = new Label(plys.get(2).getUsername());
 		oppositeLabel.setMinHeight(60);
 		trickLabel2 = new Label();
 		trickLabel = new Label();
@@ -263,18 +262,17 @@ public class GameView extends View<GameModel> {
 	    table.add(tOppo, 2,  0, 1, 2);
 	    table.add(tLeft,  1,  1, 1, 2);
 	    table.add(tMain, 2,  2, 1, 2);
-	    table.add(tRight,  3,  1, 1, 2);
-		
-		updateTrick(trickCardAreas);
-		
+	    table.add(tRight,  3,  1, 1, 2);		
 	}
 	
 	// Roesti - card images from herb / client / ui / images / fr OR de TODO	
 	public void updateImagePatterns() {
     	cards = model.getCurrentCards(); 
+    	/*
 		System.out.println();
 		System.out.println("Vor Update: "+rects.toString());
 		System.out.println(cards.toString());
+		*/
 		
 		for (int d = 0; d<9; d++)   {		
 			rects.get(d).setFill(null);

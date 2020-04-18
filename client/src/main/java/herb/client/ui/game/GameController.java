@@ -3,6 +3,7 @@ package herb.client.ui.game;
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import herb.client.ressources.Card;
 import herb.client.ressources.core.Rank;
@@ -10,6 +11,8 @@ import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Controller;
 import javafx.event.EventHandler;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
 import javafx.event.Event;
 import javafx.scene.shape.Rectangle;
 
@@ -22,6 +25,14 @@ public class GameController extends Controller<GameModel, GameView> {
 	
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
+		
+		ListChangeListener<Card> changeListener = new ListChangeListener<Card>() {
+			public void onChanged(Change<? extends Card> c) {
+				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
+			}
+		};
+			
+		model.getTrickCards().addListener(changeListener);
 				
 		// Event when card is chosen
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));
@@ -41,39 +52,6 @@ public class GameController extends Controller<GameModel, GameView> {
         	view.getRects().get(7).setOnMouseClicked(e -> forwardPlayedCard(e));
         if (view.getRects().size()>8) 
         	view.getRects().get(8).setOnMouseClicked(e -> forwardPlayedCard(e));
-	
-		// Simulation
-		view.getSimulationButton().setOnAction(e -> simulate());
-	}
-	
-	// Roesti - only for testing
-	public void simulate() {	
-		reducedArray = model.setMyCards(playedCard);
-				
-		String writeCardsOut = "Meine Karten...";
-		for (int i = 0; i < reducedArray.size(); i++) {
-			writeCardsOut += reducedArray.get(i).getSuit();
-			writeCardsOut += reducedArray.get(i).getRank();	
-			}
-		System.out.println();
-		System.out.println(writeCardsOut);
-		System.out.println();
-		
-		view.updateImagePatterns();
-		
-		ArrayList<Card> trickAdded = new ArrayList();
-		trickAdded = model.setTrick(playedCard);
-		
-		String writeCardsOutT = "Trick-Karten...";
-		for (int i = 0; i < trickAdded.size(); i++) {
-			writeCardsOutT += trickAdded.get(i).getSuit();
-			writeCardsOutT += trickAdded.get(i).getRank();	
-			}
-		System.out.println();
-		System.out.println(writeCardsOutT);
-		System.out.println();
-		
-		view.updateTrick(trickAdded);	
 	}
 	
 	// Roesti - identify clicked Card
@@ -136,7 +114,6 @@ public class GameController extends Controller<GameModel, GameView> {
 		System.out.println("Array-Index: "+ playedCardIndex);
 		
 		model.playCard(playedCard);
-		simulate();
 	}		
 	
 }
