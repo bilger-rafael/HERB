@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class RestServer {
-	// static Connection cn = null;
 	static String dbUrl = null;
 	static String dbUser = null;
 	static String dbPassword = null;
@@ -45,6 +44,7 @@ public class RestServer {
 		DataStore_Repository.getDB().dbInitialize();
 	}
 	
+	// Bilger
 	private static String getArgumentsDescription() {
 		return "1. Argument: Database Url \n" +
 			   "\t Mac: \t\t \"jdbc:mysql://localhost/?useLegacyDatetimeCode=false&serverTimezone=UTC\" \n" +
