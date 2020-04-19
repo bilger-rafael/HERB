@@ -35,8 +35,7 @@ public class GameModel extends Model {
 	}
 	
 	// Bilger - Input von Server
-	// Roesti - TODO - check, that MainPlayer always stored in players[0] on the
-	// Client - then it's easy for the gui.
+	// Roesti - TODO - check, that MainPlayer always stored in players[0]
 	public ArrayList<Player> getLobbyPlayers() {
 		Player[] tmp = Datastore.getInstance().getMainPlayer().getRound().getPlayers();
 		
@@ -48,7 +47,6 @@ public class GameModel extends Model {
 	}
 
 	// Bilger - cards from MainPlayer from server (already sorted)
-	// Roesti - TODO - new Thread for updated server input
 	public ArrayList<Card> getMyCards() {
 		return currentCards = Datastore.getInstance().getMainPlayer().getHand().getCards();
 	}
@@ -62,16 +60,6 @@ public class GameModel extends Model {
 		}
 		return playedCard;
 	}
-
-	// temporary
-	public ArrayList<Card> getCurrentCards() {
-		return this.currentCards;
-	}
-
-	// Bilger - TODO Server input
-	// Roesti - ArrayList only for testing
-	
-	
 	
 	public void refreshTrickCards() {
 		Trick trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();

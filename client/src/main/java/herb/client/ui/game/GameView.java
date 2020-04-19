@@ -50,7 +50,7 @@ public class GameView extends View<GameModel> {
 	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points;
 	private HBox oppositeSide, left, right, pointPane;
 	private HBox tMain, tRight, tOppo, tLeft;
-	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel;
+	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, nextPlayerLabel;
 	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel, trumpLabel;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart;
@@ -92,7 +92,7 @@ public class GameView extends View<GameModel> {
 			updateLabels();
 			});
 		}	
-				headMenu.getMenus().addAll(menuLanguage);
+		headMenu.getMenus().addAll(menuLanguage);
 		
 		// Roesti - create ui-elements
 		upperPart = new BorderPane();
@@ -151,7 +151,7 @@ public class GameView extends View<GameModel> {
 		trickLabel = new Label();
 		trickLabel.setMinHeight(70);
 		trumpLabel = new Label();
-	    
+	    nextPlayerLabel = new Label(" next ---");
 		
 		
 		setMyCards();
@@ -167,7 +167,7 @@ public class GameView extends View<GameModel> {
        		
 		//BorderPane opposite Player and Table
 		upperPart.setCenter(table);
-		upperPart.setBottom(trickLabel2);
+		upperPart.setBottom(nextPlayerLabel);
 		upperPart.setTop(opposite);
 		upperPart.setMinWidth(400d);
 		
@@ -212,7 +212,6 @@ public class GameView extends View<GameModel> {
 	
 	// Roesti - create hand of MainPlayer: ownCards GridPane
 	private void setMyCards() {
-		
 		cards = model.getMyCards();
 		
 		for (int i=0; i<9; i++) {
@@ -223,7 +222,7 @@ public class GameView extends View<GameModel> {
 		    rectangleCard.setWidth(322/2);		
 		    rectangleCard.setArcHeight(20);
 		    rectangleCard.setArcWidth(20);
-		    rectangleCard.setStroke(Color.GREY);	    		    
+		    rectangleCard.setStroke(Color.BLACK);	    		    
 
 		      //  fan out cards
 //		    Rotate rotate = new Rotate();
@@ -267,19 +266,13 @@ public class GameView extends View<GameModel> {
 	
 	// Roesti - card images from herb / client / ui / images / fr OR de TODO	
 	public void updateImagePatterns() {
-    	cards = model.getCurrentCards(); 
-    	/*
-		System.out.println();
-		System.out.println("Vor Update: "+rects.toString());
-		System.out.println(cards.toString());
-		*/
+    	cards = model.getMyCards(); 
 		
 		for (int d = 0; d<9; d++)   {		
 			rects.get(d).setFill(null);
 		}
-		System.out.println("Nach Null: "+rects.toString());
 		
-		cards = model.getCurrentCards();
+		cards = model.getMyCards();
 		
 		for(int j=0; j<cards.size(); j++) {
 		String rank = cards.get(j).getRank().toStringDE();
@@ -289,16 +282,14 @@ public class GameView extends View<GameModel> {
 		
 	    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
 	    rects.get(j).setFill(pattern);
+	    
+	    if ( cards.get(j).isPlayable()) {
+	    	rects.get(j).setStroke(Color.GOLD);
+	    	}
 		}
-	}
-
-	
-	private void updatePlayableCards() {
-		//TODO - update playable cards after every played card
 	}
 	
 	// Roesti - create trick: table GridPane 
-	//TODO - add every played card
 	public void updateTrick(ArrayList<Card> cardSet) {
 		ArrayList<Card> trick = new ArrayList();
 		trick = cardSet;
@@ -448,6 +439,10 @@ public class GameView extends View<GameModel> {
 		pointPane.toFront();
 		pointPane.setPadding(new Insets(20, 20, 20, 20));
 		pointPane.setStyle("-fx-background-color: aliceblue");
+	}
+	
+	public void setNextPlayerLabel(String s) {
+		nextPlayerLabel.setText(s);
 	}
 	
 	// Roesti 

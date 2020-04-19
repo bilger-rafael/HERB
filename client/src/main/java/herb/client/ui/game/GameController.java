@@ -6,10 +6,16 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import herb.client.ressources.Card;
+import herb.client.ressources.Hand;
+import herb.client.ressources.Trick;
+import herb.client.ressources.core.CardBase;
+import herb.client.ressources.core.HandBase;
 import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
+import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Controller;
+import herb.client.utils.Datastore;
 import javafx.event.EventHandler;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
@@ -21,7 +27,6 @@ public class GameController extends Controller<GameModel, GameView> {
 
 	private Card playedCard;
 	private int playedCardIndex;
-	private ArrayList<Card> reducedArray; 
 	
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
@@ -58,62 +63,67 @@ public class GameController extends Controller<GameModel, GameView> {
 	// TODO check if playable
 	public void forwardPlayedCard(MouseEvent e){
 		
-		System.out.println();
 		System.out.println("It happened");
-		System.out.println();
 		
 		Rectangle recti = (Rectangle) e.getSource();
 		
 		if ((recti).getFill().equals(view.getRects().get(0).getFill())) {
-			playedCard = model.getCurrentCards().get(0);
+			playedCard = model.getMyCards().get(0);
 		}
 		
-		if (view.getRects().size()>1) {
+	if (view.getRects().size()>1) {
 		if ((recti).getFill().equals(view.getRects().get(1).getFill())) {
-			playedCard = model.getCurrentCards().get(1);
+			playedCard = model.getMyCards().get(1);
 		}
 	}
 	if (view.getRects().size()>2) {
 		if ((recti).getFill().equals(view.getRects().get(2).getFill())) {
-			playedCard = model.getCurrentCards().get(2);
+			playedCard = model.getMyCards().get(2);
 		}
 	}
 	if (view.getRects().size()>3) {
 		if ((recti).getFill().equals(view.getRects().get(3).getFill())) {
-			playedCard = model.getCurrentCards().get(3);
+			playedCard = model.getMyCards().get(3);
 		}
 	}
 	if (view.getRects().size()>4) {
 		if ((recti).getFill().equals(view.getRects().get(4).getFill())) {
-			playedCard = model.getCurrentCards().get(4);
+			playedCard = model.getMyCards().get(4);
 		}
 	}
 	if (view.getRects().size()>5) {
 		if ((recti).getFill().equals(view.getRects().get(5).getFill())) {
-			playedCard = model.getCurrentCards().get(5);
+			playedCard = model.getMyCards().get(5);
 		}
 	}
 	if (view.getRects().size()>6) {
 		if ((recti).getFill().equals(view.getRects().get(6).getFill())) {
-			playedCard = model.getCurrentCards().get(6);
+			playedCard = model.getMyCards().get(6);
 		}
 	}
 	if (view.getRects().size()>7) {
 		if ((recti).getFill().equals(view.getRects().get(7).getFill())) {
-			playedCard = model.getCurrentCards().get(7);
+			playedCard = model.getMyCards().get(7);
 		}	
 	}
 	if (view.getRects().size()>8) {
 		if ((recti).getFill().equals(view.getRects().get(8).getFill())) {
-			playedCard = model.getCurrentCards().get(8);
+			playedCard = model.getMyCards().get(8);
 		}}	
 		
-		System.out.println();	
-		System.out.println(playedCard.getSuit().toStringFr()+" "+playedCard.getRank().toStringDE());
-		playedCardIndex = model.getCurrentCards().indexOf(playedCard); 
+		playedCardIndex = model.getMyCards().indexOf(playedCard); 
 		System.out.println("Array-Index: "+ playedCardIndex);
 		
+		if (playedCard.isPlayable()) {
 		model.playCard(playedCard);
+		}
+		view.updateImagePatterns();
+		
+		if (model.getTrickCards().size()==4) {
+			Trick t = new Trick();
+			view.setNextPlayerLabel(t.getCurrentPlayer().toString());
+		}
+		
 	}		
 	
 }
