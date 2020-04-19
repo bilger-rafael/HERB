@@ -245,7 +245,6 @@ public class GameView extends View<GameModel> {
 		
 		ownCards.setMinHeight(250);
 		ownCards.setHgap(-50);
-		bottom.setStyle("-fx-background-color: beige");
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
@@ -321,13 +320,13 @@ public class GameView extends View<GameModel> {
 //		rotate.setPivotX(30); 
 //		rotate.setPivotY(322/3+30); 
 //	    rectangle.getTransforms().addAll(rotate); 			
-	    if(i == 0)
+	    if(i == 2)
 	    	tOppo.getChildren().add(rectangle);
-	    if(i==1)
-	    	tLeft.getChildren().add(rectangle);
-	    if(i==2)
-	    	tMain.getChildren().add(rectangle);
 	    if(i==3)
+	    	tLeft.getChildren().add(rectangle);
+	    if(i==0)
+	    	tMain.getChildren().add(rectangle);
+	    if(i==1)
 	    	tRight.getChildren().add(rectangle);
 	    }
 				
