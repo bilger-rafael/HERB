@@ -55,7 +55,7 @@ public class Trick extends TrickBase<Player, Card> {
 		for (int i = 0; i < this.getPlayers().length; i++) {
 
 			this.played = false;
-			((Player) this.getCurrentPlayer()).addPlayListener(() -> {
+			this.getCurrentPlayer().setPlayListener(() -> {
 				this.played = true;
 			});
 
@@ -78,14 +78,16 @@ public class Trick extends TrickBase<Player, Card> {
 	@JsonIgnore
 	public Player getWinner() {
 		PlayerNode pnStarting = buildCircularLinkedList();
-
+		
+		// set first player as winner
 		this.winningPlayer = pnStarting.data;
 
-		for (int i = 0; i < 4; i++) {
-			if (this.getPlayedCard(pnStarting.data).compareTo(this.getPlayedCard(pnStarting.next.data)) > 0) {
-				this.winningPlayer = pnStarting.next.data;
-			}
+		// compare card of winner with next player
+		for (int i = 0; i < 3; i++) {
 			pnStarting = pnStarting.next;
+			if (this.getPlayedCard(this.winningPlayer).compareTo(this.getPlayedCard(pnStarting.data)) > 0) {
+				this.winningPlayer = pnStarting.data;
+			}
 		}
 
 		return this.winningPlayer;
@@ -133,13 +135,6 @@ public class Trick extends TrickBase<Player, Card> {
 		 * this.winningPlayer;
 		 */
 	}
-
-	/*
-	 * @Override protected void clearTrick() { this.playedCards.clear();
-	 * this.currentPlayer = this.getStartingPlayer();
-	 * 
-	 * }
-	 */
 
 	public void addCardtoTrick(Card c) {
 		for (int i = 0; i < this.getPlayers().length; i++) {

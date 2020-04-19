@@ -1,21 +1,21 @@
 package herb.server.ressources;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.PlayerBase;
-import herb.server.ressources.core.TrickBase;
 
 //Etter
 public class Player extends PlayerBase<Hand, Round> {
-	private ArrayList<PlayListener> playListeners;
+	@JsonIgnore
+	private PlayListener playListener;
 
 	public Player(String username, String authToken) {
 		super(username, authToken);
 		super.setHand(new Hand());
-		this.playListeners = new ArrayList<PlayListener>();
 	}
 
 	@Override
@@ -26,14 +26,8 @@ public class Player extends PlayerBase<Hand, Round> {
 
 		getLastTrick().addCardtoTrick((Card) card);
 
-		// clone array to avoid exception when listener is removed in the for loop
-		ArrayList<PlayListener> listeners = new ArrayList<PlayListener>(this.playListeners);
-
-		for (PlayListener playListener : listeners) {
-			playListener.played();
-		}
-
-		this.playListeners.clear();
+		playListener.played();
+		playListener = null;
 	}
 
 	public void addCardtoHand(CardBase card) {
@@ -63,7 +57,7 @@ public class Player extends PlayerBase<Hand, Round> {
 	// Gibt die Karten zurück, die gespielt werden dürfen
 	private void determinPlayableCards(Trick t) {
 		Trick.PlayerNode startingPlayer = t.buildCircularLinkedList();
-		
+
 		// if its not the players turn, no card is playable
 		if (!this.equals(t.getCurrentPlayer())) {
 			this.getHand().getCards().forEach(x -> x.setPlayable(false));
@@ -127,11 +121,15 @@ public class Player extends PlayerBase<Hand, Round> {
 
 	}
 
-	public void addPlayListener(PlayListener playListener) {
-		this.playListeners.add(playListener);
-	}
-
 	private Trick getLastTrick() {
 		return (Trick) ((LinkedList<Trick>) this.getRound().getTricks()).getLast();
+	}
+
+	public PlayListener getPlayListener() {
+		return playListener;
+	}
+
+	public void setPlayListener(PlayListener playListener) {
+		this.playListener = playListener;
 	}
 }
