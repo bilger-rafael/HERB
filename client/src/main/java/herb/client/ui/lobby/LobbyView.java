@@ -23,7 +23,7 @@ import javafx.scene.layout.StackPane;
 public class LobbyView extends View<LobbyModel> {
 	
 	private BorderPane root, bottomBox; 
-	private Button skipButton, cancelButton;
+	private Button cancelButton;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -86,17 +86,13 @@ public class LobbyView extends View<LobbyModel> {
 		 * Herren
 		 */
 		bottomBox = new BorderPane();
-		skipButton = new Button("skip");
 		cancelButton = new Button("cancel");
 		
 
-		bottomBox.setRight(skipButton);
 		bottomBox.setLeft(cancelButton);
 
-		skipButton.setAlignment(Pos.BASELINE_CENTER);
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
 		
-		skipButton.setPrefWidth(100);
 		cancelButton.setPrefWidth(100);
 		
 		root.setTop(menuBar);
@@ -117,9 +113,7 @@ public class LobbyView extends View<LobbyModel> {
 		
 	}
 
-	public Button getSkipButton() {
-		return skipButton;
-	}
+
 	
 	public Button getCancelButton() {
 		return cancelButton;

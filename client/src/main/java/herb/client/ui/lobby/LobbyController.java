@@ -13,9 +13,6 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 	public LobbyController(LobbyModel model, LobbyView view) {
 		super(model, view);
 
-		// enter the game directly - finally waiting for 4 players
-		view.getSkipButton().setOnAction(e -> enterGame());
-
 		view.getCancelButton().setOnAction(e -> getBackLauncherView());
 
 		changeListener = new ListChangeListener<Player>() {

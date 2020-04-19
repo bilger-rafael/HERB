@@ -28,7 +28,7 @@ public class LauncherView extends View<LauncherModel> {
 	private BorderPane root, bottomBox;
 	private VBox centerBox;
 	private HBox rightBox;
-	private Button joinButton,createButton, newLobbyButton, skipButton, refreshButton;
+	private Button joinButton,createButton, newLobbyButton, refreshButton;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -99,11 +99,6 @@ public class LauncherView extends View<LauncherModel> {
 		refreshButton = new Button();
 		createButton = new Button();
 		
-		//skip button for Daniela
-		skipButton = new Button("skip");
-		rightBox = new HBox();
-		rightBox.getChildren().add(skipButton);
-
 		
 		bottomBox.setRight(joinButton);
 		bottomBox.setLeft(createButton);
@@ -114,13 +109,11 @@ public class LauncherView extends View<LauncherModel> {
 		joinButton.setAlignment(Pos.BASELINE_CENTER);
 		createButton.setAlignment(Pos.BASELINE_CENTER);
 		refreshButton.setAlignment(Pos.BASELINE_CENTER);
-		skipButton.setAlignment(Pos.BASELINE_CENTER);
 		
 		joinButton.setPrefWidth(100);
 		createButton.setPrefWidth(100);
 		refreshButton.setPrefWidth(100);
-		skipButton.setPrefWidth(300);
-		
+
 
 		root.setTop(menuBar);
 		root.setCenter(lobbyRoomCenter);
@@ -156,9 +149,6 @@ public class LauncherView extends View<LauncherModel> {
 		return createButton;
 	}
 	
-	public Button getSkipButton() {
-		return skipButton;
-	}
 	
 	public Button getRefreshButton() {
 		return refreshButton;
