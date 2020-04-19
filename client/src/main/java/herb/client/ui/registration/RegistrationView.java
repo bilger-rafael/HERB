@@ -143,7 +143,7 @@ public class RegistrationView extends View<RegistrationModel> {
 		errorLabel.setId("errorLabel");
 		errorLabel.setOpacity(0);
 	    
-		
+		root.setId("background");
 		root.setTop(menuBar);
 		root.setCenter(centerBox);
 		root.setBottom(errorLabel);

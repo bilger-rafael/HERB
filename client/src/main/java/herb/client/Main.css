@@ -1,6 +1,51 @@
-.root{
-	-fx-background-color: grey;
+#background{
+	-fx-background-image:url("ui/images/background/holz.jpg");
+
 }
+
+.label{
+	-fx-font-family: "Comic Sans MS", cursive, sans-serif;
+	-fx-font-size: 16px;
+	-fx-letter-spacing: 2px;
+	-fx-word-spacing: 2px;
+	-fx-font-weight: bold;
+	-fx-text-decoration: none;
+	-fx-font-style: italic;
+	-fx-font-variant: small-caps;
+	-fx-text-transform: none;
+}
+
+.button{
+	-fx-text-fill:white;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	-fx-font-size: 16px;
+	-fx-letter-spacing: 2px;
+	-fx-word-spacing: 2px;
+	-fx-font-weight: 700;
+	-fx-text-decoration: none;
+	-fx-font-style: italic;
+	-fx-font-variant: small-caps;
+	-fx-text-transform: none;
+	
+	-fx-padding: 8 15 15 15;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #2B272B 0%, #3D383D 100%),
+        #524B52,
+        #5C545C,
+        radial-gradient(center 50% 50%, radius 100%, #2B272B, #3D383D);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+}
+
+.button:hover{
+	    -fx-background-color: 
+        linear-gradient(from 0% 93% to 0% 100%, #3D383D 0%, #454545 100%),
+        #454545,
+        #3D383D,
+        radial-gradient(center 50% 50%, radius 100%, #575757, #636363);
+        }
 
 #splash {
 	-fx-background-color: transparent;

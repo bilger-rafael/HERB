@@ -121,7 +121,7 @@ public class LoginView extends View<LoginModel> {
 //		message.setOpacity(0);
 		messageBox.getChildren().add(message);
 		
-
+		root.setId("background");
 		root.setTop(headMenu);
 		root.setCenter(centerBox);
 		root.setBottom(messageBox);

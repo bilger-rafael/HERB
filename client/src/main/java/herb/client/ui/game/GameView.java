@@ -186,7 +186,8 @@ public class GameView extends View<GameModel> {
 		root.setTopAnchor(right, 70d);
 		root.setBottomAnchor(right, 200d);
 
-		root.setStyle("-fx-background-color: darksalmon");
+		root.setId("background");
+//		root.setStyle("-fx-background-color: darksalmon");
 		root.setTopAnchor(upperPart, -40d);
 		root.setLeftAnchor(upperPart, 200d);
 		root.setRightAnchor(upperPart, 200d);
