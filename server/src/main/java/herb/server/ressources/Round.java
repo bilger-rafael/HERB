@@ -68,7 +68,7 @@ public class Round extends RoundBase<Player, Trick> implements Runnable{
 			Trick trick = (Trick) this.getTricks().getLast();
 			Player winner = (Player) trick.playTrick();
 			// Punkte auswerten
-			addTrickScore(winner);
+			// addTrickScore(winner);
 			// set winner as starting player
 			this.setCurrentStartingPlayer(winner);
 		}
