@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,7 +25,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class GameModel extends Model {
-	private Player[] plys;
+	private ArrayList<Player> players;
 	private ArrayList<Card> currentCards;
 	private ObservableList<Card> trickCards = FXCollections.observableArrayList();
 	private int position; 
@@ -34,12 +35,8 @@ public class GameModel extends Model {
 		startTrickUpdater();
 	}
 	
-	public ObservableList<Card> getTrickCards() {
-		return trickCards;
-	}
-	
 	// Bilger - Input von Server
-	// Roesti - store MainPlayer in players[0]
+	// Roesti - store MainPlayer in Pole-position
 	public ArrayList<Player> getLobbyPlayers() {
 		Player[] tmp = Datastore.getInstance().getMainPlayer().getRound().getPlayers();
 		
@@ -96,35 +93,83 @@ public class GameModel extends Model {
 		return playedCard;
 	}
 	
+	// Roesti - trick array on server corresponds to the player order
+	// goal: to put the cards in a array, starting with the card of the current starting player (of this trick)
 	public void refreshTrickCards() {
 		Trick trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
 		Card[] cards = (Card[]) trick.getPlayedCards();
+		ArrayList<Card> tmp = new ArrayList();
+		tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
+		
 		trickCards.clear();
-		trickCards.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
+
+		Player s = Datastore.getInstance().getMainPlayer().getRound().getCurrentStartingPlayer();
+		
+		int l = tmp.size();
+		switch(l) {
+		case 1: 
+			trickCards.add(tmp.get(0));
+			break;
+		case 2: 
+			if (s != getLobbyPlayers().get(3)) {
+			trickCards.add(tmp.get(0));
+			trickCards.add(tmp.get(1));
+			}
+			else {trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(0));
+			}
+			break;
+		case 3: 
+			if (s != getLobbyPlayers().get(3) && s != getLobbyPlayers().get(2)) {
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+			}
+			if (s == getLobbyPlayers().get(3)) {
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+			}
+			if (s == getLobbyPlayers().get(2)) {
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(0));
+			}
+				break;
+		case 4: 
+			if (s == getLobbyPlayers().get(0)) {
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(3));
+			}
+			if (s == getLobbyPlayers().get(1)) {
+				trickCards.add(tmp.get(3));
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+			}
+			if (s == getLobbyPlayers().get(2)) {
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(3));
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+			}
+			if (s == getLobbyPlayers().get(3)) {
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(3));
+				trickCards.add(tmp.get(0));
+			}
+			break;
+		}
 		
 		
-	//	Datastore.getInstance().getMainPlayer().getRound().getCurrentStartingPlayer();
-		
-//		ListIterator<Card> iter = tmp.listIterator(position);
-//		while(iter.hasNext()) {
-//			Card c = iter.next();
-//			trickCards.add(c);
-//		}
-//		switch(position) {
-//		case 0: 
-//			break;				
-//		case 1: 
-//			trickCards.add(tmp.get(0));
-//			break;			
-//		case 2: 
-//			trickCards.add(tmp.get(0));
-//			trickCards.add(tmp.get(1));
-//			break;
-//		case 3: 
-//			trickCards.add(tmp.get(0));
-//			trickCards.add(tmp.get(1));
-//			trickCards.add(tmp.get(2));
-//			}	
+		//trickCards.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
+	}
+	
+	public ObservableList<Card> getTrickCards() {
+		return trickCards;
 	}
 
 	private void startTrickUpdater() {

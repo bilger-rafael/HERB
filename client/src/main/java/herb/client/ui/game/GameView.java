@@ -12,6 +12,7 @@ import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.View;
+import herb.client.utils.Datastore;
 import herb.client.utils.ServiceLocator;
 import herb.client.utils.Translator;
 import javafx.geometry.Pos;
@@ -38,6 +39,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Color;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.collections.ListChangeListener.Change;
 import javafx.geometry.Insets;
 
@@ -58,7 +60,6 @@ public class GameView extends View<GameModel> {
 	private Rectangle rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8, rect9;
 	private ArrayList<Rectangle> rects;
 	private ArrayList<Card> cardAreas, playables;
-	private Button simButton;
 	private ArrayList<Player> plys;
 	private MenuBar headMenu;
 	private Menu menuLanguage;
@@ -120,7 +121,7 @@ public class GameView extends View<GameModel> {
 		spacer = new Region();
 		spacerTable = new Region();
 		spacerTable2 = new Region();
-	//	spacer.setMinWidth(670d);
+		spacer.setMinWidth(670d);
 		spacer.setMinWidth(200d);
 		spacerTable.setMinWidth(200d);
 		spacerTable2.setMinWidth(200d);
@@ -132,8 +133,6 @@ public class GameView extends View<GameModel> {
 		leftPoints = new Label("88");
 		rightPoints = new Label("99");
 		oppoPoints = new Label("111");
-		
-		simButton = new Button("simulation");
 	
 		// Roesti - get lobby players
 		plys = model.getLobbyPlayers();
@@ -174,7 +173,7 @@ public class GameView extends View<GameModel> {
 		updatePointPane();
 		
 		//AnchorPane
-		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, simButton, headMenu, trumpLabel);
+		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, headMenu, trumpLabel);
 		root.setLeftAnchor(headMenu, 0d);
 		root.setTopAnchor(headMenu, 0d);
 		root.setRightAnchor(headMenu, 0d);
@@ -198,8 +197,6 @@ public class GameView extends View<GameModel> {
 		root.setTopAnchor(pointPane, 50d);
 		root.setRightAnchor(pointPane, 10d);
 		
-		root.setTopAnchor(simButton, 50d);
-		root.setLeftAnchor(simButton, 10d);
 		root.setTopAnchor(trumpLabel, 90d);
 		root.setLeftAnchor(trumpLabel, 30d);
 	
@@ -225,11 +222,11 @@ public class GameView extends View<GameModel> {
 		    rectangleCard.setStroke(Color.BLACK);	    		    
 
 		      //  fan out cards
-//		    Rotate rotate = new Rotate();
-//		    rotate.setAngle(-40+10*i); 
-//		    rotate.setPivotX(322/2/2); 	
-//		    rotate.setPivotY(257*2.2);
-//		    rectangleCard.getTransforms().addAll(rotate);   
+		    Rotate rotate = new Rotate();
+		    rotate.setAngle(-40+10*i); 
+		    rotate.setPivotX(322/2/2); 	
+		    rotate.setPivotY(257*2.2);
+		    rectangleCard.getTransforms().addAll(rotate);   
 		    ownCards.add(rectangleCard, i+1, 1);	
 		    rects.add(rectangleCard); 
 		}			
@@ -309,7 +306,6 @@ public class GameView extends View<GameModel> {
 		rectangle.setArcWidth(20);
 		String r1 = trick.get(i).getRank().toStringDE();
 		String s1 = trick.get(i).getSuit().toStringFr();
-		Trump t1 = Trump.TopsDown;
 		String filename = s1 + "_" + r1 + ".jpg";
 		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
 		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
@@ -320,17 +316,61 @@ public class GameView extends View<GameModel> {
 //		rotate.setAngle(((10+i) % 2)+183-2*i); 
 //		rotate.setPivotX(30); 
 //		rotate.setPivotY(322/3+30); 
-//	    rectangle.getTransforms().addAll(rotate); 			
-	    if(i == 2)
-	    	tOppo.getChildren().add(rectangle);
-	    if(i==3)
-	    	tLeft.getChildren().add(rectangle);
-	    if(i==0)
-	    	tMain.getChildren().add(rectangle);
-	    if(i==1)
-	    	tRight.getChildren().add(rectangle);
-	    }
-				
+//	    rectangle.getTransforms().addAll(rotate); 
+		
+		if(i==0)
+    		tMain.getChildren().add(rectangle);
+    	if(i==1)
+    		tRight.getChildren().add(rectangle);
+		if(i==2)
+			tOppo.getChildren().add(rectangle);
+		if(i==3)
+			tLeft.getChildren().add(rectangle);
+		
+		// goal: put the played card next to its player
+		
+//		Player s = Datastore.getInstance().getMainPlayer().getRound().getCurrentStartingPlayer();	
+//		if (model.getLobbyPlayers().get(0) == s) {
+//		    	if(i==0)
+//		    		tMain.getChildren().add(rectangle);
+//		    	if(i==1)
+//		    		tRight.getChildren().add(rectangle);
+//				if(i==2)
+//					tOppo.getChildren().add(rectangle);
+//				if(i==3)
+//					tLeft.getChildren().add(rectangle);
+//			}
+//		if (model.getLobbyPlayers().get(1) == s) {
+//				if(i==3)
+//					tMain.getChildren().add(rectangle);
+//				if(i==0)
+//					tRight.getChildren().add(rectangle);
+//				if(i==1)
+//					tOppo.getChildren().add(rectangle);
+//				if(i==2)
+//					tLeft.getChildren().add(rectangle);
+//			}
+//		if (model.getLobbyPlayers().get(2) == s) {
+//				if(i==2)
+//					tMain.getChildren().add(rectangle);
+//				if(i==3)
+//					tRight.getChildren().add(rectangle);
+//				if(i==0)
+//					tOppo.getChildren().add(rectangle);
+//				if(i==1)
+//					tLeft.getChildren().add(rectangle);
+//			}
+//		if (model.getLobbyPlayers().get(3) == s) {
+//				if(i==1)
+//					tMain.getChildren().add(rectangle);
+//				if(i==2)
+//					tRight.getChildren().add(rectangle);
+//				if(i==3)
+//					tOppo.getChildren().add(rectangle);
+//				if(i==0)
+//					tLeft.getChildren().add(rectangle);
+//			}
+		}		
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
@@ -471,8 +511,5 @@ public class GameView extends View<GameModel> {
 	// Roesti - chosen card disposable for controller
 	public ArrayList<Rectangle> getRects() {
 		return this.rects;
-	}
-	public Button getSimulationButton() {
-		return simButton;
 	}
 }
