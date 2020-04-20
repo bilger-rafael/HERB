@@ -121,7 +121,7 @@ public class GameView extends View<GameModel> {
 		spacer = new Region();
 		spacerTable = new Region();
 		spacerTable2 = new Region();
-		spacer.setMinWidth(670d);
+//		spacer.setMinWidth(670d);
 		spacer.setMinWidth(200d);
 		spacerTable.setMinWidth(200d);
 		spacerTable2.setMinWidth(200d);
@@ -222,11 +222,11 @@ public class GameView extends View<GameModel> {
 		    rectangleCard.setStroke(Color.BLACK);	    		    
 
 		      //  fan out cards
-		    Rotate rotate = new Rotate();
-		    rotate.setAngle(-40+10*i); 
-		    rotate.setPivotX(322/2/2); 	
-		    rotate.setPivotY(257*2.2);
-		    rectangleCard.getTransforms().addAll(rotate);   
+//		    Rotate rotate = new Rotate();
+//		    rotate.setAngle(-40+10*i); 
+//		    rotate.setPivotX(322/2/2); 	
+//		    rotate.setPivotY(257*2.2);
+//		    rectangleCard.getTransforms().addAll(rotate);   
 		    ownCards.add(rectangleCard, i+1, 1);	
 		    rects.add(rectangleCard); 
 		}			
