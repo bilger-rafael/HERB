@@ -34,6 +34,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		ListChangeListener<Card> changeListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
 				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
+				view.updatePlayables();
 			}
 		};
 			

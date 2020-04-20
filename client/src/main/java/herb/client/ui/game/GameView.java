@@ -187,7 +187,6 @@ public class GameView extends View<GameModel> {
 		root.setBottomAnchor(right, 200d);
 
 		root.setId("background");
-//		root.setStyle("-fx-background-color: darksalmon");
 		root.setTopAnchor(upperPart, -40d);
 		root.setLeftAnchor(upperPart, 200d);
 		root.setRightAnchor(upperPart, 200d);
@@ -237,17 +236,21 @@ public class GameView extends View<GameModel> {
 		// center fanned out Cards
 		updateImagePatterns();
 		ownCards.add(spacer, 0, 0);
-		
-		System.out.println();
-		System.out.println("Rects nach füllen: "+rects.toString());
-		System.out.println("Karten-Array nach Update: "+ cards.toString());
-		
-		
 		ownCards.setMinHeight(250);
 		ownCards.setHgap(-50);
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
+	    updatePlayables();
+
+	}
+	
+	public void updatePlayables() {
+	    for(int j= 0; j<cards.size();j++) {
+	   		if (cards.get(j).isPlayable()) {
+	    	rects.get(j).setStroke(Color.GOLD);
+	    	}
+	    }
 	}
 	
 	private void setTrick() {
@@ -283,9 +286,7 @@ public class GameView extends View<GameModel> {
 	    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
 	    rects.get(j).setFill(pattern);
 	    
-	    if ( cards.get(j).isPlayable()) {
-	    	rects.get(j).setStroke(Color.GOLD);
-	    	}
+	    updatePlayables();
 		}
 	}
 	

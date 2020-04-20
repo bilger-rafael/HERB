@@ -102,6 +102,9 @@ public class GameModel extends Model {
 		trickCards.clear();
 		trickCards.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
 		
+		
+	//	Datastore.getInstance().getMainPlayer().getRound().getCurrentStartingPlayer();
+		
 //		ListIterator<Card> iter = tmp.listIterator(position);
 //		while(iter.hasNext()) {
 //			Card c = iter.next();
