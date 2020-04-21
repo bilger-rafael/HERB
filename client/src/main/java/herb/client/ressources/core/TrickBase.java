@@ -43,7 +43,6 @@ public abstract class TrickBase<Player extends PlayerBase, Card extends CardBase
 		return players;
 	}
 
-	@JsonIgnore
 	public Player getStartingPlayer() {
 		return startingPlayer;
 	}
