@@ -197,4 +197,53 @@ public class Card extends CardBase {
 		 }else return false;
 	}
 
+	@Override //Gibt den Werte der Karte wieder für den Spieler
+	public int getGameValue() {
+		int value = 0;
+		
+		//Trumpf
+		if(isTrump()) {
+			value+=10;
+			int temp = this.getRank().ordinal();
+			//Nell
+			if(temp==3) {
+				value+=10;
+			}
+			//Buur
+			if(temp==5) {
+				value+=15;
+			}
+			if(temp!=3&&temp!=5) {
+				value+=this.getRank().ordinal();
+			}
+		}
+		
+		//TopDown
+		if(isTopDown()) {
+			value+=this.getRank().ordinal();
+		}
+		
+		
+		//BottomUp
+		if(isBottomUp()) {
+			value-=this.getRank().ordinal();
+		}
+		
+		//Nicht Trumpf
+		if(!isTrump()&&!isBottomUp()&&!isTopDown()) {
+			value+=this.getRank().ordinal();
+		}
+		
+		return value;
+	}
+
+	@Override //Boolean ob eine Karte gewinnt
+	public boolean compareToWinnerCard(CardBase o) {
+		if(this.getGameValue()>o.getGameValue()) {
+			return true;
+		}
+		
+		return false;
+	}
+
 }
