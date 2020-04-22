@@ -6,30 +6,35 @@ import herb.server.ressources.Card;
 import herb.server.ressources.Player;
 import herb.server.ressources.Trick;
 import herb.server.ressources.core.CardBase;
+import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.PlayerBase;
 
 //ETTER Computerspieler, spielt Randomkarte
 //TODO Besserer Bot
-//TODO evtl in Player integrieren oder verbinden (Konstruktor in Player=> Player(){...}, welcher Bot erstellt)
-public class Bot {
-	private int botNumber = 1;
+public class Bot extends Player{
+	private static int botNumber = 1;
 	private Player botPlayer;
 	CardBase[] playableCards = new CardBase[9];;
-	
+	private static String authToken = "AAA"+botNumber;
+	private static String botName = "Bot "+botNumber;
 	
 	//Erstellt einen Bot, welcher ein Player ist
 	public Bot() {
-		String authToken = "AAA"+botNumber;
-		String botName = "Bot "+botNumber;
+		super(botName, authToken);
 		botNumber++;
-		
-		botPlayer = new Player(botName,authToken);
+		authToken = "AAA"+botNumber;
+		botName = "Bot "+botNumber;
 	}
 
 	//Spielt die Karte über den Player aus Sicht des Bots (Logik) bester Wahl
 	protected void play() {
 		CardBase tempCard = determinBestCard();
-		botPlayer.play(tempCard);
+		try {
+			botPlayer.play(tempCard);
+		} catch (ExceptionBase e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -43,17 +48,17 @@ public class Bot {
 		PlayerBase startingPlayer = botPlayer.getRound().getCurrentStartingPlayer();
 		Random rand = new Random ();
 		int randInt;
-		playableCards= botPlayer.determinPlayableCards();
+		this.updatePlayableHand(super.getRound().getTricks().getLast());
 		
 		
 		//Logik
-		int NumberPlayedCards = ((Trick) botPlayer.getRound().getTricks().getLast()).getPlayedCards().size();
+		int NumberPlayedCards = super.getRound().getTricks().size();
 			
 		switch (NumberPlayedCards) {
 				//Bot ist der Startspieler, spielt eine Randomkarte
 				case(0): 
-						randInt =rand.nextInt(botPlayer.getHand().getCards().length);
-						bestCard = botPlayer.getHand().getCard(randInt);
+						randInt =rand.nextInt(botPlayer.getHand().getCards().size());
+						bestCard = botPlayer.getHand().getCards().get(randInt);
 						break;
 				//Bot ist 2. Spieler, spielt eine Randomkarte der spielbaren Karten aus
 				case(1): 	
