@@ -24,7 +24,6 @@ public abstract class TrickBase<Player extends PlayerBase, Card extends CardBase
 		this.currentPlayer = p;
 	}
 
-	@JsonIgnore
 	public Player getWinningPlayer() {
 		return winningPlayer;
 	}
