@@ -13,7 +13,7 @@ public abstract class TrickBase<Player extends PlayerBase, Card extends CardBase
 	private final Player startingPlayer;
 	@JsonIgnoreProperties({ "round", "hand" })
 	private Player currentPlayer;
-	@JsonIgnore
+	@JsonIgnoreProperties({ "round", "hand" })
 	protected Player winningPlayer;
 
 	public Player getCurrentPlayer() {
