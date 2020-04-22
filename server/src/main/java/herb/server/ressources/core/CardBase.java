@@ -43,6 +43,8 @@ public abstract class CardBase {
     @JsonIgnore
     public abstract int getPoints();
     
+	public abstract int getGameValue();
+    
     protected abstract boolean isTrump();
     
     protected abstract boolean isTopDown();
@@ -52,6 +54,8 @@ public abstract class CardBase {
 	public abstract int compareTo(CardBase o);
 	
 	public abstract boolean compareToPlayable(CardBase o);
+	
+	public abstract boolean compareToWinnerCard(CardBase o);
 
 	public Suit getSuit() {
 		return this.suit;
