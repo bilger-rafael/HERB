@@ -49,6 +49,14 @@ public abstract class TrickBase<Player extends PlayerBase, Card extends CardBase
 	public CardBase[] getPlayedCards() {
 		return playedCards;
 	}
+	
+	public int getNumberPlayedCards() {
+		int counter = 0;
+		for(Card c:this.playedCards) {
+			counter++;
+		}
+		return counter;
+	}
 
 	@JsonIgnore
 	public Card getPlayedCard(Player p) {

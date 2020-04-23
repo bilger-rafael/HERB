@@ -13,7 +13,6 @@ import herb.server.ressources.core.PlayerBase;
 //TODO Besserer Bot
 public class Bot extends Player{
 	private static int botNumber = 1;
-	private Player botPlayer;
 	CardBase[] playableCards = new CardBase[9];;
 	private static String authToken = "AAA"+botNumber;
 	private static String botName = "Bot "+botNumber;
@@ -30,7 +29,7 @@ public class Bot extends Player{
 	protected void play() {
 		CardBase tempCard = determinBestCard();
 		try {
-			botPlayer.play(tempCard);
+			this.play(tempCard);
 		} catch (ExceptionBase e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,7 +44,7 @@ public class Bot extends Player{
 	// Sucht die Karte aus die gespielt werden soll
 	private CardBase determinBestCard() {
 		CardBase bestCard = null;
-		PlayerBase startingPlayer = botPlayer.getRound().getCurrentStartingPlayer();
+		PlayerBase startingPlayer = this.getRound().getCurrentStartingPlayer();
 		Random rand = new Random ();
 		int randInt;
 		this.updatePlayableHand(super.getRound().getTricks().getLast());
@@ -57,8 +56,8 @@ public class Bot extends Player{
 		switch (NumberPlayedCards) {
 				//Bot ist der Startspieler, spielt eine Randomkarte
 				case(0): 
-						randInt =rand.nextInt(botPlayer.getHand().getCards().size());
-						bestCard = botPlayer.getHand().getCards().get(randInt);
+						randInt =rand.nextInt(this.getHand().getCards().size());
+						bestCard = this.getHand().getCards().get(randInt);
 						break;
 				//Bot ist 2. Spieler, spielt eine Randomkarte der spielbaren Karten aus
 				case(1): 	
