@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import herb.server.Datastore;
+import herb.server.bot.Bot;
 import herb.server.ressources.Lobby;
 import herb.server.ressources.Player;
 import herb.server.ressources.PlayerNotFoundException;
@@ -37,12 +38,17 @@ public class LobbyController {
 		if (p == null)
 			throw new PlayerNotFoundException();
 		Lobby.readLobby(name).addPlayer(p);
-		//((Lobby) getLobby(name)).addPlayer(p);
 	}
 
 	@PostMapping("/Lobby({name})/leave")
 	public void leaveLobby(@PathVariable String name, @RequestBody Player player) throws ExceptionBase {
 		Lobby.readLobby(name).removePlayer(player);
+	}
+	
+	@PostMapping("/Lobby({name})/addBot")
+	public void addBot(@PathVariable String name) throws ExceptionBase {
+		Bot b = new Bot();
+		Lobby.readLobby(name).addPlayer(b);
 	}
 
 }
