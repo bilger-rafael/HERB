@@ -63,10 +63,10 @@ public class Round extends RoundBase<Player, Trick> implements Runnable{
 		// Tricks spielen
 		while (!this.getPlayers()[0].PlayerNoCards()) {
 			// neuer Trick erstellen
-			this.getTricks().add(new Trick(this.getPlayers(), this.getCurrentStartingPlayer()));
+			Trick trick = new Trick(this.getPlayers(), this.getCurrentStartingPlayer());
+			this.getTricks().add(trick);
 			// Spielen
-			Trick trick = (Trick) this.getTricks().getLast();
-			Player winner = (Player) trick.playTrick();
+			Player winner = trick.playTrick();
 			// Punkte auswerten
 			// addTrickScore(winner);
 			// set winner as starting player
