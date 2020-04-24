@@ -19,6 +19,9 @@ import herb.client.utils.Datastore;
 import javafx.event.EventHandler;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
 import javafx.scene.shape.Rectangle;
 
@@ -37,9 +40,16 @@ public class GameController extends Controller<GameModel, GameView> {
 				view.updatePlayables();
 			}
 		};
-			
+		
 		model.getTrickCards().addListener(changeListener);
-				
+
+		ListChangeListener<Card> changeListenerPlayables = new ListChangeListener<Card>() {
+			public void onChanged(Change<? extends Card> c) {
+				view.updatePlayables();
+			}
+		};
+		model.getPlayables().addListener(changeListenerPlayables);	
+
 		// Event when card is chosen
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));
         if (view.getRects().size()>1) 
@@ -60,60 +70,54 @@ public class GameController extends Controller<GameModel, GameView> {
         	view.getRects().get(8).setOnMouseClicked(e -> forwardPlayedCard(e));
 	}
 	
-	// Roesti - identify clicked Card
-	// TODO check if playable
+	// Roesti - identify clicked Card and play if isPlayable
 	public void forwardPlayedCard(MouseEvent e){
 		
-		System.out.println("It happened");
-		
 		Rectangle recti = (Rectangle) e.getSource();
-		
 		if ((recti).getFill().equals(view.getRects().get(0).getFill())) {
 			playedCard = model.getMyCards().get(0);
 		}
 		
-	if (view.getRects().size()>1) {
-		if ((recti).getFill().equals(view.getRects().get(1).getFill())) {
-			playedCard = model.getMyCards().get(1);
+		if (view.getRects().size()>1) {
+			if ((recti).getFill().equals(view.getRects().get(1).getFill())) {
+				playedCard = model.getMyCards().get(1);
+			}
 		}
-	}
-	if (view.getRects().size()>2) {
-		if ((recti).getFill().equals(view.getRects().get(2).getFill())) {
-			playedCard = model.getMyCards().get(2);
+		if (view.getRects().size()>2) {
+			if ((recti).getFill().equals(view.getRects().get(2).getFill())) {
+				playedCard = model.getMyCards().get(2);
+			}
 		}
-	}
-	if (view.getRects().size()>3) {
-		if ((recti).getFill().equals(view.getRects().get(3).getFill())) {
-			playedCard = model.getMyCards().get(3);
+		if (view.getRects().size()>3) {
+			if ((recti).getFill().equals(view.getRects().get(3).getFill())) {
+				playedCard = model.getMyCards().get(3);
+			}
 		}
-	}
-	if (view.getRects().size()>4) {
-		if ((recti).getFill().equals(view.getRects().get(4).getFill())) {
-			playedCard = model.getMyCards().get(4);
+		if (view.getRects().size()>4) {
+			if ((recti).getFill().equals(view.getRects().get(4).getFill())) {
+				playedCard = model.getMyCards().get(4);
+			}
 		}
-	}
-	if (view.getRects().size()>5) {
-		if ((recti).getFill().equals(view.getRects().get(5).getFill())) {
-			playedCard = model.getMyCards().get(5);
+		if (view.getRects().size()>5) {
+			if ((recti).getFill().equals(view.getRects().get(5).getFill())) {
+				playedCard = model.getMyCards().get(5);
+			}
 		}
-	}
-	if (view.getRects().size()>6) {
-		if ((recti).getFill().equals(view.getRects().get(6).getFill())) {
-			playedCard = model.getMyCards().get(6);
+		if (view.getRects().size()>6) {
+			if ((recti).getFill().equals(view.getRects().get(6).getFill())) {
+				playedCard = model.getMyCards().get(6);
+			}
 		}
-	}
-	if (view.getRects().size()>7) {
-		if ((recti).getFill().equals(view.getRects().get(7).getFill())) {
-			playedCard = model.getMyCards().get(7);
+		if (view.getRects().size()>7) {
+			if ((recti).getFill().equals(view.getRects().get(7).getFill())) {
+				playedCard = model.getMyCards().get(7);
+			}	
+		}
+		if (view.getRects().size()>8) {
+			if ((recti).getFill().equals(view.getRects().get(8).getFill())) {
+				playedCard = model.getMyCards().get(8);
+			}
 		}	
-	}
-	if (view.getRects().size()>8) {
-		if ((recti).getFill().equals(view.getRects().get(8).getFill())) {
-			playedCard = model.getMyCards().get(8);
-		}}	
-		
-		playedCardIndex = model.getMyCards().indexOf(playedCard); 
-		System.out.println("Array-Index: "+ playedCardIndex);
 		
 		if (playedCard.isPlayable()) {
 		model.playCard(playedCard);

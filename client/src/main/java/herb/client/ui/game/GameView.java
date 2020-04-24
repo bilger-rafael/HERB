@@ -50,7 +50,7 @@ public class GameView extends View<GameModel> {
 	//private BorderPane root;
 	private AnchorPane root; 
 	private GridPane table, ownCards;
-	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points;
+	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, trumpBox;
 	private HBox oppositeSide, left, right, pointPane;
 	private HBox tMain, tRight, tOppo, tLeft;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel;
@@ -58,11 +58,10 @@ public class GameView extends View<GameModel> {
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart;
 	private StackPane tablePart;
-	private Rectangle rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8, rect9;
 	private ArrayList<Rectangle> rects, trickRects;
 	private ArrayList<Card> cardAreas, playables;
 	private ArrayList<Player> plys;
-	private MenuBar headMenu;
+	private MenuBar menuBar;
 	private Menu menuLanguage;
 	private ArrayList<Card> cards, trick;
 
@@ -80,9 +79,9 @@ public class GameView extends View<GameModel> {
 		this.root = new AnchorPane();
 		
 		// create MenuBar - language and cardSet (fr vs. de) TODO
-		headMenu = new MenuBar();
+		menuBar = new MenuBar();
 		menuLanguage = new Menu();	
-		menuLanguage.getItems().addAll();
+		menuBar.getMenus().add(menuLanguage);
 				
 		// link to Locale
 		for (Locale locale : sl.getLocales()) {
@@ -94,7 +93,6 @@ public class GameView extends View<GameModel> {
 			updateLabels();
 			});
 		}	
-		headMenu.getMenus().addAll(menuLanguage);
 		
 		// Roesti - create ui-elements
 		upperPart = new BorderPane();
@@ -112,7 +110,8 @@ public class GameView extends View<GameModel> {
 		ownCards.setMinWidth(1300);
 		pointPane = new HBox();
 		names = new VBox();
-		points = new VBox();		
+		points = new VBox();	
+		trumpBox = new VBox();
 
 		tMain = new HBox();
 		tRight = new HBox();
@@ -158,8 +157,7 @@ public class GameView extends View<GameModel> {
 		
 		setMyCards();
 		
-		trumpLabel.setText(Datastore.getInstance().getMainPlayer().getRound().getTrump().toString());
-		trumpLabel.setStyle("-fx-font-weight: bold");
+		setTrumpInfo();
 		
 		setTrick();
 				
@@ -174,11 +172,11 @@ public class GameView extends View<GameModel> {
 		
 		updatePointPane();
 		
-		//AnchorPane
-		root.getChildren().addAll(upperPart, bottom, left, right, pointPane, headMenu, trumpLabel);
-		root.setLeftAnchor(headMenu, 0d);
-		root.setTopAnchor(headMenu, 0d);
-		root.setRightAnchor(headMenu, 0d);
+		//AnchorPane - pointPane removed
+		root.getChildren().addAll(upperPart, bottom, left, right, menuBar, trumpBox);
+		root.setLeftAnchor(menuBar, 0d);
+		root.setTopAnchor(menuBar, 0d);
+		root.setRightAnchor(menuBar, 0d);
 		
 		root.setLeftAnchor(left, -10d);
 		root.setTopAnchor(left, 70d);
@@ -199,9 +197,10 @@ public class GameView extends View<GameModel> {
 		root.setTopAnchor(pointPane, 50d);
 		root.setRightAnchor(pointPane, 10d);
 		
-		root.setTopAnchor(trumpLabel, 90d);
-		root.setLeftAnchor(trumpLabel, 30d);
+		root.setTopAnchor(trumpBox, 90d);
+		root.setLeftAnchor(trumpBox, 50d);
 	
+		updateLabels();
 		Scene scene = new Scene(root, 1000, 1000);
 		return scene;
 	}
@@ -249,6 +248,7 @@ public class GameView extends View<GameModel> {
 	    	rects.get(j).setStroke(Color.BLACK);
 	   		if (cards.get(j).isPlayable()) {
 	    	rects.get(j).setStroke(Color.GOLD);
+	    	rects.get(j).setStyle("-fx-border-width: 10");
 	    	}
 	    }
 	}
@@ -476,33 +476,45 @@ public class GameView extends View<GameModel> {
 		opposite.setAlignment(Pos.CENTER);
 	}
 	
+	private void setTrumpInfo() {
+		trumpLabel.setText(Datastore.getInstance().getMainPlayer().getRound().getTrump().toString());
+		trumpLabel.setStyle("-fx-font-weight: bold");
+		String trumpFilename = Datastore.getInstance().getMainPlayer().getRound().getTrump().toString() + ".png";
+		Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + trumpFilename));
+		ImageView imview = new ImageView(image);
+		imview.maxHeight(20);
+		imview.maxWidth(20);
+        imview.setPreserveRatio(true);
+		trumpBox.getChildren().add(trumpLabel);
+		trumpBox.getChildren().add(imview);	
+	}
+	
 	private void updatePointPane() {
 		// TODO 
 		// realise with StackPane? TODO
 		// realise with Binding TODO
-		//names.getChildren().addAll(oppositeLabel, leftHandLabel, rightHandLabel, playerLabel);
-		pointsLabel = new Label();
-		names.setMinSize(80, 20);
-		points.getChildren().addAll(oppoPoints, leftPoints, rightPoints, playerPoints);
-		points.setMinSize(40, 20);
-		points.setAlignment(Pos.CENTER_RIGHT);
-		pointPane.getChildren().addAll(pointsLabel, names, points);
-		pointPane.toFront();
-		pointPane.setPadding(new Insets(20, 20, 20, 20));
-		pointPane.setStyle("-fx-background-color: aliceblue");
+		//names.getChildren().   addAll(oppositeLabel, leftHandLabel, rightHandLabel, playerLabel);
+//		pointsLabel = new Label();
+//		names.setMinSize(80, 20);
+//		points.getChildren().addAll(oppoPoints, leftPoints, rightPoints, playerPoints);
+//		points.setMinSize(40, 20);
+//		points.setAlignment(Pos.CENTER_RIGHT);
+//		pointPane.getChildren().addAll(pointsLabel, names, points);
+//		pointPane.toFront();
+//		pointPane.setPadding(new Insets(20, 20, 20, 20));
+//		pointPane.setStyle("-fx-background-color: aliceblue");
 	}
 	
 	// Roesti 
-	protected void updateLabels() {
+	private void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
 		// language settings
 		menuLanguage.setText(t.getString("program.game.menuLanguage"));
 		// screen labels
 		trickLabel2.setText(t.getString("program.game.order"));
-		pointsLabel.setText(t.getString("program.game.pointsLabel"));
+	//	pointsLabel.setText(t.getString("program.game.pointsLabel"));
 		stage.setTitle(t.getString("program.name"));
-		// tbd
 	}
 	
 	public ArrayList<Card> getCardAreas(){
