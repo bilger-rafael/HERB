@@ -26,11 +26,17 @@ public class Trick extends TrickBase<Player, Card> {
 		this.nodeCurrentPlayer = buildCircularLinkedList();
 
 		this.setCurrentPlayer(startingPlayer);
+		System.out.println(this.getCurrentPlayer());
+		System.out.println(this.nodeCurrentPlayer.data);
+		System.out.println(this.nodeCurrentPlayer.next.data);
+		System.out.println(this.nodeCurrentPlayer.next.next.data);
+		System.out.println(this.nodeCurrentPlayer.next.next.next.data);
 	}
 
 	public PlayerNode buildCircularLinkedList() {
 		PlayerNode pnStarting = null;
 		PlayerNode pnPrevious = null;
+		PlayerNode pnFirst = null;
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			PlayerNode pn = new PlayerNode(this.getPlayers()[i]);
 
@@ -40,11 +46,13 @@ public class Trick extends TrickBase<Player, Card> {
 
 			if (pnPrevious != null) {
 				pnPrevious.next = pn;
+			}else {
+				pnFirst = pn;
 			}
 
 			pnPrevious = pn;
 		}
-		pnPrevious.next = pnStarting;
+		pnPrevious.next = pnFirst;
 		return pnStarting;
 	}
 
