@@ -31,6 +31,7 @@ public class GameModel extends Model {
 	private int position; 
 	private Trick trick;
 	private Player startingPlayer, currentPlayer;
+	private Player[] pServerOrder;
 
 	public GameModel() {
 		super();
@@ -40,8 +41,8 @@ public class GameModel extends Model {
 	// Bilger - Input von Server
 	// Roesti - store MainPlayer in Pole-position
 	public ArrayList<Player> getLobbyPlayers() {
-		Player[] tmp = Datastore.getInstance().getMainPlayer().getRound().getPlayers();
-		players = new ArrayList<Player>(Arrays.asList(tmp));
+		pServerOrder = Datastore.getInstance().getMainPlayer().getRound().getPlayers();
+		players = new ArrayList<Player>(Arrays.asList(pServerOrder));
 		
 		LinkedList<Player> plys = new LinkedList();
 		for(Player p : players)
@@ -71,9 +72,7 @@ public class GameModel extends Model {
 			players.add(plys.get(1));
 			players.add(plys.get(2));
 			}
-		
-		System.out.println("MeinePlayer-Liste: "+ players.toString());
-		
+				
 		// Bilger					
 //		players = (ArrayList<Player>) Stream.concat( players.stream().filter(p -> p.equals(Datastore.getInstance().getMainPlayer())),
 //				players.stream().filter(p -> !p.equals(Datastore.getInstance().getMainPlayer()))
@@ -103,70 +102,72 @@ public class GameModel extends Model {
 		this.startingPlayer = trick.getStartingPlayer();
 		this.currentPlayer = trick.getCurrentPlayer();
 		Card[] cards = (Card[]) trick.getPlayedCards();
+		
+		
 		ArrayList<Card> tmp = new ArrayList();
 		tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
 		
 		trickCards.clear();
 		
-//		int l = tmp.size();
-//		switch(l) {
-//		case 1: 
-//			trickCards.add(tmp.get(0));
-//			break;
-//		case 2: 
-//			if (startingPlayer.equals(getLobbyPlayers().get(3))) {
-//			trickCards.add(tmp.get(1));
-//			trickCards.add(tmp.get(0));
-//			}
-//			else {trickCards.add(tmp.get(0));
-//				trickCards.add(tmp.get(1));
-//			}
-//			break;
-//		case 3: 
-//			if (startingPlayer.equals(getLobbyPlayers().get(0)) || startingPlayer.equals(getLobbyPlayers().get(1))) {
-//				trickCards.add(tmp.get(0));
-//				trickCards.add(tmp.get(1));
-//				trickCards.add(tmp.get(2));
-//			}
-//			if (startingPlayer.equals(getLobbyPlayers().get(3))) {
-//				trickCards.add(tmp.get(2));
-//				trickCards.add(tmp.get(0));
-//				trickCards.add(tmp.get(1));
-//			}
-//			if (startingPlayer.equals(getLobbyPlayers().get(2))) {
-//				trickCards.add(tmp.get(1));
-//				trickCards.add(tmp.get(2));
-//				trickCards.add(tmp.get(0));
-//			}
-//				break;
-//		case 4: 
-//			if (startingPlayer.equals(getLobbyPlayers().get(0))) {
-//				trickCards.add(tmp.get(0));
-//				trickCards.add(tmp.get(1));
-//				trickCards.add(tmp.get(2));
-//				trickCards.add(tmp.get(3));
-//			}
-//			if (startingPlayer.equals(getLobbyPlayers().get(1))) {
-//				trickCards.add(tmp.get(3));
-//				trickCards.add(tmp.get(0));
-//				trickCards.add(tmp.get(1));
-//				trickCards.add(tmp.get(2));
-//			}
-//			if (startingPlayer.equals(getLobbyPlayers().get(2))) {
-//				trickCards.add(tmp.get(2));
-//				trickCards.add(tmp.get(3));
-//				trickCards.add(tmp.get(0));
-//				trickCards.add(tmp.get(1));
-//			}
-//			if (startingPlayer.equals(getLobbyPlayers().get(3))) {
-//				trickCards.add(tmp.get(1));
-//				trickCards.add(tmp.get(2));
-//				trickCards.add(tmp.get(3));
-//				trickCards.add(tmp.get(0));
-//			}			
-//			break;
-//		}	
-		trickCards.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
+		int l = tmp.size();
+		switch(l) {
+		case 1: 
+			trickCards.add(tmp.get(0));
+			break;
+		case 2: 
+			if (startingPlayer.equals(pServerOrder[3])) {
+			trickCards.add(tmp.get(1));
+			trickCards.add(tmp.get(0));
+			}
+			else {trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+			}
+			break;
+		case 3: 
+			if (startingPlayer.equals(pServerOrder[0]) || startingPlayer.equals(pServerOrder[1])) {
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+			}
+			if (startingPlayer.equals(pServerOrder[3])) {
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+			}
+			if (startingPlayer.equals(pServerOrder[2])) {
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(0));
+			}
+				break;
+		case 4: 
+			if (startingPlayer.equals(pServerOrder[0])) {
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(3));
+			}
+			if (startingPlayer.equals(pServerOrder[1])) {
+				trickCards.add(tmp.get(3));
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+			}
+			if (startingPlayer.equals(pServerOrder[2])) {
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(3));
+				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+			}
+			if (startingPlayer.equals(pServerOrder[3])) {
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(3));
+				trickCards.add(tmp.get(0));
+			}			
+			break;
+		}	
+	//	trickCards.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
 	}
 	
 	public ObservableList<Card> getTrickCards() {
