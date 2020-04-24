@@ -10,6 +10,7 @@ import herb.client.ressources.Card;
 import herb.client.ressources.Player;
 import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
+import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.View;
 import herb.client.utils.Datastore;
@@ -52,18 +53,18 @@ public class GameView extends View<GameModel> {
 	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points;
 	private HBox oppositeSide, left, right, pointPane;
 	private HBox tMain, tRight, tOppo, tLeft;
-	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, nextPlayerLabel;
-	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel, trumpLabel;
+	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel;
+	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart;
 	private StackPane tablePart;
 	private Rectangle rect1, rect2, rect3, rect4, rect5, rect6, rect7, rect8, rect9;
-	private ArrayList<Rectangle> rects;
+	private ArrayList<Rectangle> rects, trickRects;
 	private ArrayList<Card> cardAreas, playables;
 	private ArrayList<Player> plys;
 	private MenuBar headMenu;
 	private Menu menuLanguage;
-	private ArrayList<Card> cards;
+	private ArrayList<Card> cards, trick;
 
 
 	public GameView(Stage stage, GameModel model) {
@@ -138,6 +139,7 @@ public class GameView extends View<GameModel> {
 		plys = model.getLobbyPlayers();
 		
 	    rects = new ArrayList();
+	    trickRects = new ArrayList();
 		
 		// Roesti - create labels
 		playerLabel = new Label(plys.get(0).getUsername());
@@ -150,12 +152,13 @@ public class GameView extends View<GameModel> {
 		trickLabel = new Label();
 		trickLabel.setMinHeight(70);
 		trumpLabel = new Label();
-	    nextPlayerLabel = new Label(" next ---");
+	    currentPlayerLabel = new Label("next ---");
+	    startingPlayerLabel = new Label("is defined later");
 		
 		
 		setMyCards();
 		
-		trumpLabel.setText(cards.get(0).getTrump().toString());
+		trumpLabel.setText(Datastore.getInstance().getMainPlayer().getRound().getTrump().toString());
 		trumpLabel.setStyle("-fx-font-weight: bold");
 		
 		setTrick();
@@ -166,7 +169,6 @@ public class GameView extends View<GameModel> {
        		
 		//BorderPane opposite Player and Table
 		upperPart.setCenter(table);
-		upperPart.setBottom(nextPlayerLabel);
 		upperPart.setTop(opposite);
 		upperPart.setMinWidth(400d);
 		
@@ -244,12 +246,14 @@ public class GameView extends View<GameModel> {
 	
 	public void updatePlayables() {
 	    for(int j= 0; j<cards.size();j++) {
+	    	rects.get(j).setStroke(Color.BLACK);
 	   		if (cards.get(j).isPlayable()) {
 	    	rects.get(j).setStroke(Color.GOLD);
 	    	}
 	    }
 	}
 	
+	// Roesti - GridPane with trick rectangles
 	private void setTrick() {
 		table.add(trickLabel, 1, 0, 1, 1);
 	    table.add(spacerTable, 0, 0, 1, 1);
@@ -261,119 +265,123 @@ public class GameView extends View<GameModel> {
 	    table.add(tOppo, 2,  0, 1, 2);
 	    table.add(tLeft,  1,  1, 1, 2);
 	    table.add(tMain, 2,  2, 1, 2);
-	    table.add(tRight,  3,  1, 1, 2);		
-	}
-	
-	// Roesti - card images from herb / client / ui / images / fr OR de TODO	
-	public void updateImagePatterns() {
-    	cards = model.getMyCards(); 
-		
-		for (int d = 0; d<9; d++)   {		
-			rects.get(d).setFill(null);
-		}
-		
-		cards = model.getMyCards();
-		
-		for(int j=0; j<cards.size(); j++) {
-		String rank = cards.get(j).getRank().toStringDE();
-		String suit = cards.get(j).getSuit().toStringFr();
-	    String filename = suit + "_" + rank + ".jpg";
-	    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
-		
-	    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
-	    rects.get(j).setFill(pattern);
+	    table.add(tRight,  3,  1, 1, 2);
 	    
-	    updatePlayables();
-		}
-	}
-	
-	// Roesti - create trick: table GridPane 
-	public void updateTrick(ArrayList<Card> cardSet) {
-		ArrayList<Card> trick = new ArrayList();
-		trick = cardSet;
-	    
-		tOppo.getChildren().clear();
-		tLeft.getChildren().clear();
-		tMain.getChildren().clear();
-		tRight.getChildren().clear();
-	    	    
-		// set played cards
-		for (int i = 0; i< trick.size(); i++) {
+	    for (int i=0; i<4; i++) {
 		Rectangle rectangle = new Rectangle();
 		rectangle.setHeight(514/3);
 		rectangle.setWidth(322/3);		
 		rectangle.setArcHeight(20);
 		rectangle.setArcWidth(20);
-		String r1 = trick.get(i).getRank().toStringDE();
-		String s1 = trick.get(i).getSuit().toStringFr();
-		String filename = s1 + "_" + r1 + ".jpg";
-		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
-		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
-		rectangle.setFill(pattern);
-		rectangle.setId("cardimage");             
+		rectangle.setStroke(Color.BLACK);
 	    // Roesti - implement rotation  TODO implement Random()
 //		Rotate rotate = new Rotate();  
 //		rotate.setAngle(((10+i) % 2)+183-2*i); 
 //		rotate.setPivotX(30); 
 //		rotate.setPivotY(322/3+30); 
 //	    rectangle.getTransforms().addAll(rotate); 
-		
-		if(i==0)
-    		tMain.getChildren().add(rectangle);
-    	if(i==1)
-    		tRight.getChildren().add(rectangle);
-		if(i==2)
-			tOppo.getChildren().add(rectangle);
-		if(i==3)
-			tLeft.getChildren().add(rectangle);
-		
-		// goal: put the played card next to its player
-		
-//		Player s = Datastore.getInstance().getMainPlayer().getRound().getCurrentStartingPlayer();	
-//		if (model.getLobbyPlayers().get(0) == s) {
-//		    	if(i==0)
-//		    		tMain.getChildren().add(rectangle);
-//		    	if(i==1)
-//		    		tRight.getChildren().add(rectangle);
-//				if(i==2)
-//					tOppo.getChildren().add(rectangle);
-//				if(i==3)
-//					tLeft.getChildren().add(rectangle);
-//			}
-//		if (model.getLobbyPlayers().get(1) == s) {
-//				if(i==3)
-//					tMain.getChildren().add(rectangle);
-//				if(i==0)
-//					tRight.getChildren().add(rectangle);
-//				if(i==1)
-//					tOppo.getChildren().add(rectangle);
-//				if(i==2)
-//					tLeft.getChildren().add(rectangle);
-//			}
-//		if (model.getLobbyPlayers().get(2) == s) {
-//				if(i==2)
-//					tMain.getChildren().add(rectangle);
-//				if(i==3)
-//					tRight.getChildren().add(rectangle);
-//				if(i==0)
-//					tOppo.getChildren().add(rectangle);
-//				if(i==1)
-//					tLeft.getChildren().add(rectangle);
-//			}
-//		if (model.getLobbyPlayers().get(3) == s) {
-//				if(i==1)
-//					tMain.getChildren().add(rectangle);
-//				if(i==2)
-//					tRight.getChildren().add(rectangle);
-//				if(i==3)
-//					tOppo.getChildren().add(rectangle);
-//				if(i==0)
-//					tLeft.getChildren().add(rectangle);
-//			}
-		}		
+		trickRects.add(rectangle);
+	    }
+	    tMain.getChildren().add(trickRects.get(0));
+		tRight.getChildren().add(trickRects.get(1));
+		tOppo.getChildren().add(trickRects.get(2));
+		tLeft.getChildren().add(trickRects.get(3));
+		System.out.println("Trick-Rectangles erstellt 1x.");
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
+	}
+	
+	// Roesti - update ImagePatterns (getMyCards from Server)
+	// TODO card images from herb / client / ui / images / fr OR de 	
+	public void updateImagePatterns() {		
+		for (int d = 0; d<9; d++)   {		
+			rects.get(d).setFill(null);
+		}
+		cards = model.getMyCards();
+		
+		for(int j=0; j<cards.size(); j++) {
+		String rank = cards.get(j).getRank().toStringDE();
+		String suit = cards.get(j).getSuit().toStringFr();
+	    String filename = suit + "_" + rank + ".jpg";
+	    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));		
+	    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
+	    rects.get(j).setFill(pattern);
+	    updatePlayables();
+		}
+	}
+	
+	// Roesti - update trick ImagePatterns
+	// TODO card images from herb / client / ui / images / fr OR de
+	public void updateTrick(ArrayList<Card> cardSet) {
+		for (int d = 0; d<4; d++)   {		
+			trickRects.get(d).setFill(null);
+		}
+		trick = new ArrayList();
+		trick = cardSet;
+		// update played cards
+		for (int i = 0; i< trick.size(); i++) {
+		String r1 = trick.get(i).getRank().toStringDE();
+		String s1 = trick.get(i).getSuit().toStringFr();
+		String filename = s1 + "_" + r1 + ".jpg";
+		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));
+		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+		
+		// goal: put the played card next to its player		
+		Player s = model.getStartingPlayer();
+		startingPlayerLabel.setText("Starting-Player: "+ s.getUsername().toString());
+		
+		Player c = model.getCurrentPlayer();
+		currentPlayerLabel.setText("Dran ist: "+ c.getUsername().toString());
+		
+		if (s.equals(model.getPlayers().get(0))) {
+			trickRects.get(i).setFill(pattern);
+		}
+		
+		if (s.equals(model.getPlayers().get(1))) {
+			if(i == 0) {
+				trickRects.get(1).setFill(pattern);
+			}
+			if (i == 1) {
+				trickRects.get(2).setFill(pattern);
+			}
+			if (i == 2) {
+				trickRects.get(3).setFill(pattern);
+			}
+			if (i == 3) {
+				trickRects.get(0).setFill(pattern);
+			}
+		}
+		if (s.equals(model.getPlayers().get(2))) {
+			if(i == 0) {
+				trickRects.get(2).setFill(pattern);
+			}
+			if (i == 1) {
+				trickRects.get(3).setFill(pattern);
+			}
+			if (i == 2) {
+				trickRects.get(0).setFill(pattern);
+			}
+			if (i == 3) {
+				trickRects.get(1).setFill(pattern);
+			}
+		}
+		if (s.equals(model.getPlayers().get(3))) {
+			if(i == 0) {
+				trickRects.get(3).setFill(pattern);
+			}
+			if (i == 1) {
+				trickRects.get(0).setFill(pattern);
+			}
+			if (i == 2) {
+				trickRects.get(1).setFill(pattern);
+			}
+			if (i == 3) {
+				trickRects.get(2).setFill(pattern);
+			}
+		}
+		            
+		}
 	}
 	
 	private void updateLeftPlayer() {
@@ -463,6 +471,8 @@ public class GameView extends View<GameModel> {
 		oppositeSide.setMinHeight(100);
 		opposite.getChildren().add(oppositeSide);
 		opposite.getChildren().add(oppositeLabel);	
+		opposite.getChildren().add(startingPlayerLabel);
+		opposite.getChildren().add(currentPlayerLabel);
 		opposite.setAlignment(Pos.CENTER);
 	}
 	
@@ -480,10 +490,6 @@ public class GameView extends View<GameModel> {
 		pointPane.toFront();
 		pointPane.setPadding(new Insets(20, 20, 20, 20));
 		pointPane.setStyle("-fx-background-color: aliceblue");
-	}
-	
-	public void setNextPlayerLabel(String s) {
-		nextPlayerLabel.setText(s);
 	}
 	
 	// Roesti 

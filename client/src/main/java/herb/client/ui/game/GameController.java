@@ -118,13 +118,6 @@ public class GameController extends Controller<GameModel, GameView> {
 		if (playedCard.isPlayable()) {
 		model.playCard(playedCard);
 		}
-		view.updateImagePatterns();
-		
-		if (model.getTrickCards().size()==4) {
-			Trick t = new Trick();
-			view.setNextPlayerLabel(t.getCurrentPlayer().toString());
-		}
-		
+		view.updateImagePatterns();	
 	}		
-	
 }
