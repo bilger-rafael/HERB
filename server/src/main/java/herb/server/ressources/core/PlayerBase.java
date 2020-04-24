@@ -23,7 +23,12 @@ public abstract class PlayerBase <Hand extends HandBase, Round extends RoundBase
 		this.username = username;
 		this.authToken = authToken;
 	}
-
+	
+	@Override 
+	public String toString() {
+		return this.getUsername();
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		// self check
