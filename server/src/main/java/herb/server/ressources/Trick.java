@@ -85,7 +85,7 @@ public class Trick extends TrickBase<Player, Card> {
 		// compare card of winner with next player
 		for (int i = 0; i < 3; i++) {
 			pnStarting = pnStarting.next;
-			if (this.getPlayedCard(this.winningPlayer).compareTo(this.getPlayedCard(pnStarting.data)) > 0) {
+			if (this.getPlayedCard(pnStarting.data).compareTo(this.getPlayedCard(this.winningPlayer)) > 0) {
 				this.winningPlayer = pnStarting.data;
 			}
 		}
