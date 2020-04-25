@@ -74,6 +74,24 @@ public class Lobby extends LobbyBase<Player> {
 		}
 	}
 	
+	@Override
+	public void addBot() throws ExceptionBase {
+		try {
+			RestClient.getClient()
+					.post()
+					.uri(uriBuilder -> uriBuilder.path("/Lobby({name})/addBot")
+		    	   		  				         .build(this.getName()))
+					.retrieve()
+					.bodyToMono(String.class)
+					.block();
+		} catch (WebClientResponseException e) {
+			//TODO check e.getStatusCode() and raise specific error
+			throw new LobbyException();
+		} catch (WebClientException e) {
+			throw new LobbyException();
+		}		
+	}
+	
 	public static Lobby createLobby(String name) throws ExceptionBase {
 		Lobby lobby = new Lobby(name);
 		try {

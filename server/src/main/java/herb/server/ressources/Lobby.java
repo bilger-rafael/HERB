@@ -3,6 +3,7 @@ package herb.server.ressources;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.server.Datastore;
+import herb.server.bot.Bot;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.LobbyBase;
 
@@ -53,6 +54,11 @@ public class Lobby extends LobbyBase<Player> {
 			}
 		}
 	}
+	
+	public void addBot() throws ExceptionBase {
+		Bot b = new Bot();
+		this.addPlayer(b);
+	}
 
 	public static Lobby createLobby(String name) throws ExceptionBase {
 		if (Datastore.getInstance().lobbys.containsKey(name))
@@ -79,5 +85,7 @@ public class Lobby extends LobbyBase<Player> {
 	public static Lobby[] readLobbyList() {
 		return (Lobby[]) Datastore.getInstance().lobbys.values().toArray(new Lobby[0]);
 	}
+
+
 
 }

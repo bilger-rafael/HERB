@@ -48,8 +48,7 @@ public class LobbyController {
 	
 	@PostMapping("/Lobby({name})/addBot")
 	public void addBot(@PathVariable String name) throws ExceptionBase {
-		Bot b = new Bot();
-		Lobby.readLobby(name).addPlayer(b);
+		Lobby.readLobby(name).addBot();
 	}
 
 }
