@@ -76,9 +76,9 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 
 	private void endRound() {
 		// Aktuelle Runde für Spieler entfernen
-		//for (int i = 0; i < this.getPlayers().length; i++) {
-		//	this.getPlayers()[i].setRound(null);
-		//}
+		// for (int i = 0; i < this.getPlayers().length; i++) {
+		// this.getPlayers()[i].setRound(null);
+		// }
 
 		this.setScores(determinScores());
 
@@ -96,7 +96,11 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			Player p = this.getPlayers()[i];
 			scores[i] = this.getTricks().stream().mapToInt(x -> x.getPlayedCard(p).getPoints()).sum();
+			// add 5 points for winning last trick
+			if (p.equals(this.getTricks().getLast().getWinner()))
+				scores[i] += 5;
 		}
+
 		return scores;
 	}
 
