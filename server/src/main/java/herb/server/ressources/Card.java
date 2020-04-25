@@ -13,7 +13,7 @@ public class Card extends CardBase {
 
 	}
 
-	@Override //gibt den Punktewert der Karte zurück
+	//gibt den Punktewert der Karte zurück
 	public int getPoints() {
 		int points = 0;
 		//Obeabe
@@ -115,25 +115,7 @@ public class Card extends CardBase {
 		return points;
 	}
 	
-	public boolean isTrump() {
-		if(this.suit.ordinal() == this.trump.ordinal()) {
-			return true;
-		}else { return false;}
-	}
-	
-	protected  boolean isTopDown() {
-		if (this.trump.ordinal() == 4)
-			return true;
-		else return false;
-	}
-	
-	protected boolean isBottomUp() {
-		if (this.trump.ordinal() == 5)
-			return true;
-		else return false;
-	}
-
-	@Override //o ist die Karte vom vorherigen Spieler, dies die neue Karte
+	//o ist die Karte vom vorherigen Spieler, dies die neue Karte
 	public int compareTo(CardBase o) {
 		int result=0;
 		//Ich habe Trumpf
@@ -188,14 +170,14 @@ public class Card extends CardBase {
 		return result;
 	}
 	
-	@Override //Gibt zurück ob die Karte gewinnt gegen die andere Karte
+	//Gibt zurück ob die Karte gewinnt gegen die andere Karte
 	public boolean compareToPlayable(CardBase o) {
 		 if(this.compareTo(o)>0) {
 			 return true;
 		 }else return false;
 	}
 
-	@Override //Gibt den Werte der Karte wieder für den Spieler
+	//Gibt den Werte der Karte wieder für den Spieler
 	public int getGameValue() {
 		int value = 0;
 		
@@ -235,8 +217,8 @@ public class Card extends CardBase {
 		return value;
 	}
 
-	@Override //Boolean ob eine Karte gewinnt
-	public boolean compareToWinnerCard(CardBase o) {
+	//Boolean ob eine Karte gewinnt
+	public boolean compareToWinnerCard(Card o) {
 		if(this.getGameValue()>o.getGameValue()) {
 			return true;
 		}

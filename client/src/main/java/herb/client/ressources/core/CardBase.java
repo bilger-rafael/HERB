@@ -9,20 +9,6 @@ public abstract class CardBase {
     protected final Trump trump;
     protected boolean playable;
     
-    public void setPlayable(boolean playable) {
-		this.playable = playable;
-	}
-
-	public boolean isPlayable() {
-		return playable;
-	}
-
-	public CardBase(Suit suit, Rank rank, Trump trump) {
-    	this.suit = suit;
-    	this.rank = rank;
-    	this.trump = trump;
-    }
-    
 	@Override
 	public boolean equals(Object o) {
 		// self check
@@ -40,18 +26,37 @@ public abstract class CardBase {
 			   this.getRank().equals(c.getRank());
 	}
     
-    @JsonIgnore
-    public abstract int getPoints();
-    
-    protected abstract boolean isTrump();
-    
-    protected abstract boolean isTopDown();
-    
-    protected abstract boolean isBottomUp();
+    public void setPlayable(boolean playable) {
+		this.playable = playable;
+	}
 
-	public abstract int compareTo(CardBase o);
+	public boolean isPlayable() {
+		return playable;
+	}
 	
-	public abstract boolean compareToPlayable(CardBase o);
+	public boolean isTrump() {
+		if(this.suit.ordinal() == this.trump.ordinal()) {
+			return true;
+		}else { return false;}
+	}
+
+	public CardBase(Suit suit, Rank rank, Trump trump) {
+    	this.suit = suit;
+    	this.rank = rank;
+    	this.trump = trump;
+    }
+	
+	protected  boolean isTopDown() {
+		if (this.trump.ordinal() == 4)
+			return true;
+		else return false;
+	}
+	
+	protected boolean isBottomUp() {
+		if (this.trump.ordinal() == 5)
+			return true;
+		else return false;
+	}
 
 	public Suit getSuit() {
 		return this.suit;

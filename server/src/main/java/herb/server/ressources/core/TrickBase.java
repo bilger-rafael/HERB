@@ -46,7 +46,7 @@ public abstract class TrickBase<Player extends PlayerBase, Card extends CardBase
 		return startingPlayer;
 	}
 
-	public CardBase[] getPlayedCards() {
+	public Card[] getPlayedCards() {
 		return playedCards;
 	}
 
