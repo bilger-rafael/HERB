@@ -185,7 +185,6 @@ public class Card extends CardBase {
 				result=-8;
 			}
 		}
-		System.out.println(result);
 		return result;
 	}
 	
