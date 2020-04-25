@@ -32,7 +32,7 @@ public class Lobby extends LobbyBase<Player> {
 					throw new ServerErrorException();
 			}
 		}
-		
+
 		// add player to the lobby
 		for (int i = 0; i < this.players.length; i++) {
 			if (this.players[i] == null) {
@@ -47,14 +47,17 @@ public class Lobby extends LobbyBase<Player> {
 
 	// Etter Spieler verlässt die Lobby
 	public void removePlayer(Player player) throws ExceptionBase {
+		if (runningGame != null)
+			throw new GameAlreadyStartedException();
 		for (int i = 0; i < this.players.length; i++) {
-			if (this.players[i] == null) continue;
+			if (this.players[i] == null)
+				continue;
 			if (this.players[i].equals(player)) {
 				this.players[i] = null;
 			}
 		}
 	}
-	
+
 	public void addBot() throws ExceptionBase {
 		Bot b = new Bot();
 		this.addPlayer(b);
@@ -85,7 +88,5 @@ public class Lobby extends LobbyBase<Player> {
 	public static Lobby[] readLobbyList() {
 		return (Lobby[]) Datastore.getInstance().lobbys.values().toArray(new Lobby[0]);
 	}
-
-
 
 }
