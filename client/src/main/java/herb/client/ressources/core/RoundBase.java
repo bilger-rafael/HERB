@@ -1,5 +1,6 @@
 package herb.client.ressources.core;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickB
 	private Trump trump;
 	@JsonIgnoreProperties({ "round", "hand" })
 	private Player[] players;
+	private Integer[] scores;
 	private Map<Player,Integer> actualScores;
 	
 	@JsonIgnore
@@ -25,6 +27,7 @@ public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickB
 
 	public RoundBase (Player[] players) {
 		this.players=players;
+		this.actualScores = new HashMap<Player,Integer>();
 	}
 	
 	public void setPlayers(Player[] players) {

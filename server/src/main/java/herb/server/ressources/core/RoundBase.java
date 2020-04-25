@@ -13,6 +13,7 @@ public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickB
 	private Trump trump;
 	@JsonIgnoreProperties({ "round", "hand" })
 	private Player[] players;
+	private Integer[] scores;
 	private Map<Player,Integer> actualScores;
 	
 	@JsonIgnore
