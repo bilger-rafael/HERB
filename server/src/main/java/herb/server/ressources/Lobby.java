@@ -60,6 +60,10 @@ public class Lobby extends LobbyBase<Player> {
 
 	public void addBot() throws ExceptionBase {
 		Bot b = new Bot();
+		
+		// for test purposes, to allow get player 
+		Datastore.getInstance().players.put(b.getUsername(), b);
+		
 		this.addPlayer(b);
 	}
 

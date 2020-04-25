@@ -75,16 +75,13 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 	}
 
 	// Gibt eine Map mit den Spielern und den Spielständen zurück
-	private Map<Player, Integer> endRound() {
+	private void endRound() {
 		// Aktuelle Runde für Spieler entfernen
-		for (int i = 0; i < this.getPlayers().length; i++) {
-			this.getPlayers()[i].setRound(null);
-		}
+		//for (int i = 0; i < this.getPlayers().length; i++) {
+		//	this.getPlayers()[i].setRound(null);
+		//}
 
 		this.setScores(determinScores());
-
-		Map<Player, Integer> temp = getScoreTable();
-		return temp;
 
 		// TODO kill thread
 	}
