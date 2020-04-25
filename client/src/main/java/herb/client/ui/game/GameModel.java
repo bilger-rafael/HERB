@@ -171,16 +171,16 @@ public class GameModel extends Model {
 	//	trickCards.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
 	}
 	
-	public void refreshPlayables() {
-		ArrayList<Card> tmp = Datastore.getInstance().getMainPlayer().getHand().getCards();
-		
-		for (int i = 0; i< tmp.size();i++) {
-			Card c = new Card();
-			if (c.isPlayable()) {
-				playableCards.add(c);
-			}
-		}
-	}
+//	public void refreshPlayables() {
+//		ArrayList<Card> tmp = Datastore.getInstance().getMainPlayer().getHand().getCards();
+//		
+//		for (int i = 0; i< tmp.size();i++) {
+//			Card c = new Card();
+//			if (c.isPlayable()) {
+//				playableCards.add(c);
+//			}
+//		}
+//	}
 	
 	public ObservableList<Card> getTrickCards() {
 		return trickCards;
@@ -209,23 +209,23 @@ public class GameModel extends Model {
 		t.start();
 	}
 	
-	private void startPlayablesUpdater() {
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					Platform.runLater(() -> refreshPlayables());
-					try {
-						Thread.sleep(2000);
-					} catch (InterruptedException e) {
-					}
-				}
-			}
-		};
-		Thread t = new Thread(r);
-		t.setDaemon(true);
-		t.start();
-	}
+//	private void startPlayablesUpdater() {
+//		Runnable r = new Runnable() {
+//			@Override
+//			public void run() {
+//				while (true) {
+//					Platform.runLater(() -> refreshPlayables());
+//					try {
+//						Thread.sleep(2000);
+//					} catch (InterruptedException e) {
+//					}
+//				}
+//			}
+//		};
+//		Thread t = new Thread(r);
+//		t.setDaemon(true);
+//		t.start();
+//	}
 	
 	public Player getStartingPlayer() {
 		return this.startingPlayer;

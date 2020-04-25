@@ -7,12 +7,14 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import herb.client.ressources.Card;
+import herb.client.ressources.Lobby;
 import herb.client.ressources.Player;
 import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.View;
+import herb.client.ui.lobby.LobbyModel;
 import herb.client.utils.Datastore;
 import herb.client.utils.ServiceLocator;
 import herb.client.utils.Translator;
@@ -53,7 +55,7 @@ public class GameView extends View<GameModel> {
 	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, trumpBox;
 	private HBox oppositeSide, left, right, pointPane;
 	private HBox tMain, tRight, tOppo, tLeft;
-	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel;
+	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
 	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart;
@@ -153,7 +155,10 @@ public class GameView extends View<GameModel> {
 		trumpLabel = new Label();
 	    currentPlayerLabel = new Label("next ---");
 	    startingPlayerLabel = new Label("is defined later");
-		
+	    
+	    // need the lobby name: Datastore.getInstance().getMainPlayer().getRound()???
+	    Lobby l = new Lobby();
+		lobbyLabel = new Label(l.getName().toString());
 		
 		setMyCards();
 		
@@ -166,11 +171,9 @@ public class GameView extends View<GameModel> {
         updateOppoPlayer();
        		
 		//BorderPane opposite Player and Table
-		upperPart.setCenter(table);
+		upperPart.setCenter(tablePart);
 		upperPart.setTop(opposite);
 		upperPart.setMinWidth(400d);
-		
-		updatePointPane();
 		
 		//AnchorPane - pointPane removed
 		root.getChildren().addAll(upperPart, bottom, left, right, menuBar, trumpBox);
@@ -244,11 +247,10 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void updatePlayables() {
-	    for(int j= 0; j<cards.size();j++) {
-	    	rects.get(j).setStroke(Color.BLACK);
+	    for(int j= 0; j<cards.size();j++) {    	
 	   		if (cards.get(j).isPlayable()) {
 	    	rects.get(j).setStroke(Color.GOLD);
-	    	rects.get(j).setStyle("-fx-border-width: 10");
+	    	rects.get(j).setStyle("-fx-stroke-width: 10");
 	    	}
 	    }
 	}
@@ -290,6 +292,7 @@ public class GameView extends View<GameModel> {
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
+		tablePart.getChildren().add(table);
 	}
 	
 	// Roesti - update ImagePatterns (getMyCards from Server)
@@ -297,6 +300,7 @@ public class GameView extends View<GameModel> {
 	public void updateImagePatterns() {		
 		for (int d = 0; d<9; d++)   {		
 			rects.get(d).setFill(null);
+			rects.get(d).setStroke(Color.TRANSPARENT);
 		}
 		cards = model.getMyCards();
 		
@@ -307,7 +311,7 @@ public class GameView extends View<GameModel> {
 	    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));		
 	    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
 	    rects.get(j).setFill(pattern);
-	    updatePlayables();
+	    rects.get(j).setStroke(Color.BLACK);
 		}
 	}
 	
@@ -482,27 +486,29 @@ public class GameView extends View<GameModel> {
 		String trumpFilename = Datastore.getInstance().getMainPlayer().getRound().getTrump().toString() + ".png";
 		Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + trumpFilename));
 		ImageView imview = new ImageView(image);
-		imview.maxHeight(20);
-		imview.maxWidth(20);
+		imview.setFitWidth(90);
         imview.setPreserveRatio(true);
-		trumpBox.getChildren().add(trumpLabel);
+        imview.setSmooth(true);
+        imview.setCache(true);
+		trumpBox.getChildren().add(lobbyLabel);
+        trumpBox.getChildren().add(trumpLabel);
 		trumpBox.getChildren().add(imview);	
 	}
 	
-	private void updatePointPane() {
-		// TODO 
-		// realise with StackPane? TODO
+	public void updatePointPane() {
+		// Roesti 
 		// realise with Binding TODO
 		//names.getChildren().   addAll(oppositeLabel, leftHandLabel, rightHandLabel, playerLabel);
-//		pointsLabel = new Label();
-//		names.setMinSize(80, 20);
-//		points.getChildren().addAll(oppoPoints, leftPoints, rightPoints, playerPoints);
-//		points.setMinSize(40, 20);
-//		points.setAlignment(Pos.CENTER_RIGHT);
-//		pointPane.getChildren().addAll(pointsLabel, names, points);
-//		pointPane.toFront();
-//		pointPane.setPadding(new Insets(20, 20, 20, 20));
-//		pointPane.setStyle("-fx-background-color: aliceblue");
+		pointsLabel = new Label();
+		names.setMinSize(80, 20);
+		points.getChildren().addAll(oppoPoints, leftPoints, rightPoints, playerPoints);
+		points.setMinSize(40, 20);
+		points.setAlignment(Pos.CENTER_RIGHT);
+		pointPane.getChildren().addAll(pointsLabel, names, points);
+		pointPane.toFront();
+		pointPane.setPadding(new Insets(20, 20, 20, 20));
+		pointPane.setStyle("-fx-background-color: aliceblue");
+		tablePart.getChildren().add(pointPane);
 	}
 	
 	// Roesti 

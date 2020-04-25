@@ -38,17 +38,21 @@ public class GameController extends Controller<GameModel, GameView> {
 			public void onChanged(Change<? extends Card> c) {
 				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
 				view.updatePlayables();
+				
+				if ((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()) == null) {
+					view.updatePointPane();
+				}
 			}
 		};
 		
 		model.getTrickCards().addListener(changeListener);
 
-		ListChangeListener<Card> changeListenerPlayables = new ListChangeListener<Card>() {
-			public void onChanged(Change<? extends Card> c) {
-				view.updatePlayables();
-			}
-		};
-		model.getPlayables().addListener(changeListenerPlayables);	
+//		ListChangeListener<Card> changeListenerPlayables = new ListChangeListener<Card>() {
+//			public void onChanged(Change<? extends Card> c) {
+//				view.updatePlayables();
+//			}
+//		};
+//		model.getPlayables().addListener(changeListenerPlayables);	
 
 		// Event when card is chosen
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));
