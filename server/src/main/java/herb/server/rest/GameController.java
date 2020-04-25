@@ -12,6 +12,7 @@ import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.GameBase;
 import herb.server.ressources.core.RoundBase;
 
+//Bilger
 @RestController
 public class GameController {
 

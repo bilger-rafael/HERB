@@ -7,6 +7,7 @@ import herb.server.ressources.Login;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.PlayerBase;
 
+//Bilger
 @RestController
 public class AuthenticationController {
 

@@ -13,6 +13,7 @@ import herb.server.ressources.Player;
 import herb.server.ressources.PlayerNotFoundException;
 import herb.server.ressources.core.ExceptionBase;
 
+//Bilger
 @RestController
 public class LobbyController {
 
