@@ -18,16 +18,6 @@ public class Login extends LoginBase {
 	@Override
 	public PlayerBase login() throws ExceptionBase {
 
-		// TODO delete later
-		/*
-		 * Login login = Datastore.getInstance().logins.get(this.getUsername());
-		 * 
-		 * if (login == null) throw new PlayerNotFoundException();
-		 * 
-		 * if (!login.getPassword().equals(this.getPassword())) throw new
-		 * PlayerLoginFailedException();
-		 */
-
 		// Etter Login mit MySQL DB
 		// Check User existiert
 		if (!DataStore_Repository.getDB().checkLoginExist(this.getUsername())) {
@@ -56,11 +46,7 @@ public class Login extends LoginBase {
 			throw new PlayerAlreadyExistsException();
 
 		// TODO check username and password length, if needed
-
-		// TODO delete later
-		/*
-		 * Datastore.getInstance().logins.put(this.getUsername(), this);
-		 */
+		// TODO check username is not Bot...
 
 		// Etter Eintrag in MYSQL-DB
 		int i = DataStore_Repository.getDB().addLoginToDB(this.getUsername(), this.getPassword());
