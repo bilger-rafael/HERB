@@ -1,12 +1,6 @@
 package herb.server.ressources;
 
-import java.util.Collections;
-import java.util.Map;
 import java.util.Random;
-import java.util.TreeMap;
-
-import herb.server.DataStore_Repository;
-import herb.server.ressources.core.PlayerBase;
 import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
@@ -18,8 +12,8 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		super(players);
 		this.setTrump(randomTrump());
 		this.deck = new DeckOfCards(this.getTrump());
-		// x set player 0 as starting player
-		this.setCurrentStartingPlayer(this.getPlayers()[0]);
+
+		this.setCurrentStartingPlayer(this.getPlayers()[new Random().nextInt(4)]);
 
 		Thread t = new Thread(this);
 		// t.setDaemon(true);
@@ -57,6 +51,16 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			this.getPlayers()[i].sortHand();
 		}
+
+		// wait for startingPlayer to choose trump
+		while (this.getTrump() == null) {
+			try {
+				Thread.sleep(1000);
+				// this.wait(); //is it possible to wait on Object Round?
+			} catch (InterruptedException e) {
+			}
+		}
+
 	}
 
 	private void playTricks() {
@@ -67,8 +71,6 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 			this.getTricks().add(trick);
 			// Spielen
 			Player winner = trick.playTrick();
-			// Punkte auswerten
-			// addTrickScore(winner);
 			// set winner as starting player
 			this.setCurrentStartingPlayer(winner);
 		}
