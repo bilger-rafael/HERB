@@ -12,10 +12,9 @@ import herb.server.ressources.core.ExceptionBase;
 //Bilger
 public abstract class BotBase extends Player {
 	private static int botNumber = 1;
-	private static String botName = "Bot " + botNumber;
 
 	public BotBase() {
-		super(botName, UUID.randomUUID().toString().toUpperCase());
+		super("Bot " + botNumber, UUID.randomUUID().toString().toUpperCase());
 		botNumber++;
 	}
 
