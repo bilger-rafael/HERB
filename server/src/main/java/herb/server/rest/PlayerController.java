@@ -36,11 +36,14 @@ public class PlayerController {
 	@PostMapping("/Player({username})/play")
 	public void play(@PathVariable String username, @RequestBody Card card) throws ExceptionBase {
 		Player p = Datastore.getInstance().players.get(username);
-		// TODO check if its players turn and if card is in his hand
-		Card c = p.getHand().getCards().stream()
-								       .filter(x -> x.equals(card))
-									   .findFirst()
-									   .orElseThrow(() -> new ServerErrorException());
+		
+		// check if its players turn
+		if (!p.getRound().getTricks().getLast().getCurrentPlayer().equals(p))
+			throw new ServerErrorException();
+		
+		Card c = p.getHand().getCards().stream().filter(x -> x.equals(card)).findFirst()
+				.orElseThrow(() -> new ServerErrorException());
+		
 		p.play(c);
 	}
 }
