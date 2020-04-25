@@ -17,7 +17,7 @@ public class Lobby extends LobbyBase<Player> {
 
 	@Override // Etter Spiel starten
 	public void startGame() {
-		runningGame = new Game(this.players);
+		runningGame = new Game(this, this.players);
 	}
 
 	// Etter Spieler dem Array hinzufügen

@@ -3,15 +3,19 @@ package herb.server.ressources.core;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public abstract class GameBase<Player extends PlayerBase> {
-	private final UUID uuid;
-	protected Player[] players;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+public abstract class GameBase<Lobby extends LobbyBase, Player extends PlayerBase> {
+	private final UUID uuid;
+	@JsonIgnoreProperties({ "runningGame" })
+	private final Lobby lobby;
+	protected Player[] players;
 
 	protected ArrayList<RoundBase> rounds = new ArrayList<RoundBase>();
 	
-	public GameBase(UUID uuid, Player[] players) {
+	public GameBase(UUID uuid, Lobby lobby, Player[] players) {
 		this.uuid = uuid;
+		this.lobby = lobby;
 		this.players = players;
 	}
 	
@@ -27,5 +31,9 @@ public abstract class GameBase<Player extends PlayerBase> {
 
 	public ArrayList<RoundBase> getRounds() {
 		return rounds;
+	}
+
+	public Lobby getLobby() {
+		return lobby;
 	}
 }

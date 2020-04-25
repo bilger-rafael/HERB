@@ -6,10 +6,10 @@ import herb.client.ressources.core.GameBase;
 import herb.client.ressources.core.RoundBase;
 import herb.client.rest.RestClient;
 
-public class Game extends GameBase<Player>{
+public class Game extends GameBase<Lobby, Player>{
 
-	public Game(UUID uuid, Player[] players) {
-		super(uuid, players);
+	public Game(UUID uuid, Lobby lobby, Player[] players) {
+		super(uuid, lobby, players);
 		// TODO Auto-generated constructor stub
 	}
 
