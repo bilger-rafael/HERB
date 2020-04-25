@@ -74,7 +74,6 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		}
 	}
 
-	// Gibt eine Map mit den Spielern und den Spielständen zurück
 	private void endRound() {
 		// Aktuelle Runde für Spieler entfernen
 		//for (int i = 0; i < this.getPlayers().length; i++) {
@@ -99,23 +98,6 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 			scores[i] = this.getTricks().stream().mapToInt(x -> x.getPlayedCard(p).getPoints()).sum();
 		}
 		return scores;
-	}
-
-	@Override
-	protected void addTrickScore(Player winner) {
-		Integer additionalScore = this.getTricks().getLast().getTrickPoints();
-		Integer oldScore = getActualScores().get(winner);
-		getActualScores().put(winner, (additionalScore + oldScore));
-	}
-
-	@Override
-	public Map<Player, Integer> getScoreTable() {
-		Map<Player, Integer> sortedTable = new TreeMap<>();
-		getActualScores().entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-				.forEachOrdered(x -> sortedTable.put(x.getKey(), x.getValue()));
-
-		return sortedTable;
-
 	}
 
 }

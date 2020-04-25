@@ -14,20 +14,9 @@ public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickB
 	@JsonIgnoreProperties({ "round", "hand" })
 	private Player[] players;
 	private Integer[] scores;
-	private Map<Player,Integer> actualScores;
 	
-	@JsonIgnore
-	public Map<Player, Integer> getActualScores() {
-		return actualScores;
-	}
-
-	public void setActualScores(Map<Player, Integer> actualScores) {
-		this.actualScores = actualScores;
-	}
-
 	public RoundBase (Player[] players) {
 		this.players=players;
-		this.actualScores = new HashMap<Player,Integer>();
 	}
 	
 	public void setPlayers(Player[] players) {
@@ -39,12 +28,6 @@ public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickB
 	public void setCurrentStartingPlayer(Player currentStartingPlayer) {
 		this.currentStartingPlayer = currentStartingPlayer;
 	}
-
-
-	protected abstract void addTrickScore(Player winner);
-	
-	@JsonIgnore
-	public abstract Map<Player, Integer> getScoreTable();
 	
 	public LinkedList<Trick> getTricks(){
 		return tricks;
