@@ -65,5 +65,13 @@ public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickB
 	public Player getCurrentStartingPlayer() {
 		return currentStartingPlayer;
 	}
+
+	public Integer[] getScores() {
+		return scores;
+	}
+
+	public void setScores(Integer[] scores) {
+		this.scores = scores;
+	}
 	
 }
