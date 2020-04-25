@@ -11,25 +11,25 @@ import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
 //Etter
-public class Round extends RoundBase<Player, Trick> implements Runnable{
+public class Round extends RoundBase<Player, Trick> implements Runnable {
 	private DeckOfCards deck;
 
 	public Round(Player[] players) {
 		super(players);
 		this.setTrump(randomTrump());
 		this.deck = new DeckOfCards(this.getTrump());
-		//x set player 0 as starting player
+		// x set player 0 as starting player
 		this.setCurrentStartingPlayer(this.getPlayers()[0]);
-		
+
 		Thread t = new Thread(this);
-		//t.setDaemon(true);
+		// t.setDaemon(true);
 		t.start();
 	}
-	
+
 	@Override
-	public void run() {		
+	public void run() {
 		startRound();
-		
+
 		playTricks();
 
 		endRound();
@@ -73,24 +73,35 @@ public class Round extends RoundBase<Player, Trick> implements Runnable{
 			this.setCurrentStartingPlayer(winner);
 		}
 	}
-	
-	//Gibt eine Map mit den Spielern und den Spielständen zurück
+
+	// Gibt eine Map mit den Spielern und den Spielständen zurück
 	private Map<Player, Integer> endRound() {
 		// Aktuelle Runde für Spieler entfernen
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			this.getPlayers()[i].setRound(null);
 		}
-		
+
+		this.setScores(determinScores());
+
 		Map<Player, Integer> temp = getScoreTable();
 		return temp;
-		
-		//TODO kill thread
+
+		// TODO kill thread
 	}
 
 	private Trump randomTrump() {
 		Random rand = new Random();
 		int i = rand.nextInt((6));
 		return Trump.values()[i];
+	}
+
+	private Integer[] determinScores() {
+		Integer[] scores = new Integer[4];
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			Player p = this.getPlayers()[i];
+			scores[i] = this.getTricks().stream().mapToInt(x -> x.getPlayedCard(p).getPoints()).sum();
+		}
+		return scores;
 	}
 
 	@Override
