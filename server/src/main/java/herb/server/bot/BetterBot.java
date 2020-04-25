@@ -16,8 +16,7 @@ public class BetterBot extends BotBase {
 		this.updatePlayableHand(super.getRound().getTricks().getLast());
 
 		// Logik des Bots
-		int myPosition = this.getRound().getTricks().getLast().getNumberPlayedCards();
-		switch (myPosition) {
+		switch (this.getNumberPlayedCards()) {
 		// Startspieler Random ausspielen
 		case (0):
 			randInt = rand.nextInt(this.getHand().getCards().size());

@@ -1,8 +1,11 @@
 package herb.server.bot;
 
+import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import herb.server.ressources.Card;
+import herb.server.ressources.core.CardBase;
 
 //ETTER Computerspieler, spielt Randomkarte
 //TODO Besserer Bot
@@ -14,12 +17,11 @@ public class Bot extends BotBase {
 		Card bestCard = null;
 		Random rand = new Random();
 		int randInt;
-		this.updatePlayableHand(super.getRound().getTricks().getLast());
+		this.updatePlayableHand(this.getRound().getTricks().getLast());
 
 		// Logik
-		int NumberPlayedCards = super.getRound().getTricks().size();
 
-		switch (NumberPlayedCards) {
+		switch (this.getNumberPlayedCards()) {
 		// Bot ist der Startspieler, spielt eine Randomkarte
 		case (0):
 			randInt = rand.nextInt(this.getHand().getCards().size());
