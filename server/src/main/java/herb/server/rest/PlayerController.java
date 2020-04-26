@@ -54,7 +54,7 @@ public class PlayerController {
 		Player p = Datastore.getInstance().players.get(username);
 
 		// check if its players turn
-		if (!p.getRound().getTricks().getLast().getCurrentPlayer().equals(p))
+		if (!p.getRound().getCurrentStartingPlayer().equals(p))
 			throw new ServerErrorException();
 
 		// check if trump is not set jet
