@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.PlayerBase;
+import herb.server.ressources.core.Trump;
 
 //Etter
 public class Player extends PlayerBase<Hand, Round> {
@@ -28,6 +29,11 @@ public class Player extends PlayerBase<Hand, Round> {
 
 		playListener.played();
 		playListener = null;
+	}
+	
+	@Override
+	public void chooseTrump(Trump trump) throws ExceptionBase {
+		this.getRound().setTrump(trump);
 	}
 
 	public void addCardtoHand(CardBase card) {
@@ -143,4 +149,5 @@ public class Player extends PlayerBase<Hand, Round> {
 	public void setPlayListener(PlayListener playListener) {
 		this.playListener = playListener;
 	}
+
 }

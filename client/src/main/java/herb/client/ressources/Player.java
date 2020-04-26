@@ -4,6 +4,7 @@ import herb.client.ressources.core.CardBase;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ressources.core.HandBase;
 import herb.client.ressources.core.PlayerBase;
+import herb.client.ressources.core.Trump;
 import herb.client.rest.RestClient;
 
 import org.springframework.web.reactive.function.BodyInserters;
@@ -32,7 +33,6 @@ public class Player extends PlayerBase<Hand, Round> {
 
 	@Override
 	public void play(CardBase card) throws ExceptionBase {
-		
 		try {
 			RestClient.getClient()
 					.post()
@@ -48,7 +48,25 @@ public class Player extends PlayerBase<Hand, Round> {
 		} catch (WebClientException e) {
 			throw new PlayerException();
 		}
-		
+	}
+
+	@Override
+	public void chooseTrump(Trump trump) throws ExceptionBase {
+		try {
+			RestClient.getClient()
+					.post()
+					.uri(uriBuilder -> uriBuilder.path("/Player({username})/chooseTrump")
+		    	   		  				         .build(this.getUsername()))
+					.body(BodyInserters.fromValue(trump))
+					.retrieve()
+					.bodyToMono(String.class)
+					.block();
+		} catch (WebClientResponseException e) {
+			//TODO check e.getStatusCode() and raise specific error
+			throw new PlayerException();
+		} catch (WebClientException e) {
+			throw new PlayerException();
+		}
 	}
 
 }
