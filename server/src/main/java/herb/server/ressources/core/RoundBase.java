@@ -10,6 +10,7 @@ public abstract class RoundBase<Player extends PlayerBase, Trick extends TrickBa
 	@JsonIgnoreProperties({ "round", "hand" })
 	private Player[] players;
 	private Integer[] scores;
+	@JsonIgnoreProperties({ "round", "hand" })
 	private Player currentStartingPlayer;
 	
 	public RoundBase(Player[] players) {
