@@ -1,5 +1,7 @@
 package herb.server.ressources;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
@@ -13,6 +15,7 @@ public class Card extends CardBase {
 	}
 
 	//gibt den Punktewert der Karte zurück
+	@JsonIgnore
 	public int getPoints() {
 		int points = 0;
 		//Obeabe
@@ -177,6 +180,7 @@ public class Card extends CardBase {
 	}
 
 	//Gibt den Werte der Karte wieder für den Spieler
+	@JsonIgnore
 	public int getGameValue() {
 		int value = 0;
 		
