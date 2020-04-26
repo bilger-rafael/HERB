@@ -16,7 +16,7 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 	public Round(Player[] players) {
 		super(players);
 		this.setTrump(randomTrump());
-		this.deck = new DeckOfCards(this.getTrump());
+		this.deck = new DeckOfCards();
 
 		this.setCurrentStartingPlayer(this.getPlayers()[new Random().nextInt(4)]);
 
@@ -61,8 +61,14 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		while (this.getTrump() == null) {
 			try {
 				Thread.sleep(1000);
-				// this.wait(); //is it possible to wait on Object Round?
 			} catch (InterruptedException e) {
+			}
+		}
+		
+		// set trump on cards
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			for(Card c : this.getPlayers()[i].getHand().getCards()) {
+				c.setTrump(this.getTrump());
 			}
 		}
 
