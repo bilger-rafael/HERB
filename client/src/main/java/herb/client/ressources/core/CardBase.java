@@ -40,10 +40,9 @@ public abstract class CardBase {
 		}else { return false;}
 	}
 
-	public CardBase(Suit suit, Rank rank, Trump trump) {
+	public CardBase(Suit suit, Rank rank) {
     	this.suit = suit;
     	this.rank = rank;
-    	this.trump = trump;
     }
 	
 	protected  boolean isTopDown() {

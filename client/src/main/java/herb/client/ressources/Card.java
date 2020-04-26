@@ -9,11 +9,11 @@ public class Card extends CardBase {
 
 	// default constructor for json deserialization
 	public Card() {
-		super(Suit.Hearts,Rank.Queen,Trump.Hearts);
+		super(Suit.Hearts,Rank.Queen);
 	}
 	
-	public Card(Suit suit, Rank rank, Trump trump) {
-		super(suit, rank, trump);
+	public Card(Suit suit, Rank rank) {
+		super(suit, rank);
 		// TODO Auto-generated constructor stub
 	}
 

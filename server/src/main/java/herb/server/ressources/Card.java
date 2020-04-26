@@ -8,9 +8,8 @@ import herb.server.ressources.core.Trump;
 //Etter
 public class Card extends CardBase {
 
-	public Card(Suit suit, Rank rank, Trump trump) {
-		super(suit, rank, trump);
-
+	public Card(Suit suit, Rank rank) {
+		super(suit, rank);
 	}
 
 	//gibt den Punktewert der Karte zurück
