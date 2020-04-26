@@ -46,6 +46,9 @@ public class GameController extends Controller<GameModel, GameView> {
 		};
 		
 		model.getTrickCards().addListener(changeListener);
+		
+		
+		view.getTrumpChoice().setOnMouseClicked(e -> forwardTrump());
 
 //		ListChangeListener<Card> changeListenerPlayables = new ListChangeListener<Card>() {
 //			public void onChanged(Change<? extends Card> c) {
@@ -127,5 +130,9 @@ public class GameController extends Controller<GameModel, GameView> {
 		model.playCard(playedCard);
 		}
 		view.updateImagePatterns();	
-	}		
+	}
+	
+	public void forwardTrump() {
+		// analog oben für jeden Trumpf ein Rectangle. 
+	}
 }

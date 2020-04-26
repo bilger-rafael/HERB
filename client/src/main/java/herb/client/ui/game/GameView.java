@@ -49,20 +49,19 @@ import javafx.geometry.Insets;
 
 public class GameView extends View<GameModel> {
 	
-	//private BorderPane root;
 	private AnchorPane root; 
 	private GridPane table, ownCards;
-	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, trumpBox;
-	private HBox oppositeSide, left, right, pointPane;
+	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, lobbyBox;
+	private HBox oppositeSide, left, right, trumpBox;
 	private HBox tMain, tRight, tOppo, tLeft;
-	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
-	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel;
+	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, playerLabelP, lobbyLabel;
+	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
-	private BorderPane upperPart;
+	private BorderPane upperPart, pointPane;
 	private StackPane tablePart;
-	private ArrayList<Rectangle> rects, trickRects;
-	private ArrayList<Card> cardAreas, playables;
-	private ArrayList<Player> plys;
+	private ArrayList<Rectangle> rects, trickRects, trumpRects;
+	private ArrayList<Card> cardAreas;
+	private ArrayList<Player> players;
 	private MenuBar menuBar;
 	private Menu menuLanguage;
 	private ArrayList<Card> cards, trick;
@@ -80,10 +79,14 @@ public class GameView extends View<GameModel> {
 		
 		this.root = new AnchorPane();
 		
-		// create MenuBar - language and cardSet (fr vs. de) TODO
+		// create MenuBar for language and exit
 		menuBar = new MenuBar();
 		menuLanguage = new Menu();	
-		menuBar.getMenus().add(menuLanguage);
+		Menu menuExit = new Menu();
+		MenuItem back = new MenuItem();
+		MenuItem logout = new MenuItem();
+		menuExit.getItems().addAll(back, logout);
+		menuBar.getMenus().addAll(menuLanguage, menuExit);
 				
 		// link to Locale
 		for (Locale locale : sl.getLocales()) {
@@ -96,69 +99,82 @@ public class GameView extends View<GameModel> {
 			});
 		}	
 		
-		// Roesti - create ui-elements
+		// Roesti - create Panes and Controls 
 		upperPart = new BorderPane();
 		tablePart = new StackPane();
-		left = new HBox(); 
-		right = new HBox();
-		opposite = new VBox();
-		bottom = new VBox();
-		leftHandSide = new VBox();
-		rightHandSide = new VBox();
-		oppositeSide = new HBox();
+		trumpBox = new HBox();
+		
+		// trick
 		table = new GridPane();
-		ownCards = new GridPane();
-		ownCards.setMinHeight(300);
-		ownCards.setMinWidth(1300);
-		pointPane = new HBox();
-		names = new VBox();
-		points = new VBox();	
-		trumpBox = new VBox();
-
+		spacerTable = new Region();
+		spacerTable.setMinWidth(200d);
+		spacerTable2 = new Region();
+		spacerTable2.setMinWidth(200d);
 		tMain = new HBox();
 		tRight = new HBox();
 		tOppo = new HBox();
 		tLeft = new HBox();
-				
-		spacer = new Region();
-		spacerTable = new Region();
-		spacerTable2 = new Region();
-//		spacer.setMinWidth(670d);
-		spacer.setMinWidth(200d);
-		spacerTable.setMinWidth(200d);
-		spacerTable2.setMinWidth(200d);
-		spacerRight = new Region();
-		spacerOppo= new Region();
-		spacerOppo.setMinWidth(300d);
-		
-		playerPoints = new Label("77");
-		leftPoints = new Label("88");
-		rightPoints = new Label("99");
-		oppoPoints = new Label("111");
-	
-		// Roesti - get lobby players
-		plys = model.getLobbyPlayers();
-		
-	    rects = new ArrayList();
-	    trickRects = new ArrayList();
-		
-		// Roesti - create labels
-		playerLabel = new Label(plys.get(0).getUsername());
-		playerLabel.setMinHeight(20);
-		leftHandLabel = new Label(plys.get(3).getUsername());
-		rightHandLabel = new Label(plys.get(1).getUsername());
-		oppositeLabel = new Label(plys.get(2).getUsername());
-		oppositeLabel.setMinHeight(60);
-		trickLabel2 = new Label();
 		trickLabel = new Label();
 		trickLabel.setMinHeight(70);
+		trickLabel2 = new Label();
+		
+		// points - winner
+		pointPane = new BorderPane();
+		names = new VBox();
+		points = new VBox();	
+		playerPoints = new Label();
+		leftPoints = new Label();
+		rightPoints = new Label();
+		oppoPoints = new Label();
+		
+		// get lobby players
+		players = model.getLobbyPlayers();
+		
+		// other players
+		left = new HBox(); 
+		leftHandSide = new VBox();
+		leftHandLabel = new Label(players.get(3).getUsername());
+		right = new HBox();
+		rightHandSide = new VBox();
+		rightHandLabel = new Label(players.get(1).getUsername());
+		spacerRight = new Region();
+		opposite = new VBox();
+		oppositeSide = new HBox();
+		spacerOppo= new Region();
+		spacerOppo.setMinWidth(300d);
+		oppositeLabel = new Label(players.get(2).getUsername());
+		oppositeLabel.setMinHeight(60);
+
+		// Cards of MainPlayer
+		bottom = new VBox();
+		ownCards = new GridPane();
+		ownCards.setMinHeight(300);
+		ownCards.setMinWidth(1300);		
+		spacer = new Region();
+//		spacer.setMinWidth(670d);
+		spacer.setMinWidth(200d);
+		playerLabel = new Label(players.get(0).getUsername());
+		playerLabel.setMinHeight(20);
+		
+		// display trump
 		trumpLabel = new Label();
-	    currentPlayerLabel = new Label("next ---");
-	    startingPlayerLabel = new Label("is defined later");
-	    
+		
+		// display lobby and starting player (currentPlayer only temporary) TODO
+		lobbyBox = new VBox();
+		// somehow get LobbyLabel TODO
 	    // need the lobby name: Datastore.getInstance().getMainPlayer().getRound()???
 	    Lobby l = new Lobby();
 		lobbyLabel = new Label(l.getName().toString());
+		currentPlayerLabel = new Label("next ---");
+	    startingPlayerText = new Label();
+	    startingPlayerLabel = new Label("is defined later");
+	   	lobbyBox.getChildren().addAll(lobbyLabel, startingPlayerLabel);
+	   	lobbyBox.getChildren().add(currentPlayerLabel);
+				
+		// Cards and Trump images
+	    rects = new ArrayList();
+	    trickRects = new ArrayList();
+	    trumpRects = new ArrayList();
 		
 		setMyCards();
 		
@@ -175,8 +191,7 @@ public class GameView extends View<GameModel> {
 		upperPart.setTop(opposite);
 		upperPart.setMinWidth(400d);
 		
-		//AnchorPane - pointPane removed
-		root.getChildren().addAll(upperPart, bottom, left, right, menuBar, trumpBox);
+		root.getChildren().addAll(upperPart, bottom, left, right, menuBar, trumpBox, lobbyBox);
 		root.setLeftAnchor(menuBar, 0d);
 		root.setTopAnchor(menuBar, 0d);
 		root.setRightAnchor(menuBar, 0d);
@@ -197,14 +212,14 @@ public class GameView extends View<GameModel> {
 		root.setLeftAnchor(bottom, 10d);
 		root.setRightAnchor(bottom, 10d);
 		
-		root.setTopAnchor(pointPane, 50d);
-		root.setRightAnchor(pointPane, 10d);
-		
 		root.setTopAnchor(trumpBox, 90d);
-		root.setLeftAnchor(trumpBox, 50d);
+		root.setRightAnchor(trumpBox, 50d);
 	
+		root.setTopAnchor(lobbyBox, 90d);
+		root.setLeftAnchor(lobbyBox, 50d);
+		
 		updateLabels();
-		Scene scene = new Scene(root, 1000, 1000);
+		Scene scene = new Scene(root, 1000, 900);
 		return scene;
 	}
 	
@@ -239,6 +254,9 @@ public class GameView extends View<GameModel> {
 		ownCards.add(spacer, 0, 0);
 		ownCards.setMinHeight(250);
 		ownCards.setHgap(-50);
+		
+		//TODO show trickLabel2 "it's your turn" only when true
+		bottom.getChildren().add(trickLabel2);
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
@@ -250,7 +268,7 @@ public class GameView extends View<GameModel> {
 	    for(int j= 0; j<cards.size();j++) {    	
 	   		if (cards.get(j).isPlayable()) {
 	    	rects.get(j).setStroke(Color.GOLD);
-	    	rects.get(j).setStyle("-fx-stroke-width: 10");
+	    	rects.get(j).setStyle("-fx-stroke-width: 5");
 	    	}
 	    }
 	}
@@ -475,14 +493,10 @@ public class GameView extends View<GameModel> {
 		oppositeSide.setMinHeight(100);
 		opposite.getChildren().add(oppositeSide);
 		opposite.getChildren().add(oppositeLabel);	
-		opposite.getChildren().add(startingPlayerLabel);
-		opposite.getChildren().add(currentPlayerLabel);
 		opposite.setAlignment(Pos.CENTER);
 	}
 	
 	private void setTrumpInfo() {
-		trumpLabel.setText(Datastore.getInstance().getMainPlayer().getRound().getTrump().toString());
-		trumpLabel.setStyle("-fx-font-weight: bold");
 		String trumpFilename = Datastore.getInstance().getMainPlayer().getRound().getTrump().toString() + ".png";
 		Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + trumpFilename));
 		ImageView imview = new ImageView(image);
@@ -490,22 +504,32 @@ public class GameView extends View<GameModel> {
         imview.setPreserveRatio(true);
         imview.setSmooth(true);
         imview.setCache(true);
-		trumpBox.getChildren().add(lobbyLabel);
         trumpBox.getChildren().add(trumpLabel);
 		trumpBox.getChildren().add(imview);	
 	}
 	
 	public void updatePointPane() {
-		// Roesti 
-		// realise with Binding TODO
-		//names.getChildren().   addAll(oppositeLabel, leftHandLabel, rightHandLabel, playerLabel);
+		// Roesti - TODO doch separat in PlayerPane, weil ich hier neu sortiere - Gewinner zuoberst?
 		pointsLabel = new Label();
+		
+		for(int i = 0; i<4; i++) {
+			playerLabelP.setText(players.get(i).getUsername().toString());
+			names.getChildren().add(playerLabelP);
+		}
 		names.setMinSize(80, 20);
-		points.getChildren().addAll(oppoPoints, leftPoints, rightPoints, playerPoints);
+		
+		for(int i = 0; i<4; i++) {
+			//aus PunkteArray
+			//oppoPoints.setText(players.get(i).getUsername().toString());
+			//points.getChildren().add(oppoPoints, oppoPoints, leftPoints, rightPoints, playerPoints);
+		}
 		points.setMinSize(40, 20);
 		points.setAlignment(Pos.CENTER_RIGHT);
-		pointPane.getChildren().addAll(pointsLabel, names, points);
-		pointPane.toFront();
+		pointPane.setTop(pointsLabel);
+		pointPane.setLeft(names);
+		pointPane.setCenter(points);
+
+		//pointPane.toFront();
 		pointPane.setPadding(new Insets(20, 20, 20, 20));
 		pointPane.setStyle("-fx-background-color: aliceblue");
 		tablePart.getChildren().add(pointPane);
@@ -521,6 +545,8 @@ public class GameView extends View<GameModel> {
 		trickLabel2.setText(t.getString("program.game.order"));
 	//	pointsLabel.setText(t.getString("program.game.pointsLabel"));
 		stage.setTitle(t.getString("program.name"));
+		trumpLabel.setText(t.getString("program.game.trump"));
+		startingPlayerText.setText(t.getString("program.game.startingPlayer"));
 	}
 	
 	public ArrayList<Card> getCardAreas(){
@@ -535,5 +561,11 @@ public class GameView extends View<GameModel> {
 	// Roesti - chosen card disposable for controller
 	public ArrayList<Rectangle> getRects() {
 		return this.rects;
+	}
+	
+	public Rectangle getTrumpChoice() {
+		// return Trump to Server
+		Rectangle r = new Rectangle();
+	return r;
 	}
 }

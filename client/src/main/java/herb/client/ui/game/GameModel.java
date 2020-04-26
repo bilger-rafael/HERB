@@ -97,6 +97,7 @@ public class GameModel extends Model {
 
 	// Bilger - cards from MainPlayer from server (already sorted)
 	public ArrayList<Card> getMyCards() {
+		currentCards = new ArrayList();
 		return currentCards = Datastore.getInstance().getMainPlayer().getHand().getCards();
 	}
 
@@ -163,10 +164,10 @@ public class GameModel extends Model {
 				trickCards.add(tmp.get(3));
 			}
 			if (startingPlayer.equals(pServerOrder[1])) {
-				trickCards.add(tmp.get(3));
-				trickCards.add(tmp.get(0));
 				trickCards.add(tmp.get(1));
 				trickCards.add(tmp.get(2));
+				trickCards.add(tmp.get(3));
+				trickCards.add(tmp.get(0));
 			}
 			if (startingPlayer.equals(pServerOrder[2])) {
 				trickCards.add(tmp.get(2));
@@ -175,14 +176,13 @@ public class GameModel extends Model {
 				trickCards.add(tmp.get(1));
 			}
 			if (startingPlayer.equals(pServerOrder[3])) {
-				trickCards.add(tmp.get(1));
-				trickCards.add(tmp.get(2));
 				trickCards.add(tmp.get(3));
 				trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(2));
 			}			
 			break;
 		}	
-	//	trickCards.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
 	}
 	
 //	public void refreshPlayables() {
