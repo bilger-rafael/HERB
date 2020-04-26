@@ -6,8 +6,8 @@ public abstract class CardBase {
     protected final Suit suit;
     protected final Rank rank;
     @JsonIgnore
-    protected final Trump trump;
-    protected boolean playable;
+    protected Trump trump;
+	protected boolean playable;
     
 	@Override
 	public boolean equals(Object o) {
@@ -68,5 +68,9 @@ public abstract class CardBase {
 	
 	public Trump getTrump() {
 		return this.trump;
+	}
+	
+    public void setTrump(Trump trump) {
+		this.trump = trump;
 	}
 }
