@@ -109,8 +109,8 @@ public class DataStore_Repository {
 				this.addLoginToDB("Herren", "U0dWeWNtVnU=");
 				this.addLobby("BaseLobby");
 				this.addLobby("LobbySonntag");
-				this.addPlayertoHighScore("Etter", "123");
-				this.addPlayertoHighScore("Herren", "130");
+				this.addPlayertoHighScore("Etter", 123);
+				this.addPlayertoHighScore("Herren", 130);
 
 			}
 		} catch (SQLException e) {
@@ -307,19 +307,52 @@ public class DataStore_Repository {
 		return b;
 	}
 
-	// Fügt einen Player HighScore der DB mit PreparedStatment hinzu, gibt 1 zurück
+	// Fügt einen Player HighScore der DB mit PreparedStatment hinzu, gibt 1 zurück (nur wenn höher überschreiben)
 	// wenn hinzugefügt
-	public int addPlayertoHighScore(String playername, String points) {
+	public int addPlayertoHighScore(String playername, int points) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		int answer = 0;
+		int oldScore = 0;
+		if(points>showHighScoreOfPlayer(playername)) {
+			try {
+				stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.HighScore (PlayerName, Points) VALUES (?,?)");
+				stmt.setString(1, playername);
+				stmt.setInt(2, points);
+				answer = stmt.executeUpdate();
+				System.out.println(answer + " eingefügt");
+			} catch (SQLException e) {
+				System.out.println(e);
+			} finally {
+				if (rs != null)
+					try {
+						if (!rs.isClosed())
+							rs.close();
+					} catch (Exception e) {
+					}
+				if (stmt != null)
+					try {
+						if (!stmt.isClosed())
+							stmt.close();
+					} catch (Exception e) {
+					}
+			}
+		}
+		return answer;
+	}
+	
+	// Gibt den HighScore eines Spielers zurück
+	public int showHighScoreOfPlayer(String playername) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int i = 0;
 
 		try {
-			stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.HighScore (PlayerName, Points) VALUES (?,?)");
+			stmt = this.cn.prepareStatement("SELECT Points FROM JASSHERB.HighScore WHERE PlayerName=?");
 			stmt.setString(1, playername);
-			stmt.setString(2, points);
-			answer = stmt.executeUpdate();
-			System.out.println(answer + " eingefügt");
+			rs = stmt.executeQuery();
+			rs.next();
+			i = rs.getInt(1);
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
@@ -336,7 +369,7 @@ public class DataStore_Repository {
 				} catch (Exception e) {
 				}
 		}
-		return answer;
+		return i;
 	}
 
 	// Löscht einen Player HighScore der DB mit PreparedStatment, gibt 1 zurück wenn
@@ -368,6 +401,39 @@ public class DataStore_Repository {
 				}
 		}
 		return answer;
+	}
+	
+	// Gibt die Player und HighScores der DB mit PreparedStatment zurück
+	public ArrayList<String> showHighScores() {
+		ArrayList<String> tempList = new ArrayList<>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String tempHS = null;
+		try {
+			stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.HighScore");
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				tempHS = rs.getString(1)+" "+rs.getInt(2);
+				tempList.add(tempHS);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (rs != null)
+				try {
+					if (!rs.isClosed())
+						rs.close();
+				} catch (Exception e) {
+				}
+			if (stmt != null)
+				try {
+					if (!stmt.isClosed())
+						stmt.close();
+				} catch (Exception e) {
+				}
+		}
+		return tempList;
+
 	}
 
 	// Fügt eine Lobby der DB mit PreparedStatment hinzu, gibt 1 zurück wenn
