@@ -113,8 +113,19 @@ public class Player extends PlayerBase<Hand, Round> {
 			}
 			break;
 		}
+		// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
+		if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+			.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
+			this.getHand().getCards().forEach(x -> x.setPlayable(true));
+		}
+		
+		// Falls nur noch Buur auf den Hand, alle spielbar setzen
+		if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+			.allMatch(x-> x.getPoints()==20)) {
+			this.getHand().getCards().forEach(x -> x.setPlayable(true));
+		}
 
-		// if no card is playable, set all cards playable
+		// Falls keien Karte Spielbar ist, alle spielbar setzen
 		if (this.getHand().getCards().stream().allMatch(x -> !x.isPlayable())) {
 			this.getHand().getCards().forEach(x -> x.setPlayable(true));
 		}
