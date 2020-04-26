@@ -1,6 +1,11 @@
 package herb.server.ressources;
 
 import java.util.Random;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import herb.server.DataStore_Repository;
+import herb.server.ressources.Trick.PlayerNode;
 import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
@@ -83,6 +88,7 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		// }
 
 		this.setScores(determinScores());
+		determinRoundWinner();
 
 		// TODO kill thread
 	}
@@ -92,7 +98,30 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		int i = rand.nextInt((6));
 		return Trump.values()[i];
 	}
-
+	
+	public void determinRoundWinner() {
+		int playerposition = 0;
+		int score = 0;
+		// meiste Punkte ermitteln
+		for (int i = 0; i < this.getScores().length; i++) {
+			if(this.getScores()[i]>score) {
+				score = this.getScores()[i];
+				playerposition = i;
+			}
+		}
+		// Auf DB schreiben
+		DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[playerposition].toString(), score);
+		
+		//Falls Gleichstand besteht
+		for (int i = 0; i < this.getScores().length; i++) {
+			if(this.getScores()[i]==score) {
+				DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[i].toString(), score);
+			}
+		}
+		
+	}
+	
+	//Bilger
 	private Integer[] determinScores() {
 		Integer[] scores = new Integer[4];
 		for (int i = 0; i < this.getPlayers().length; i++) {
