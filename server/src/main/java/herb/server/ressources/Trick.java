@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import herb.server.ressources.core.TrickBase;
 
-//Etter
+//Bilger
 public class Trick extends TrickBase<Player, Card> {
 
 	public class PlayerNode {
@@ -51,7 +51,7 @@ public class Trick extends TrickBase<Player, Card> {
 		return pnStarting;
 	}
 
-	// Bilger
+	
 	public Player playTrick() {
 		Player winner = null;
 
@@ -78,7 +78,7 @@ public class Trick extends TrickBase<Player, Card> {
 		return winner;
 	}
 
-	@JsonIgnore
+	@JsonIgnore 
 	public Player getWinner() {
 		PlayerNode pnStarting = buildCircularLinkedList();
 		

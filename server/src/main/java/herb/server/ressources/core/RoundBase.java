@@ -15,6 +15,7 @@ public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickB
 	private Player[] players;
 	private Integer[] scores;
 	
+
 	public RoundBase (Player[] players) {
 		this.players=players;
 	}
@@ -56,5 +57,7 @@ public abstract class RoundBase <Player extends PlayerBase, Trick extends TrickB
 	public void setScores(Integer[] scores) {
 		this.scores = scores;
 	}
+	
+
 	
 }
