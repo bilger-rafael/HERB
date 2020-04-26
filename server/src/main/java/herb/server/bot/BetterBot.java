@@ -65,16 +65,6 @@ public class BetterBot extends BotBase {
 
 		}
 
-		if (this.equals(this.getRound().getCurrentStartingPlayer())) {
-
-			// TODO or dont do ifelse
-
-		} else {
-
-			returnLowLoserPlayableCard();
-			bestCard = returnLowCostPlayableCard();
-
-		}
 		return bestCard;
 	}
 
