@@ -5,12 +5,10 @@ import java.util.Collections;
 
 import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
-import javafx.beans.property.SimpleIntegerProperty;
 
 //Etter (Idee vom Pokergame, SE HS19)
 public class DeckOfCards {
 	private final ArrayList<Card> cardSet = new ArrayList<>();
-	private final SimpleIntegerProperty cardsRemaining = new SimpleIntegerProperty();
 
 	// Erstellen und mischen
 	public DeckOfCards() {
@@ -18,13 +16,8 @@ public class DeckOfCards {
 		shuffle();
 	}
 
-	// Hilfe für die verbleibenden Karten (nur für andere Spielvarianten)
-	public SimpleIntegerProperty getCardsRemainingProperty() {
-		return cardsRemaining;
-	}
-
 	public int getCardsRemaining() {
-		return cardsRemaining.get();
+		return cardSet.size();
 	}
 
 	// Ein Set der 36 Karten erstellen
@@ -41,12 +34,10 @@ public class DeckOfCards {
 	// Mischen
 	public void shuffle() {
 		Collections.shuffle(cardSet);
-		cardsRemaining.setValue(cardSet.size());
 	}
 
 	public Card dealCard() {
 		Card card = (cardSet.size() > 0) ? cardSet.remove(cardSet.size() - 1) : null;
-		cardsRemaining.setValue(cardSet.size());
 		return card;
 	}
 

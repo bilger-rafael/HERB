@@ -54,7 +54,9 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 
 		// Hände sortieren
 		for (int i = 0; i < this.getPlayers().length; i++) {
-			this.getPlayers()[i].sortHand();
+			// TODO temporarly disabled because HandSortet uses trump, which is not set
+			// (because player can select trump not until he has the cards)
+			//this.getPlayers()[i].sortHand();
 		}
 
 		// wait for startingPlayer to choose trump
