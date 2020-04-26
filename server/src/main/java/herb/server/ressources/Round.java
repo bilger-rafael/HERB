@@ -15,7 +15,7 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 
 	public Round(Player[] players) {
 		super(players);
-		this.setTrump(randomTrump());
+		//this.setTrump(randomTrump());
 		this.deck = new DeckOfCards();
 
 		this.setCurrentStartingPlayer(this.getPlayers()[new Random().nextInt(4)]);
