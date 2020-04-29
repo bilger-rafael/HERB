@@ -59,7 +59,7 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 			//this.getPlayers()[i].sortHand();
 		}
 
-		// wait for startingPlayer to choose trump
+		// Bilger wait for startingPlayer to choose trump
 		while (this.getTrump() == null) {
 			try {
 				Thread.sleep(1000);
@@ -67,7 +67,7 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 			}
 		}
 		
-		// set trump on cards
+		// Trumpf setzen bei den Karten
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			for(Card c : this.getPlayers()[i].getHand().getCards()) {
 				c.setTrump(this.getTrump());
@@ -84,16 +84,12 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 			this.getTricks().add(trick);
 			// Spielen
 			Player winner = trick.playTrick();
-			// set winner as starting player
+			// Winner als StartingPlayer setzen
 			this.setCurrentStartingPlayer(winner);
 		}
 	}
 
 	private void endRound() {
-		// Aktuelle Runde für Spieler entfernen
-		// for (int i = 0; i < this.getPlayers().length; i++) {
-		// this.getPlayers()[i].setRound(null);
-		// }
 
 		this.setScores(determinScores());
 		determinRoundWinner();
@@ -101,12 +97,14 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		// TODO kill thread
 	}
 
+	// Random Trump wählen
 	private Trump randomTrump() {
 		Random rand = new Random();
 		int i = rand.nextInt((6));
 		return Trump.values()[i];
 	}
 	
+	// Resultate ermitteln
 	public void determinRoundWinner() {
 		int playerposition = 0;
 		int score = 0;

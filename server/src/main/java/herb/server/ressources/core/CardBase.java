@@ -35,9 +35,13 @@ public abstract class CardBase {
 	}
 	
 	public boolean isTrump() {
-		if(this.suit.ordinal() == this.trump.ordinal()) {
-			return true;
-		}else { return false;}
+		if(this.trump== null) {
+			return false;
+		}else {
+			if(this.suit.ordinal() == this.trump.ordinal()) {
+				return true;
+			}else { return false;}
+		}
 	}
 
 	public CardBase(Suit suit, Rank rank) {
