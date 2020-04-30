@@ -10,6 +10,7 @@ import herb.server.ressources.core.Suit;
 public class DeckOfCards {
 	private final ArrayList<Card> cardSet = new ArrayList<>();
 
+
 	// Erstellen und mischen
 	public DeckOfCards() {
 		initializeCards();
@@ -39,6 +40,11 @@ public class DeckOfCards {
 	public Card dealCard() {
 		Card card = (cardSet.size() > 0) ? cardSet.remove(cardSet.size() - 1) : null;
 		return card;
+	}
+	
+	//Getter für Bot
+	public ArrayList<Card> getCardSet() {
+		return cardSet;
 	}
 
 }
