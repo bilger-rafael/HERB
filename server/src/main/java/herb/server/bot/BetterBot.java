@@ -12,86 +12,109 @@ import herb.server.ressources.core.Trump;
 public class BetterBot extends BotBase {
 
 	private ArrayList<Card> remainingCards = new ArrayList<>();
+	private Card bestCard = null;
+	private int randInt;
+	private Random rand = new Random();
 	
 	// Sucht die Karte aus die gespielt werden soll
 	@Override
 	public Card determinBestCard() {
-		Card bestCard = null;
-		Random rand = new Random();
-		int randInt;
+		bestCard = null;
 		this.updatePlayableHand(super.getRound().getTricks().getLast());
 		updateRemainingCards();
 		
 
 		// Logik des Bots
 		switch (this.getNumberPlayedCards()) {
+		
+		
 		// Startspieler Random ausspielen,
 		// ausser er hat die höchste verbleibende Karte mit Wert <10 oder es is TopDown/BottomUp
 		case (0):
-			
-			// Wenn Bot die höchste Karte hat und diese nicht viel Wert hat=> ausspielen
-		if (BotHasHighstCard(Suit.Clubs)){
-				
-				if(BotHighstCardSuit(Suit.Clubs).getGameValue()<10) {
-					bestCard = BotHighstCardSuit(Suit.Clubs);
-					break;
-				}
-				
+			// Wenn Bot die höchste Karte hat und diese nicht viel Wert hat oder keine Trümpfe mehr=> ausspielen
+			if (BotHasHighstCard(Suit.Clubs)){
+					if(BotHighstCardSuit(Suit.Clubs).getGameValue()<10 || !isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Clubs);
+						break;}
 				//TopDown/BottomsUp
-				if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
-					bestCard = BotHighstCardSuit(Suit.Clubs);
-					break;
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Clubs);
+						break;}
 				}
-			}
-		
-		if (BotHasHighstCard(Suit.Diamonds)){
-
-			if(BotHighstCardSuit(Suit.Diamonds).getGameValue()<10) {
-				bestCard = BotHighstCardSuit(Suit.Diamonds);
-				break;
-			}
+			if (BotHasHighstCard(Suit.Diamonds)){
+					if(BotHighstCardSuit(Suit.Diamonds).getGameValue()<10 || !isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Diamonds);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Diamonds);
+						break;}
+				}
+			if (BotHasHighstCard(Suit.Hearts)){
+					if(BotHighstCardSuit(Suit.Hearts).getGameValue()<10 || !isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Hearts);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Hearts);
+						break;}
+				}
+			if (BotHasHighstCard(Suit.Spades)){
+					if(BotHighstCardSuit(Suit.Spades).getGameValue()<10 || !isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Spades);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Spades);
+						break;}
+				}
+			randInt = rand.nextInt(this.getHand().getCards().size());
+			bestCard = this.getHand().getCards().get(randInt);
+			break;
 			
-			//TopDown/BottomsUp
-			if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
-				bestCard = BotHighstCardSuit(Suit.Diamonds);
-				break;
-			}
-		}
-		
-		if (BotHasHighstCard(Suit.Hearts)){
-
-			if(BotHighstCardSuit(Suit.Hearts).getGameValue()<10) {
-				bestCard = BotHighstCardSuit(Suit.Hearts);
-				break;
-			}
 			
-			//TopDown/BottomsUp
-			if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
-				bestCard = BotHighstCardSuit(Suit.Hearts);
-				break;
-			}
-		}
-		
-		if (BotHasHighstCard(Suit.Spades)){
-
-			if(BotHighstCardSuit(Suit.Spades).getGameValue()<10) {
-				bestCard = BotHighstCardSuit(Suit.Spades);
-				break;
-			}
-			
-			//TopDown/BottomsUp
-			if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
-				bestCard = BotHighstCardSuit(Suit.Spades);
-				break;
-			}
-		}
-		
-		randInt = rand.nextInt(this.getHand().getCards().size());
-		bestCard = this.getHand().getCards().get(randInt);
-		break;
-		// 2.Spieler, 30% versuch zu stechen und 70% verwerfen oder Stich mehr als 10
+		// 2.Spieler, 30% versuch zu stechen und 70% verwerfen oder Stich mehr als 10 oder er hat die höchste Karte
 		// Punkte
 		case (1):
+			// Wenn Bot die höchste Karte hat und diese nicht viel Wert hat oder keine Trümpfe mehr=> ausspielen
+			if (BotHasHighstCard(Suit.Clubs)){
+					if(BotHighstCardSuit(Suit.Clubs).getGameValue()<10 || !isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Clubs);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Clubs);
+						break;}
+				}
+			if (BotHasHighstCard(Suit.Diamonds)){
+					if(BotHighstCardSuit(Suit.Diamonds).getGameValue()<10 || !isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Diamonds);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Diamonds);
+						break;}
+				}
+			if (BotHasHighstCard(Suit.Hearts)){
+					if(BotHighstCardSuit(Suit.Hearts).getGameValue()<10 || !isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Hearts);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Hearts);
+						break;}
+				}
+			if (BotHasHighstCard(Suit.Spades)){
+					if(BotHighstCardSuit(Suit.Spades).getGameValue()<10 || !isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Spades);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Spades);
+						break;}
+				}
+			
+			//Falls nicht höchste Karte, dann mit Wahrscheinlichkeit
 			randInt = rand.nextInt(1);
 			if (randInt >= 0.3 || this.getRound().getTricks().getLast().getTrickPoints() > 10) {
 				if (returnLowCostPlayableCard() != null) {
@@ -104,12 +127,48 @@ public class BetterBot extends BotBase {
 			}
 			break;
 
+			
 		// 3. Spieler, 50% versuch zu stechen und 50% verwerfen oder Stich mehr als 10
-		// Punkte
+		// Punkte oder er hat die höchste Karte
 		case (2):
+			// Wenn Bot die höchste Karte hat oder keine Trümpfe mehr=> ausspielen
+			if (BotHasHighstCard(Suit.Clubs)){
+					if(!isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Clubs);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Clubs);
+						break;}
+				}
+			if (BotHasHighstCard(Suit.Diamonds)){
+					if(!isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Diamonds);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Diamonds);
+						break;}
+				}
+			if (BotHasHighstCard(Suit.Hearts)){
+					if(!isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Hearts);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Hearts);
+						break;}
+				}
+			if (BotHasHighstCard(Suit.Spades)){
+					if(!isTrumpsLeft()) {
+						bestCard = BotHighstCardSuit(Suit.Spades);
+						break;}
+				//TopDown/BottomsUp
+					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
+						bestCard = BotHighstCardSuit(Suit.Spades);
+						break;}
+				}
 			randInt = rand.nextInt(1);
-		
-		
 			if (randInt >= 0.5 || this.getRound().getTricks().getLast().getTrickPoints() > 10 ) {
 				if (returnLowCostPlayableCard() != null) {
 					bestCard = returnLowCostPlayableCard();
@@ -121,6 +180,7 @@ public class BetterBot extends BotBase {
 			}
 			break;
 
+			
 		// Versuch zu stechen, falls Stich mehr als 10 Punkte
 		case (3):
 			if (this.getRound().getTricks().getLast().getTrickPoints() > 10) {
@@ -136,7 +196,7 @@ public class BetterBot extends BotBase {
 
 		return bestCard;
 	}
-
+		
 	// Gibt die tiefste spielbare Karte zurück, die gewinnt
 	private Card returnLowCostPlayableCard() {
 		ArrayList<Card> winnerCards = returnWinnerHandCards();
@@ -275,7 +335,7 @@ public class BetterBot extends BotBase {
 	}
 	
 	
-	// Is die Input Karte die höchste Karte eines Suits
+	// Ist die Input Karte die höchste Karte eines Suits
 	private boolean isHighstRemainingCard(Card cInput) {
 		boolean b = false;
 		
@@ -290,4 +350,28 @@ public class BetterBot extends BotBase {
 		}
 		return b;
 	}
+	
+	//Hat es noch Trümpfe ausser die vom Bot
+	private boolean isTrumpsLeft() {
+		boolean b = false;
+		for (Card c : this.remainingCards){
+			if (c.getTrump().equals(this.getRound().getTrump())) {
+				//Prüfen, ob nur Trumps von Bot
+				boolean onlyMyTrumps = true;
+				for (Card cH : this.getHand().getCards()) {
+					while(onlyMyTrumps) {
+						if(!c.equals(cH)) {
+							onlyMyTrumps = false;
+						}
+					}
+				}
+				if(!onlyMyTrumps) {
+					b = true;	
+				}
+			}
+		}
+		return b;
+	}
+	
+	
 }
