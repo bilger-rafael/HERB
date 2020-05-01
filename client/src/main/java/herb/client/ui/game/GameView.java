@@ -49,7 +49,7 @@ import javafx.geometry.Insets;
 
 public class GameView extends View<GameModel> {
 	
-	private AnchorPane root; 
+	private AnchorPane root, test; 
 	private GridPane table, ownCards;
 	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, lobbyBox;
 	private HBox oppositeSide, left, right, trumpBox;
