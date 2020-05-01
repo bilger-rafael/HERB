@@ -121,5 +121,13 @@ public class BotView extends View<BotModel>{
 	public Button getOkButton() {
 		return okButton;
 	}
+	
+	public RadioButton getEasyRadioButton() {
+		return easyRadioButton;
+	}
+	
+	public RadioButton getHeavyRadioButton() {
+		return heavyRadioButton;
+	}
 
 }
