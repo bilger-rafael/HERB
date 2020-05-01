@@ -14,6 +14,7 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		super(model, view);
 
 		view.getCancelButton().setOnAction(e -> getBackLauncherView());
+		view.getBotsButton().setOnAction(e -> createViewBot());
 
 		changeListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> c) {
@@ -44,6 +45,11 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		// automatically, when 4 players chose that lobby TODO
 		Main.getMainProgram().getGameView().start();
 		this.view.stop();
+	}
+	
+	private void createViewBot() {
+		Main.getMainProgram().getBotView().start();
+		
 	}
 
 }

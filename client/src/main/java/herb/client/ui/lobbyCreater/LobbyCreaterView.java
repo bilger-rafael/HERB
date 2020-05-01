@@ -5,6 +5,7 @@ import java.util.Locale;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
 import herb.client.utils.Translator;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,11 +14,15 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	
-	private BorderPane root, bottomBox; 
+	private BorderPane root; 
+	private HBox bottomBox, topBox;
+	
 	private Button okButton, cancelButton;
 	private TextField text;
 	
@@ -39,6 +44,7 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		menuBar = new MenuBar();
 		menuLanguage = new Menu();
 		menuLanguage.getItems().addAll();
+	    menuBar.getMenus().add(menuLanguage);
 		
 		for (Locale locale : sl.getLocales()) {
 			MenuItem language = new MenuItem(locale.getLanguage());
@@ -51,24 +57,31 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		}
 		
 		//Text field
+		topBox = new HBox();
 		text = new TextField();
+		text.setId("textField");
 		
 		// Buttons - not needed in final version - just to open the GameView
-		bottomBox = new BorderPane();
+		bottomBox = new HBox();
 		okButton = new Button();
 		cancelButton = new Button();
-
-	    bottomBox.setRight(cancelButton);
-	    bottomBox.setLeft(okButton);
+   
+		bottomBox.setSpacing(10);
 	    
 	    cancelButton.setAlignment(Pos.BASELINE_CENTER);
 	    okButton.setAlignment(Pos.BASELINE_CENTER);
 	    
 	    cancelButton.setPrefWidth(100);
 	    okButton.setPrefWidth(100);
+	    
+	    topBox.getChildren().add(text);
+	    topBox.setPadding(new Insets(2));
+	    bottomBox.getChildren().addAll(okButton, cancelButton);
+	    bottomBox.setPadding(new Insets(2));
 		
+		root.setId("background");
 	    root.setTop(menuBar);
-		root.setCenter(text);
+		root.setCenter(topBox);
 		root.setBottom(bottomBox);
 		
 		updateLabels();

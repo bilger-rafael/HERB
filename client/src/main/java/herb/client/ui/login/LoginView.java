@@ -24,18 +24,21 @@ import javafx.stage.Stage;
 public class LoginView extends View<LoginModel> {
 	
 	private LoginModel model;
-	private BorderPane root;
+	private BorderPane root, bottomBox;
+	private VBox centerBox;
+	private HBox topBox;
+	private HBox messageBox;
+	private Region zero, one, two;	
+	
 	private TextField nameField;
 	private PasswordField pwField;
+	
 	private Button loginButton, createUserButton;
-	private Region zero, one, two;	
-	private VBox centerBox;
-	private BorderPane bottomBox;
-	private HBox topBox;	
+
 	private Label nameLabel, pwLabel, connectedLabel;
 	private Label message;
 //	private FadeTransition transition;
-	private HBox messageBox;
+
 	private MenuBar headMenu;
 	private Menu menuLanguage;
 	
@@ -49,13 +52,13 @@ public class LoginView extends View<LoginModel> {
 	protected Scene create_GUI() {
 		ServiceLocator sl = ServiceLocator.getInstance();
 		Logger logger = sl.getLogger();		
-		
 		this.root = new BorderPane();
 
-		// Top menu for language, TODO for passwordChange
 		headMenu = new MenuBar();
 		menuLanguage = new Menu();
 		menuLanguage.getItems().addAll();
+		headMenu.getMenus().addAll(menuLanguage);
+		// Top menu for language, TODO for passwordChange
 		
 		// link to Locale
 		for (Locale locale : sl.getLocales()) {
@@ -67,15 +70,14 @@ public class LoginView extends View<LoginModel> {
 				updateLabels();
 			});
 		}
-		
-		headMenu.getMenus().addAll(menuLanguage);
-
 		// Roesti > VBox login data
 		centerBox = new VBox();
 		nameLabel = new Label();
 		nameField = new TextField();
+		nameField.setId("textField");
 		pwLabel = new Label();
 		pwField = new PasswordField();
+		pwField.setId("textField");
 		zero = new Region();
 		one = new Region();
 		two = new Region();
@@ -111,13 +113,13 @@ public class LoginView extends View<LoginModel> {
 		// Roesti - messages
 		messageBox = new HBox();
 		connectedLabel = new Label();
-		connectedLabel.setId("connectedLabel");
+//		connectedLabel.setId("connectedLabel");
 //		connectedLabel.setOpacity(0);
 		messageBox.getChildren().add(connectedLabel);	
 		// message for failed login
 		message = new Label();
 		message.setPrefHeight(40);
-		message.setId("message");
+//		message.setId("message");
 //		message.setOpacity(0);
 		messageBox.getChildren().add(message);
 		
@@ -128,7 +130,7 @@ public class LoginView extends View<LoginModel> {
 
 		updateLabels();
 		Scene scene = new Scene(root);	
-	//	scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
+//		scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
 		return scene;
 	}
 	

@@ -21,6 +21,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class RegistrationView extends View<RegistrationModel> {
@@ -29,19 +31,21 @@ public class RegistrationView extends View<RegistrationModel> {
 	
 	private BorderPane root, bottomBox;
 	private VBox centerBox;
+	private HBox topBox;
+	private HBox messageBox;
+	private Region zero, one, two;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
 	
 	private Button cancelButton, registrationButton;
 
-	private Label nameLabel, passwordLabel, errorLabel;
+	private Label nameLabel, passwordLabel, connectedLabel;
+	private Label message;
 	private TextField nameTextField;
 	private PasswordField passwordField;
 	
-	private FadeTransition transition;
-	
-	
+//	private FadeTransition transition;
 
 	public RegistrationView(Stage stage, RegistrationModel model) {
 		super(stage, model);
@@ -56,8 +60,7 @@ public class RegistrationView extends View<RegistrationModel> {
 		//Herren
 		ServiceLocator sl = ServiceLocator.getInstance();
 	    Logger logger = sl.getLogger();
-	    
-
+	  
 		this.root = new BorderPane();
 	    /**
 	     * Top/menu
@@ -67,7 +70,6 @@ public class RegistrationView extends View<RegistrationModel> {
 	    menuLanguage = new Menu();
 	    menuLanguage.getItems().addAll();
 	    menuBar.getMenus().add(menuLanguage);
-	    
 	    /**
 	     * set local
 	     * Herren
@@ -81,7 +83,6 @@ public class RegistrationView extends View<RegistrationModel> {
 				updateLabels();
 			});
 		}
-	    
 	    /**
 	     * Center with centerBox
 	     * Herren
@@ -91,7 +92,17 @@ public class RegistrationView extends View<RegistrationModel> {
 	    passwordLabel = new Label();
 	    nameTextField = new TextField();
 	    passwordField = new PasswordField();
-
+	    nameTextField.setId("textField");
+	    passwordField.setId("textField");
+	    /**
+	     * spacing
+	     */
+		zero = new Region();
+		one = new Region();
+		two = new Region();
+		zero.setPrefSize(80, 20);
+		one.setPrefSize(80,20);
+		two.setPrefSize(80,5);
 	    /**
 	     * Bottom with bottomBox
 	     * Herren
@@ -99,20 +110,12 @@ public class RegistrationView extends View<RegistrationModel> {
 	    bottomBox = new BorderPane();
 	    cancelButton = new Button();
 	    registrationButton = new Button();
-	    
 	    /**
 	     * add buttons in bottomBox
 	     * Herren
 	     */
 	    bottomBox.setRight(cancelButton);
-	    bottomBox.setLeft(registrationButton);
-	    
-	    /**
-	     * space for each item in the vbox
-	     * Herren
-	     */
-	    centerBox.setSpacing(10);
-	    
+	    bottomBox.setLeft(registrationButton);	
 	    /**
 	     * place buttons in bottomBox
 	     * Herren
@@ -124,29 +127,60 @@ public class RegistrationView extends View<RegistrationModel> {
 	     * set witdh
 	     * Herren
 	     */
-	    nameTextField.setPrefWidth(250);
-	    passwordField.setPrefWidth(250); 
-	    cancelButton.setPrefWidth(100);
-	    registrationButton.setPrefWidth(100);
+		nameLabel.setPrefSize(100, 20);
+		passwordLabel.setPrefSize(100, 20);
+	    nameTextField.setPrefSize(200, 30);
+	    passwordField.setPrefSize(200, 30);
+	    cancelButton.setPrefSize(200, 30);
+	    registrationButton.setPrefSize(200, 30);
+	    
+	    /**
+	     * hbox
+	     */
+		HBox username = new HBox();
+		HBox password = new HBox();	
+		
+		username.getChildren().addAll(one, nameLabel, nameTextField);
+		password.getChildren().addAll(zero, passwordLabel, passwordField);
+		
 	    /**
 	     * add items in centerBox
 	     * Herren
 	     */
-	    centerBox.getChildren().addAll(nameLabel, nameTextField, 
-	    		passwordLabel, passwordField, bottomBox);
+	    centerBox.getChildren().addAll(two, username, password, bottomBox);
+	    /**
+	     * space for each item in the vbox
+	     * Herren
+	     */
+	    centerBox.setSpacing(10);
+		
+	    /**
+	     * messages
+	     */
+		messageBox = new HBox();
+		connectedLabel = new Label();
+//		connectedLabel.setId("connectedLabel");
+//		connectedLabel.setOpacity(0);
+		messageBox.getChildren().add(connectedLabel);	
+		// message for failed login
+		message = new Label();
+		message.setPrefHeight(40);
+//		message.setId("message");
+//		message.setOpacity(0);
+		messageBox.getChildren().add(message);
 	    
 	    /**
 	     * if registration/login fails
 	     * Herren
 	     */
-	    errorLabel = new Label();
-		errorLabel.setId("errorLabel");
-		errorLabel.setOpacity(0);
+//	    errorLabel = new Label();
+//		errorLabel.setId("errorLabel");
+//		errorLabel.setOpacity(0);
 	    
 		root.setId("background");
 		root.setTop(menuBar);
 		root.setCenter(centerBox);
-		root.setBottom(errorLabel);
+		root.setBottom(messageBox);
         
         updateLabels();     
 		Scene scene = new Scene(root);
@@ -166,7 +200,7 @@ public class RegistrationView extends View<RegistrationModel> {
 		
 		nameLabel.setText(t.getString("program.registration.nameLabel"));
 		passwordLabel.setText(t.getString("program.registration.passwordLabel"));
-		errorLabel.setText(t.getString("program.registration.errorLabel"));
+//		errorLabel.setText(t.getString("program.registration.errorLabel"));
 		
 		menuLanguage.setText(t.getString("program.menu.file.language"));
 		
@@ -192,21 +226,21 @@ public class RegistrationView extends View<RegistrationModel> {
 		return passwordField;
 	}
 	
-	public void showError() {
-		Translator t = ServiceLocator.getInstance().getTranslator();
-		errorLabel.setText(t.getString("Programm.newUser.errorLabel"));
-		
-		if( transition == null ) {
-			transition = new FadeTransition(Duration.millis(2000), errorLabel);
-			transition.setFromValue(1.0);
-			transition.setToValue(0);
-			transition.setDelay(Duration.millis(2000));
-		}
-		
-		transition.stop();
-		errorLabel.setOpacity(1);
-		transition.play();
-	}
+//	public void showError() {
+//		Translator t = ServiceLocator.getInstance().getTranslator();
+//		errorLabel.setText(t.getString("Programm.newUser.errorLabel"));
+//		
+//		if( transition == null ) {
+//			transition = new FadeTransition(Duration.millis(2000), errorLabel);
+//			transition.setFromValue(1.0);
+//			transition.setToValue(0);
+//			transition.setDelay(Duration.millis(2000));
+//		}
+//		
+//		transition.stop();
+//		errorLabel.setOpacity(1);
+//		transition.play();
+//	}
 	public void resetPasswordField() {
 		passwordField.setText("");
 	}

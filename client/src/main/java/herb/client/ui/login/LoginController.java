@@ -20,6 +20,10 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 
 		// Event on CreateUserButton
 		view.getCreateUserButton().setOnAction(e -> createUserView());
+		
+		view.getLoginButton().disableProperty().bind(view.getNameField().textProperty().isEmpty());
+		
+		view.getLoginButton().disableProperty().bind(view.getPwField().textProperty().isEmpty());
 
 		serviceLocator = ServiceLocator.getInstance();
 		serviceLocator.getLogger().info("Application controller initialized");

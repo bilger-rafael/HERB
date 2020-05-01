@@ -83,11 +83,7 @@ public class LauncherView extends View<LauncherModel> {
 	    
 	    StackPane stPane = new StackPane();
 	    stPane.getChildren().add(lobbyRoomCenter);
-	    
-	    lobbyRoomCenter.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); 
-
-	    lobbyRoomCenter.getSelectionModel().selectIndices(1, 2);
-	    
+	    	    
 	    lobbyRoomCenter.setPrefWidth(300);
 	    
 	    /**

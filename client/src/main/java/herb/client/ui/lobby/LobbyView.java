@@ -16,14 +16,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 public class LobbyView extends View<LobbyModel> {
 	
 	private BorderPane root, bottomBox; 
-	private Button cancelButton;
+	private Button cancelButton, botsButton;
+	private Label lobbyName;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -31,7 +31,7 @@ public class LobbyView extends View<LobbyModel> {
 	protected ListView <Player> playerOverview;
 	
 	private Player player;
-	
+		
 	public LobbyView(Stage stage, LobbyModel model) {
 		super(stage, model);
 		stage.setTitle("HERB-Jass > Lobby: " + model.getLobby() );
@@ -75,25 +75,29 @@ public class LobbyView extends View<LobbyModel> {
 	    StackPane stPane = new StackPane();
 	    stPane.getChildren().add(playerOverview);
 	    
-	    playerOverview.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); 
-
-	    playerOverview.getSelectionModel().selectIndices(1, 2);
-	    
 	    playerOverview.setPrefWidth(300);
-		
+	    playerOverview.setMaxHeight(125);
+
 		/**
 		 * Buttons with bottomBox
 		 * Herren
 		 */
 		bottomBox = new BorderPane();
 		cancelButton = new Button("cancel");
+		botsButton = new Button("New Bot");
 		
-
+		bottomBox.setRight(botsButton);
 		bottomBox.setLeft(cancelButton);
-
+				
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
+		botsButton.setAlignment(Pos.BASELINE_CENTER);
 		
-		cancelButton.setPrefWidth(100);
+//		cancelButton.setPrefWidth(100);
+		
+		/*
+		 * Label for lobby name
+		 */
+		lobbyName = new Label();
 		
 		root.setTop(menuBar);
 		root.setCenter(playerOverview);
@@ -113,9 +117,11 @@ public class LobbyView extends View<LobbyModel> {
 		
 	}
 
-
-	
 	public Button getCancelButton() {
 		return cancelButton;
+	}
+	
+	public Button getBotsButton() {
+		return botsButton;
 	}
 }

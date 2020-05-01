@@ -1,9 +1,17 @@
+/*
+ * background login view, registration view, game view
+ * Herren
+ */
 #background{
 	-fx-background-image:url("ui/images/background/holz.jpg");
-
 }
 
+/*
+ * all labels
+ * Herren
+ */
 .label{
+	-fx-text-fill:black;
 	-fx-font-family: "Comic Sans MS", cursive, sans-serif;
 	-fx-font-size: 16px;
 	-fx-letter-spacing: 2px;
@@ -12,12 +20,21 @@
 	-fx-text-decoration: none;
 	-fx-font-style: italic;
 	-fx-font-variant: small-caps;
-	-fx-text-transform: none;
+
+	
+	-fx-alignment: center;
+	-fx-padding: 2.0px;
+    -fx-font-weight: bold;
+    -fx-border-width: 2.0px;
+
 }
 
+/*
+ * all buttons
+ */
 .button{
 	-fx-text-fill:white;
-	font-family: "Comic Sans MS", cursive, sans-serif;
+	-fx-font-family: "Comic Sans MS", cursive, sans-serif;
 	-fx-font-size: 16px;
 	-fx-letter-spacing: 2px;
 	-fx-word-spacing: 2px;
@@ -46,6 +63,23 @@
         #3D383D,
         radial-gradient(center 50% 50%, radius 100%, #575757, #636363);
         }
+/*
+ * textfield login view
+ */
+        
+#textField{
+	-fx-text-fill:black;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	-fx-font-size: 16px;
+	-fx-letter-spacing: 2px;
+	-fx-word-spacing: 2px;
+	-fx-font-weight: 700;
+	-fx-text-decoration: none;
+	-fx-font-style: italic;
+	-fx-font-variant: small-caps;
+	-fx-text-transform: none;
+	-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 5, 0.0 , 3, 3 );
+}
 
 #splash {
 	-fx-background-color: transparent;
@@ -75,4 +109,23 @@
 
 #message {
 	-fx-color: white;
+}
+
+.list-cell{
+	-fx-font-size:15.0;
+	-fx-font-family: "Comic Sans MS", cursive, sans-serif;
+	-fx-text-fill:black;
+	-fx-font-size: 16px;
+	-fx-letter-spacing: 2px;
+	-fx-word-spacing: 2px;
+	-fx-font-weight: bold;
+	-fx-text-decoration: none;
+	-fx-font-style: italic;
+	-fx-font-variant: small-caps;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 5, 0.0 , 3, 3 )
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #3D383D;
+    -fx-text-fill: white;
 }

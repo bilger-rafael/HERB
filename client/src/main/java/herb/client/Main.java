@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import herb.client.ressources.Game;
 import herb.client.ressources.Lobby;
 import herb.client.ressources.Round;
+import herb.client.ui.botSelectioner.BotController;
+import herb.client.ui.botSelectioner.BotModel;
+import herb.client.ui.botSelectioner.BotView;
 import herb.client.ui.core.View;
 import herb.client.ui.game.GameController;
 import herb.client.ui.game.GameModel;
@@ -45,6 +48,7 @@ public class Main extends Application {
 	private LobbyView loView;
 	private GameView gameView;
 	private LobbyCreaterView lobbyCreaterView;
+	private BotView botView;
 
 	private ServiceLocator serviceLocator; // resources, after initialization
 
@@ -227,5 +231,16 @@ public class Main extends Application {
 			//loView.stop();
 			
 			return gameView;
+	}
+	
+	public BotView getBotView() {
+		if(botView == null) {
+		Stage stage = new Stage();
+		BotModel botModel = new BotModel();
+		botView = new BotView(stage, botModel);
+		new BotController(botModel, botView);
+		serviceLocator.getLogger().info("BotView started");
+		}
+		return botView;
 	}
 }
