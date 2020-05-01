@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import herb.client.ressources.Card;
 import herb.client.ressources.Hand;
+import herb.client.ressources.Player;
 import herb.client.ressources.Trick;
 import herb.client.ressources.core.CardBase;
 import herb.client.ressources.core.HandBase;
@@ -24,6 +25,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
 import javafx.scene.shape.Rectangle;
+import javafx.beans.property.ObjectProperty; 
+import javafx.beans.property.ObjectPropertyBase;
+import javafx.beans.property.SimpleObjectProperty;
 
 
 public class GameController extends Controller<GameModel, GameView> {
@@ -37,7 +41,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		ListChangeListener<Card> changeListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
 				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
-				view.updatePlayables();
+				//view.updatePlayables();
 				
 				if ((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()) == null) {
 					view.updatePointPane();
@@ -47,15 +51,18 @@ public class GameController extends Controller<GameModel, GameView> {
 		
 		model.getTrickCards().addListener(changeListener);
 		
-		
 		view.getTrumpChoice().setOnMouseClicked(e -> forwardTrump());
 
-//		ListChangeListener<Card> changeListenerPlayables = new ListChangeListener<Card>() {
-//			public void onChanged(Change<? extends Card> c) {
-//				view.updatePlayables();
-//			}
-//		};
-//		model.getPlayables().addListener(changeListenerPlayables);	
+		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
+			public void onChanged(Change<? extends Player> p) {
+				int i = model.getCurrentPlayers().size();
+				Player pl = model.getCurrentPlayers().get(i-1);
+				view.updatePlayables(pl);
+			}
+		};
+		
+		model.getCurrentPlayers().addListener(myTurnListener);
+				
 
 		// Event when card is chosen
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));

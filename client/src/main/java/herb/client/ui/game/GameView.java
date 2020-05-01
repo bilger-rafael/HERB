@@ -178,7 +178,7 @@ public class GameView extends View<GameModel> {
 		
 		setMyCards();
 		
-		setTrumpInfo();
+//		setTrumpInfo();
 		
 		setTrick();
 				
@@ -260,17 +260,21 @@ public class GameView extends View<GameModel> {
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
-	    updatePlayables();
-
 	}
 	
-	public void updatePlayables() {
+	public void updatePlayables(Player curr) {
+		if(curr.equals(model.getPlayers().get(0))) {
+		cards = model.getMyCards();
+		
 	    for(int j= 0; j<cards.size();j++) {    	
 	   		if (cards.get(j).isPlayable()) {
-	    	rects.get(j).setStroke(Color.GOLD);
-	    	rects.get(j).setStyle("-fx-stroke-width: 5");
+	    	this.rects.get(j).setStroke(Color.GOLD);
+	    	this.rects.get(j).setStyle("-fx-stroke-width: 5");
 	    	}
 	    }
+	    updateLabels();
+	    }
+		System.out.println("I tried to update the playables...");
 	}
 	
 	// Roesti - GridPane with trick rectangles
@@ -328,8 +332,8 @@ public class GameView extends View<GameModel> {
 	    String filename = suit + "_" + rank + ".jpg";
 	    Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filename));		
 	    ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
-	    rects.get(j).setFill(pattern);
-	    rects.get(j).setStroke(Color.BLACK);
+	    this.rects.get(j).setFill(pattern);
+	    this.rects.get(j).setStroke(Color.BLACK);
 		}
 	}
 	
@@ -534,6 +538,7 @@ public class GameView extends View<GameModel> {
 		pointPane.setStyle("-fx-background-color: aliceblue");
 		tablePart.getChildren().add(pointPane);
 	}
+	
 	
 	// Roesti 
 	private void updateLabels() {

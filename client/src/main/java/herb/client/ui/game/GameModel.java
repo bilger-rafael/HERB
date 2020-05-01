@@ -1,6 +1,7 @@
 package herb.client.ui.game;
 
 import java.util.ArrayList;
+import javafx.beans.property.SimpleObjectProperty;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -32,7 +33,7 @@ public class GameModel extends Model {
 	private Trick trick;
 	private Player startingPlayer, currentPlayer;
 	private Player[] pServerOrder;
-	private ObservableList<Card> playableCards = FXCollections.observableArrayList();
+	private ObservableList<Player> playableCurrents = FXCollections.observableArrayList();
 
 	public GameModel() {
 		super();
@@ -51,6 +52,7 @@ public class GameModel extends Model {
 		}
 		
 		startTrickUpdater();
+		startPlayablesUpdater();
 	}
 	
 	// Bilger - Input von Server
@@ -185,23 +187,17 @@ public class GameModel extends Model {
 		}	
 	}
 	
-//	public void refreshPlayables() {
-//		ArrayList<Card> tmp = Datastore.getInstance().getMainPlayer().getHand().getCards();
-//		
-//		for (int i = 0; i< tmp.size();i++) {
-//			Card c = new Card();
-//			if (c.isPlayable()) {
-//				playableCards.add(c);
-//			}
-//		}
-//	}
+	public void refreshPlayables() {		
+		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
+		playableCurrents.add(trick.getCurrentPlayer());
+	}
 	
 	public ObservableList<Card> getTrickCards() {
 		return trickCards;
 	}
 	
-	public ObservableList<Card> getPlayables() {
-		return playableCards;
+	public ObservableList<Player> getCurrentPlayers() {
+		return playableCurrents;
 	}
 
 	private void startTrickUpdater() {
@@ -223,23 +219,24 @@ public class GameModel extends Model {
 		t.start();
 	}
 	
-//	private void startPlayablesUpdater() {
-//		Runnable r = new Runnable() {
-//			@Override
-//			public void run() {
-//				while (true) {
-//					Platform.runLater(() -> refreshPlayables());
-//					try {
-//						Thread.sleep(2000);
-//					} catch (InterruptedException e) {
-//					}
-//				}
-//			}
-//		};
-//		Thread t = new Thread(r);
-//		t.setDaemon(true);
-//		t.start();
-//	}
+	private void startPlayablesUpdater() {
+		Runnable ru = new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					Platform.runLater(() -> refreshPlayables());
+					System.out.println("Updater is working");
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		};
+		Thread tu = new Thread(ru);
+		tu.setDaemon(true);
+		tu.start();
+	}
 	
 	public Player getStartingPlayer() {
 		return this.startingPlayer;
@@ -247,6 +244,11 @@ public class GameModel extends Model {
 	
 	public Player getCurrentPlayer() {
 		return this.currentPlayer;
+	}
+	
+	public SimpleObjectProperty<Player> getCurrentPlayerProperty() {
+		SimpleObjectProperty<Player> curr = new SimpleObjectProperty<>(getCurrentPlayer());	
+		return curr;
 	}
 	
 	public ArrayList<Player> getPlayers(){
