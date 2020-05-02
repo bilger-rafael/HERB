@@ -73,7 +73,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		
 		model.getCurrentPlayers().addListener(myTurnListener);
 		
-		if (view.getTrumpChoice().size() == 1) 
+		if (view.getTrumpChoice().size() >0) 
 			view.getTrumpChoice().get(0).setOnMouseClicked(e -> forwardTrump(e));
 		if (view.getTrumpChoice().size()>1) 
         	view.getTrumpChoice().get(1).setOnMouseClicked(e -> forwardTrump(e));
@@ -112,50 +112,7 @@ public class GameController extends Controller<GameModel, GameView> {
 	public void forwardPlayedCard(MouseEvent e){
 		
 		Rectangle recti = (Rectangle) e.getSource();
-		if ((recti).getFill().equals(view.getRects().get(0).getFill())) {
-			playedCard = model.getMyCards().get(0);
-		}
-		
-		if (view.getRects().size()>1) {
-			if ((recti).getFill().equals(view.getRects().get(1).getFill())) {
-				playedCard = model.getMyCards().get(1);
-			}
-		}
-		if (view.getRects().size()>2) {
-			if ((recti).getFill().equals(view.getRects().get(2).getFill())) {
-				playedCard = model.getMyCards().get(2);
-			}
-		}
-		if (view.getRects().size()>3) {
-			if ((recti).getFill().equals(view.getRects().get(3).getFill())) {
-				playedCard = model.getMyCards().get(3);
-			}
-		}
-		if (view.getRects().size()>4) {
-			if ((recti).getFill().equals(view.getRects().get(4).getFill())) {
-				playedCard = model.getMyCards().get(4);
-			}
-		}
-		if (view.getRects().size()>5) {
-			if ((recti).getFill().equals(view.getRects().get(5).getFill())) {
-				playedCard = model.getMyCards().get(5);
-			}
-		}
-		if (view.getRects().size()>6) {
-			if ((recti).getFill().equals(view.getRects().get(6).getFill())) {
-				playedCard = model.getMyCards().get(6);
-			}
-		}
-		if (view.getRects().size()>7) {
-			if ((recti).getFill().equals(view.getRects().get(7).getFill())) {
-				playedCard = model.getMyCards().get(7);
-			}	
-		}
-		if (view.getRects().size()>8) {
-			if ((recti).getFill().equals(view.getRects().get(8).getFill())) {
-				playedCard = model.getMyCards().get(8);
-			}
-		}	
+		playedCard = model.getMyCards().get(view.getRects().indexOf(recti));	
 		
 		if (playedCard.isPlayable()) {
 		model.playCard(playedCard);
@@ -171,31 +128,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		Rectangle recti = (Rectangle) f.getSource();
 
 		chosenTrump = Trump.values()[view.getTrumpChoice().indexOf(recti)];	
-		/*
-		if ((recti).getFill().equals(view.getTrumpChoice().get(0).getFill())) {
-			chosenTrump = Trump.values()[0];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(1).getFill())) {
-			chosenTrump = Trump.values()[1];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(2).getFill())) {
-			chosenTrump = Trump.values()[2];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(3).getFill())) {
-			chosenTrump = Trump.values()[3];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(4).getFill())) {
-			chosenTrump = Trump.values()[4];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(5).getFill())) {
-			chosenTrump = Trump.values()[5];		
-		}
-		*/
+
 		model.setTrump(chosenTrump);
 		view.changeTopOfStackPane();
 	}

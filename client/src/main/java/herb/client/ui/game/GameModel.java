@@ -39,20 +39,6 @@ public class GameModel extends Model {
 	public GameModel() {
 		super();
 
-		// example for choosing trump
-		Player p = Datastore.getInstance().getMainPlayer();
-		// check if this player is the starting player and if trump is not set jet
-		if (p.getRound().getCurrentStartingPlayer().equals(p) && p.getRound().getTrump() == null) {
-			// set trump fix to spades for testing
-//			try {
-//				
-//				p.chooseTrump(Trump.Spades);
-//			} catch (ExceptionBase e) {
-//				// TODO show error message
-//				e.printStackTrace();
-//			}
-		}
-
 		startTrumpUpdater();
 		startTrickUpdater();
 		startPlayablesUpdater();
@@ -91,12 +77,7 @@ public class GameModel extends Model {
 			players.add(plys.get(0));
 			players.add(plys.get(1));
 			players.add(plys.get(2));
-		}
-
-		// Bilger
-//		players = (ArrayList<Player>) Stream.concat( players.stream().filter(p -> p.equals(Datastore.getInstance().getMainPlayer())),
-//				players.stream().filter(p -> !p.equals(Datastore.getInstance().getMainPlayer()))
-//				).collect(Collectors.toList());		
+		}	
 		return players;
 	}
 
