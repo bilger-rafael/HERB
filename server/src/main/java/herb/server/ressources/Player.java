@@ -92,6 +92,11 @@ public class Player extends PlayerBase<Hand, Round> {
 					c.setPlayable(true);
 				}
 			}
+			// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
+			if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+					.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
+				this.getHand().getCards().forEach(x -> x.setPlayable(true));
+			}
 			break;
 		// 3.Spieler
 		// gleiche Farbe wie StartSpieler oder man gewinnt (höchster Trumpf), sonst
@@ -103,6 +108,11 @@ public class Player extends PlayerBase<Hand, Round> {
 								&& c.compareToPlayable(t.getPlayedCard(startingPlayer.next.data)))) {
 					c.setPlayable(true);
 				}
+			}
+		// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
+			if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+					.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
+				this.getHand().getCards().forEach(x -> x.setPlayable(true));
 			}
 			break;
 		// Letzter Spieler
@@ -117,14 +127,14 @@ public class Player extends PlayerBase<Hand, Round> {
 					c.setPlayable(true);
 				}
 			}
+		// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
+			if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+					.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
+				this.getHand().getCards().forEach(x -> x.setPlayable(true));
+			}
 			break;
 		}
-		// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
-		// TODO fix NullPointerException
-		if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
-			.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
-			this.getHand().getCards().forEach(x -> x.setPlayable(true));
-		}
+		
 		
 		// Falls nur noch Buur auf den Hand, alle spielbar setzen
 		if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
