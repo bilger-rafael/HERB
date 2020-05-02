@@ -316,7 +316,7 @@ public class DataStore_Repository {
 		int oldScore = 0;
 		if(points>showHighScoreOfPlayer(playername)) {
 			try {
-				stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.HighScore (PlayerName, Points) VALUES (?,?)");
+				stmt = this.cn.prepareStatement("INSERT INTO JASSHERB.HighScore (PlayerName, Points) VALUES (?,?)");
 				stmt.setString(1, playername);
 				stmt.setInt(2, points);
 				answer = stmt.executeUpdate();
