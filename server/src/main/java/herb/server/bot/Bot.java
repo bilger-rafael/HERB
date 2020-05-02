@@ -47,4 +47,10 @@ public class Bot extends BotBase {
 		return bestCard;
 
 	}
+
+	@Override
+	protected Card determinBestTrump() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
