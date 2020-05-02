@@ -169,29 +169,33 @@ public class GameController extends Controller<GameModel, GameView> {
 		
 		// analog oben für jeden Trumpf ein Rectangle. 
 		Rectangle recti = (Rectangle) f.getSource();
-		if ((recti).getFill().equals(view.getRects().get(0).getFill())) {
+
+		chosenTrump = Trump.values()[view.getTrumpChoice().indexOf(recti)];	
+		/*
+		if ((recti).getFill().equals(view.getTrumpChoice().get(0).getFill())) {
 			chosenTrump = Trump.values()[0];		
 		}
 		
-		if ((recti).getFill().equals(view.getRects().get(1).getFill())) {
+		if ((recti).getFill().equals(view.getTrumpChoice().get(1).getFill())) {
 			chosenTrump = Trump.values()[1];		
 		}
 		
-		if ((recti).getFill().equals(view.getRects().get(2).getFill())) {
+		if ((recti).getFill().equals(view.getTrumpChoice().get(2).getFill())) {
 			chosenTrump = Trump.values()[2];		
 		}
 		
-		if ((recti).getFill().equals(view.getRects().get(3).getFill())) {
+		if ((recti).getFill().equals(view.getTrumpChoice().get(3).getFill())) {
 			chosenTrump = Trump.values()[3];		
 		}
 		
-		if ((recti).getFill().equals(view.getRects().get(4).getFill())) {
+		if ((recti).getFill().equals(view.getTrumpChoice().get(4).getFill())) {
 			chosenTrump = Trump.values()[4];		
 		}
 		
-		if ((recti).getFill().equals(view.getRects().get(5).getFill())) {
+		if ((recti).getFill().equals(view.getTrumpChoice().get(5).getFill())) {
 			chosenTrump = Trump.values()[5];		
 		}
+		*/
 		model.setTrump(chosenTrump);
 		view.changeTopOfStackPane();
 	}
