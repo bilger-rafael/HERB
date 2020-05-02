@@ -120,6 +120,7 @@ public class Player extends PlayerBase<Hand, Round> {
 			break;
 		}
 		// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
+		// TODO fix NullPointerException
 		if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
 			.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
 			this.getHand().getCards().forEach(x -> x.setPlayable(true));
