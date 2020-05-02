@@ -15,7 +15,7 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 
 	public Round(Player[] players) {
 		super(players);
-		//this.setTrump(randomTrump());
+		// this.setTrump(randomTrump());
 		this.deck = new DeckOfCards();
 
 		this.setCurrentStartingPlayer(this.getPlayers()[new Random().nextInt(4)]);
@@ -64,10 +64,10 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 			} catch (InterruptedException e) {
 			}
 		}
-		
+
 		// Trumpf setzen bei den Karten
 		for (int i = 0; i < this.getPlayers().length; i++) {
-			for(Card c : this.getPlayers()[i].getHand().getCards()) {
+			for (Card c : this.getPlayers()[i].getHand().getCards()) {
 				c.setTrump(this.getTrump());
 			}
 		}
@@ -90,7 +90,12 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 	private void endRound() {
 
 		this.setScores(determinScores());
+		
 		determinRoundWinner();
+
+		for (int i = 0; i < this.getScores().length; i++) {
+			DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[i].toString(), this.getScores()[i]);
+		}
 
 		// TODO kill thread
 	}
@@ -101,31 +106,21 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		int i = rand.nextInt((6));
 		return Trump.values()[i];
 	}
-	
+
 	// Resultate ermitteln
 	public void determinRoundWinner() {
 		int playerposition = 0;
 		int score = 0;
 		// meiste Punkte ermitteln
 		for (int i = 0; i < this.getScores().length; i++) {
-			if(this.getScores()[i]>score) {
+			if (this.getScores()[i] > score) {
 				score = this.getScores()[i];
 				playerposition = i;
 			}
 		}
-		// Auf DB schreiben
-		DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[playerposition].toString(), score);
-		
-		//Falls Gleichstand besteht
-		for (int i = 0; i < this.getScores().length; i++) {
-			if(this.getScores()[i]==score) {
-				DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[i].toString(), score);
-			}
-		}
-		
 	}
-	
-	//Bilger
+
+	// Bilger
 	private Integer[] determinScores() {
 		Integer[] scores = new Integer[4];
 		for (int i = 0; i < this.getPlayers().length; i++) {
