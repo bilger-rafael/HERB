@@ -67,7 +67,8 @@ public class Lobby extends LobbyBase<Player> {
 			bot = new BetterBot();
 		else
 			bot = new Bot();
-
+		
+		Datastore.getInstance().players.put(bot.getUsername(), bot);
 		this.addPlayer(bot);
 	}
 
