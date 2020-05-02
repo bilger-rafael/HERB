@@ -75,12 +75,13 @@ public class Lobby extends LobbyBase<Player> {
 	}
 	
 	@Override
-	public void addBot() throws ExceptionBase {
+	public void addBot(boolean advanced) throws ExceptionBase {
 		try {
 			RestClient.getClient()
 					.post()
 					.uri(uriBuilder -> uriBuilder.path("/Lobby({name})/addBot")
 		    	   		  				         .build(this.getName()))
+					.body(BodyInserters.fromValue(advanced))
 					.retrieve()
 					.bodyToMono(String.class)
 					.block();

@@ -40,5 +40,5 @@ public abstract class LobbyBase<Player extends PlayerBase> {
 	// Etter
 	public abstract void removePlayer(Player player) throws ExceptionBase;
 	
-	public abstract void addBot() throws ExceptionBase;
+	public abstract void addBot(boolean advanced) throws ExceptionBase;
 }

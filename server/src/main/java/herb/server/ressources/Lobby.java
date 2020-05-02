@@ -3,7 +3,9 @@ package herb.server.ressources;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import herb.server.Datastore;
+import herb.server.bot.BetterBot;
 import herb.server.bot.Bot;
+import herb.server.bot.BotBase;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.LobbyBase;
 
@@ -58,13 +60,15 @@ public class Lobby extends LobbyBase<Player> {
 		}
 	}
 
-	public void addBot() throws ExceptionBase {
-		Bot b = new Bot();
-		
-		// for test purposes, to allow get player 
-		Datastore.getInstance().players.put(b.getUsername(), b);
-		
-		this.addPlayer(b);
+	public void addBot(boolean advanced) throws ExceptionBase {
+		BotBase bot;
+
+		if (advanced)
+			bot = new BetterBot();
+		else
+			bot = new Bot();
+
+		this.addPlayer(bot);
 	}
 
 	public static Lobby createLobby(String name) throws ExceptionBase {
