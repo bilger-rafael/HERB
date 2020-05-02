@@ -6,6 +6,7 @@ import java.util.Random;
 import herb.server.ressources.Card;
 import herb.server.ressources.DeckOfCards;
 import herb.server.ressources.Trick;
+import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
 import herb.server.ressources.core.Trump;
 
@@ -32,9 +33,11 @@ public class BetterBot extends BotBase {
 		// ausser er hat die höchste verbleibende Karte mit Wert <10 oder es is TopDown/BottomUp
 		case (0):
 			// Wenn Bot die höchste Karte hat und diese nicht viel Wert hat oder keine Trümpfe mehr=> ausspielen
+			// Falls Trumpf nicht ausspielen
 			if (BotHasHighstCard(Suit.Clubs)){
 					if(BotHighstCardSuit(Suit.Clubs).getGameValue()<10 || !isTrumpsLeft()) {
-						bestCard = BotHighstCardSuit(Suit.Clubs);
+						if(!BotHighstCardSuit(Suit.Clubs).isTrump())
+						{bestCard = BotHighstCardSuit(Suit.Clubs);}
 						break;}
 				//TopDown/BottomsUp
 					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
@@ -43,7 +46,8 @@ public class BetterBot extends BotBase {
 				}
 			if (BotHasHighstCard(Suit.Diamonds)){
 					if(BotHighstCardSuit(Suit.Diamonds).getGameValue()<10 || !isTrumpsLeft()) {
-						bestCard = BotHighstCardSuit(Suit.Diamonds);
+						if(!BotHighstCardSuit(Suit.Diamonds).isTrump())
+						{bestCard = BotHighstCardSuit(Suit.Diamonds);}
 						break;}
 				//TopDown/BottomsUp
 					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
@@ -52,7 +56,8 @@ public class BetterBot extends BotBase {
 				}
 			if (BotHasHighstCard(Suit.Hearts)){
 					if(BotHighstCardSuit(Suit.Hearts).getGameValue()<10 || !isTrumpsLeft()) {
-						bestCard = BotHighstCardSuit(Suit.Hearts);
+						if(!BotHighstCardSuit(Suit.Hearts).isTrump())
+						{bestCard = BotHighstCardSuit(Suit.Hearts);}
 						break;}
 				//TopDown/BottomsUp
 					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
@@ -61,15 +66,17 @@ public class BetterBot extends BotBase {
 				}
 			if (BotHasHighstCard(Suit.Spades)){
 					if(BotHighstCardSuit(Suit.Spades).getGameValue()<10 || !isTrumpsLeft()) {
-						bestCard = BotHighstCardSuit(Suit.Spades);
+						if(!BotHighstCardSuit(Suit.Spades).isTrump())
+						{bestCard = BotHighstCardSuit(Suit.Spades);}
 						break;}
 				//TopDown/BottomsUp
 					if(this.getRound().getTrump()==Trump.TopsDown || this.getRound().getTrump()==Trump.BottomsUp) {
 						bestCard = BotHighstCardSuit(Suit.Spades);
 						break;}
 				}
-			randInt = rand.nextInt(this.getHand().getCards().size());
-			bestCard = this.getHand().getCards().get(randInt);
+			
+			// Falls kein sicherer Stich, Verliererkarte ausspielen
+			bestCard = returnLowLoserPlayableCard();
 			break;
 			
 			
@@ -113,6 +120,18 @@ public class BetterBot extends BotBase {
 						bestCard = BotHighstCardSuit(Suit.Spades);
 						break;}
 				}
+			
+			//Falls Bot Buur hat und Nell gespielt ist=> stechen
+			if(botHasBuur()) {
+				for (Card c: this.getRound().getTricks().getLast().getPlayedCards()) {
+					if (c.getPoints()==14) {
+						if(botHandBuur()!=null) {
+							bestCard = botHandBuur();
+							break;
+						}
+					}
+				}
+			}
 			
 			//Falls nicht höchste Karte, dann mit Wahrscheinlichkeit
 			randInt = rand.nextInt(1);
@@ -168,6 +187,19 @@ public class BetterBot extends BotBase {
 						bestCard = BotHighstCardSuit(Suit.Spades);
 						break;}
 				}
+			
+			//Falls Bot Buur hat und Nell gespielt ist=> stechen
+			if(botHasBuur()) {
+				for (Card c: this.getRound().getTricks().getLast().getPlayedCards()) {
+					if (c.getPoints()==14) {
+						if(botHandBuur()!=null) {
+							bestCard = botHandBuur();
+							break;
+						}
+					}
+				}
+			}
+			//Falls nicht höchste Karte, dann mit Wahrscheinlichkeit
 			randInt = rand.nextInt(1);
 			if (randInt >= 0.5 || this.getRound().getTricks().getLast().getTrickPoints() > 10 ) {
 				if (returnLowCostPlayableCard() != null) {
@@ -179,10 +211,21 @@ public class BetterBot extends BotBase {
 				bestCard = returnLowLoserPlayableCard();
 			}
 			break;
-
 			
 		// Versuch zu stechen, falls Stich mehr als 10 Punkte
 		case (3):
+			//Falls Bot Buur hat und Nell gespielt ist=> stechen
+			if(botHasBuur()) {
+				for (Card c: this.getRound().getTricks().getLast().getPlayedCards()) {
+					if (c.getPoints()==14) {
+						if(botHandBuur()!=null) {
+							bestCard = botHandBuur();
+							break;
+						}
+					}
+				}
+			}	
+			// Sonst bei >10 Pointen versuchen zu stechen
 			if (this.getRound().getTricks().getLast().getTrickPoints() > 10) {
 				if (returnLowCostPlayableCard() != null) {
 					bestCard = returnLowCostPlayableCard();
@@ -373,5 +416,24 @@ public class BetterBot extends BotBase {
 		return b;
 	}
 	
+	// Falls nur noch Buur auf den Hand, alle spielbar setzen
+	private boolean botHasBuur() {
+	if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+		.anyMatch(x-> x.getPoints()==20)) {
+		return true;
+	}else {
+		return false;
+		}
+	}
 	
+	//Buur zurückgeben
+	private Card botHandBuur() {
+		for (Card c: this.getHand().getCards()) {
+			if (c.getPoints()==20) {
+				return c;
+			}
+		}
+		return null;
+	}
+
 }
