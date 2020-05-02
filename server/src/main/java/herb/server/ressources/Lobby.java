@@ -2,6 +2,7 @@ package herb.server.ressources;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import herb.server.DataStore_Repository;
 import herb.server.Datastore;
 import herb.server.bot.BetterBot;
 import herb.server.bot.Bot;
@@ -79,7 +80,9 @@ public class Lobby extends LobbyBase<Player> {
 		// TODO check name, if needed
 
 		Lobby lobby = new Lobby(name);
-
+		
+		DataStore_Repository.getDB().addLobby(name);
+		
 		Datastore.getInstance().lobbys.put(name, lobby);
 
 		return lobby;
