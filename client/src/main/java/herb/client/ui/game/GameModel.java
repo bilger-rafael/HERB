@@ -130,6 +130,9 @@ public class GameModel extends Model {
 	// goal: to put the cards in a array, starting with the card of the current
 	// starting player (of this trick)
 	public void refreshTrickCards() {
+		if(Datastore.getInstance().getMainPlayer().getRound().getTricks().isEmpty())
+			return;
+		
 		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
 		this.startingPlayer = trick.getStartingPlayer();
 		this.currentPlayer = trick.getCurrentPlayer();
