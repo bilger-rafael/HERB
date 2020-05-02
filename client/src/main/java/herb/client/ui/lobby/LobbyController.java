@@ -47,16 +47,16 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		Main.getMainProgram().getGameView().start();
 		this.view.stop();
 	}
-	
+
 	private void getNewBot() {
 		try {
-		this.model.getLobby().addBot();
-		}catch(ExceptionBase e) {
+			this.model.getLobby().addBot(false);
+		} catch (ExceptionBase e) {
 			// TODO show error message
 			return;
 		}
 	}
-	
+
 //	private void createViewBot() {
 //		Main.getMainProgram().getBotView().start();
 //		
