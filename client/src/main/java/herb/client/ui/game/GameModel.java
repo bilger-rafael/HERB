@@ -34,6 +34,7 @@ public class GameModel extends Model {
 	private Player startingPlayer, currentPlayer;
 	private Player[] pServerOrder;
 	private ObservableList<Player> playableCurrents = FXCollections.observableArrayList();
+	private ObservableList<Trump> trumps = FXCollections.observableArrayList();
 
 	public GameModel() {
 		super();
@@ -43,16 +44,20 @@ public class GameModel extends Model {
 		//check if this player is the starting player and if trump is not set jet
 		if( p.getRound().getCurrentStartingPlayer().equals(p) && p.getRound().getTrump() == null) {
 			//set trump fix to spades for testing
-			try {
-				p.chooseTrump(Trump.Spades);
-			} catch (ExceptionBase e) {
-				// TODO show error message
-				e.printStackTrace();
-			}
+//			try {
+//				
+//				p.chooseTrump(Trump.Spades);
+//			} catch (ExceptionBase e) {
+//				// TODO show error message
+//				e.printStackTrace();
+//			}
 		}
 		
-		startTrickUpdater();
-		startPlayablesUpdater();
+		if(p.getRound().getTrump() != null) {
+			startTrumpUpdater();	
+			startTrickUpdater();
+			startPlayablesUpdater();
+		}
 	}
 	
 	// Bilger - Input von Server
@@ -111,6 +116,16 @@ public class GameModel extends Model {
 			e.printStackTrace();
 		}
 		return playedCard;
+	}
+	
+	public Trump setTrump(Trump chosenTrump) {
+		try {
+			Datastore.getInstance().getMainPlayer().chooseTrump(chosenTrump);
+		} catch (ExceptionBase e) {
+			// TODO show error message
+			e.printStackTrace();
+		}
+		return chosenTrump;
 	}
 	
 	// Roesti - trick array on server corresponds to the player order
@@ -192,12 +207,21 @@ public class GameModel extends Model {
 		playableCurrents.add(trick.getCurrentPlayer());
 	}
 	
+	public ObservableList<Trump> refreshTrump() {
+		trumps.add(Datastore.getInstance().getMainPlayer().getRound().getTrump());
+		return trumps;
+	}
+	
 	public ObservableList<Card> getTrickCards() {
 		return trickCards;
 	}
 	
 	public ObservableList<Player> getCurrentPlayers() {
 		return playableCurrents;
+	}
+	
+	public ObservableList<Trump> getTrump() {
+		return trumps;
 	}
 
 	private void startTrickUpdater() {
@@ -225,7 +249,6 @@ public class GameModel extends Model {
 			public void run() {
 				while (true) {
 					Platform.runLater(() -> refreshPlayables());
-					System.out.println("Updater is working");
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {
@@ -236,6 +259,25 @@ public class GameModel extends Model {
 		Thread tu = new Thread(ru);
 		tu.setDaemon(true);
 		tu.start();
+	}
+	
+	private void startTrumpUpdater() {
+		Runnable run = new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					Platform.runLater(() -> refreshTrump());
+					System.out.println("Updater is working");
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		};
+		Thread tru = new Thread(run);
+		tru.setDaemon(true);
+		tru.start();
 	}
 	
 	public Player getStartingPlayer() {

@@ -3,9 +3,7 @@ package herb.client.ui.game;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
-
 import herb.client.ressources.Card;
 import herb.client.ressources.Lobby;
 import herb.client.ressources.Player;
@@ -33,6 +31,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -45,17 +44,19 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ListChangeListener.Change;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 
 
 public class GameView extends View<GameModel> {
 	
-	private AnchorPane root, test; 
+	private AnchorPane root; 
 	private GridPane table, ownCards;
-	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, lobbyBox;
-	private HBox oppositeSide, left, right, trumpBox;
+	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, lobbyBox, showTrumpBox;
+	private HBox oppositeSide, left, right;
+	private TilePane trumpBox;
 	private HBox tMain, tRight, tOppo, tLeft;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, playerLabelP, lobbyLabel;
-	private Label playerPoints, leftPoints, rightPoints, oppoPoints, pointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
+	private Label pointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
 	private StackPane tablePart;
@@ -102,7 +103,8 @@ public class GameView extends View<GameModel> {
 		// Roesti - create Panes and Controls 
 		upperPart = new BorderPane();
 		tablePart = new StackPane();
-		trumpBox = new HBox();
+		trumpBox = new TilePane();
+		showTrumpBox = new VBox();
 		
 		// trick
 		table = new GridPane();
@@ -122,10 +124,6 @@ public class GameView extends View<GameModel> {
 		pointPane = new BorderPane();
 		names = new VBox();
 		points = new VBox();	
-		playerPoints = new Label();
-		leftPoints = new Label();
-		rightPoints = new Label();
-		oppoPoints = new Label();
 		
 		// get lobby players
 		players = model.getLobbyPlayers();
@@ -178,10 +176,10 @@ public class GameView extends View<GameModel> {
 		
 		setMyCards();
 		
-//		setTrumpInfo();
-		
 		setTrick();
-				
+
+		setTrumpOptions();
+			
 		updateLeftPlayer();
 		updateRightPlayer();
         updateOppoPlayer();
@@ -191,7 +189,7 @@ public class GameView extends View<GameModel> {
 		upperPart.setTop(opposite);
 		upperPart.setMinWidth(400d);
 		
-		root.getChildren().addAll(upperPart, bottom, left, right, menuBar, trumpBox, lobbyBox);
+		root.getChildren().addAll(upperPart, bottom, left, right, menuBar, lobbyBox, showTrumpBox);
 		root.setLeftAnchor(menuBar, 0d);
 		root.setTopAnchor(menuBar, 0d);
 		root.setRightAnchor(menuBar, 0d);
@@ -212,8 +210,8 @@ public class GameView extends View<GameModel> {
 		root.setLeftAnchor(bottom, 10d);
 		root.setRightAnchor(bottom, 10d);
 		
-		root.setTopAnchor(trumpBox, 90d);
-		root.setRightAnchor(trumpBox, 50d);
+		root.setTopAnchor(showTrumpBox, 90d);
+		root.setRightAnchor(showTrumpBox, 50d);
 	
 		root.setTopAnchor(lobbyBox, 90d);
 		root.setLeftAnchor(lobbyBox, 50d);
@@ -500,16 +498,61 @@ public class GameView extends View<GameModel> {
 		opposite.setAlignment(Pos.CENTER);
 	}
 	
-	private void setTrumpInfo() {
-		String trumpFilename = Datastore.getInstance().getMainPlayer().getRound().getTrump().toString() + ".png";
+	public void setTrumpOptions() {
+		// show all trump options in StackPane window in Front
+		for (int i = 0; i< 6; i++) {
+			Rectangle rectangleTO = new Rectangle();
+			rectangleTO.setHeight(100);
+			rectangleTO.setWidth(100);
+			rectangleTO.setArcHeight(10);
+			rectangleTO.setArcWidth(10);
+	        
+	        Trump trump;
+	        trump = Trump.values()[i];
+	        String t = trump.toString(); 
+			String filenameTrump = t + ".png";
+	        
+			Image images = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filenameTrump));
+	        ImagePattern patterns = new ImagePattern(images, 0, 0, 100, 100, false);
+	        rectangleTO.setFill(patterns);
+	        trumpBox.getChildren().add(rectangleTO);  
+	        trumpRects.add(rectangleTO);
+		}	
+        tablePart.getChildren().add(trumpBox);
+		trumpBox.setVisible(true);
+		
+		//check if this player is the starting player and if trump is not yet set
+		Player x = Datastore.getInstance().getMainPlayer();
+		if (!x.getRound().getCurrentStartingPlayer().equals(x) && x.getRound().getTrump() == null) {
+			changeTopOfStackPane();
+		}
+	}
+	
+	public void changeTopOfStackPane() {
+		
+		ObservableList<Node> tablePanes = this.tablePart.getChildren();
+			if (tablePanes.size() > 1) {
+				Node topNode = tablePanes.get(tablePanes.size()-1);
+		        
+				// This node will be brought to the front
+				Node newTopNode = tablePanes.get(tablePanes.size()-2);
+				
+				topNode.setVisible(false);
+				topNode.toBack();	
+				newTopNode.setVisible(true);
+				}
+			}
+	
+	public void setTrumpInfo(Trump t) {
+		String trumpFilename = t.toString() + ".png";
 		Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + trumpFilename));
 		ImageView imview = new ImageView(image);
 		imview.setFitWidth(90);
         imview.setPreserveRatio(true);
         imview.setSmooth(true);
         imview.setCache(true);
-        trumpBox.getChildren().add(trumpLabel);
-		trumpBox.getChildren().add(imview);	
+        showTrumpBox.getChildren().add(trumpLabel);
+		showTrumpBox.getChildren().add(imview);	
 	}
 	
 	public void updatePointPane() {
@@ -568,9 +611,9 @@ public class GameView extends View<GameModel> {
 		return this.rects;
 	}
 	
-	public Rectangle getTrumpChoice() {
+	public ArrayList<Rectangle> getTrumpChoice() {
 		// return Trump to Server
-		Rectangle r = new Rectangle();
-	return r;
+
+	return this.trumpRects;
 	}
 }

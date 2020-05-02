@@ -33,6 +33,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public class GameController extends Controller<GameModel, GameView> {
 
 	private Card playedCard;
+	private Trump chosenTrump;
 	private int playedCardIndex;
 	
 	public GameController(GameModel model, GameView view) {
@@ -51,8 +52,6 @@ public class GameController extends Controller<GameModel, GameView> {
 		
 		model.getTrickCards().addListener(changeListener);
 		
-		view.getTrumpChoice().setOnMouseClicked(e -> forwardTrump());
-
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> p) {
 				int i = model.getCurrentPlayers().size();
@@ -63,7 +62,32 @@ public class GameController extends Controller<GameModel, GameView> {
 		
 		model.getCurrentPlayers().addListener(myTurnListener);
 				
-
+		ListChangeListener<Trump> trumpListener = new ListChangeListener<Trump>() {
+			public void onChanged(Change<? extends Trump> tr) {
+				
+				int r = model.getTrump().size();
+				Trump t = model.getTrump().get(r);
+				view.setTrumpInfo(t);
+			}
+		};
+		
+		model.getCurrentPlayers().addListener(myTurnListener);
+		
+		if (view.getTrumpChoice().size() == 1) 
+			view.getTrumpChoice().get(0).setOnMouseClicked(e -> forwardTrump(e));
+		if (view.getTrumpChoice().size()>1) 
+        	view.getTrumpChoice().get(1).setOnMouseClicked(e -> forwardTrump(e));
+        if (view.getTrumpChoice().size()>2) 
+        	view.getTrumpChoice().get(2).setOnMouseClicked(e -> forwardTrump(e));
+        if (view.getTrumpChoice().size()>3) 
+        	view.getTrumpChoice().get(3).setOnMouseClicked(e -> forwardTrump(e));
+        if (view.getTrumpChoice().size()>4) 
+        	view.getTrumpChoice().get(4).setOnMouseClicked(e -> forwardTrump(e));
+        if (view.getTrumpChoice().size()>5) 
+        	view.getTrumpChoice().get(5).setOnMouseClicked(e -> forwardTrump(e));
+		
+		
+		
 		// Event when card is chosen
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));
         if (view.getRects().size()>1) 
@@ -139,7 +163,36 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.updateImagePatterns();	
 	}
 	
-	public void forwardTrump() {
+	public void forwardTrump(MouseEvent f) {
+		
+		System.out.println("It happened - Trump");
+		
 		// analog oben für jeden Trumpf ein Rectangle. 
+		Rectangle recti = (Rectangle) f.getSource();
+		if ((recti).getFill().equals(view.getRects().get(0).getFill())) {
+			chosenTrump = Trump.values()[0];		
+		}
+		
+		if ((recti).getFill().equals(view.getRects().get(1).getFill())) {
+			chosenTrump = Trump.values()[1];		
+		}
+		
+		if ((recti).getFill().equals(view.getRects().get(2).getFill())) {
+			chosenTrump = Trump.values()[2];		
+		}
+		
+		if ((recti).getFill().equals(view.getRects().get(3).getFill())) {
+			chosenTrump = Trump.values()[3];		
+		}
+		
+		if ((recti).getFill().equals(view.getRects().get(4).getFill())) {
+			chosenTrump = Trump.values()[4];		
+		}
+		
+		if ((recti).getFill().equals(view.getRects().get(5).getFill())) {
+			chosenTrump = Trump.values()[5];		
+		}
+		model.setTrump(chosenTrump);
+		view.changeTopOfStackPane();
 	}
 }
