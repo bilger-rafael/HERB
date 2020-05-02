@@ -186,7 +186,6 @@ public class DataStore_Repository {
 			stmt.setString(1, playername);
 			stmt.setString(2, password);
 			answer = stmt.executeUpdate();
-			System.out.println(answer + " eingefügt");
 
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -219,7 +218,6 @@ public class DataStore_Repository {
 			stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Login WHERE Name=?");
 			stmt.setString(1, playername);
 			answer = stmt.executeUpdate();
-			System.out.println(answer + " gelöscht");
 		} catch (SQLException e) {
 			System.out.println(e);
 
@@ -320,7 +318,6 @@ public class DataStore_Repository {
 				stmt.setString(1, playername);
 				stmt.setInt(2, points);
 				answer = stmt.executeUpdate();
-				System.out.println(answer + " eingefügt");
 			} catch (SQLException e) {
 				System.out.println(e);
 			} finally {
@@ -354,7 +351,7 @@ public class DataStore_Repository {
 			rs.next();
 			i = rs.getInt(1);
 		} catch (SQLException e) {
-			System.out.println(e);
+			return 0;
 		} finally {
 			if (rs != null)
 				try {
@@ -383,7 +380,6 @@ public class DataStore_Repository {
 			stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.HighScore WHERE PlayerName=?");
 			stmt.setString(1, playername);
 			answer = stmt.executeUpdate();
-			System.out.println(answer + " gelöscht");
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
@@ -447,7 +443,6 @@ public class DataStore_Repository {
 			stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Lobby (LobbyName) VALUES (?)");
 			stmt.setString(1, lobbyName);
 			answer = stmt.executeUpdate();
-			System.out.println(answer + " eingefügt");
 		} catch (SQLException e) {
 			System.out.println(e);
 		} finally {
@@ -477,7 +472,6 @@ public class DataStore_Repository {
 			stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Lobby WHERE LobbyName=?");
 			stmt.setString(1, lobbyName);
 			answer = stmt.executeUpdate();
-			System.out.println(answer + " gelöscht");
 		} catch (SQLException e) {
 
 		} finally {
