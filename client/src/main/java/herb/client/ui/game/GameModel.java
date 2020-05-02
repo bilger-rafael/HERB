@@ -204,6 +204,9 @@ public class GameModel extends Model {
 	}
 
 	public void refreshPlayables() {
+		if(Datastore.getInstance().getMainPlayer().getRound().getTricks().isEmpty())
+			return;
+		
 		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
 		playableCurrents.add(trick.getCurrentPlayer());
 	}
