@@ -10,6 +10,8 @@ import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
 import herb.server.ressources.core.Trump;
 
+
+//Funktioniert nicht mehr, weil Trump nun nicht mehr Trump als Parameter erhält.
 public class CardTest {
 	private static String cardTrump9s = "H9H";
 	private static String card6s = "D6C";
@@ -96,7 +98,7 @@ public class CardTest {
 		if (s2 == 'T') trump = Trump.TopsDown;
 		if (s2 == 'B') trump = Trump.BottomsUp;
 
-	return new Card(suit, rank, trump);
+	return new Card(suit, rank);
 	}
 
 }
