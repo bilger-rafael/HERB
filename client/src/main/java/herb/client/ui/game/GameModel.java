@@ -29,7 +29,7 @@ public class GameModel extends Model {
 	private ArrayList<Player> players;
 	private ArrayList<Card> currentCards;
 	private ObservableList<Card> trickCards = FXCollections.observableArrayList();
-	private int position; 
+	private int position;
 	private Trick trick;
 	private Player startingPlayer, currentPlayer;
 	private Player[] pServerOrder;
@@ -38,12 +38,12 @@ public class GameModel extends Model {
 
 	public GameModel() {
 		super();
-		
-		//example for choosing trump
+
+		// example for choosing trump
 		Player p = Datastore.getInstance().getMainPlayer();
-		//check if this player is the starting player and if trump is not set jet
-		if( p.getRound().getCurrentStartingPlayer().equals(p) && p.getRound().getTrump() == null) {
-			//set trump fix to spades for testing
+		// check if this player is the starting player and if trump is not set jet
+		if (p.getRound().getCurrentStartingPlayer().equals(p) && p.getRound().getTrump() == null) {
+			// set trump fix to spades for testing
 //			try {
 //				
 //				p.chooseTrump(Trump.Spades);
@@ -52,50 +52,48 @@ public class GameModel extends Model {
 //				e.printStackTrace();
 //			}
 		}
-		
-		if(p.getRound().getTrump() != null) {
-			startTrumpUpdater();	
-			startTrickUpdater();
-			startPlayablesUpdater();
-		}
+
+		startTrumpUpdater();
+		startTrickUpdater();
+		startPlayablesUpdater();
 	}
-	
+
 	// Bilger - Input von Server
 	// Roesti - store MainPlayer in Pole-position
 	public ArrayList<Player> getLobbyPlayers() {
 		pServerOrder = Datastore.getInstance().getMainPlayer().getRound().getPlayers();
 		players = new ArrayList<Player>(Arrays.asList(pServerOrder));
-		
+
 		LinkedList<Player> plys = new LinkedList();
-		for(Player p : players)
+		for (Player p : players)
 			plys.add(p);
-		
+
 		players.clear();
 		Player p0 = Datastore.getInstance().getMainPlayer();
 		this.position = plys.indexOf(p0);
-		
+
 		ListIterator<Player> iter = plys.listIterator(position);
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			Player p = iter.next();
 			players.add(p);
 		}
-		switch(position) {
-		case 0: 
-			break;				
-		case 1: 
+		switch (position) {
+		case 0:
+			break;
+		case 1:
 			players.add(plys.get(0));
-			break;			
-		case 2: 
+			break;
+		case 2:
 			players.add(plys.get(0));
 			players.add(plys.get(1));
 			break;
-		case 3: 
+		case 3:
 			players.add(plys.get(0));
 			players.add(plys.get(1));
 			players.add(plys.get(2));
-			}
-				
-		// Bilger					
+		}
+
+		// Bilger
 //		players = (ArrayList<Player>) Stream.concat( players.stream().filter(p -> p.equals(Datastore.getInstance().getMainPlayer())),
 //				players.stream().filter(p -> !p.equals(Datastore.getInstance().getMainPlayer()))
 //				).collect(Collectors.toList());		
@@ -117,7 +115,7 @@ public class GameModel extends Model {
 		}
 		return playedCard;
 	}
-	
+
 	public Trump setTrump(Trump chosenTrump) {
 		try {
 			Datastore.getInstance().getMainPlayer().chooseTrump(chosenTrump);
@@ -127,36 +125,36 @@ public class GameModel extends Model {
 		}
 		return chosenTrump;
 	}
-	
+
 	// Roesti - trick array on server corresponds to the player order
-	// goal: to put the cards in a array, starting with the card of the current starting player (of this trick)
+	// goal: to put the cards in a array, starting with the card of the current
+	// starting player (of this trick)
 	public void refreshTrickCards() {
 		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
 		this.startingPlayer = trick.getStartingPlayer();
 		this.currentPlayer = trick.getCurrentPlayer();
 		Card[] cards = (Card[]) trick.getPlayedCards();
-		
-		
+
 		ArrayList<Card> tmp = new ArrayList();
 		tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
-		
+
 		trickCards.clear();
-		
+
 		int l = tmp.size();
-		switch(l) {
-		case 1: 
+		switch (l) {
+		case 1:
 			trickCards.add(tmp.get(0));
 			break;
-		case 2: 
+		case 2:
 			if (startingPlayer.equals(pServerOrder[3])) {
-			trickCards.add(tmp.get(1));
-			trickCards.add(tmp.get(0));
-			}
-			else {trickCards.add(tmp.get(0));
+				trickCards.add(tmp.get(1));
+				trickCards.add(tmp.get(0));
+			} else {
+				trickCards.add(tmp.get(0));
 				trickCards.add(tmp.get(1));
 			}
 			break;
-		case 3: 
+		case 3:
 			if (startingPlayer.equals(pServerOrder[0]) || startingPlayer.equals(pServerOrder[1])) {
 				trickCards.add(tmp.get(0));
 				trickCards.add(tmp.get(1));
@@ -172,8 +170,8 @@ public class GameModel extends Model {
 				trickCards.add(tmp.get(2));
 				trickCards.add(tmp.get(0));
 			}
-				break;
-		case 4: 
+			break;
+		case 4:
 			if (startingPlayer.equals(pServerOrder[0])) {
 				trickCards.add(tmp.get(0));
 				trickCards.add(tmp.get(1));
@@ -197,29 +195,29 @@ public class GameModel extends Model {
 				trickCards.add(tmp.get(0));
 				trickCards.add(tmp.get(1));
 				trickCards.add(tmp.get(2));
-			}			
+			}
 			break;
-		}	
+		}
 	}
-	
-	public void refreshPlayables() {		
+
+	public void refreshPlayables() {
 		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
 		playableCurrents.add(trick.getCurrentPlayer());
 	}
-	
+
 	public ObservableList<Trump> refreshTrump() {
 		trumps.add(Datastore.getInstance().getMainPlayer().getRound().getTrump());
 		return trumps;
 	}
-	
+
 	public ObservableList<Card> getTrickCards() {
 		return trickCards;
 	}
-	
+
 	public ObservableList<Player> getCurrentPlayers() {
 		return playableCurrents;
 	}
-	
+
 	public ObservableList<Trump> getTrump() {
 		return trumps;
 	}
@@ -242,7 +240,7 @@ public class GameModel extends Model {
 		t.setDaemon(true);
 		t.start();
 	}
-	
+
 	private void startPlayablesUpdater() {
 		Runnable ru = new Runnable() {
 			@Override
@@ -260,7 +258,7 @@ public class GameModel extends Model {
 		tu.setDaemon(true);
 		tu.start();
 	}
-	
+
 	private void startTrumpUpdater() {
 		Runnable run = new Runnable() {
 			@Override
@@ -279,21 +277,21 @@ public class GameModel extends Model {
 		tru.setDaemon(true);
 		tru.start();
 	}
-	
+
 	public Player getStartingPlayer() {
 		return this.startingPlayer;
 	}
-	
+
 	public Player getCurrentPlayer() {
 		return this.currentPlayer;
 	}
-	
+
 	public SimpleObjectProperty<Player> getCurrentPlayerProperty() {
-		SimpleObjectProperty<Player> curr = new SimpleObjectProperty<>(getCurrentPlayer());	
+		SimpleObjectProperty<Player> curr = new SimpleObjectProperty<>(getCurrentPlayer());
 		return curr;
 	}
-	
-	public ArrayList<Player> getPlayers(){
+
+	public ArrayList<Player> getPlayers() {
 		return this.players;
 	}
 }
