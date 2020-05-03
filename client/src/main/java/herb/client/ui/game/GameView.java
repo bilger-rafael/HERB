@@ -55,8 +55,8 @@ public class GameView extends View<GameModel> {
 	private HBox oppositeSide, left, right;
 	private TilePane trumpBox;
 	private HBox tMain, tRight, tOppo, tLeft;
-	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, playerLabelP, lobbyLabel;
-	private Label pointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
+	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, playerLabelPoints, lobbyLabel;
+	private Label pointsLabel, playedPointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
 	private StackPane tablePart;
@@ -66,6 +66,7 @@ public class GameView extends View<GameModel> {
 	private MenuBar menuBar;
 	private Menu menuLanguage;
 	private ArrayList<Card> cards, trick;
+	private ImageView imview;
 
 
 	public GameView(Stage stage, GameModel model) {
@@ -156,6 +157,7 @@ public class GameView extends View<GameModel> {
 		
 		// display trump
 		trumpLabel = new Label();
+		imview = new ImageView();
 		
 		// display lobby and starting player (currentPlayer only temporary) TODO
 		lobbyBox = new VBox();
@@ -166,7 +168,7 @@ public class GameView extends View<GameModel> {
 		currentPlayerLabel = new Label("next ---");
 	    startingPlayerText = new Label();
 	    startingPlayerLabel = new Label("is defined later");
-	   	lobbyBox.getChildren().addAll(lobbyLabel, startingPlayerLabel);
+	   	lobbyBox.getChildren().addAll(lobbyLabel, startingPlayerText, startingPlayerLabel);
 	   	lobbyBox.getChildren().add(currentPlayerLabel);
 				
 		// Cards and Trump images
@@ -176,8 +178,11 @@ public class GameView extends View<GameModel> {
 		
 		setMyCards();
 		
+		setTrumpInfo();
+		
+		// nodes in StackPane - trump=2, table and points 0 or 1 
 		setTrick();
-
+		setPointPane();
 		setTrumpOptions();
 			
 		updateLeftPlayer();
@@ -188,23 +193,28 @@ public class GameView extends View<GameModel> {
 		upperPart.setCenter(tablePart);
 		upperPart.setTop(opposite);
 		upperPart.setMinWidth(400d);
+		upperPart.setLeft(left);
+		upperPart.setRight(right);
 		
-		root.getChildren().addAll(upperPart, bottom, left, right, menuBar, lobbyBox, showTrumpBox);
+		//root.getChildren().addAll(upperPart, bottom, left, right, menuBar, lobbyBox, showTrumpBox);
+		
+		root.getChildren().addAll(upperPart, bottom, menuBar, lobbyBox, showTrumpBox);
+
 		root.setLeftAnchor(menuBar, 0d);
 		root.setTopAnchor(menuBar, 0d);
 		root.setRightAnchor(menuBar, 0d);
 		
-		root.setLeftAnchor(left, -10d);
-		root.setTopAnchor(left, 70d);
-		root.setBottomAnchor(left, 200d);
-		root.setRightAnchor(right, -10d);
-		root.setTopAnchor(right, 70d);
-		root.setBottomAnchor(right, 200d);
+//		root.setLeftAnchor(left, -10d);
+//		root.setTopAnchor(left, 70d);
+//		root.setBottomAnchor(left, 200d);
+//		root.setRightAnchor(right, -10d);
+//		root.setTopAnchor(right, 70d);
+//		root.setBottomAnchor(right, 200d);
 
 		root.setId("background");
 		root.setTopAnchor(upperPart, -40d);
-		root.setLeftAnchor(upperPart, 200d);
-		root.setRightAnchor(upperPart, 200d);
+		root.setLeftAnchor(upperPart, 0d);
+		root.setRightAnchor(upperPart, 0d);
 		
 		root.setBottomAnchor(bottom, 10d);
 		root.setLeftAnchor(bottom, 10d);
@@ -255,6 +265,7 @@ public class GameView extends View<GameModel> {
 		
 		//TODO show trickLabel2 "it's your turn" only when true
 		bottom.getChildren().add(trickLabel2);
+		trickLabel2.setVisible(false);
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
@@ -272,7 +283,6 @@ public class GameView extends View<GameModel> {
 	    }
 	    updateLabels();
 	    }
-		System.out.println("I tried to update the playables...");
 	}
 	
 	// Roesti - GridPane with trick rectangles
@@ -308,7 +318,6 @@ public class GameView extends View<GameModel> {
 		tRight.getChildren().add(trickRects.get(1));
 		tOppo.getChildren().add(trickRects.get(2));
 		tLeft.getChildren().add(trickRects.get(3));
-		System.out.println("Trick-Rectangles erstellt 1x.");
 		table.setHgap(10);
 		table.setVgap(10);
 		table.setStyle("-fx-alignement: center");
@@ -333,6 +342,7 @@ public class GameView extends View<GameModel> {
 	    this.rects.get(j).setFill(pattern);
 	    this.rects.get(j).setStroke(Color.BLACK);
 		}
+		removeTurn();
 	}
 	
 	// Roesti - update trick ImagePatterns
@@ -353,10 +363,13 @@ public class GameView extends View<GameModel> {
 		
 		// goal: put the played card next to its player		
 		Player s = model.getStartingPlayer();
-		startingPlayerLabel.setText("Starting-Player: "+ s.getUsername().toString());
+		startingPlayerLabel.setText(s.getUsername().toString());
 		
 		Player c = model.getCurrentPlayer();
-		currentPlayerLabel.setText("Dran ist: "+ c.getUsername().toString());
+		currentPlayerLabel.setText(c.getUsername().toString());
+		if(c.equals(model.getPlayers().get(0))) {
+			trickLabel2.setVisible(true);
+		}
 		
 		if (s.equals(model.getPlayers().get(0))) {
 			trickRects.get(i).setFill(pattern);
@@ -472,7 +485,7 @@ public class GameView extends View<GameModel> {
 	private void updateOppoPlayer() {
 		// TODO reduce cards
 		// oppositeHandSide - cards in VBox, with name in HBox
-		oppositeSide.getChildren().add(spacerOppo); 
+	//	oppositeSide.getChildren().add(spacerOppo); 
 		for (int i = 0; i<9; i++) {
         Rotate rotateOppo = new Rotate();
         Rectangle rectangleOppo = new Rectangle();
@@ -493,6 +506,7 @@ public class GameView extends View<GameModel> {
 		}
 		oppositeSide.setSpacing(-70.0);
 		oppositeSide.setMinHeight(100);
+		oppositeSide.setAlignment(Pos.CENTER);
 		opposite.getChildren().add(oppositeSide);
 		opposite.getChildren().add(oppositeLabel);	
 		opposite.setAlignment(Pos.CENTER);
@@ -528,8 +542,7 @@ public class GameView extends View<GameModel> {
 		}
 	}
 	
-	public void changeTopOfStackPane() {
-		
+	public void changeTopOfStackPane() {		
 		ObservableList<Node> tablePanes = this.tablePart.getChildren();
 			if (tablePanes.size() > 1) {
 				Node topNode = tablePanes.get(tablePanes.size()-1);
@@ -543,45 +556,75 @@ public class GameView extends View<GameModel> {
 				}
 			}
 	
-	public void setTrumpInfo(Trump t) {
-		String trumpFilename = t.toString() + ".png";
-		Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + trumpFilename));
-		ImageView imview = new ImageView(image);
+	public void setTrumpInfo() {
 		imview.setFitWidth(90);
         imview.setPreserveRatio(true);
         imview.setSmooth(true);
-        imview.setCache(true);
+        imview.setCache(true);        
         showTrumpBox.getChildren().add(trumpLabel);
 		showTrumpBox.getChildren().add(imview);	
+		showTrumpBox.setAlignment(Pos.CENTER);
 	}
 	
-	public void updatePointPane() {
-		// Roesti - TODO doch separat in PlayerPane, weil ich hier neu sortiere - Gewinner zuoberst?
-		pointsLabel = new Label();
-		
-		for(int i = 0; i<4; i++) {
-			playerLabelP.setText(players.get(i).getUsername().toString());
-			names.getChildren().add(playerLabelP);
-		}
+	public void updateTrumpInfo(Trump t) {
+		String trumpFilename = t.toString() + ".png";
+		Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + trumpFilename));
+		imview.setImage(image);	
+	}
+	
+    private void setPointPane() {
+    	pointsLabel = new Label();
+    	playerLabelPoints = new Label();
+    	playedPointsLabel = new Label();
+		String label ="";
+    	
+    	for(int i = 0; i<4; i++) {
+    		label += players.get(i).getUsername().toString();
+    		label += "\n";
+    	}
+		playerLabelPoints.setText(label);
+		names.getChildren().add(playerLabelPoints);
 		names.setMinSize(80, 20);
-		
-		for(int i = 0; i<4; i++) {
-			//aus PunkteArray
-			//oppoPoints.setText(players.get(i).getUsername().toString());
-			//points.getChildren().add(oppoPoints, oppoPoints, leftPoints, rightPoints, playerPoints);
-		}
-		points.setMinSize(40, 20);
 		points.setAlignment(Pos.CENTER_RIGHT);
+    
 		pointPane.setTop(pointsLabel);
 		pointPane.setLeft(names);
+			
+		changeTopOfStackPane();
+		points.getChildren().add(playedPointsLabel);
 		pointPane.setCenter(points);
-
-		//pointPane.toFront();
+			
+		points.setMinSize(40, 20);
+		points.setAlignment(Pos.CENTER_LEFT);
+			
 		pointPane.setPadding(new Insets(20, 20, 20, 20));
 		pointPane.setStyle("-fx-background-color: aliceblue");
 		tablePart.getChildren().add(pointPane);
+			
+		pointPane.setVisible(false);
+		pointPane.toBack();
+    }	
+	
+	public void updatePointPane(ArrayList<Integer> scores) {
+		changeTopOfStackPane();
+		System.out.println("come here");
+		pointPane.setVisible(true);
+		playedPointsLabel.setText("Hier \n kommen \n unsere \n Punkte. :)"+ scores);
+
 	}
 	
+	public void setTurn() {
+		trickLabel2.setVisible(true);
+	}
+	
+	public void removeTurn() {
+		trickLabel2.setVisible(false);
+	}
+	
+	public void setStartingPlayer() {
+		Player s = model.getStartingPlayer();
+		startingPlayerLabel.setText(s.getUsername().toString());
+	}
 	
 	// Roesti 
 	private void updateLabels() {
@@ -591,7 +634,7 @@ public class GameView extends View<GameModel> {
 		menuLanguage.setText(t.getString("program.game.menuLanguage"));
 		// screen labels
 		trickLabel2.setText(t.getString("program.game.order"));
-	//	pointsLabel.setText(t.getString("program.game.pointsLabel"));
+		pointsLabel.setText(t.getString("program.game.pointsLabel"));
 		stage.setTitle(t.getString("program.name"));
 		trumpLabel.setText(t.getString("program.game.trump"));
 		startingPlayerText.setText(t.getString("program.game.startingPlayer"));

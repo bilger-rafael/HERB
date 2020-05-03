@@ -39,39 +39,44 @@ public class GameController extends Controller<GameModel, GameView> {
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
 		
-		ListChangeListener<Card> changeListener = new ListChangeListener<Card>() {
+		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
-				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
-				//view.updatePlayables();
+				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
+			}
+		};
+		
+		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
+			public void onChanged(Change<? extends Player> p) {
 				
-				if ((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()) == null) {
-					view.updatePointPane();
+				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
+					System.out.println("It works - count starting");
+					view.updatePointPane(model.getScoresList());
+					return;
+				}
+				
+				int i = model.getCurrentPlayers().size();
+				Player pl = model.getCurrentPlayers().get(i-1);
+				view.updatePlayables(pl);
+				view.setTurn();
+				view.setStartingPlayer();
+				
+			}
+		};
+				
+		ListChangeListener<Trump> trumpListener = new ListChangeListener<Trump>() {
+			public void onChanged(Change<? extends Trump> tr) {
+				if(model.getTrump().size() > 0) {
+					int round = model.getTrump().size();
+					chosenTrump = model.getTrump().get(round-1);
+					view.updateTrumpInfo(chosenTrump);
 				}
 			}
 		};
 		
-		model.getTrickCards().addListener(changeListener);
-		
-		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
-			public void onChanged(Change<? extends Player> p) {
-				int i = model.getCurrentPlayers().size();
-				Player pl = model.getCurrentPlayers().get(i-1);
-				view.updatePlayables(pl);
-			}
-		};
-		
+		model.getTrickCards().addListener(trickListener);
 		model.getCurrentPlayers().addListener(myTurnListener);
-				
-		ListChangeListener<Trump> trumpListener = new ListChangeListener<Trump>() {
-			public void onChanged(Change<? extends Trump> tr) {
-				
-				int r = model.getTrump().size();
-				Trump t = model.getTrump().get(r);
-				view.setTrumpInfo(t);
-			}
-		};
-		
-		model.getCurrentPlayers().addListener(myTurnListener);
+		model.getStartingPlayers().addListener(myTurnListener);
+		model.getTrump().addListener(trumpListener);
 		
 		if (view.getTrumpChoice().size() >0) 
 			view.getTrumpChoice().get(0).setOnMouseClicked(e -> forwardTrump(e));

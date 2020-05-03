@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
+import herb.client.ressources.Round;
 import herb.client.ressources.Trick;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ressources.core.Rank;
@@ -31,11 +32,15 @@ public class GameModel extends Model {
 	private ObservableList<Card> trickCards = FXCollections.observableArrayList();
 	private int position;
 	private Trick trick;
+	private int trickNumber;
+	private int trickSize;
 	private Player startingPlayer, currentPlayer;
 	private Player[] pServerOrder;
-	private ObservableList<Player> playableCurrents = FXCollections.observableArrayList();
+	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
+	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
 	private ObservableList<Trump> trumps = FXCollections.observableArrayList();
-
+	private ArrayList<Integer> scoresList; 
+	
 	public GameModel() {
 		super();
 
@@ -189,12 +194,20 @@ public class GameModel extends Model {
 			return;
 		
 		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
-		playableCurrents.add(trick.getCurrentPlayer());
+		
+		this.trickNumber = Datastore.getInstance().getMainPlayer().getRound().getTricks().size();
+		currentPlayers.add(trick.getCurrentPlayer());
+		startingPlayers.add(trick.getStartingPlayer());
 	}
 
-	public ObservableList<Trump> refreshTrump() {
+	public void refreshTrump() {
+
+		if(Datastore.getInstance().getMainPlayer().getRound().getTrump() == null)
+			return;
+//		if(Datastore.getInstance().getMainPlayer().getRound().getTrump() == trumps.get(trumps.size()-1))
+//			return;
+		
 		trumps.add(Datastore.getInstance().getMainPlayer().getRound().getTrump());
-		return trumps;
 	}
 
 	public ObservableList<Card> getTrickCards() {
@@ -202,7 +215,11 @@ public class GameModel extends Model {
 	}
 
 	public ObservableList<Player> getCurrentPlayers() {
-		return playableCurrents;
+		return currentPlayers;
+	}
+	
+	public ObservableList<Player> getStartingPlayers() {
+		return startingPlayers;
 	}
 
 	public ObservableList<Trump> getTrump() {
@@ -252,7 +269,6 @@ public class GameModel extends Model {
 			public void run() {
 				while (true) {
 					Platform.runLater(() -> refreshTrump());
-					System.out.println("Updater is working");
 					try {
 						Thread.sleep(2000);
 					} catch (InterruptedException e) {
@@ -265,6 +281,23 @@ public class GameModel extends Model {
 		tru.start();
 	}
 
+	
+	// how do I do?
+	public void getWinner() {
+		
+		Round round = Datastore.getInstance().getMainPlayer().getRound();
+		Integer[] scores = (Integer[]) round.getScores();
+
+		ArrayList<Integer> tmp = new ArrayList();
+		tmp.addAll((Arrays.asList(scores).stream().filter(c -> c != null).collect(Collectors.toList())));
+
+		scoresList.clear();
+		
+		// - sort in the right order TODO
+		scoresList = tmp;
+		
+	}
+	
 	public Player getStartingPlayer() {
 		return this.startingPlayer;
 	}
@@ -280,5 +313,13 @@ public class GameModel extends Model {
 
 	public ArrayList<Player> getPlayers() {
 		return this.players;
+	}
+	
+	public ArrayList<Integer> getScoresList() {
+		return this.scoresList;
+	}
+	
+	public int getTrickNumber() {
+		return this.trickNumber;
 	}
 }
