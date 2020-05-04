@@ -401,8 +401,8 @@ public class DataStore_Repository {
 	}
 
 	// Gibt die Player und HighScores der DB mit PreparedStatment zurück
-	public HashMap<String,String> showHighScores() {
-		HashMap<String,String> tempList = new HashMap<>();
+	public HashMap<String,Integer> showHighScores() {
+		HashMap<String,Integer> tempList = new HashMap<>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String tempHS = null;
@@ -410,7 +410,7 @@ public class DataStore_Repository {
 			stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.HighScore");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				tempList.put(rs.getString(1), rs.getString(2));
+				tempList.put(rs.getString(1), rs.getInt(2));
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
@@ -429,7 +429,6 @@ public class DataStore_Repository {
 				}
 		}
 		return tempList;
-
 	}
 
 	// Fügt eine Lobby der DB mit PreparedStatment hinzu, gibt 1 zurück wenn
