@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import herb.server.ressources.Lobby;
 import herb.server.ressources.core.ExceptionBase;
@@ -400,8 +401,8 @@ public class DataStore_Repository {
 	}
 
 	// Gibt die Player und HighScores der DB mit PreparedStatment zurück
-	public ArrayList<String> showHighScores() {
-		ArrayList<String> tempList = new ArrayList<>();
+	public HashMap<String,String> showHighScores() {
+		HashMap<String,String> tempList = new HashMap<>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String tempHS = null;
@@ -409,8 +410,7 @@ public class DataStore_Repository {
 			stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.HighScore");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				tempHS = rs.getString(1) + " " + rs.getInt(2);
-				tempList.add(tempHS);
+				tempList.put(rs.getString(1), rs.getString(2));
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
