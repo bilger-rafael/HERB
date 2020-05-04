@@ -39,41 +39,46 @@ public class GameController extends Controller<GameModel, GameView> {
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
 		
-		ListChangeListener<Card> changeListener = new ListChangeListener<Card>() {
+		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
-				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
-				//view.updatePlayables();
+				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
+			}
+		};
+		
+		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
+			public void onChanged(Change<? extends Player> p) {
 				
-				if ((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()) == null) {
-					view.updatePointPane();
+				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
+					System.out.println("It works - count starting");
+					view.updatePointPane(model.getScoresList());
+					return;
+				}
+				
+				int i = model.getCurrentPlayers().size();
+				Player pl = model.getCurrentPlayers().get(i-1);
+				view.updatePlayables(pl);
+				view.setTurn();
+				view.setStartingPlayer();
+				
+			}
+		};
+				
+		ListChangeListener<Trump> trumpListener = new ListChangeListener<Trump>() {
+			public void onChanged(Change<? extends Trump> tr) {
+				if(model.getTrump().size() > 0) {
+					int round = model.getTrump().size();
+					chosenTrump = model.getTrump().get(round-1);
+					view.updateTrumpInfo(chosenTrump);
 				}
 			}
 		};
 		
-		model.getTrickCards().addListener(changeListener);
-		
-		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
-			public void onChanged(Change<? extends Player> p) {
-				int i = model.getCurrentPlayers().size();
-				Player pl = model.getCurrentPlayers().get(i-1);
-				view.updatePlayables(pl);
-			}
-		};
-		
+		model.getTrickCards().addListener(trickListener);
 		model.getCurrentPlayers().addListener(myTurnListener);
-				
-		ListChangeListener<Trump> trumpListener = new ListChangeListener<Trump>() {
-			public void onChanged(Change<? extends Trump> tr) {
-				
-				int r = model.getTrump().size();
-				Trump t = model.getTrump().get(r);
-				view.setTrumpInfo(t);
-			}
-		};
+		model.getStartingPlayers().addListener(myTurnListener);
+		model.getTrump().addListener(trumpListener);
 		
-		model.getCurrentPlayers().addListener(myTurnListener);
-		
-		if (view.getTrumpChoice().size() == 1) 
+		if (view.getTrumpChoice().size() >0) 
 			view.getTrumpChoice().get(0).setOnMouseClicked(e -> forwardTrump(e));
 		if (view.getTrumpChoice().size()>1) 
         	view.getTrumpChoice().get(1).setOnMouseClicked(e -> forwardTrump(e));
@@ -112,50 +117,7 @@ public class GameController extends Controller<GameModel, GameView> {
 	public void forwardPlayedCard(MouseEvent e){
 		
 		Rectangle recti = (Rectangle) e.getSource();
-		if ((recti).getFill().equals(view.getRects().get(0).getFill())) {
-			playedCard = model.getMyCards().get(0);
-		}
-		
-		if (view.getRects().size()>1) {
-			if ((recti).getFill().equals(view.getRects().get(1).getFill())) {
-				playedCard = model.getMyCards().get(1);
-			}
-		}
-		if (view.getRects().size()>2) {
-			if ((recti).getFill().equals(view.getRects().get(2).getFill())) {
-				playedCard = model.getMyCards().get(2);
-			}
-		}
-		if (view.getRects().size()>3) {
-			if ((recti).getFill().equals(view.getRects().get(3).getFill())) {
-				playedCard = model.getMyCards().get(3);
-			}
-		}
-		if (view.getRects().size()>4) {
-			if ((recti).getFill().equals(view.getRects().get(4).getFill())) {
-				playedCard = model.getMyCards().get(4);
-			}
-		}
-		if (view.getRects().size()>5) {
-			if ((recti).getFill().equals(view.getRects().get(5).getFill())) {
-				playedCard = model.getMyCards().get(5);
-			}
-		}
-		if (view.getRects().size()>6) {
-			if ((recti).getFill().equals(view.getRects().get(6).getFill())) {
-				playedCard = model.getMyCards().get(6);
-			}
-		}
-		if (view.getRects().size()>7) {
-			if ((recti).getFill().equals(view.getRects().get(7).getFill())) {
-				playedCard = model.getMyCards().get(7);
-			}	
-		}
-		if (view.getRects().size()>8) {
-			if ((recti).getFill().equals(view.getRects().get(8).getFill())) {
-				playedCard = model.getMyCards().get(8);
-			}
-		}	
+		playedCard = model.getMyCards().get(view.getRects().indexOf(recti));	
 		
 		if (playedCard.isPlayable()) {
 		model.playCard(playedCard);
@@ -171,31 +133,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		Rectangle recti = (Rectangle) f.getSource();
 
 		chosenTrump = Trump.values()[view.getTrumpChoice().indexOf(recti)];	
-		/*
-		if ((recti).getFill().equals(view.getTrumpChoice().get(0).getFill())) {
-			chosenTrump = Trump.values()[0];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(1).getFill())) {
-			chosenTrump = Trump.values()[1];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(2).getFill())) {
-			chosenTrump = Trump.values()[2];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(3).getFill())) {
-			chosenTrump = Trump.values()[3];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(4).getFill())) {
-			chosenTrump = Trump.values()[4];		
-		}
-		
-		if ((recti).getFill().equals(view.getTrumpChoice().get(5).getFill())) {
-			chosenTrump = Trump.values()[5];		
-		}
-		*/
+
 		model.setTrump(chosenTrump);
 		view.changeTopOfStackPane();
 	}

@@ -21,6 +21,8 @@ public abstract class BotBase extends Player {
 	}
 
 	protected abstract Card determinBestCard();
+	
+	protected abstract Card determinBestTrump();
 
 	protected List<Card> getPlayableCards() {
 		return this.getHand().getCards().stream().filter(c -> c.isPlayable()).collect(Collectors.toList());
