@@ -10,6 +10,7 @@ import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
 import herb.server.ressources.core.Trump;
 
+//Etter
 public class BetterBot extends BotBase {
 
 	private ArrayList<Card> remainingCards = new ArrayList<>();
@@ -437,9 +438,102 @@ public class BetterBot extends BotBase {
 	}
 
 	@Override
-	protected Card determinBestTrump() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	protected Trump determinBestTrump() {
+		int countClubs = 0;
+		int countDiamonds = 0;
+		int countHearts = 0;
+		int countSpades = 0;
+		int countHighCards = 0;
+		int countLowCards = 0;
+		Trump choosenTrump = null;
+		int mostFromSuit = 0;
+		int mostTopDown = 0;
+		double factorSuitNrValue = 1.5;
+		
 
+		// Analysiert die Karten zum Trump zu machen / Bauer doppelt gewichtet
+		for (Card c : this.getHand().getCards()) {
+			 switch (c.getSuit().ordinal()) {
+			 //Clubs
+			 case (0): countClubs++;
+			 	if(c.getRank().ordinal()==5) {
+			 		countClubs++;	
+			 	}
+				 break;
+			//Diamonds
+			 case (1): countDiamonds++;
+	 			if(c.getRank().ordinal()==5) {
+	 				countDiamonds++;	
+	 			}
+			 	break;
+			 //Hearts
+			 case (2): countHearts++;
+	 			if(c.getRank().ordinal()==5) {
+	 				countHearts++;	
+	 			}
+			 	break;
+			 //Spades
+			 case (3): countSpades++;
+	 			if(c.getRank().ordinal()==5) {
+	 				countSpades++;	
+	 			}
+			 	break;
+			 }
+			 // Falls >= Queen zählen, Aces doppelt
+			 if(c.getRank().ordinal()>=6) {
+				 countHighCards++;
+				 if(c.getRank().ordinal()==8) {
+					 countHighCards++;
+				 }
+			 }
+			 //Falls <= 8 zählen, Aces doppelt
+			 if(c.getRank().ordinal()<=2) {
+				 countLowCards++;
+				 if(c.getRank().ordinal()==0) {
+					 countLowCards++;
+				 }
+			 }
+			 //Die meisten einer Suit/ObeAbe oder Undeufe
+			 mostFromSuit = Math.max(Math.max(countClubs, countDiamonds),Math.max(countSpades, countHearts));
+			 mostTopDown = Math.max(countHighCards, countLowCards);
+			 //Logik, falls 4 Trümpfe oder viele hohe/tiefe Karten Trump setzen, sonst Random
+			 if(mostFromSuit>=4 || countHighCards>=6 || countLowCards>=6 ){
+				//Trump oder Obeabe/Undeufe
+				if( (mostFromSuit*factorSuitNrValue) > mostTopDown) {
+					//Es gibt Trumpf
+					if (countClubs == mostFromSuit) {
+						choosenTrump= Trump.values()[0];
+					}
+					if (countDiamonds == mostFromSuit) {
+						choosenTrump= Trump.values()[1];
+					}
+					if (countHearts == mostFromSuit) {
+						choosenTrump= Trump.values()[2];
+					}
+					if (countSpades == mostFromSuit) {
+						choosenTrump= Trump.values()[3];
+					}
+				}else {
+					//Obeabe/Undeufe
+					if (countSpades == mostTopDown) {
+						choosenTrump= Trump.values()[4];
+					}else {
+						choosenTrump= Trump.values()[5];
+					}
+				}
+			//Falls keine guten Karten => Random
+			 }else {
+				 randInt = rand.nextInt(6);
+				 choosenTrump = Trump.values()[randInt];
+			 }	
+		}
+		
+		//Sicher sein, dass Trump mitgegeben wird, sollte aber nicht passieren
+		if (choosenTrump == null) {
+			 randInt = rand.nextInt(6);
+			 choosenTrump = Trump.values()[randInt];
+		}
+		return choosenTrump;
+	}
+	
 }

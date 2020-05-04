@@ -6,17 +6,17 @@ import java.util.stream.Collectors;
 
 import herb.server.ressources.Card;
 import herb.server.ressources.core.CardBase;
+import herb.server.ressources.core.Trump;
 
 //ETTER Computerspieler, spielt Randomkarte
 //TODO Besserer Bot
 public class Bot extends BotBase {
-
+	private Random rand = new Random();
+	private int randInt;
 	// Sucht die Karte aus die gespielt werden soll
 	@Override
 	public Card determinBestCard() {
 		Card bestCard = null;
-		Random rand = new Random();
-		int randInt;
 		this.updatePlayableHand(this.getRound().getTricks().getLast());
 
 		// Logik
@@ -48,9 +48,10 @@ public class Bot extends BotBase {
 
 	}
 
-	@Override
-	protected Card determinBestTrump() {
-		// TODO Auto-generated method stub
-		return null;
+	@Override // Gibt einen Random Trumpf zurück
+	protected Trump determinBestTrump() {
+		 randInt = rand.nextInt(6);
+		 
+		return Trump.values()[randInt];
 	}
 }

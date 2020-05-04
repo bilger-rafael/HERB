@@ -10,6 +10,7 @@ import herb.server.ressources.PlayListener;
 import herb.server.ressources.Player;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.ExceptionBase;
+import herb.server.ressources.core.Trump;
 
 //Bilger
 public abstract class BotBase extends Player {
@@ -22,7 +23,7 @@ public abstract class BotBase extends Player {
 
 	protected abstract Card determinBestCard();
 	
-	protected abstract Card determinBestTrump();
+	protected abstract Trump determinBestTrump();
 
 	protected List<Card> getPlayableCards() {
 		return this.getHand().getCards().stream().filter(c -> c.isPlayable()).collect(Collectors.toList());
