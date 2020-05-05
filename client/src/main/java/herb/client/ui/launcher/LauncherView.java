@@ -31,7 +31,8 @@ public class LauncherView extends View<LauncherModel> {
 	private Button joinButton,createButton, newLobbyButton, refreshButton;
 	
 	private MenuBar menuBar;
-	private Menu menuLanguage;
+	private Menu menuLanguage, menuFile;
+	private MenuItem logoutMenuItem;
 	
 	protected ListView<Lobby> lobbyRoomCenter;
 	
@@ -58,7 +59,10 @@ public class LauncherView extends View<LauncherModel> {
 		 */
 		menuBar = new MenuBar();
 		menuLanguage = new Menu();
-	    menuBar.getMenus().add(menuLanguage);
+		menuFile = new Menu();
+		logoutMenuItem = new MenuItem();
+		menuFile.getItems().add(logoutMenuItem);
+	    menuBar.getMenus().addAll(menuLanguage, menuFile);
 	    
 	    /**
 	     * set local
@@ -134,6 +138,8 @@ public class LauncherView extends View<LauncherModel> {
 		joinButton.setText(t.getString("program.launcher.joinButton"));
 		createButton.setText(t.getString("program.launcher.createButton"));
 		menuLanguage.setText(t.getString("program.launcher.menuLanguage"));
+		menuFile.setText(t.getString("program.launcher.menuFile"));
+		logoutMenuItem.setText(t.getString("program.launcher.logoutMenuItem"));
 		refreshButton.setText(t.getString("program.launcher.refreshButton"));
 	}
 	
@@ -148,6 +154,10 @@ public class LauncherView extends View<LauncherModel> {
 	
 	public Button getRefreshButton() {
 		return refreshButton;
+	}
+	
+	public MenuItem getLogoutMenuItem() {
+		return logoutMenuItem;
 	}
 
 

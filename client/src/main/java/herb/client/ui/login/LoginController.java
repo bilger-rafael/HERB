@@ -26,7 +26,7 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 		view.getLoginButton().disableProperty().bind(view.getPwField().textProperty().isEmpty());
 
 		serviceLocator = ServiceLocator.getInstance();
-		serviceLocator.getLogger().info("Application controller initialized");
+		serviceLocator.getLogger().info("Login controller initialized");
 	}
 
 	private void login() {

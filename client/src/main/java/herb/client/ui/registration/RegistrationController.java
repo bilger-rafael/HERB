@@ -57,6 +57,9 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 		try {
 			model.register(username, password);
 			this.view.stop();
+			//reset textfield
+			this.view.resetNameField();
+			this.view.resetPasswordField();
 		} catch (ExceptionBase e) {
 			// TODO show error message
 		}

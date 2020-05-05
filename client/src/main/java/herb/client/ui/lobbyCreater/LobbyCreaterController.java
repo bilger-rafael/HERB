@@ -25,6 +25,7 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 		
 		//TODO if created back to Launcher
 		this.view.stop();
+		this.view.resetTextField();
 		Main.getMainProgram().getLauncher().start();
 	}
 	

@@ -5,15 +5,16 @@ import herb.client.ressources.Lobby;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Controller;
 import herb.client.utils.Datastore;
+import herb.client.utils.ServiceLocator;
 
 public class LauncherController extends Controller<LauncherModel, LauncherView> {
+	ServiceLocator serviceLocator;
 
 	public LauncherController(LauncherModel model, LauncherView view) {
 		super(model, view);
 
 		// join a lobby
 		view.getJoinButton().setOnAction(e -> joinLobby());
-
 
 		// got to lobby create view
 		view.getCreateButton().setOnAction(e -> getLobbyCreaterView());
@@ -24,7 +25,18 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 
 		view.getRefreshButton().setOnAction(e -> model.refreshLobbyList());
 		
+		/**
+		 * join a lobby
+		 */		
 		view.getJoinButton().disableProperty().bind(view.lobbyRoomCenter.getSelectionModel().selectedItemProperty().isNull());
+		
+		/**
+		 * logout 
+		 */
+		view.getLogoutMenuItem().setOnAction(e -> getBackLoginView());
+		
+		serviceLocator = ServiceLocator.getInstance();
+		serviceLocator.getLogger().info("Launcher controller initialized");
 
 	}
 
@@ -47,6 +59,12 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 	private void getLobbyCreaterView() {
 		//this.view.stop();
 		Main.getMainProgram().getLobbyCreater().start();
+	}
+	
+	private void getBackLoginView() {
+		view.stop();
+		serviceLocator.getLogger().info("Logout");
+		Main.getMainProgram().getLoginView().start();
 	}
 
 
