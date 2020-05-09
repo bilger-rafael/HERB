@@ -31,7 +31,7 @@ public class BotView extends View<BotModel>{
 	private Label easyLabel, heavyLabel;
 	
 	private ToggleGroup toggleGroup;
-	
+
 	private MenuBar menuBar;
 	private Menu menuLanguage;
 	
@@ -139,5 +139,10 @@ public class BotView extends View<BotModel>{
 	public RadioButton getHeavyRadioButton() {
 		return heavyRadioButton;
 	}
+	
+	public ToggleGroup getToggleGroup() {
+		return toggleGroup;
+	}
+
 
 }

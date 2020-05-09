@@ -60,14 +60,17 @@ public class Lobby extends LobbyBase<Player> {
 			}
 		}
 	}
-
+	
 	public void addBot(boolean advanced) throws ExceptionBase {
 		BotBase bot;
-
-		if (advanced)
-			bot = new BetterBot();
-		else
-			bot = new Bot();
+		String str; 
+		if (advanced) {
+			str = "Advanced Bot";
+			bot = new BetterBot(str);
+		}else {
+			str ="Easy Bot";
+			bot = new Bot(str);
+		}
 		
 		Datastore.getInstance().players.put(bot.getUsername(), bot);
 		this.addPlayer(bot);

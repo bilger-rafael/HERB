@@ -58,7 +58,7 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 //	}
 
 	private void createViewBot() {
-		Main.getMainProgram().getBotView().start();
+		Main.getMainProgram().getBotView(this.model.getLobby()).start();
 		
 	}
 

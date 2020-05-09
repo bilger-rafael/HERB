@@ -233,10 +233,10 @@ public class Main extends Application {
 			return gameView;
 	}
 	
-	public BotView getBotView() {
+	public BotView getBotView(Lobby lobby) {
 		if(botView == null) {
 		Stage stage = new Stage();
-		BotModel botModel = new BotModel();
+		BotModel botModel = new BotModel(lobby);
 		botView = new BotView(stage, botModel);
 		new BotController(botModel, botView);
 		serviceLocator.getLogger().info("BotView started");
