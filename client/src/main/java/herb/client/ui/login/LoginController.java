@@ -46,6 +46,8 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 	}
 
 	private void goToLauncher() {
+		view.getNameField().setText("");
+		view.getPwField().setText("");
 		this.view.stop();
 		Main.getMainProgram().getLauncher().start();
 	}
