@@ -111,6 +111,10 @@
 	-fx-color: white;
 }
 
+list{
+    -fx-spacing: 70.0px;
+}
+
 .list-cell{
 	-fx-font-size:15.0;
 	-fx-font-family: "Comic Sans MS", cursive, sans-serif;

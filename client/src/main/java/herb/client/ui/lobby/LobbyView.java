@@ -8,6 +8,7 @@ import herb.client.ressources.Player;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
 import herb.client.utils.Translator;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,11 +18,13 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 public class LobbyView extends View<LobbyModel> {
 	
 	private BorderPane root, bottomBox; 
+	private HBox centerBox;
 	private Button cancelButton, botsButton;
 	private Label lobbyName;
 	
@@ -78,6 +81,10 @@ public class LobbyView extends View<LobbyModel> {
 	    playerOverview.setPrefWidth(300);
 	    playerOverview.setMaxHeight(125);
 
+	    
+	    centerBox  = new HBox();
+	    centerBox.getChildren().add(playerOverview);
+	    centerBox.setPadding(new Insets(20));
 		/**
 		 * Buttons with bottomBox
 		 * Herren
@@ -88,19 +95,18 @@ public class LobbyView extends View<LobbyModel> {
 		
 		bottomBox.setRight(botsButton);
 		bottomBox.setLeft(cancelButton);
-				
+		bottomBox.setPadding(new Insets(2));
+	    
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
 		botsButton.setAlignment(Pos.BASELINE_CENTER);
 		
+		
 //		cancelButton.setPrefWidth(100);
-		
-		/*
-		 * Label for lobby name
-		 */
-		lobbyName = new Label();
-		
+
+
+		root.setId("background");
 		root.setTop(menuBar);
-		root.setCenter(playerOverview);
+		root.setCenter(centerBox);
 		root.setBottom(bottomBox);
 		
         updateLabels();  

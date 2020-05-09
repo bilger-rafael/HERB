@@ -11,7 +11,8 @@ public class BotController extends Controller<BotModel, BotView> {
 		
 		view.getCancelButton().setOnAction(e -> getBackLobbyView());
 		
-//		view.getOkButton().setOnAction(e -> getNewBot());
+		view.getOkButton().setOnAction(e -> getEasyBot());
+		view.getOkButton().setOnAction(e -> getAdvancedBot());
 		
 	}
 	
@@ -19,8 +20,12 @@ public class BotController extends Controller<BotModel, BotView> {
 		this.view.stop();
 	}
 
-//	private void getNewBot() {
-//		this.view.stop();
-//	}
+	private void getEasyBot() {
+		this.view.stop();
+	}
+	
+	private void getAdvancedBot() {
+		this.view.stop();
+	}
 
 }

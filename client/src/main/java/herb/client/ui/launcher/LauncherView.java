@@ -6,35 +6,42 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 
+
 import java.util.Locale;
 
 import herb.client.utils.Translator;
 import herb.client.ressources.Lobby;
+import herb.client.ressources.Round;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 
 public class LauncherView extends View<LauncherModel> {
 	
 	private BorderPane root, bottomBox;
-	private VBox centerBox;
-	private HBox rightBox;
+	private VBox lobbyListBox, highscoreListBox;
+	private HBox centerBox;
 	private Button joinButton,createButton, newLobbyButton, refreshButton;
+	private Label lobbyLabel, highscoreLabel;
+
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage, menuFile;
 	private MenuItem logoutMenuItem;
 	
 	protected ListView<Lobby> lobbyRoomCenter;
+	protected ListView<Round> highscoreList;
 	
 	private Lobby lobby;
 	
@@ -79,7 +86,7 @@ public class LauncherView extends View<LauncherModel> {
 	    
 	    
 	    /**
-	     * list
+	     * lobby list
 	     * Herren
 	     */
    
@@ -87,8 +94,37 @@ public class LauncherView extends View<LauncherModel> {
 	    
 	    StackPane stPane = new StackPane();
 	    stPane.getChildren().add(lobbyRoomCenter);
-	    	    
-	    lobbyRoomCenter.setPrefWidth(300);
+	    lobbyRoomCenter.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+	    
+	    /**
+	     * highscore list
+	     */
+	    highscoreList = new ListView<>();
+	    StackPane stPane1 = new StackPane();
+	    stPane1.getChildren().add(highscoreList);
+
+	    /**
+	     * Label
+	     * Herren
+	     */
+	    lobbyLabel = new Label();
+	    highscoreLabel = new Label();
+
+	    lobbyLabel.setAlignment(Pos.BASELINE_CENTER);
+	    highscoreLabel.setAlignment(Pos.BASELINE_CENTER);
+	    
+	    lobbyListBox = new VBox();
+	    lobbyListBox.getChildren().addAll(lobbyLabel, lobbyRoomCenter);
+	    
+	    highscoreListBox = new VBox();
+	    highscoreListBox.getChildren().addAll(highscoreLabel,highscoreList );
+	    
+	    centerBox = new HBox();
+	    centerBox.getChildren().addAll(lobbyListBox, highscoreListBox);
+		centerBox.setSpacing(10);
+	    centerBox.setPadding(new Insets(20));
+	    centerBox.setAlignment(Pos.BASELINE_CENTER);
 	    
 	    /**
 	     * Buttons with bottomBox
@@ -103,20 +139,19 @@ public class LauncherView extends View<LauncherModel> {
 		bottomBox.setRight(joinButton);
 		bottomBox.setLeft(createButton);
 		bottomBox.setCenter(refreshButton);
-		bottomBox.setBottom(rightBox);
 		
 		
 		joinButton.setAlignment(Pos.BASELINE_CENTER);
 		createButton.setAlignment(Pos.BASELINE_CENTER);
 		refreshButton.setAlignment(Pos.BASELINE_CENTER);
 		
-		joinButton.setPrefWidth(100);
-		createButton.setPrefWidth(100);
-		refreshButton.setPrefWidth(100);
+		joinButton.setPrefWidth(150);
+		createButton.setPrefWidth(150);
+		refreshButton.setPrefWidth(150);
 
-
+		root.setId("background");
 		root.setTop(menuBar);
-		root.setCenter(lobbyRoomCenter);
+		root.setCenter(centerBox);
 		root.setBottom(bottomBox);
 		
 		
@@ -137,6 +172,8 @@ public class LauncherView extends View<LauncherModel> {
 		
 		joinButton.setText(t.getString("program.launcher.joinButton"));
 		createButton.setText(t.getString("program.launcher.createButton"));
+		lobbyLabel.setText(t.getString("program.launcher.lobbyLabel"));
+		highscoreLabel.setText(t.getString("program.launcher.highscoreLabel"));
 		menuLanguage.setText(t.getString("program.launcher.menuLanguage"));
 		menuFile.setText(t.getString("program.launcher.menuFile"));
 		logoutMenuItem.setText(t.getString("program.launcher.logoutMenuItem"));

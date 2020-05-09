@@ -75,7 +75,7 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	    okButton.setPrefWidth(100);
 	    
 	    topBox.getChildren().add(text);
-	    topBox.setPadding(new Insets(2));
+	    topBox.setPadding(new Insets(20));
 	    bottomBox.getChildren().addAll(okButton, cancelButton);
 	    bottomBox.setPadding(new Insets(2));
 		

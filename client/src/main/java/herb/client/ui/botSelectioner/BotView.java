@@ -5,6 +5,7 @@ import java.util.Locale;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
 import herb.client.utils.Translator;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -74,6 +75,7 @@ public class BotView extends View<BotModel>{
 		
 		bottomBox.setRight(cancelButton);
 		bottomBox.setLeft(okButton);
+		bottomBox.setPadding(new Insets(2));
 		
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
 		okButton.setAlignment(Pos.BASELINE_CENTER);
@@ -92,12 +94,13 @@ public class BotView extends View<BotModel>{
 		easyRadioButton.setAlignment(Pos.CENTER_RIGHT);
 		heavyRadioButton.setAlignment(Pos.CENTER_RIGHT);
 		
-		easyHbox.getChildren().addAll(easyLabel, easyRadioButton);
-		heavyHbox.getChildren().addAll(heavyLabel, heavyRadioButton);
+		easyHbox.getChildren().addAll(easyRadioButton, easyLabel);
+		heavyHbox.getChildren().addAll(heavyRadioButton, heavyLabel);
 		
 		vbox = new VBox();
 
 		vbox.getChildren().addAll(easyHbox, heavyHbox);
+		vbox.setPadding(new Insets(20));
 		
 		root.setId("background");
 		root.setTop(menuBar);
