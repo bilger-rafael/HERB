@@ -54,8 +54,8 @@ public class GameView extends View<GameModel> {
 	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, lobbyBox, showTrumpBox;
 	private HBox oppositeSide, left, right;
 	private TilePane trumpBox;
-	private HBox tMain, tRight, tOppo, tLeft;
-	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, playerLabelPoints, lobbyLabel;
+	private HBox tMain, tRight, tOppo, tLeft, buttons;
+	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, pointsPlayerLabel, lobbyLabel;
 	private Label pointsLabel, playedPointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
@@ -67,6 +67,7 @@ public class GameView extends View<GameModel> {
 	private Menu menuLanguage;
 	private ArrayList<Card> cards, trick;
 	private ImageView imview;
+	private Button revancheButton, quitButton;
 
 
 	public GameView(Stage stage, GameModel model) {
@@ -574,29 +575,34 @@ public class GameView extends View<GameModel> {
 	
     private void setPointPane() {
     	pointsLabel = new Label();
-    	playerLabelPoints = new Label();
+    	pointsPlayerLabel = new Label();
     	playedPointsLabel = new Label();
-		String label ="";
-    	
+    	revancheButton = new Button();
+    	quitButton = new Button();
+    	buttons = new HBox();
+    	//change
+    	buttons.getChildren().addAll(revancheButton, quitButton);
+		
+    	String label ="";
     	for(int i = 0; i<4; i++) {
     		label += players.get(i).getUsername().toString();
     		label += "\n";
     	}
-		playerLabelPoints.setText(label);
-		names.getChildren().add(playerLabelPoints);
-		names.setMinSize(80, 20);
+    	pointsPlayerLabel.setText(label);
+		names.getChildren().add(pointsPlayerLabel);
+		names.setAlignment(Pos.CENTER_LEFT);
+		
+		changeTopOfStackPane();
+		
+		playedPointsLabel.setText("");
+	   
+		points.getChildren().add(playedPointsLabel);
 		points.setAlignment(Pos.CENTER_RIGHT);
-    
+		
 		pointPane.setTop(pointsLabel);
 		pointPane.setLeft(names);
-			
-		changeTopOfStackPane();
-		points.getChildren().add(playedPointsLabel);
 		pointPane.setCenter(points);
-			
-		points.setMinSize(40, 20);
-		points.setAlignment(Pos.CENTER_LEFT);
-			
+		pointPane.setBottom(buttons);	
 		pointPane.setPadding(new Insets(20, 20, 20, 20));
 		pointPane.setStyle("-fx-background-color: aliceblue");
 		tablePart.getChildren().add(pointPane);
@@ -607,10 +613,14 @@ public class GameView extends View<GameModel> {
 	
 	public void updatePointPane(ArrayList<Integer> scores) {
 		changeTopOfStackPane();
-		System.out.println("come here");
 		pointPane.setVisible(true);
-		playedPointsLabel.setText("Hier \n kommen \n unsere \n Punkte. :)"+ scores);
-
+		
+		String labela ="";
+    	for(int i = 0; i<4; i++) {
+    		labela += scores.get(i).toString();
+    		labela += "\n";
+    	}
+		playedPointsLabel.setText(labela);
 	}
 	
 	public void setTurn() {
@@ -638,6 +648,8 @@ public class GameView extends View<GameModel> {
 		stage.setTitle(t.getString("program.name"));
 		trumpLabel.setText(t.getString("program.game.trump"));
 		startingPlayerText.setText(t.getString("program.game.startingPlayer"));
+		revancheButton.setText(t.getString("program.game.revancheButton"));
+		quitButton.setText(t.getString("program.game.quitButton"));
 	}
 	
 	public ArrayList<Card> getCardAreas(){
@@ -655,8 +667,6 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public ArrayList<Rectangle> getTrumpChoice() {
-		// return Trump to Server
-
 	return this.trumpRects;
 	}
 }

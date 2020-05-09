@@ -40,6 +40,7 @@ public class GameModel extends Model {
 	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
 	private ObservableList<Trump> trumps = FXCollections.observableArrayList();
 	private ArrayList<Integer> scoresList; 
+	private Thread t, tu, tru;
 	
 	public GameModel() {
 		super();
@@ -188,16 +189,59 @@ public class GameModel extends Model {
 			break;
 		}
 	}
+	
+	public ArrayList<Integer> getScores() {
+		
+		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getScores();
+		scoresList = new ArrayList(Arrays.asList(serverScores));
+		LinkedList<Integer> scrs = new LinkedList();
+		for (Integer i : scoresList) {
+			scrs.add(i);
+		}
+		scoresList.clear();
+		ListIterator<Integer> itera = scrs.listIterator(position);
+		while (itera.hasNext()) {
+			Integer j = itera.next();
+			scoresList.add(j);
+		}
+		switch (position) {
+		case 0:
+			break;
+		case 1:
+			scoresList.add(scrs.get(0));
+			break;
+		case 2:
+			scoresList.add(scrs.get(0));
+			scoresList.add(scrs.get(1));
+			break;
+		case 3:
+			scoresList.add(scrs.get(0));
+			scoresList.add(scrs.get(1));
+			scoresList.add(scrs.get(2));
+		}	
+		System.out.println("Erhaltene Scores "+scoresList.toString());
+		return scoresList;
+	}
 
 	public void refreshPlayables() {
-		if(Datastore.getInstance().getMainPlayer().getRound().getTricks().isEmpty())
+		
+		try {
+			trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
+			this.trickNumber = Datastore.getInstance().getMainPlayer().getRound().getTricks().size();
+			currentPlayers.add(trick.getCurrentPlayer());
+			startingPlayers.add(trick.getStartingPlayer());
+		}
+		catch(Exception e) {
 			return;
+		}
 		
-		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
-		
-		this.trickNumber = Datastore.getInstance().getMainPlayer().getRound().getTricks().size();
-		currentPlayers.add(trick.getCurrentPlayer());
-		startingPlayers.add(trick.getStartingPlayer());
+//		if(Datastore.getInstance().getMainPlayer().getRound().getTricks().isEmpty())
+//			return;
+//		
+//		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
+//		this.trickNumber = Datastore.getInstance().getMainPlayer().getRound().getTricks().size();
+//		currentPlayers.add(trick.getCurrentPlayer());
+//		startingPlayers.add(trick.getStartingPlayer());
 	}
 
 	public void refreshTrump() {
@@ -240,7 +284,7 @@ public class GameModel extends Model {
 			}
 		};
 
-		Thread t = new Thread(r);
+		t = new Thread(r);
 		t.setDaemon(true);
 		t.start();
 	}
@@ -258,7 +302,7 @@ public class GameModel extends Model {
 				}
 			}
 		};
-		Thread tu = new Thread(ru);
+		tu = new Thread(ru);
 		tu.setDaemon(true);
 		tu.start();
 	}
@@ -276,26 +320,9 @@ public class GameModel extends Model {
 				}
 			}
 		};
-		Thread tru = new Thread(run);
+		tru = new Thread(run);
 		tru.setDaemon(true);
 		tru.start();
-	}
-
-	
-	// how do I do?
-	public void getWinner() {
-		
-		Round round = Datastore.getInstance().getMainPlayer().getRound();
-		Integer[] scores = (Integer[]) round.getScores();
-
-		ArrayList<Integer> tmp = new ArrayList();
-		tmp.addAll((Arrays.asList(scores).stream().filter(c -> c != null).collect(Collectors.toList())));
-
-		scoresList.clear();
-		
-		// - sort in the right order TODO
-		scoresList = tmp;
-		
 	}
 	
 	public Player getStartingPlayer() {

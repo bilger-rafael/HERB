@@ -50,7 +50,8 @@ public class GameController extends Controller<GameModel, GameView> {
 				
 				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
 					System.out.println("It works - count starting");
-					view.updatePointPane(model.getScoresList());
+					view.updatePointPane(model.getScores());
+					//listener stoppen
 					return;
 				}
 				
