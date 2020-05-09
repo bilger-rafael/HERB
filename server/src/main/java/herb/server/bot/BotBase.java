@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import herb.server.ressources.Card;
 import herb.server.ressources.PlayListener;
+import herb.server.ressources.TrumpListener;
 import herb.server.ressources.Player;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.ExceptionBase;
@@ -39,6 +40,17 @@ public abstract class BotBase extends Player {
 		super.setPlayListener(playListener);
 		try {
 			this.play(determinBestCard());
+		} catch (ExceptionBase e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void setTrumpListener(TrumpListener trumpListener) {
+		super.setTrumpListener(trumpListener);
+		try {
+			this.chooseTrump(determinBestTrump());
 		} catch (ExceptionBase e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

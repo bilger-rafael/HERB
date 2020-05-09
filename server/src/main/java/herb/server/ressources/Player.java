@@ -13,6 +13,8 @@ import herb.server.ressources.core.Trump;
 public class Player extends PlayerBase<Hand, Round> {
 	@JsonIgnore
 	private PlayListener playListener;
+	@JsonIgnore
+	private TrumpListener tumpListener;
 
 	public Player(String username, String authToken) {
 		super(username, authToken);
@@ -27,13 +29,20 @@ public class Player extends PlayerBase<Hand, Round> {
 
 		getLastTrick().addCardtoTrick((Card) card);
 
-		playListener.played();
-		playListener = null;
+		if (playListener != null) {
+			playListener.played();
+			playListener = null;
+		}
 	}
-	
+
 	@Override
 	public void chooseTrump(Trump trump) throws ExceptionBase {
 		this.getRound().setTrump(trump);
+		
+		if (tumpListener != null) {
+			tumpListener.choosen();
+			tumpListener = null;
+		}
 	}
 
 	public void addCardtoHand(CardBase card) {
@@ -93,7 +102,7 @@ public class Player extends PlayerBase<Hand, Round> {
 				}
 			}
 			// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
-			if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+			if (this.getHand().getCards().stream().filter(x -> x.isPlayable())
 					.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
 				this.getHand().getCards().forEach(x -> x.setPlayable(true));
 			}
@@ -109,8 +118,8 @@ public class Player extends PlayerBase<Hand, Round> {
 					c.setPlayable(true);
 				}
 			}
-		// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
-			if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+			// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
+			if (this.getHand().getCards().stream().filter(x -> x.isPlayable())
 					.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
 				this.getHand().getCards().forEach(x -> x.setPlayable(true));
 			}
@@ -127,18 +136,16 @@ public class Player extends PlayerBase<Hand, Round> {
 					c.setPlayable(true);
 				}
 			}
-		// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
-			if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
+			// Falls nur noch Trümpfe und nicht Trumpf ausgespielt, alle spielbar setzen
+			if (this.getHand().getCards().stream().filter(x -> x.isPlayable())
 					.allMatch(x -> x.isTrump() && !t.getPlayedCard(startingPlayer.data).isTrump())) {
 				this.getHand().getCards().forEach(x -> x.setPlayable(true));
 			}
 			break;
 		}
-		
-		
+
 		// Falls nur noch Buur auf den Hand, alle spielbar setzen
-		if (this.getHand().getCards().stream().filter(x-> x.isPlayable())
-			.allMatch(x-> x.getPoints()==20)) {
+		if (this.getHand().getCards().stream().filter(x -> x.isPlayable()).allMatch(x -> x.getPoints() == 20)) {
 			this.getHand().getCards().forEach(x -> x.setPlayable(true));
 		}
 
@@ -159,6 +166,14 @@ public class Player extends PlayerBase<Hand, Round> {
 
 	public void setPlayListener(PlayListener playListener) {
 		this.playListener = playListener;
+	}
+	
+	public TrumpListener getTrumpListener() {
+		return tumpListener;
+	}
+
+	public void setTrumpListener(TrumpListener tumpListener) {
+		this.tumpListener = tumpListener;
 	}
 
 }

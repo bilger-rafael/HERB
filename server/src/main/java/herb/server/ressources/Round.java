@@ -2,16 +2,14 @@ package herb.server.ressources;
 
 import java.util.Random;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import herb.server.DataStore_Repository;
-import herb.server.ressources.Trick.PlayerNode;
 import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
 //Etter
 public class Round extends RoundBase<Player, Trick> implements Runnable {
 	private DeckOfCards deck;
+	private boolean trumpChoosen;
 
 	public Round(Player[] players) {
 		super(players);
@@ -58,7 +56,11 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		}
 
 		// Bilger wait for startingPlayer to choose trump
-		while (this.getTrump() == null) {
+		this.getCurrentStartingPlayer().setTrumpListener(() -> {
+			this.trumpChoosen = true;
+		});
+		
+		while (!this.trumpChoosen) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -90,7 +92,7 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 	private void endRound() {
 
 		this.setScores(determinScores());
-		
+
 		determinRoundWinner();
 
 		for (int i = 0; i < this.getScores().length; i++) {
