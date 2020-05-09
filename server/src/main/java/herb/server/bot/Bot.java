@@ -11,6 +11,11 @@ import herb.server.ressources.core.Trump;
 //ETTER Computerspieler, spielt Randomkarte
 //TODO Besserer Bot
 public class Bot extends BotBase {
+	public Bot(String s) {
+		super(s);
+		// TODO Auto-generated constructor stub
+	}
+
 	private Random rand = new Random();
 	private int randInt;
 	// Sucht die Karte aus die gespielt werden soll

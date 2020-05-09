@@ -16,8 +16,8 @@ import herb.server.ressources.core.Trump;
 public abstract class BotBase extends Player {
 	private static int botNumber = 1;
 
-	public BotBase() {
-		super("Bot" + botNumber, UUID.randomUUID().toString().toUpperCase());
+	public BotBase(String s) {
+		super(s + botNumber, UUID.randomUUID().toString().toUpperCase());
 		botNumber++;
 	}
 

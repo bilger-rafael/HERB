@@ -13,6 +13,11 @@ import herb.server.ressources.core.Trump;
 //Etter
 public class BetterBot extends BotBase {
 
+	public BetterBot(String s) {
+		super(s);
+		// TODO Auto-generated constructor stub
+	}
+
 	private ArrayList<Card> remainingCards = new ArrayList<>();
 	private Card bestCard = null;
 	private int randInt;
