@@ -14,6 +14,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,6 +29,8 @@ public class BotView extends View<BotModel>{
 	private RadioButton easyRadioButton, heavyRadioButton;
 	private Button cancelButton, okButton;
 	private Label easyLabel, heavyLabel;
+	
+	private ToggleGroup toggleGroup;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -90,6 +93,10 @@ public class BotView extends View<BotModel>{
 		heavyLabel = new Label("Heavy Bot");
 		easyRadioButton = new RadioButton();
 		heavyRadioButton = new RadioButton();
+		
+		toggleGroup = new ToggleGroup();
+		easyRadioButton.setToggleGroup(toggleGroup);
+		heavyRadioButton.setToggleGroup(toggleGroup);
 		
 		easyRadioButton.setAlignment(Pos.CENTER_RIGHT);
 		heavyRadioButton.setAlignment(Pos.CENTER_RIGHT);
