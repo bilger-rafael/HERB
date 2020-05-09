@@ -197,5 +197,7 @@ public class LauncherView extends View<LauncherModel> {
 		return logoutMenuItem;
 	}
 
-
+	public ListView<Lobby> getLobbyRoomCenter() {
+		return lobbyRoomCenter;
+	}
 }

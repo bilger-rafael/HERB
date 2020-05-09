@@ -10,17 +10,22 @@ import javafx.collections.ObservableList;
 
 public class LauncherModel extends Model {
 	private ObservableList<Lobby> lobbys = FXCollections.observableArrayList();
+	Lobby tempSelectedLobby;
+	
+
 
 	public LauncherModel() {
 		super();
-		refreshLobbyList();
-		startLobbyUpdater();
+	//	refreshLobbyList();
+	//	startLobbyUpdater();
 	}
 
+	/*
 	public void refreshLobbyList() {
 		try {
 			this.lobbys.clear();
 			this.lobbys.addAll(Lobby.readLobbyList());
+			
 		} catch (ExceptionBase e) {
 			// TODO show error message
 			e.printStackTrace();
@@ -33,6 +38,7 @@ public class LauncherModel extends Model {
 			@Override
 			public void run() {
 				while (true) {
+					
 					Platform.runLater(() -> refreshLobbyList());
 					try {
 						Thread.sleep(10000);
@@ -47,9 +53,18 @@ public class LauncherModel extends Model {
 		t.start();
 
 	}
+	*/
 
 	public ObservableList<Lobby> getLobbys() {
 		return lobbys;
 	}
 
+	
+	public Lobby getTempSelectedLobby() {
+		return tempSelectedLobby;
+	}
+
+	public void setTempSelectedLobby(Lobby tempSelectedLobby) {
+		this.tempSelectedLobby = tempSelectedLobby;
+	}
 }

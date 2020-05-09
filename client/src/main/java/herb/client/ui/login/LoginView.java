@@ -147,7 +147,10 @@ public class LoginView extends View<LoginModel> {
 		loginButton.setText(t.getString("program.login.loginButton"));
 		createUserButton.setText(t.getString("program.login.createUserButton"));
 		stage.setTitle(t.getString("program.name"));
-		message.setText(t.getString("program.login.message"));
+		if (message.getText()!="") {
+			message.setText(t.getString("program.login.message"));
+		}
+
 	}
 
 	public Button getLoginButton() {
@@ -164,7 +167,12 @@ public class LoginView extends View<LoginModel> {
 	public PasswordField getPwField() {
 		return pwField;
 	}
+	
+	public Label getMessage() {
+		return message;
+	}
 
+	//To show the error message in GUI if Login fails
 	public void showError() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		message.setText(t.getString("program.login.message"));

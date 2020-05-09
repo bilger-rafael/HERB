@@ -6,6 +6,7 @@ import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Controller;
 import herb.client.utils.ServiceLocator;
 
+//Herren
 public class LoginController extends Controller<LoginModel, LoginView> {
 
 	ServiceLocator serviceLocator;
@@ -45,9 +46,11 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 
 	}
 
+	// Connector to Launcher and reset text fields
 	private void goToLauncher() {
 		view.getNameField().setText("");
 		view.getPwField().setText("");
+		view.getMessage().setText("");
 		this.view.stop();
 		Main.getMainProgram().getLauncher().start();
 	}
