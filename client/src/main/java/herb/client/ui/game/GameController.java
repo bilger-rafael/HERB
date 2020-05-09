@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import herb.client.Main;
 import herb.client.ressources.Card;
 import herb.client.ressources.Hand;
 import herb.client.ressources.Player;
@@ -23,6 +24,7 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.shape.Rectangle;
 import javafx.beans.property.ObjectProperty; 
@@ -48,19 +50,23 @@ public class GameController extends Controller<GameModel, GameView> {
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> p) {
 				
+				try {
 				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
-					System.out.println("It works - count starting");
 					view.updatePointPane(model.getScores());
 					//listener stoppen
+					}
+				}
+				catch (Exception e){
 					return;
 				}
-				
+						
 				int i = model.getCurrentPlayers().size();
 				Player pl = model.getCurrentPlayers().get(i-1);
 				view.updatePlayables(pl);
-				view.setTurn();
-				view.setStartingPlayer();
-				
+				view.setStartingPlayer();	
+				if(pl.equals(model.getPlayers().get(0))) {
+					view.setTurn();
+				}
 			}
 		};
 				
@@ -91,9 +97,7 @@ public class GameController extends Controller<GameModel, GameView> {
         	view.getTrumpChoice().get(4).setOnMouseClicked(e -> forwardTrump(e));
         if (view.getTrumpChoice().size()>5) 
         	view.getTrumpChoice().get(5).setOnMouseClicked(e -> forwardTrump(e));
-		
-		
-		
+			
 		// Event when card is chosen
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));
         if (view.getRects().size()>1) 
@@ -112,8 +116,12 @@ public class GameController extends Controller<GameModel, GameView> {
         	view.getRects().get(7).setOnMouseClicked(e -> forwardPlayedCard(e));
         if (view.getRects().size()>8) 
         	view.getRects().get(8).setOnMouseClicked(e -> forwardPlayedCard(e));
+        
+        view.getRevancheButton().setOnAction(e -> startRevanche());
+        view.getRevancheButton().setOnAction(e -> quitGame());
+        
 	}
-	
+
 	// Roesti - identify clicked Card and play if isPlayable
 	public void forwardPlayedCard(MouseEvent e){
 		
@@ -126,10 +134,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.updateImagePatterns();	
 	}
 	
-	public void forwardTrump(MouseEvent f) {
-		
-		System.out.println("It happened - Trump");
-		
+	public void forwardTrump(MouseEvent f) {	
 		// analog oben für jeden Trumpf ein Rectangle. 
 		Rectangle recti = (Rectangle) f.getSource();
 
@@ -137,5 +142,24 @@ public class GameController extends Controller<GameModel, GameView> {
 
 		model.setTrump(chosenTrump);
 		view.changeTopOfStackPane();
+	}
+	
+	public void quitGame() {
+		// TODO send signal to server and go back to launcher
+		goToLauncher();
+	}
+
+	private void startRevanche() {
+		// TODO send signal to server and start a new Round
+		enterGame();
+	}
+	
+	private void goToLauncher() {
+		this.view.stop();
+		Main.getMainProgram().getLauncher().start();
+	}
+	private void enterGame() {
+		this.view.stop();
+		Main.getMainProgram().getGameView().start();
 	}
 }

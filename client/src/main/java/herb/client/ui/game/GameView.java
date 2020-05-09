@@ -51,12 +51,13 @@ public class GameView extends View<GameModel> {
 	
 	private AnchorPane root; 
 	private GridPane table, ownCards;
-	private VBox leftHandSide, rightHandSide, opposite, bottom, names, points, lobbyBox, showTrumpBox;
+	private VBox leftHandSide, rightHandSide, opposite, bottom, namesBox, pointsBox, winnerBox, lobbyBox, showTrumpBox;
 	private HBox oppositeSide, left, right;
 	private TilePane trumpBox;
 	private HBox tMain, tRight, tOppo, tLeft, buttons;
-	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, pointsPlayerLabel, lobbyLabel;
-	private Label pointsLabel, playedPointsLabel, trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
+	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
+	private Label pointsLabel, pointsPlayerLabel, playedPointsLabel, winnerLabel; 
+	private Label trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
 	private StackPane tablePart;
@@ -68,6 +69,7 @@ public class GameView extends View<GameModel> {
 	private ArrayList<Card> cards, trick;
 	private ImageView imview;
 	private Button revancheButton, quitButton;
+	private int scorePosition;
 
 
 	public GameView(Stage stage, GameModel model) {
@@ -124,8 +126,9 @@ public class GameView extends View<GameModel> {
 		
 		// points - winner
 		pointPane = new BorderPane();
-		names = new VBox();
-		points = new VBox();	
+		namesBox = new VBox();
+		pointsBox = new VBox();	
+		winnerBox = new VBox();
 		
 		// get lobby players
 		players = model.getLobbyPlayers();
@@ -577,37 +580,45 @@ public class GameView extends View<GameModel> {
     	pointsLabel = new Label();
     	pointsPlayerLabel = new Label();
     	playedPointsLabel = new Label();
+    	winnerLabel = new Label();
     	revancheButton = new Button();
     	quitButton = new Button();
     	buttons = new HBox();
     	//change
     	buttons.getChildren().addAll(revancheButton, quitButton);
-		
+    	buttons.setSpacing(40);
+		winnerBox.getChildren().add(winnerLabel);
+		winnerBox.setAlignment(Pos.CENTER_LEFT);
+    	
     	String label ="";
     	for(int i = 0; i<4; i++) {
     		label += players.get(i).getUsername().toString();
     		label += "\n";
     	}
     	pointsPlayerLabel.setText(label);
-		names.getChildren().add(pointsPlayerLabel);
-		names.setAlignment(Pos.CENTER_LEFT);
-		
-		changeTopOfStackPane();
+		namesBox.getChildren().add(pointsPlayerLabel);
+		namesBox.setAlignment(Pos.CENTER_LEFT);
+		namesBox.setMaxWidth(200);
 		
 		playedPointsLabel.setText("");
+		playedPointsLabel.setMaxWidth(150);
 	   
-		points.getChildren().add(playedPointsLabel);
-		points.setAlignment(Pos.CENTER_RIGHT);
+		pointsBox.getChildren().add(playedPointsLabel);
+		pointsBox.setAlignment(Pos.CENTER_RIGHT);
+		pointsBox.setMaxWidth(50);
 		
 		pointPane.setTop(pointsLabel);
-		pointPane.setLeft(names);
-		pointPane.setCenter(points);
+		pointPane.setLeft(namesBox);
+		pointPane.setRight(winnerBox);
+		pointPane.setCenter(pointsBox);
 		pointPane.setBottom(buttons);	
-		pointPane.setPadding(new Insets(20, 20, 20, 20));
+		pointPane.setPadding(new Insets(40, 40, 40, 40));
 		pointPane.setStyle("-fx-background-color: aliceblue");
+		pointPane.setMaxSize(400,  400);
 		tablePart.getChildren().add(pointPane);
 			
 		pointPane.setVisible(false);
+		changeTopOfStackPane();
 		pointPane.toBack();
     }	
 	
@@ -621,6 +632,26 @@ public class GameView extends View<GameModel> {
     		labela += "\n";
     	}
 		playedPointsLabel.setText(labela);
+		
+		String labelw ="";
+		int highestScore = scores.get(0);
+		scorePosition = 0;
+		for(int i = 1; i<4; i++) {
+			highestScore = Math.max(highestScore, scores.get(i));
+			if (scores.get(i)== highestScore) {
+				scorePosition = i;
+			}
+		}
+		
+		for (int i = 0; i< 4; i++) {
+			if(i == scorePosition) {
+				labelw = "Winner";
+				labelw += "\n";
+			}else {
+			labelw += "nothing \n";
+		}
+		}
+		winnerLabel.setText(labelw);
 	}
 	
 	public void setTurn() {
@@ -632,8 +663,13 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void setStartingPlayer() {
+		
+		try {
 		Player s = model.getStartingPlayer();
 		startingPlayerLabel.setText(s.getUsername().toString());
+		} catch(Exception e) {
+			startingPlayerLabel.setText("noch nicht festgelegt - oder kein Trick?");
+		}
 	}
 	
 	// Roesti 
@@ -668,5 +704,13 @@ public class GameView extends View<GameModel> {
 	
 	public ArrayList<Rectangle> getTrumpChoice() {
 	return this.trumpRects;
+	}
+	
+	public Button getRevancheButton() {
+	return this.revancheButton;
+	}
+	
+	public Button getQuitButton() {
+	return this.quitButton;
 	}
 }

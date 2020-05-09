@@ -1,5 +1,7 @@
 package herb.client.ui.game;
 
+import static java.util.Locale.forLanguageTag;
+
 import java.util.ArrayList;
 import javafx.beans.property.SimpleObjectProperty;
 import java.util.Arrays;
@@ -41,6 +43,7 @@ public class GameModel extends Model {
 	private ObservableList<Trump> trumps = FXCollections.observableArrayList();
 	private ArrayList<Integer> scoresList; 
 	private Thread t, tu, tru;
+	private volatile boolean stopT;
 	
 	public GameModel() {
 		super();
@@ -349,4 +352,5 @@ public class GameModel extends Model {
 	public int getTrickNumber() {
 		return this.trickNumber;
 	}
+	
 }
