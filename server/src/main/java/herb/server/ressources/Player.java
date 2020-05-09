@@ -14,7 +14,7 @@ public class Player extends PlayerBase<Hand, Round> {
 	@JsonIgnore
 	private PlayListener playListener;
 	@JsonIgnore
-	private TrumpListener tumpListener;
+	private TrumpListener trumpListener;
 
 	public Player(String username, String authToken) {
 		super(username, authToken);
@@ -39,9 +39,9 @@ public class Player extends PlayerBase<Hand, Round> {
 	public void chooseTrump(Trump trump) throws ExceptionBase {
 		this.getRound().setTrump(trump);
 		
-		if (tumpListener != null) {
-			tumpListener.choosen();
-			tumpListener = null;
+		if (trumpListener != null) {
+			trumpListener.choosen();
+			trumpListener = null;
 		}
 	}
 
@@ -169,11 +169,11 @@ public class Player extends PlayerBase<Hand, Round> {
 	}
 	
 	public TrumpListener getTrumpListener() {
-		return tumpListener;
+		return trumpListener;
 	}
 
 	public void setTrumpListener(TrumpListener tumpListener) {
-		this.tumpListener = tumpListener;
+		this.trumpListener = tumpListener;
 	}
 
 }
