@@ -15,7 +15,6 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 
 		view.getCancelButton().setOnAction(e -> getBackLauncherView());
 		view.getBotsButton().setOnAction(e -> createViewBot());
-//		view.getBotsButton().setOnAction(e -> getNewBot());
 
 		changeListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> c) {
@@ -48,14 +47,6 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		this.view.stop();
 	}
 
-//	private void getNewBot() {
-//		try {
-//			this.model.getLobby().addBot(false);
-//		} catch (ExceptionBase e) {
-//			// TODO show error message
-//			return;
-//		}
-//	}
 
 	private void createViewBot() {
 		Main.getMainProgram().getBotView(this.model.getLobby()).start();
