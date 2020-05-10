@@ -34,6 +34,7 @@ public class GameModel extends Model {
 	private ObservableList<Card> trickCards = FXCollections.observableArrayList();
 	private int position;
 	private Trick trick;
+	private int trickIndex;
 	private int trickNumber;
 	private int trickSize;
 	private Player startingPlayer, currentPlayer;
@@ -41,11 +42,11 @@ public class GameModel extends Model {
 	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
 	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
 	private ObservableList<Trump> trumps = FXCollections.observableArrayList();
-	private ArrayList<Integer> scoresList; 
+	private ArrayList<Integer> scoresList;
 	private Thread t, tu, tru;
 	private volatile boolean stopT;
-	private String cardSet="Fr";
-	
+	private String cardSet = "Fr";
+
 	public GameModel() {
 		super();
 
@@ -87,7 +88,7 @@ public class GameModel extends Model {
 			players.add(plys.get(0));
 			players.add(plys.get(1));
 			players.add(plys.get(2));
-		}	
+		}
 		return players;
 	}
 
@@ -121,10 +122,36 @@ public class GameModel extends Model {
 	// goal: to put the cards in a array, starting with the card of the current
 	// starting player (of this trick)
 	public void refreshTrickCards() {
-		if(Datastore.getInstance().getMainPlayer().getRound().getTricks().isEmpty())
+		LinkedList<Trick> tricks = Datastore.getInstance().getMainPlayer().getRound().getTricks();
+
+		if (tricks.isEmpty())
 			return;
-		
-		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
+
+		if (trick == null) {
+			trick = tricks.getLast();
+			trickIndex = tricks.indexOf(tricks.getLast());
+		}
+
+		// delay when new trick is set
+		if (trickIndex != tricks.indexOf(tricks.getLast())) {
+			// if client does not have all cards of the previous trick, get them
+			long playedCards = Arrays.asList(trick.getPlayedCards()).stream().filter(x -> x != null).count();
+			if (playedCards < 4) {
+				trick = tricks.get(trickIndex);
+				// if client have all cards of the previous trick, wait to give Player some time
+				// to look at the finished trick
+			} else {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+				trick = tricks.getLast();
+				trickIndex = tricks.indexOf(tricks.getLast());
+			}
+		}else {
+			trick = tricks.getLast();
+		}
+
 		this.startingPlayer = trick.getStartingPlayer();
 		this.currentPlayer = trick.getCurrentPlayer();
 		Card[] cards = (Card[]) trick.getPlayedCards();
@@ -193,9 +220,9 @@ public class GameModel extends Model {
 			break;
 		}
 	}
-	
+
 	public ArrayList<Integer> getScores() {
-		
+
 		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getScores();
 		scoresList = new ArrayList(Arrays.asList(serverScores));
 		LinkedList<Integer> scrs = new LinkedList();
@@ -222,23 +249,22 @@ public class GameModel extends Model {
 			scoresList.add(scrs.get(0));
 			scoresList.add(scrs.get(1));
 			scoresList.add(scrs.get(2));
-		}	
-		System.out.println("Erhaltene Scores "+scoresList.toString());
+		}
+		System.out.println("Erhaltene Scores " + scoresList.toString());
 		return scoresList;
 	}
 
 	public void refreshPlayables() {
-		
+
 		try {
 			trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
 			this.trickNumber = Datastore.getInstance().getMainPlayer().getRound().getTricks().size();
 			currentPlayers.add(trick.getCurrentPlayer());
 			startingPlayers.add(trick.getStartingPlayer());
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			return;
 		}
-		
+
 //		if(Datastore.getInstance().getMainPlayer().getRound().getTricks().isEmpty())
 //			return;
 //		
@@ -250,11 +276,11 @@ public class GameModel extends Model {
 
 	public void refreshTrump() {
 
-		if(Datastore.getInstance().getMainPlayer().getRound().getTrump() == null)
+		if (Datastore.getInstance().getMainPlayer().getRound().getTrump() == null)
 			return;
 //		if(Datastore.getInstance().getMainPlayer().getRound().getTrump() == trumps.get(trumps.size()-1))
 //			return;
-		
+
 		trumps.add(Datastore.getInstance().getMainPlayer().getRound().getTrump());
 	}
 
@@ -265,7 +291,7 @@ public class GameModel extends Model {
 	public ObservableList<Player> getCurrentPlayers() {
 		return currentPlayers;
 	}
-	
+
 	public ObservableList<Player> getStartingPlayers() {
 		return startingPlayers;
 	}
@@ -328,7 +354,7 @@ public class GameModel extends Model {
 		tru.setDaemon(true);
 		tru.start();
 	}
-	
+
 	public Player getStartingPlayer() {
 		return this.startingPlayer;
 	}
@@ -345,26 +371,25 @@ public class GameModel extends Model {
 	public ArrayList<Player> getPlayers() {
 		return this.players;
 	}
-	
+
 	public ArrayList<Integer> getScoresList() {
 		return this.scoresList;
 	}
-	
+
 	public int getTrickNumber() {
 		return this.trickNumber;
 	}
-	
+
 	public Thread getT() {
 		return tu;
 	}
-	
+
 	public void setCardSet(String s) {
 		this.cardSet = s;
 	}
-	
+
 	public String getCardSet() {
-		return this.cardSet;		
+		return this.cardSet;
 	}
-	
-	
+
 }
