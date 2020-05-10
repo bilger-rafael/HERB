@@ -61,6 +61,8 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 			this.view.resetNameField();
 			this.view.resetPasswordField();
 		} catch (ExceptionBase e) {
+			view.showError();
+			serviceLocator.getLogger().info("Name oder Passwort falsch eingegeben.");
 			// TODO show error message
 		}
 
