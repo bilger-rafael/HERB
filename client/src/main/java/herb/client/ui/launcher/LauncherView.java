@@ -17,12 +17,10 @@ import javafx.scene.control.SelectionMode;
 import java.util.Locale;
 
 import herb.client.utils.Translator;
+import herb.client.ressources.HighScore;
 import herb.client.ressources.Lobby;
-import herb.client.ressources.Round;
 import herb.client.ui.core.View;
 import herb.client.utils.ServiceLocator;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -41,7 +39,7 @@ public class LauncherView extends View<LauncherModel> {
 	private MenuItem logoutMenuItem;
 	
 	protected ListView<Lobby> lobbyRoomCenter;
-	protected ListView<Round> highscoreList;
+	protected ListView<HighScore> highscoreList;
 	
 	private Lobby lobby;
 	
@@ -100,7 +98,7 @@ public class LauncherView extends View<LauncherModel> {
 	    /**
 	     * highscore list
 	     */
-	    highscoreList = new ListView<>();
+	    highscoreList = new ListView<>(model.getHighScore());
 	    StackPane stPane1 = new StackPane();
 	    stPane1.getChildren().add(highscoreList);
 

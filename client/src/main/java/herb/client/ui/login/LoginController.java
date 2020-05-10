@@ -48,8 +48,8 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 
 	// Connector to Launcher and reset text fields
 	private void goToLauncher() {
-		view.getNameField().setText("");
-		view.getPwField().setText("");
+		this.view.resetPasswordField();
+		this.view.resetNameField();
 		view.getMessage().setText("");
 		this.view.stop();
 		Main.getMainProgram().getLauncher().start();
@@ -57,7 +57,8 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 
 	// forwards to the CreatUserView
 	private void createUserView() {
+		this.view.resetPasswordField();
+		this.view.resetNameField();
 		Main.getMainProgram().startRegistration();
 	}
-//	}
 }

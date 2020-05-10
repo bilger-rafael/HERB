@@ -14,21 +14,22 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 	public LauncherController(LauncherModel model, LauncherView view) {
 		super(model, view);
 		
-		refreshLobbyList();
-		startLobbyUpdater();
-		
 		// join a lobby
 		view.getJoinButton().setOnAction(e -> joinLobby());
 
 		// got to lobby create view
 		view.getCreateButton().setOnAction(e -> getLobbyCreaterView());
-
-		/**
-		 * refresh the launcher
-		 */
-
-		view.getRefreshButton().setOnAction(e -> refreshLobbyList());
 		
+		/**
+		 * refresh lobby
+		 */
+		view.getRefreshButton().setOnAction(e -> model.refreshLobbyList());
+		
+		/**
+		 * refresh highscore
+		 */
+		view.getRefreshButton().setOnAction(e -> model.refreshHighscoreList());
+
 		/**
 		 * join a lobby
 		 */		
@@ -61,7 +62,6 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 
 	// got to Lobby create view
 	private void getLobbyCreaterView() {
-		//this.view.stop();
 		Main.getMainProgram().getLobbyCreater().start();
 	}
 	
@@ -81,38 +81,5 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 	//sets the actual Lobby-selection after the Refresh // TODO debugging => set the Selection correctly
 	private void setSelection() {
 		view.getLobbyRoomCenter().getSelectionModel().select(this.model.getTempSelectedLobby());
-	}
-
-	public void refreshLobbyList() {
-		try {
-			getSelection();
-			this.model.getLobbys().clear();
-			this.model.getLobbys().addAll(Lobby.readLobbyList());
-			setSelection();
-		} catch (ExceptionBase e) {
-			// TODO show error message
-			e.printStackTrace();
-		}
-	}
-
-	// Create thread to update Lobby periodically
-	private void startLobbyUpdater() {
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					Platform.runLater(() -> refreshLobbyList());
-					try {
-						Thread.sleep(10000);
-					} catch (InterruptedException e) {
-					}
-				}
-			}
-		};
-
-		Thread t = new Thread(r);
-		t.setDaemon(true);
-		t.start();
-
 	}
 }
