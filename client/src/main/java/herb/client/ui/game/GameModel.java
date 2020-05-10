@@ -44,6 +44,7 @@ public class GameModel extends Model {
 	private ArrayList<Integer> scoresList; 
 	private Thread t, tu, tru;
 	private volatile boolean stopT;
+	private String cardSet="Fr";
 	
 	public GameModel() {
 		super();
@@ -296,7 +297,7 @@ public class GameModel extends Model {
 		Runnable ru = new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				while (!Thread.currentThread().isInterrupted()) {
 					Platform.runLater(() -> refreshPlayables());
 					try {
 						Thread.sleep(2000);
@@ -352,5 +353,18 @@ public class GameModel extends Model {
 	public int getTrickNumber() {
 		return this.trickNumber;
 	}
+	
+	public Thread getT() {
+		return tu;
+	}
+	
+	public void setCardSet(String s) {
+		this.cardSet = s;
+	}
+	
+	public String getCardSet() {
+		return this.cardSet;		
+	}
+	
 	
 }

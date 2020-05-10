@@ -37,6 +37,7 @@ public class GameController extends Controller<GameModel, GameView> {
 	private Card playedCard;
 	private Trump chosenTrump;
 	private int playedCardIndex;
+	private int trickNumber=0;
 	
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
@@ -44,6 +45,8 @@ public class GameController extends Controller<GameModel, GameView> {
 		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
 				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
+				trickNumber++;
+				view.updatePlayerBoxes(trickNumber);
 			}
 		};
 		
@@ -53,6 +56,9 @@ public class GameController extends Controller<GameModel, GameView> {
 				try {
 				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
 					view.updatePointPane(model.getScores());
+					
+					model.getT().interrupt();
+					System.out.println("passed here");
 					//listener stoppen
 					}
 				}
@@ -116,17 +122,36 @@ public class GameController extends Controller<GameModel, GameView> {
         	view.getRects().get(7).setOnMouseClicked(e -> forwardPlayedCard(e));
         if (view.getRects().size()>8) 
         	view.getRects().get(8).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>9) 
+        	view.getRects().get(9).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>10) 
+        	view.getRects().get(10).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>11) 
+        	view.getRects().get(11).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>12) 
+        	view.getRects().get(12).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>13) 
+        	view.getRects().get(13).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>14) 
+        	view.getRects().get(14).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>15) 
+        	view.getRects().get(15).setOnMouseClicked(e -> forwardPlayedCard(e));
+        if (view.getRects().size()>16) 
+        	view.getRects().get(16).setOnMouseClicked(e -> forwardPlayedCard(e));
         
         view.getRevancheButton().setOnAction(e -> startRevanche());
-        view.getRevancheButton().setOnAction(e -> quitGame());
+        view.getQuitButton().setOnAction(e -> quitGame());
         
+        view.getFrenchOption().setOnAction(e -> changeCardSet2French());
+        view.getGermanOption().setOnAction(e -> changeCardSet2German());
 	}
 
 	// Roesti - identify clicked Card and play if isPlayable
 	public void forwardPlayedCard(MouseEvent e){
 		
 		Rectangle recti = (Rectangle) e.getSource();
-		playedCard = model.getMyCards().get(view.getRects().indexOf(recti));	
+		int index = ((view.getRects().indexOf(recti)/2-view.getStartingPosition()/2));
+		playedCard = model.getMyCards().get((index));	
 		
 		if (playedCard.isPlayable()) {
 		model.playCard(playedCard);
@@ -142,6 +167,13 @@ public class GameController extends Controller<GameModel, GameView> {
 
 		model.setTrump(chosenTrump);
 		view.changeTopOfStackPane();
+	}
+	
+	public void changeCardSet2French() {
+		model.setCardSet("Fr");
+	}
+	public void changeCardSet2German() {
+		model.setCardSet("De");
 	}
 	
 	public void quitGame() {

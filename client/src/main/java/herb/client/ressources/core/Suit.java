@@ -16,10 +16,10 @@ public enum Suit { Clubs, Diamonds, Hearts, Spades;
     public String toStringDe() {
     	String suit = "";
     	switch (this) {
-    	case Clubs: suit = "Schilten"; break;
-        case Diamonds: suit = "Schelten"; break;
+    	case Clubs: suit = "Eichel"; break;
+        case Diamonds: suit = "Schellen"; break;
         case Hearts: suit = "Rosen"; break;
-        case Spades: suit = "Schellen"; break;
+        case Spades: suit = "Schilten"; break;
         }
         return suit;
         }
