@@ -168,6 +168,14 @@ public class LoginView extends View<LoginModel> {
 		return pwField;
 	}
 	
+	public void resetPasswordField() {
+		pwField.setText("");
+	}
+	
+	public void resetNameField() {
+		nameField.setText("");
+	}
+	
 	public Label getMessage() {
 		return message;
 	}
