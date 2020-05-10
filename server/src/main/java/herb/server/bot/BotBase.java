@@ -39,7 +39,6 @@ public abstract class BotBase extends Player {
 	public void setPlayListener(PlayListener playListener) {
 		super.setPlayListener(playListener);
 		try {
-			if(this.getRound().getTrump()!=null)
 			this.play(determinBestCard());
 		} catch (ExceptionBase e) {
 			// TODO Auto-generated catch block
