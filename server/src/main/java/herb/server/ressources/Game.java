@@ -12,14 +12,17 @@ public class Game extends GameBase<Lobby, Player>{
 	public Game(Lobby lobby, Player[] players) {
 		super(UUID.randomUUID(), lobby, players);
 		startRound();
-		
 	}
 
 	@Override
 	public RoundBase startRound() {
-		Round r = new Round((Player[]) this.players);
+		Round r = new Round(this);
 		this.rounds.add(r);		
 		return r;
+	}
+	
+	public void endRound() {
+		//TODO wait for decision of users (next round or quit)
 	}
 	
 }

@@ -7,10 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public abstract class GameBase<Lobby extends LobbyBase, Player extends PlayerBase> {
 	private final UUID uuid;
-	@JsonIgnoreProperties({ "runningGame" })
+	@JsonIgnoreProperties({ "runningGame", "players" })
 	private final Lobby lobby;
 	protected Player[] players;
-
 	protected ArrayList<RoundBase> rounds = new ArrayList<RoundBase>();
 	
 	public GameBase(UUID uuid, Lobby lobby, Player[] players) {

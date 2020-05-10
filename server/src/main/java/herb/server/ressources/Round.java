@@ -7,12 +7,12 @@ import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
 //Etter
-public class Round extends RoundBase<Player, Trick> implements Runnable {
+public class Round extends RoundBase<Game, Player, Trick> implements Runnable {
 	private DeckOfCards deck;
 	private boolean trumpChoosen;
 
-	public Round(Player[] players) {
-		super(players);
+	public Round(Game game) {
+		super(game, game.getPlayers());
 		// this.setTrump(randomTrump());
 		this.deck = new DeckOfCards();
 
@@ -98,8 +98,8 @@ public class Round extends RoundBase<Player, Trick> implements Runnable {
 		for (int i = 0; i < this.getScores().length; i++) {
 			DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[i].toString(), this.getScores()[i]);
 		}
-
-		// TODO kill thread
+		
+		this.getGame().endRound();
 	}
 
 	// Random Trump wählen

@@ -7,7 +7,12 @@ import herb.client.ressources.core.RoundBase;
 import herb.client.rest.RestClient;
 
 public class Game extends GameBase<Lobby, Player>{
-
+	
+	// default constructor for json deserialization
+	public Game() {
+		super(null, null, null);
+	}
+	
 	public Game(UUID uuid, Lobby lobby, Player[] players) {
 		super(uuid, lobby, players);
 		// TODO Auto-generated constructor stub
