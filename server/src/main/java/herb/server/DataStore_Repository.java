@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -315,10 +316,13 @@ public class DataStore_Repository {
 		int oldScore = 0;
 		if (points > showHighScoreOfPlayer(playername)) {
 			try {
-				stmt = this.cn.prepareStatement("INSERT INTO JASSHERB.HighScore (PlayerName, Points) VALUES (?,?)");
+				//Fügt hinzu falls noch nicht vorhanden
+				stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.HighScore (PlayerName, Points) VALUES (?,?)");
 				stmt.setString(1, playername);
 				stmt.setInt(2, points);
 				answer = stmt.executeUpdate();
+				//Jetzt gibt es den Player in der Liste => Scores sicher updaten
+				updateHighScoreOfPlayer(playername,points);
 			} catch (SQLException e) {
 				System.out.println(e);
 			} finally {
@@ -338,6 +342,37 @@ public class DataStore_Repository {
 		}
 		return answer;
 	}
+	
+	//Update des Tables HighScore for a Player
+	private int updateHighScoreOfPlayer(String playername, int points) {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int answer = 0;
+		try {
+			//Update des Scores, falls höher bestehender HighScore
+			stmt = this.cn.prepareStatement("UPDATE JASSHERB.HighScore SET Points = ? WHERE PlayerName = ?");
+			stmt.setInt(1, points);
+			stmt.setString(2, playername);
+			answer = stmt.executeUpdate();
+		}catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (rs != null)
+				try {
+					if (!rs.isClosed())
+						rs.close();
+				} catch (Exception e) {
+				}
+			if (stmt != null)
+				try {
+					if (!stmt.isClosed())
+						stmt.close();
+				} catch (Exception e) {
+				}
+		}
+		return answer;
+	}
+		
 
 	// Gibt den HighScore eines Spielers zurück
 	public int showHighScoreOfPlayer(String playername) {
