@@ -2,15 +2,15 @@ package herb.client.ressources;
 
 import herb.client.ressources.core.RoundBase;
 
-public class Round extends RoundBase<Player, Trick>{
+public class Round extends RoundBase<Game, Player, Trick>{
 
 	// default constructor for json deserialization
 	public Round() {
-		super(null);
+		super(null, null);
 	}
 	
-	public Round(Player[] players) {
-		super(players);
+	public Round(Game game, Player[] players) {
+		super(game, players);
 		// TODO Auto-generated constructor stub
 	}
 
