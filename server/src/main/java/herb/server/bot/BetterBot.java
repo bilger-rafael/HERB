@@ -106,6 +106,17 @@ public class BetterBot extends BotBase {
 		// oder er hat die höchste Karte
 		// Punkte
 		case (1):
+			// Falls Bot Buur hat und Nell gespielt ist=> stechen
+			if (botHasBuur()) {
+				for (Card c : this.getRound().getTricks().getLast().getPlayedCards()) {
+					if (c != null && c.getPoints() == 14) {
+						if (botHandBuur() != null) {
+							bestCard = botHandBuur();
+							break;
+						}
+					}
+				}
+			}
 			// Wenn Bot die höchste Karte hat und diese nicht viel Wert hat oder keine
 			// Trümpfe mehr=> ausspielen
 			if (BotHasHighstCard(Suit.Clubs)) {
@@ -153,17 +164,7 @@ public class BetterBot extends BotBase {
 				}
 			}
 
-			// Falls Bot Buur hat und Nell gespielt ist=> stechen
-			if (botHasBuur()) {
-				for (Card c : this.getRound().getTricks().getLast().getPlayedCards()) {
-					if (c != null && c.getPoints() == 14) {
-						if (botHandBuur() != null) {
-							bestCard = botHandBuur();
-							break;
-						}
-					}
-				}
-			}
+
 
 			// Falls nicht höchste Karte, dann mit Wahrscheinlichkeit
 			randDouble = rand.nextDouble();
@@ -181,6 +182,19 @@ public class BetterBot extends BotBase {
 		// 3. Spieler, 50% versuch zu stechen und 50% verwerfen oder Stich mehr als 10
 		// Punkte oder er hat die höchste Karte
 		case (2):
+			// Falls Bot Buur hat und Nell gespielt ist=> stechen
+			if (botHasBuur()) {
+				for (Card c : this.getRound().getTricks().getLast().getPlayedCards()) {
+					if (c != null) {
+						if (c.getPoints() == 14) {
+							if (botHandBuur() != null) {
+								bestCard = botHandBuur();
+								break;
+							}
+						}
+					}
+				}
+			}
 			// Wenn Bot die höchste Karte hat oder keine Trümpfe mehr=> ausspielen
 			if (BotHasHighstCard(Suit.Clubs)) {
 				if (!isTrumpsLeft()) {
@@ -227,19 +241,7 @@ public class BetterBot extends BotBase {
 				}
 			}
 
-			// Falls Bot Buur hat und Nell gespielt ist=> stechen
-			if (botHasBuur()) {
-				for (Card c : this.getRound().getTricks().getLast().getPlayedCards()) {
-					if (c != null) {
-						if (c.getPoints() == 14) {
-							if (botHandBuur() != null) {
-								bestCard = botHandBuur();
-								break;
-							}
-						}
-					}
-				}
-			}
+
 			// Falls nicht höchste Karte, dann mit Wahrscheinlichkeit
 			randDouble = rand.nextDouble();
 			if (randDouble >= 0.5 || this.getRound().getTricks().getLast().getTrickPoints() > 10) {
