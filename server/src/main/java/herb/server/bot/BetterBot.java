@@ -25,6 +25,7 @@ public class BetterBot extends BotBase {
 	private ArrayList<Card> remainingCards = new ArrayList<>();
 	private Card bestCard = null;
 	private int randInt;
+	private double randDouble;
 	private Random rand = new Random();
 
 	// Sucht die Karte aus die gespielt werden soll
@@ -165,8 +166,8 @@ public class BetterBot extends BotBase {
 			}
 
 			// Falls nicht höchste Karte, dann mit Wahrscheinlichkeit
-			randInt = rand.nextInt(1);
-			if (randInt >= 0.3 || this.getRound().getTricks().getLast().getTrickPoints() > 10) {
+			randDouble = rand.nextDouble();
+			if (randDouble >= 0.3 || this.getRound().getTricks().getLast().getTrickPoints() > 10) {
 				if (returnLowCostPlayableCard() != null) {
 					bestCard = returnLowCostPlayableCard();
 				} else {
@@ -240,8 +241,8 @@ public class BetterBot extends BotBase {
 				}
 			}
 			// Falls nicht höchste Karte, dann mit Wahrscheinlichkeit
-			randInt = rand.nextInt(1);
-			if (randInt >= 0.5 || this.getRound().getTricks().getLast().getTrickPoints() > 10) {
+			randDouble = rand.nextDouble();
+			if (randDouble >= 0.5 || this.getRound().getTricks().getLast().getTrickPoints() > 10) {
 				if (returnLowCostPlayableCard() != null) {
 					bestCard = returnLowCostPlayableCard();
 				} else {
@@ -278,7 +279,12 @@ public class BetterBot extends BotBase {
 			break;
 
 		}
-
+		//Falls BestCard noch leer ist, random (nur zur Sicherheit)
+		if(bestCard==null) {
+			randInt = rand.nextInt(this.getPlayableCards().size());
+			bestCard = this.getPlayableCards().get(randInt);
+		}
+		
 		return bestCard;
 	}
 
@@ -449,15 +455,13 @@ public class BetterBot extends BotBase {
 			for (Card c : this.remainingCards) {
 				if (c.isTrump()) {
 					// Prüfen, ob nur Trumps von Bot
-					boolean onlyMyTrumps = true;
+					boolean myTrump = false;
 					for (Card cH : this.getHand().getCards()) {
-						while (onlyMyTrumps) {
-							if (!c.equals(cH)) {
-								onlyMyTrumps = false;
-							}
+						if(cH.equals(c)){
+							myTrump = true;
 						}
 					}
-					if (!onlyMyTrumps) {
+					if (!myTrump) {
 						b = true;
 					}
 				}
