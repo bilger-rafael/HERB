@@ -38,8 +38,10 @@ public abstract class BotBase extends Player {
 	@Override
 	public void setPlayListener(PlayListener playListener) {
 		super.setPlayListener(playListener);
+		Card c = determinBestCard();
+		if(c == null) System.out.println("ERROR");
 		try {
-			this.play(determinBestCard());
+			this.play(c);
 		} catch (ExceptionBase e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
