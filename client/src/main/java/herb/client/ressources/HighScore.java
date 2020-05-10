@@ -35,4 +35,9 @@ public class HighScore extends HighScoreBase {
 			}
 	}
 	
+	public String toString() {
+		return this.getUsername() + ": " +this.getScore();
+		
+	}
+	
 }
