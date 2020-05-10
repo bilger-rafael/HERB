@@ -9,6 +9,11 @@ import herb.client.rest.RestClient;
 
 //Bilger
 public class HighScore extends HighScoreBase {
+	
+	// default constructor for json deserialization
+	public HighScore() {
+		super("", 0);
+	}
 
 	public HighScore(String username, Integer score) {
 		super(username, score);
