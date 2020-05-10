@@ -98,8 +98,8 @@ public class Round extends RoundBase<Game, Player, Trick> implements Runnable {
 		for (int i = 0; i < this.getScores().length; i++) {
 			DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[i].toString(), this.getScores()[i]);
 		}
-
-		// TODO kill thread
+		
+		this.getGame().endRound();
 	}
 
 	// Random Trump wählen
