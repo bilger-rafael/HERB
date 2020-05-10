@@ -562,7 +562,7 @@ public class GameView extends View<GameModel> {
 		
 		//check if this player is the starting player and if trump is not yet set
 		Player x = Datastore.getInstance().getMainPlayer();
-		if (!x.getRound().getCurrentStartingPlayer().equals(x) && x.getRound().getTrump() == null) {
+		if (!x.getRound().getCurrentStartingPlayer().equals(x)) {
 			changeTopOfStackPane();
 		}
 	}
