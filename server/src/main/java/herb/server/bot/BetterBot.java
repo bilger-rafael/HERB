@@ -1,6 +1,8 @@
 package herb.server.bot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import herb.server.ressources.Card;
@@ -197,10 +199,12 @@ public class BetterBot extends BotBase {
 			//Falls Bot Buur hat und Nell gespielt ist=> stechen
 			if(botHasBuur()) {
 				for (Card c: this.getRound().getTricks().getLast().getPlayedCards()) {
-					if (c.getPoints()==14) {
-						if(botHandBuur()!=null) {
-							bestCard = botHandBuur();
-							break;
+					if(c!=null) {
+						if (c.getPoints()==14) {
+							if(botHandBuur()!=null) {
+								bestCard = botHandBuur();
+								break;
+							}
 						}
 					}
 				}
@@ -223,10 +227,12 @@ public class BetterBot extends BotBase {
 			//Falls Bot Buur hat und Nell gespielt ist=> stechen
 			if(botHasBuur()) {
 				for (Card c: this.getRound().getTricks().getLast().getPlayedCards()) {
-					if (c.getPoints()==14) {
-						if(botHandBuur()!=null) {
-							bestCard = botHandBuur();
-							break;
+					if(c!=null) {
+						if (c.getPoints()==14) {
+							if(botHandBuur()!=null) {
+								bestCard = botHandBuur();
+								break;
+							}
 						}
 					}
 				}
@@ -285,11 +291,11 @@ public class BetterBot extends BotBase {
 			// Alle Karten vom Trick
 			Boolean winAgainstTrick = false;
 			for (Card cT : playedCardsFromTrick) {
-				if (c.compareToWinnerCard(cT)) {
-					// Diese Karte gewinnt
-					winAgainstTrick = true;
-				} else {
-					// nichts
+				if(cT!=null) {
+					if (c.compareToWinnerCard(cT)) {
+						// Diese Karte gewinnt
+						winAgainstTrick = true;
+					} 
 				}
 			}
 			if (winAgainstTrick) {
@@ -308,11 +314,13 @@ public class BetterBot extends BotBase {
 			// Alle Karten vom Trick
 			Boolean winAgainstTrick = false;
 			for (Card cT : playedCardsFromTrick) {
-				if (c.compareToWinnerCard(cT)) {
-					// Diese Karte gewinnt
-					winAgainstTrick = true;
-				} else {
-					// nichts
+					if(cT!=null) {
+						if (c.compareToWinnerCard(cT)) {
+						// Diese Karte gewinnt
+						winAgainstTrick = true;
+					} else {
+						// nichts
+					}
 				}
 			}
 			if (!winAgainstTrick) {
@@ -327,19 +335,28 @@ public class BetterBot extends BotBase {
 		DeckOfCards deck = new DeckOfCards();
 		this.remainingCards = deck.getCardSet();
 		
+		//Trumpf für alle Karten setzen
+		for (Card c : this.remainingCards) {
+			c.setTrump(this.getRound().getTrump());
+		}
+		
 		// Abgleich gespielten Karten mit dem Deck
 		for(Trick t : this.getRound().getTricks()) {
-			Card [] tempCards = t.getPlayedCards();
-			for(Card c : tempCards) {
-				for(Card rC : this.remainingCards) {
-					if(c.equals(rC)) {
-						this.remainingCards.remove(rC);
+			List<Card> tempCards = Arrays.asList(t.getPlayedCards());
+			//Card [] tempCards = t.getPlayedCards();
+				for(Card c : tempCards) {
+					if(c!=null) {
+						for(Card rC : this.remainingCards) {
+							if(rC!=null) {
+								if(c.equals(rC)) {
+									this.remainingCards.remove(rC);
+									}
+								}
+							}
+						}
 					}
 				}
-				
-			}
 		}
-	}
 	
 	//Höchster Wert einer Farbe der verbleibenden Karten
 	private int returnHighestValueSuit(Suit s) {
@@ -388,12 +405,14 @@ public class BetterBot extends BotBase {
 	private boolean isHighstRemainingCard(Card cInput) {
 		boolean b = false;
 		
-		for (Card c : this.remainingCards) {
-			if (cInput.getSuit().equals(c.getSuit())) {
-				if(cInput.getGameValue()>=c.getGameValue()) {
-					b = true;
-				}else {
-					b = false;
+		if(this.getRound().getTrump()!=null) {
+			for (Card c : this.remainingCards) {
+				if (cInput.getSuit().equals(c.getSuit())) {
+					if(cInput.getGameValue()>=c.getGameValue()) {
+						b = true;
+					}else {
+						b = false;
+					}
 				}
 			}
 		}
@@ -403,20 +422,22 @@ public class BetterBot extends BotBase {
 	//Hat es noch Trümpfe ausser die vom Bot
 	private boolean isTrumpsLeft() {
 		boolean b = false;
-		for (Card c : this.remainingCards){
-			if (c.getTrump().equals(this.getRound().getTrump())) {
-				//Prüfen, ob nur Trumps von Bot
-				boolean onlyMyTrumps = true;
-				for (Card cH : this.getHand().getCards()) {
-					while(onlyMyTrumps) {
-						if(!c.equals(cH)) {
-							onlyMyTrumps = false;
+		if(this.getRound().getTrump()!=null) {
+			for (Card c : this.remainingCards){
+				if (c.isTrump()) {
+					//Prüfen, ob nur Trumps von Bot
+					boolean onlyMyTrumps = true;
+					for (Card cH : this.getHand().getCards()) {
+						while(onlyMyTrumps) {
+							if(!c.equals(cH)) {
+								onlyMyTrumps = false;
+							}
 						}
 					}
-				}
-				if(!onlyMyTrumps) {
-					b = true;	
-				}
+					if(!onlyMyTrumps) {
+						b = true;	
+					}
+			}
 			}
 		}
 		return b;

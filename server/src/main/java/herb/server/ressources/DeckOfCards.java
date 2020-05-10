@@ -16,7 +16,7 @@ public class DeckOfCards {
 		initializeCards();
 		shuffle();
 	}
-
+	
 	public int getCardsRemaining() {
 		return cardSet.size();
 	}

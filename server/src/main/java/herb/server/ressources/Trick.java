@@ -108,7 +108,9 @@ public class Trick extends TrickBase<Player, Card> {
 		int trickPoints = 0;
 
 		for (int i = 0; i < getPlayedCards().length; i++) {
-			trickPoints += getPlayedCards()[i].getPoints();
+			if(getPlayedCards()[i]!=null) {
+				trickPoints += getPlayedCards()[i].getPoints();
+			}
 		}
 
 		return trickPoints;

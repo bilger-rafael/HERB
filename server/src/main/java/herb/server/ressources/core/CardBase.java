@@ -50,17 +50,22 @@ public abstract class CardBase {
     }
 	
 	protected  boolean isTopDown() {
-		if (this.trump.ordinal() == 4)
-			return true;
-		else return false;
+		if (this.trump != null) {
+			if (this.trump.ordinal() == 4)
+				return true;
+			else return false;
+		}else return false;
 	}
 	
 	protected boolean isBottomUp() {
-		if (this.trump.ordinal() == 5)
-			return true;
-		else return false;
+		if (this.trump != null) {
+			if (this.trump.ordinal() == 5)
+				return true;
+			else return false;
+		}else {
+			return false;
+		}
 	}
-
 	public Suit getSuit() {
 		return this.suit;
 	}

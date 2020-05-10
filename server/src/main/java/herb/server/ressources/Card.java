@@ -92,6 +92,7 @@ public class Card extends CardBase {
 		}
 		//Nicht Trumpf
 		if(!isTrump() && !isTopDown() && !isBottomUp()) {
+			if(this.getTrump()!=null) {
 			int i = rank.ordinal();
 			switch (i) {
 				case(0): points = 0;
@@ -112,7 +113,8 @@ public class Card extends CardBase {
 					break;				
 				case(8): points = 11;
 					break;
-			}	
+				}	
+			}
 		}
 		return points;
 	}
@@ -214,6 +216,7 @@ public class Card extends CardBase {
 		
 		//Nicht Trumpf
 		if(!isTrump()&&!isBottomUp()&&!isTopDown()) {
+			if(this.getTrump()!=null)
 			value+=this.getRank().ordinal();
 		}
 		
