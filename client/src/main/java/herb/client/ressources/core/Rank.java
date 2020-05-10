@@ -18,7 +18,23 @@ public enum Rank { Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace;
         return str;
     }
     
-    public String toStringDE() {
+    public String toStringDe() {
+    	String rank = "";
+    	switch (this) {
+    	case Six: rank = "Sechs"; break;
+        case Seven: rank = "Sieben"; break;
+        case Eight: rank = "Acht"; break;
+        case Nine: rank = "Neun"; break;
+        case Ten: rank = "Zehn"; break;
+        case Jack: rank = "Under"; break;
+        case Queen: rank = "Ober"; break;
+        case King: rank = "Koenig"; break;
+        case Ace: rank = "Ass"; break;
+        }
+        return rank;
+    }
+    
+    public String toStringFr() {
     	String rank = "";
     	switch (this) {
     	case Six: rank = "Sechs"; break;
