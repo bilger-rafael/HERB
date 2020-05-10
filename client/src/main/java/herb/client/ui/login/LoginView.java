@@ -26,7 +26,6 @@ public class LoginView extends View<LoginModel> {
 	private LoginModel model;
 	private BorderPane root, bottomBox;
 	private VBox centerBox;
-	private HBox topBox;
 	private HBox messageBox;
 	private Region zero, one, two;	
 	
