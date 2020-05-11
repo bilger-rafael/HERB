@@ -44,7 +44,7 @@ public class GameModel extends Model {
 	private ObservableList<Trump> trumps = FXCollections.observableArrayList();
 	private ArrayList<Integer> scoresList;
 	private Thread t, tu, tru;
-	private volatile boolean stopT;
+	private volatile boolean stop = false;
 	private String cardSet = "Fr";
 
 	public GameModel() {
@@ -142,7 +142,7 @@ public class GameModel extends Model {
 				// to look at the finished trick
 			} else {
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 				}
 				trick = tricks.getLast();
@@ -264,22 +264,12 @@ public class GameModel extends Model {
 		} catch (Exception e) {
 			return;
 		}
-
-//		if(Datastore.getInstance().getMainPlayer().getRound().getTricks().isEmpty())
-//			return;
-//		
-//		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
-//		this.trickNumber = Datastore.getInstance().getMainPlayer().getRound().getTricks().size();
-//		currentPlayers.add(trick.getCurrentPlayer());
-//		startingPlayers.add(trick.getStartingPlayer());
 	}
 
 	public void refreshTrump() {
 
 		if (Datastore.getInstance().getMainPlayer().getRound().getTrump() == null)
 			return;
-//		if(Datastore.getInstance().getMainPlayer().getRound().getTrump() == trumps.get(trumps.size()-1))
-//			return;
 
 		trumps.add(Datastore.getInstance().getMainPlayer().getRound().getTrump());
 	}
@@ -304,11 +294,13 @@ public class GameModel extends Model {
 		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				while (!stop) {
 					Platform.runLater(() -> refreshTrickCards());
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(500);
 					} catch (InterruptedException e) {
+						// connection lost
+						
 					}
 				}
 			}
@@ -323,11 +315,13 @@ public class GameModel extends Model {
 		Runnable ru = new Runnable() {
 			@Override
 			public void run() {
-				while (!Thread.currentThread().isInterrupted()) {
+				while (!stop) {
 					Platform.runLater(() -> refreshPlayables());
+					System.out.println("playables-updater working");
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(500);
 					} catch (InterruptedException e) {
+						// connection lost
 					}
 				}
 			}
@@ -341,11 +335,13 @@ public class GameModel extends Model {
 		Runnable run = new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				while (!stop) {
 					Platform.runLater(() -> refreshTrump());
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
+						// message: Your choice couldn't be sent to others
+						
 					}
 				}
 			}
@@ -361,6 +357,11 @@ public class GameModel extends Model {
 
 	public Player getCurrentPlayer() {
 		return this.currentPlayer;
+	}
+	
+	public String getLobbyName() {
+		String lobby =  Datastore.getInstance().getMainPlayer().getRound().getGame().getLobby().getName();
+		return lobby;
 	}
 
 	public SimpleObjectProperty<Player> getCurrentPlayerProperty() {
@@ -390,6 +391,10 @@ public class GameModel extends Model {
 
 	public String getCardSet() {
 		return this.cardSet;
+	}
+	
+	public void setStopThread() {
+		this.stop = true;
 	}
 
 }

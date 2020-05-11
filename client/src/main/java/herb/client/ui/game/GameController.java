@@ -45,8 +45,8 @@ public class GameController extends Controller<GameModel, GameView> {
 		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
 				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
-				trickNumber++;
-				view.updatePlayerBoxes(trickNumber);
+			//	trickNumber++;
+			//	view.updatePlayerBoxes(trickNumber);
 			}
 		};
 		
@@ -56,10 +56,10 @@ public class GameController extends Controller<GameModel, GameView> {
 				try {
 				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
 					view.updatePointPane(model.getScores());
-					
-					model.getT().interrupt();
+					//stop all Listeners
+					model.setStopThread();
 					System.out.println("passed here");
-					//listener stoppen
+					
 					}
 				}
 				catch (Exception e){
@@ -72,6 +72,10 @@ public class GameController extends Controller<GameModel, GameView> {
 				view.setStartingPlayer();	
 				if(pl.equals(model.getPlayers().get(0))) {
 					view.setTurn();
+				}
+				
+				if(model.getCurrentPlayers().get(i-2).equals(model.getLobbyPlayers().get(1))) {
+					view.updateRightPlayer(model.getTrickNumber());
 				}
 			}
 		};
@@ -171,9 +175,13 @@ public class GameController extends Controller<GameModel, GameView> {
 	
 	public void changeCardSet2French() {
 		model.setCardSet("Fr");
+		view.updateImagePatterns();
+		view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
 	}
 	public void changeCardSet2German() {
 		model.setCardSet("De");
+		view.updateImagePatterns();
+		view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
 	}
 	
 	public void quitGame() {

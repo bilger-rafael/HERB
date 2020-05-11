@@ -5,14 +5,12 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Locale;
 import herb.client.ressources.Card;
-import herb.client.ressources.Lobby;
 import herb.client.ressources.Player;
 import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.View;
-import herb.client.ui.lobby.LobbyModel;
 import herb.client.utils.Datastore;
 import herb.client.utils.ServiceLocator;
 import herb.client.utils.Translator;
@@ -57,7 +55,7 @@ public class GameView extends View<GameModel> {
 	private HBox tMain, tRight, tOppo, tLeft, buttons;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
 	private Label pointsLabel, pointsPlayerLabel, playedPointsLabel, winnerLabel; 
-	private Label trumpLabel, currentPlayerLabel, startingPlayerLabel, startingPlayerText;
+	private Label trumpLabel, startingPlayerLabel, startingPlayerText;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
 	private StackPane tablePart;
@@ -65,8 +63,8 @@ public class GameView extends View<GameModel> {
 	private ArrayList<Card> cardAreas;
 	private ArrayList<Player> players;
 	private MenuBar menuBar;
-	private Menu menuLanguage, menuCardSet, menuExit;
-	public MenuItem back, logout, germanSet, frenchSet;
+	private Menu menuLanguage, menuCardSet;
+	public MenuItem germanSet, frenchSet;
 	private ArrayList<Card> cards, trick;
 	private ImageView imview;
 	private Button revancheButton, quitButton;
@@ -92,15 +90,11 @@ public class GameView extends View<GameModel> {
 		// create MenuBar for language and exit
 		menuBar = new MenuBar();
 		menuLanguage = new Menu();	
-		menuExit  = new Menu();
 		menuCardSet = new Menu();
-		back = new MenuItem();
-		logout = new MenuItem();
-		menuExit.getItems().addAll(back, logout);
 		frenchSet = new MenuItem();
 		germanSet = new MenuItem();
 		menuCardSet.getItems().addAll(frenchSet, germanSet);
-		menuBar.getMenus().addAll(menuLanguage, menuExit, menuCardSet);
+		menuBar.getMenus().addAll(menuLanguage, menuCardSet);
 				
 		// link to Locale
 		for (Locale locale : sl.getLocales()) {
@@ -172,16 +166,14 @@ public class GameView extends View<GameModel> {
 		trumpLabel = new Label();
 		imview = new ImageView();
 		
-		// display lobby and starting player (currentPlayer only temporary) TODO
+		// display lobby and starting player (currentPlayer only temporary)
 		lobbyBox = new VBox();
-		// somehow get LobbyLabel TODO
-	    Lobby l = new Lobby();
-		lobbyLabel = new Label(l.getName().toString());
-		currentPlayerLabel = new Label("next ---");
+		lobbyLabel = new Label(model.getLobbyName());
 	    startingPlayerText = new Label();
 	    startingPlayerLabel = new Label("is defined later");
 	   	lobbyBox.getChildren().addAll(lobbyLabel, startingPlayerText, startingPlayerLabel);
-	   	lobbyBox.getChildren().add(currentPlayerLabel);
+	   	lobbyBox.setStyle("-fx-border-color: white");	
+	   	lobbyBox.setStyle("-fx-background-color: gold");
 				
 		// Cards and Trump images
 	    rects = new ArrayList();
@@ -198,7 +190,7 @@ public class GameView extends View<GameModel> {
 		setTrumpOptions();
 			
 		updateLeftPlayer();
-		updateRightPlayer(MAX_CARDS);
+		setRightPlayer();
         updateOppoPlayer();
        		
 		//BorderPane opposite Player and Table
@@ -355,9 +347,16 @@ public class GameView extends View<GameModel> {
 		int arrayIndex = 0;
 		boolean endeDerFahnenstange = false;
 		for(int j=startingPosition; !endeDerFahnenstange; j += 2) {
-			// immer ab 0
-			String rank = cards.get(arrayIndex).getRank().toStringFr();
-			String suit = cards.get(arrayIndex).getSuit().toStringFr();
+			String rank; 
+			String suit;
+			if(model.getCardSet().equals("De")){		
+				rank = cards.get(arrayIndex).getRank().toStringDe();
+				suit = cards.get(arrayIndex).getSuit().toStringDe();
+			}else {		
+				rank = cards.get(arrayIndex).getRank().toStringFr();
+				suit = cards.get(arrayIndex).getSuit().toStringFr();
+			}
+
 			String filename = suit + "_" + rank + ".jpg";
 			Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/"+ model.getCardSet() +"/" + filename));		
 			ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
@@ -380,9 +379,16 @@ public class GameView extends View<GameModel> {
 		trick = new ArrayList();
 		trick = cardSet;
 		// update played cards
-		for (int i = 0; i< trick.size(); i++) {
-		String r1 = trick.get(i).getRank().toStringFr();
-		String s1 = trick.get(i).getSuit().toStringFr();
+		for (int i = 0; i< trick.size(); i++) {	
+			String r1; 
+			String s1;
+			if (model.getCardSet().equals("De")){
+				r1 = trick.get(i).getRank().toStringDe();
+				s1 = trick.get(i).getSuit().toStringDe();
+			}else {
+				r1 = trick.get(i).getRank().toStringFr();
+				s1 = trick.get(i).getSuit().toStringFr();
+			}
 		String filename = s1 + "_" + r1 + ".jpg";
 		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
 		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
@@ -392,7 +398,6 @@ public class GameView extends View<GameModel> {
 		startingPlayerLabel.setText(s.getUsername().toString());
 		
 		Player c = model.getCurrentPlayer();
-		currentPlayerLabel.setText(c.getUsername().toString());
 		if(c.equals(model.getPlayers().get(0))) {
 			trickLabel2.setVisible(true);
 		}
@@ -457,7 +462,7 @@ public class GameView extends View<GameModel> {
         rectangleLeft.setArcHeight(20);
         rectangleLeft.setArcWidth(20);
         String filenameLeft = "Rückseite.jpg";
-		Image imageLeft = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filenameLeft));
+		Image imageLeft = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameLeft));
         ImagePattern patternLeft = new ImagePattern(imageLeft, 0, 0, 514/4,322/4, false);
         rectangleLeft.setFill(patternLeft);
 	    
@@ -476,10 +481,25 @@ public class GameView extends View<GameModel> {
 		left.setAlignment(Pos.CENTER_RIGHT);
 	}
 	
-	private void updateRightPlayer(int trickNumber) {
+	public void setRightPlayer() {
 		// TODO reduce cards
 		// rightHandSide - cards in VBox, together with name in HBox
-		for (int i= 0; i< MAX_CARDS; i++) {
+		updateRightPlayer(0);
+		rightHandSide.setSpacing(-40.0);
+		rightHandSide.setMinWidth(100);
+		rightHandSide.setMaxHeight(500);
+		right.getChildren().add(rightHandLabel);
+		right.getChildren().add(rightHandSide);
+		right.setSpacing(10.0);
+		right.setPadding(new Insets(10, 10, 10, 10));
+		right.setAlignment(Pos.CENTER_RIGHT);
+	}
+	
+	public void updateRightPlayer(int trickNumber) {
+		
+		rightHandSide.getChildren().clear();
+		
+		for (int i= 0; i< MAX_CARDS-trickNumber; i++) {
 		Rotate rotateRight = new Rotate();
 		Rectangle rectangleRight = new Rectangle();
 		rectangleRight.setHeight(322/4);
@@ -487,7 +507,7 @@ public class GameView extends View<GameModel> {
 		rectangleRight.setArcHeight(20);
 		rectangleRight.setArcWidth(20);
 		String filenameRight = "Rückseite.jpg";
-		Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filenameRight));
+		Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/"  + filenameRight));
         ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
         rectangleRight.setFill(patternRight);
         
@@ -497,14 +517,6 @@ public class GameView extends View<GameModel> {
 //	    rectangleRight.getTransforms().addAll(rotateRight);      
         rightHandSide.getChildren().add(rectangleRight);        
 	}
-		rightHandSide.setSpacing(-40.0);
-		rightHandSide.setMinWidth(100);
-		rightHandSide.setMaxHeight(500);
-		right.getChildren().add(rightHandLabel);
-		right.getChildren().add(rightHandSide);
-		right.setSpacing(10.0);
-		right.setPadding(new Insets(10, 10, 10, 10));
-		right.setAlignment(Pos.CENTER_RIGHT);
 	}
 	
 	private void updateOppoPlayer() {
@@ -520,7 +532,7 @@ public class GameView extends View<GameModel> {
 		rectangleOppo.setArcWidth(20);
         
 		String filenameOppo = "Rückseite.jpg";
-		Image imageOppo = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filenameOppo));
+		Image imageOppo = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameOppo));
         ImagePattern patternOppo = new ImagePattern(imageOppo, 0, 0, 322/4, 514/4, false);
         rectangleOppo.setFill(patternOppo);
 	    rotateOppo.setAngle(20-5*i); 
@@ -551,7 +563,7 @@ public class GameView extends View<GameModel> {
 	        String t = trump.toString(); 
 			String filenameTrump = t + ".png";
 	        
-			Image images = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + filenameTrump));
+			Image images = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameTrump));
 	        ImagePattern patterns = new ImagePattern(images, 0, 0, 100, 100, false);
 	        rectangleTO.setFill(patterns);
 	        trumpBox.getChildren().add(rectangleTO);  
@@ -593,7 +605,7 @@ public class GameView extends View<GameModel> {
 	
 	public void updateTrumpInfo(Trump t) {
 		String trumpFilename = t.toString() + ".png";
-		Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/fr/" + trumpFilename));
+		Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + trumpFilename));
 		imview.setImage(image);	
 	}
 	
@@ -699,7 +711,6 @@ public class GameView extends View<GameModel> {
 		// language settings
 		menuLanguage.setText(t.getString("program.game.menuLanguage"));
 		// screen labels
-		menuExit.setText(t.getString("program.game.menuExit"));
 		menuCardSet.setText(t.getString("program.game.menuCardSet"));
 		trickLabel2.setText(t.getString("program.game.order"));
 		pointsLabel.setText(t.getString("program.game.pointsLabel"));
@@ -708,9 +719,6 @@ public class GameView extends View<GameModel> {
 		startingPlayerText.setText(t.getString("program.game.startingPlayer"));
 		revancheButton.setText(t.getString("program.game.revancheButton"));
 		quitButton.setText(t.getString("program.game.quitButton"));
-	
-		back.setText(t.getString("program.game.back"));
-		logout.setText(t.getString("program.game.logout"));
 		frenchSet.setText(t.getString("program.game.frenchSet"));
 		germanSet.setText(t.getString("program.game.germanSet"));
 	
@@ -755,9 +763,9 @@ public class GameView extends View<GameModel> {
 		return startingPosition;
 	}
 
-	public void updatePlayerBoxes(int trickNumber) {
-		// TODO Auto-generated method stub
-		
-	}
+//	public void updatePlayerBoxes(int trickNumber) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 	
 }
