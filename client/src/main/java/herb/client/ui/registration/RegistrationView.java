@@ -226,27 +226,17 @@ public class RegistrationView extends View<RegistrationModel> {
 		return passwordField;
 	}
 	
-//	public void showError() {
-//		Translator t = ServiceLocator.getInstance().getTranslator();
-//		errorLabel.setText(t.getString("Programm.newUser.errorLabel"));
-//		
-//		if( transition == null ) {
-//			transition = new FadeTransition(Duration.millis(2000), errorLabel);
-//			transition.setFromValue(1.0);
-//			transition.setToValue(0);
-//			transition.setDelay(Duration.millis(2000));
-//		}
-//		
-//		transition.stop();
-//		errorLabel.setOpacity(1);
-//		transition.play();
-//	}
 	public void resetPasswordField() {
 		passwordField.setText("");
 	}
 	
 	public void resetNameField() {
 		nameTextField.setText("");
+	}
+	
+	public void showError() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		message.setText(t.getString("program.registration.message"));
 	}
 	
 }
