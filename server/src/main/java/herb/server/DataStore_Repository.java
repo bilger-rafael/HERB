@@ -122,7 +122,7 @@ public class DataStore_Repository {
 	// Testet, ob es die DB bereits gibt, Idee von StackOverflow
 	private boolean dbExist() {
 		ResultSet rs = null;
-		String dbName = "JASSHERB";
+		String dbName = "jassherb";
 		try {
 			this.cn = DriverManager.getConnection(this.ip, this.user, this.pw);
 			rs = this.cn.getMetaData().getCatalogs();
@@ -146,14 +146,14 @@ public class DataStore_Repository {
 	// Idee von Stackoverflow:
 	// https://stackoverflow.com/questions/11909324/creating-a-database-table-if-it-does-not-exist-in-java-production-code-and-confi
 	private void createSchema() throws SQLException {
-		String sqlCreate = "CREATE SCHEMA JASSHERB";
+		String sqlCreate = "CREATE SCHEMA jassherb";
 
 		Statement stmt = this.cn.createStatement();
 		stmt.execute(sqlCreate);
 	}
 
 	private void createLoginTable() throws SQLException {
-		String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.Login (" + "   Name VARCHAR(45) NOT NULL,"
+		String sqlCreate = "CREATE TABLE IF NOT EXISTS jassherb.Login (" + "   Name VARCHAR(45) NOT NULL,"
 				+ "   Password VARCHAR(45) NOT NULL," + "   PRIMARY KEY (Name))";
 
 		Statement stmt = this.cn.createStatement();
@@ -161,7 +161,7 @@ public class DataStore_Repository {
 	}
 
 	private void createLobbyTable() throws SQLException {
-		String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.Lobby (" + "   LobbyName VARCHAR(45) NOT NULL,"
+		String sqlCreate = "CREATE TABLE IF NOT EXISTS jassherb.Lobby (" + "   LobbyName VARCHAR(45) NOT NULL,"
 				+ "   PRIMARY KEY (LobbyName))";
 
 		Statement stmt = this.cn.createStatement();
@@ -169,7 +169,7 @@ public class DataStore_Repository {
 	}
 
 	private void createHighScoresTable() throws SQLException {
-		String sqlCreate = "CREATE TABLE IF NOT EXISTS JASSHERB.HighScore (" + "   PlayerName VARCHAR(45) NOT NULL,"
+		String sqlCreate = "CREATE TABLE IF NOT EXISTS jassherb.HighScore (" + "   PlayerName VARCHAR(45) NOT NULL,"
 				+ "   Points INT NOT NULL," + "   PRIMARY KEY (PlayerName))";
 
 		Statement stmt = this.cn.createStatement();
@@ -184,7 +184,7 @@ public class DataStore_Repository {
 		int answer = 0;
 
 		try {
-			stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Login (Name, Password) VALUES (?,?)");
+			stmt = this.cn.prepareStatement("INSERT IGNORE INTO jassherb.Login (Name, Password) VALUES (?,?)");
 			stmt.setString(1, playername);
 			stmt.setString(2, password);
 			answer = stmt.executeUpdate();
@@ -217,7 +217,7 @@ public class DataStore_Repository {
 		int answer = 0;
 
 		try {
-			stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Login WHERE Name=?");
+			stmt = this.cn.prepareStatement("DELETE FROM jassherb.Login WHERE Name=?");
 			stmt.setString(1, playername);
 			answer = stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -247,7 +247,7 @@ public class DataStore_Repository {
 		String password = null;
 
 		try {
-			stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.Login WHERE name=?");
+			stmt = this.cn.prepareStatement("SELECT * FROM jassherb.Login WHERE name=?");
 			stmt.setString(1, playername);
 			rs = stmt.executeQuery();
 			rs.next();
@@ -279,7 +279,7 @@ public class DataStore_Repository {
 		boolean b = false;
 
 		try {
-			stmt = this.cn.prepareStatement("SELECT COUNT(Name) FROM JASSHERB.Login WHERE Name = ?");
+			stmt = this.cn.prepareStatement("SELECT COUNT(Name) FROM jassherb.Login WHERE Name = ?");
 			stmt.setString(1, playername);
 			rs = stmt.executeQuery();
 			rs.next();
@@ -317,7 +317,7 @@ public class DataStore_Repository {
 		if (points > showHighScoreOfPlayer(playername)) {
 			try {
 				//Fügt hinzu falls noch nicht vorhanden
-				stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.HighScore (PlayerName, Points) VALUES (?,?)");
+				stmt = this.cn.prepareStatement("INSERT IGNORE INTO jassherb.HighScore (PlayerName, Points) VALUES (?,?)");
 				stmt.setString(1, playername);
 				stmt.setInt(2, points);
 				answer = stmt.executeUpdate();
@@ -350,7 +350,7 @@ public class DataStore_Repository {
 		int answer = 0;
 		try {
 			//Update des Scores, falls höher bestehender HighScore
-			stmt = this.cn.prepareStatement("UPDATE JASSHERB.HighScore SET Points = ? WHERE PlayerName = ?");
+			stmt = this.cn.prepareStatement("UPDATE jassherb.HighScore SET Points = ? WHERE PlayerName = ?");
 			stmt.setInt(1, points);
 			stmt.setString(2, playername);
 			answer = stmt.executeUpdate();
@@ -381,7 +381,7 @@ public class DataStore_Repository {
 		int i = 0;
 
 		try {
-			stmt = this.cn.prepareStatement("SELECT Points FROM JASSHERB.HighScore WHERE PlayerName=?");
+			stmt = this.cn.prepareStatement("SELECT Points FROM jassherb.HighScore WHERE PlayerName=?");
 			stmt.setString(1, playername);
 			rs = stmt.executeQuery();
 			rs.next();
@@ -413,7 +413,7 @@ public class DataStore_Repository {
 		int answer = 0;
 
 		try {
-			stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.HighScore WHERE PlayerName=?");
+			stmt = this.cn.prepareStatement("DELETE FROM jassherb.HighScore WHERE PlayerName=?");
 			stmt.setString(1, playername);
 			answer = stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -442,7 +442,7 @@ public class DataStore_Repository {
 		ResultSet rs = null;
 		String tempHS = null;
 		try {
-			stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.HighScore");
+			stmt = this.cn.prepareStatement("SELECT * FROM jassherb.HighScore");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				tempList.put(rs.getString(1), rs.getInt(2));
@@ -474,7 +474,7 @@ public class DataStore_Repository {
 		int answer = 0;
 
 		try {
-			stmt = this.cn.prepareStatement("INSERT IGNORE INTO JASSHERB.Lobby (LobbyName) VALUES (?)");
+			stmt = this.cn.prepareStatement("INSERT IGNORE INTO jassherb.Lobby (LobbyName) VALUES (?)");
 			stmt.setString(1, lobbyName);
 			answer = stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -503,7 +503,7 @@ public class DataStore_Repository {
 		int answer = 0;
 
 		try {
-			stmt = this.cn.prepareStatement("DELETE FROM JASSHERB.Lobby WHERE LobbyName=?");
+			stmt = this.cn.prepareStatement("DELETE FROM jassherb.Lobby WHERE LobbyName=?");
 			stmt.setString(1, lobbyName);
 			answer = stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -533,7 +533,7 @@ public class DataStore_Repository {
 		String tempLobbyName = null;
 
 		try {
-			stmt = this.cn.prepareStatement("SELECT * FROM JASSHERB.Lobby");
+			stmt = this.cn.prepareStatement("SELECT * FROM jassherb.Lobby");
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 
