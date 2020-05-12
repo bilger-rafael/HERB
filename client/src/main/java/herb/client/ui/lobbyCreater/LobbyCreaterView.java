@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -16,15 +17,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	
 	private BorderPane root; 
-	private HBox bottomBox, topBox;
+	private HBox bottomBox, topBox, messageBox;
+	private VBox centerBox ;
 	
 	private Button okButton, cancelButton;
 	private TextField text;
+	private Label message;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -61,6 +65,14 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		text = new TextField();
 		text.setId("textField");
 		
+		/**
+		 * messages
+		 */
+		messageBox = new HBox();
+		message = new Label();
+		message.setPrefHeight(40);
+		messageBox.getChildren().add(message);
+		
 		// Buttons - not needed in final version - just to open the GameView
 		bottomBox = new HBox();
 		okButton = new Button();
@@ -78,11 +90,14 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	    topBox.setPadding(new Insets(20));
 	    bottomBox.getChildren().addAll(okButton, cancelButton);
 	    bottomBox.setPadding(new Insets(2));
+	    
+	    centerBox = new VBox();
+	    centerBox.getChildren().addAll(topBox, bottomBox);
 		
 		root.setId("background");
 	    root.setTop(menuBar);
-		root.setCenter(topBox);
-		root.setBottom(bottomBox);
+		root.setCenter(centerBox);
+		root.setBottom(messageBox);
 		
 		updateLabels();
 		Scene scene = new Scene(root);
@@ -96,6 +111,9 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		cancelButton.setText(t.getString("program.lobbyCreater.cancelButton"));
 		okButton.setText(t.getString("program.lobbyCreater.okButton"));
 		menuLanguage.setText(t.getString("program.lobbyCreater.menuLanguage"));
+		if (message.getText()!="") {
+			message.setText(t.getString("program.lobbyCreater.message"));
+		}
 		
 	}
 	public TextField getTextField() {
@@ -112,5 +130,10 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	
 	public Button getCancelButton() {
 		return cancelButton;
+	}
+	//To show the error message in GUI if Login fails
+	public void showError() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		message.setText(t.getString("program.lobbyCreater.message"));
 	}
 }
