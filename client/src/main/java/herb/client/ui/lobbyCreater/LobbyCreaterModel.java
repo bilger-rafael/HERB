@@ -10,14 +10,10 @@ public class LobbyCreaterModel extends Model{
     	super();
     }
 
-	public void createLobby(String text) {
+	public void createLobby(String text) throws ExceptionBase {
 		Lobby lobby;
-		try {
 			lobby = Lobby.createLobby(text);
 			System.out.println(lobby.getName());
-		} catch (ExceptionBase e) {
-			// TODO show error message
-			e.printStackTrace();
-		}
+
 	}
 }
