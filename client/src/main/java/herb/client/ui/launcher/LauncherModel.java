@@ -4,6 +4,7 @@ import herb.client.ressources.HighScore;
 import herb.client.ressources.Lobby;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Model;
+import herb.client.utils.Datastore;
 import herb.client.utils.ServiceLocator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -104,5 +105,9 @@ public class LauncherModel extends Model {
 
 	public void setTempSelectedLobby(Lobby tempSelectedLobby) {
 		this.tempSelectedLobby = tempSelectedLobby;
+	}
+	
+	public void logout() throws ExceptionBase {
+		Datastore.getInstance().getMainPlayer().logout();
 	}
 }

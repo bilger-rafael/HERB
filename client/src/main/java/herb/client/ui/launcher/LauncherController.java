@@ -13,18 +13,18 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 
 	public LauncherController(LauncherModel model, LauncherView view) {
 		super(model, view);
-		
+
 		// join a lobby
 		view.getJoinButton().setOnAction(e -> joinLobby());
 
 		// got to lobby create view
 		view.getCreateButton().setOnAction(e -> getLobbyCreaterView());
-		
+
 		/**
 		 * refresh lobby
 		 */
 		view.getRefreshButton().setOnAction(e -> model.refreshLobbyList());
-		
+
 		/**
 		 * refresh highscore
 		 */
@@ -32,14 +32,15 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 
 		/**
 		 * join a lobby
-		 */		
-		view.getJoinButton().disableProperty().bind(view.lobbyRoomCenter.getSelectionModel().selectedItemProperty().isNull());
-		
+		 */
+		view.getJoinButton().disableProperty()
+				.bind(view.lobbyRoomCenter.getSelectionModel().selectedItemProperty().isNull());
+
 		/**
-		 * logout 
+		 * logout
 		 */
 		view.getLogoutMenuItem().setOnAction(e -> getBackLoginView());
-		
+
 		serviceLocator = ServiceLocator.getInstance();
 		serviceLocator.getLogger().info("Launcher controller initialized");
 
@@ -64,21 +65,27 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 	private void getLobbyCreaterView() {
 		Main.getMainProgram().getLobbyCreater().start();
 	}
-	
+
 	private void getBackLoginView() {
+		try {
+			model.logout();
+		} catch (ExceptionBase e) {
+		}
 		view.stop();
 		serviceLocator.getLogger().info("Logout");
 		Main.getMainProgram().getLoginView().start();
 	}
-	
-	//gets the actual Lobby-selection in the model
+
+	// gets the actual Lobby-selection in the model
 	private void getSelection() {
-		if(view.getLobbyRoomCenter().getSelectionModel().getSelectedItem()!=null) {
+		if (view.getLobbyRoomCenter().getSelectionModel().getSelectedItem() != null) {
 			this.model.setTempSelectedLobby(view.getLobbyRoomCenter().getSelectionModel().getSelectedItem());
-		};
+		}
+		;
 	}
-	
-	//sets the actual Lobby-selection after the Refresh // TODO debugging => set the Selection correctly
+
+	// sets the actual Lobby-selection after the Refresh // TODO debugging => set
+	// the Selection correctly
 	private void setSelection() {
 		view.getLobbyRoomCenter().getSelectionModel().select(this.model.getTempSelectedLobby());
 	}
