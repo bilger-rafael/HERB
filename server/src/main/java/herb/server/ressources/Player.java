@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import herb.server.Datastore;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.PlayerBase;
@@ -174,6 +175,11 @@ public class Player extends PlayerBase<Hand, Round> {
 
 	public void setTrumpListener(TrumpListener tumpListener) {
 		this.trumpListener = tumpListener;
+	}
+
+	@Override
+	public void logout() throws ExceptionBase {
+		Datastore.getInstance().players.remove(getUsername());
 	}
 
 }

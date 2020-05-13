@@ -6,31 +6,30 @@ import herb.server.DataStore_Repository;
 import herb.server.Datastore;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.LoginBase;
-import herb.server.ressources.core.PlayerBase;
 
 //Bilger
-public class Login extends LoginBase {
+public class Login extends LoginBase<Player> {
 
 	public Login(String username, String password) {
 		super(username, password);
 	}
 
 	@Override
-	public PlayerBase login() throws ExceptionBase {
+	public Player login() throws ExceptionBase {
 
 		// Etter Login mit MySQL DB
 		// Check User existiert
 		if (!DataStore_Repository.getDB().checkLoginExist(this.getUsername())) {
 			throw new PlayerNotFoundException();
 		}
-		
+
 		// Check Passwort stimmt
 		if (!this.getPassword().equals(DataStore_Repository.getDB().showLoginPasswordfromDB(this.getUsername()))) {
 			throw new PlayerLoginFailedException();
 		}
-		
+
 		// check if player is already logged in
-		if (Datastore.getInstance().players.get(this.getUsername()) != null) 
+		if (Datastore.getInstance().players.get(this.getUsername()) != null)
 			return Datastore.getInstance().players.get(this.getUsername());
 
 		// add player and return it
@@ -53,7 +52,6 @@ public class Login extends LoginBase {
 		if (i == 0) {
 			throw new PlayerAlreadyExistsException();
 		}
-
 	}
 
 }

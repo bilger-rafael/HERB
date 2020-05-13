@@ -47,6 +47,8 @@ public abstract class PlayerBase <Hand extends HandBase, Round extends RoundBase
 	public abstract void play(CardBase card) throws ExceptionBase;
 	
 	public abstract void chooseTrump(Trump trump) throws ExceptionBase;
+	
+	public abstract void logout() throws ExceptionBase;
 
 	public String getUsername() {
 		return username;

@@ -1,10 +1,8 @@
 package herb.client.ressources.core;
 
-import java.util.Base64;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public abstract class LoginBase {
+public abstract class LoginBase<Player extends PlayerBase> {
 	private final String username;
 	private final String password;
 	
@@ -22,8 +20,8 @@ public abstract class LoginBase {
 		return password;
 	}
 	
-	public abstract PlayerBase login() throws ExceptionBase;
-	
 	public abstract void register() throws ExceptionBase;
+	
+	public abstract Player login() throws ExceptionBase;
 
 }

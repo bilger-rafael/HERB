@@ -68,5 +68,23 @@ public class Player extends PlayerBase<Hand, Round> {
 			throw new PlayerException();
 		}
 	}
+	
+	@Override
+	public void logout() throws ExceptionBase {
+		try {
+			RestClient.getClient()
+						.post()
+						.uri("/logout")
+						.body(BodyInserters.fromValue(this))
+						.retrieve()
+						.bodyToMono(String.class)
+						.block();
+		} catch (WebClientResponseException e) {
+			//TODO check e.getStatusCode() and raise specific error
+			throw new LoginException();
+		} catch (WebClientException e) {
+			throw new LoginException();
+		}
+	}
 
 }

@@ -8,17 +8,16 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ressources.core.LoginBase;
-import herb.client.ressources.core.PlayerBase;
 import herb.client.rest.RestClient;
 
-public class Login extends LoginBase {
+public class Login extends LoginBase<Player> {
 
 	public Login(String username, String password) {
 		super(username, Base64.getEncoder().encodeToString(password.getBytes()));
 	}
 
 	@Override
-	public PlayerBase login() throws ExceptionBase {
+	public Player login() throws ExceptionBase {
 		try {
 			return (Player) RestClient.getClient()
 					.post()
