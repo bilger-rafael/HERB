@@ -52,9 +52,9 @@ public class GameController extends Controller<GameModel, GameView> {
 				
 				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
 					//stop all Listeners
-					model.setStopThread();
 					System.out.println("passed here");
 					view.updatePointPane(model.getScores());
+					model.setStopThread();
 				}
 						
 				int i = model.getCurrentPlayers().size();
@@ -63,6 +63,18 @@ public class GameController extends Controller<GameModel, GameView> {
 				view.setStartingPlayer();	
 				if(pl.equals(model.getPlayers().get(0))) {
 					view.setTurn();
+				}
+				//check
+				if(model.getTrickCards().size()>1) {
+					if(pl.equals(model.getPlayers().get(1))) {
+						view.updateRightPlayer();
+					}
+					if(pl.equals(model.getPlayers().get(2))) {
+						view.updateOppoPlayer();
+					}
+					if(pl.equals(model.getPlayers().get(3))) {
+						view.updateLeftPlayer();
+				}
 				}
 			}
 		};

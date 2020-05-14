@@ -128,10 +128,10 @@ public class GameModel extends Model {
 		if (tricks.isEmpty())
 			return;
 
-//		if (trick == null) {
-//			trick = tricks.getLast();
-//			trickIndex = tricks.indexOf(tricks.getLast());
-//		}
+		if (trick == null) {
+			trick = tricks.getLast();
+			trickIndex = tricks.indexOf(tricks.getLast());
+		}
 
 		// delay when new trick is set
 		if (trickIndex != tricks.indexOf(tricks.getLast())) {
@@ -143,7 +143,7 @@ public class GameModel extends Model {
 				// to look at the finished trick
 			} else {
 				try {
-					Thread.sleep(200);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 				}
 				trick = tricks.getLast();
@@ -260,7 +260,8 @@ public class GameModel extends Model {
 			this.trickNumber = Datastore.getInstance().getMainPlayer().getRound().getTricks().size();
 			currentPlayers.add(trick.getCurrentPlayer());
 			startingPlayers.add(trick.getStartingPlayer());
-		} catch (Exception e) {
+			
+	} catch (Exception e) {
 			return;
 		}
 	}
@@ -296,7 +297,7 @@ public class GameModel extends Model {
 				while (!stop) {
 					Platform.runLater(() -> refreshTrickCards());
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// connection lost
 						
@@ -317,7 +318,7 @@ public class GameModel extends Model {
 				while (!stop) {
 					Platform.runLater(() -> refreshPlayables());
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// connection lost
 					}
@@ -336,7 +337,7 @@ public class GameModel extends Model {
 				while (!trumpStop) {
 					Platform.runLater(() -> refreshTrump());
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(800);
 					} catch (InterruptedException e) {
 						// message: Your choice couldn't be sent to others
 						

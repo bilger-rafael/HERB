@@ -393,18 +393,7 @@ public class GameView extends View<GameModel> {
 		Player c = model.getCurrentPlayer();
 		if(c.equals(model.getPlayers().get(0))) {
 			trickLabel2.setVisible(true);
-		}
-		//check
-		if(trick.size()>1) {
-			if(c.equals(model.getPlayers().get(1))) {
-				updateRightPlayer();
-			}
-			if(c.equals(model.getPlayers().get(2))) {
-				updateOppoPlayer();
-			}
-			if(c.equals(model.getPlayers().get(3))) {
-				updateLeftPlayer();
-		}
+
 		}
 		
 		if (s.equals(model.getPlayers().get(0))) {
