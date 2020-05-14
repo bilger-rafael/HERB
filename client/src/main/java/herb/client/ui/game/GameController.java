@@ -44,41 +44,17 @@ public class GameController extends Controller<GameModel, GameView> {
 		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
 				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
-
-//				if(model.getStartingPlayer().equals(model.getPlayers().get(1)) ^ model.getCurrentPlayers().get(model.getCurrentPlayers().size()-1).equals(model.getPlayers().get(1)) ){
-//					view.updateRightPlayer(model.getTrickNumber());
-//				}
-////				if(model.getCurrentPlayers().get(model.getCurrentPlayers().size()-1).equals(model.getPlayers().get(1))){
-////					view.updateRightPlayer(model.getTrickNumber());
-////				}
-//				if(model.getStartingPlayer().equals(model.getPlayers().get(2))){
-//					view.updateOppoPlayer(model.getTrickNumber());
-//				}
-//				if(model.getCurrentPlayers().get(model.getCurrentPlayers().size()-1).equals(model.getPlayers().get(2))){
-//					view.updateOppoPlayer(model.getTrickNumber());
-//				}			
-//				if(model.getStartingPlayer().equals(model.getPlayers().get(3))){
-//					view.updateLeftPlayer(model.getTrickNumber());
-//				}
-//				if(model.getCurrentPlayers().get(model.getCurrentPlayers().size()-1).equals(model.getPlayers().get(3))){
-//					view.updateLeftPlayer(model.getTrickNumber());
-//				}
 			}
 		};
 		
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> p) {
 				
-				try {
 				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
 					//stop all Listeners
 					model.setStopThread();
 					System.out.println("passed here");
 					view.updatePointPane(model.getScores());
-					}
-				}
-				catch (Exception e){
-					return;
 				}
 						
 				int i = model.getCurrentPlayers().size();

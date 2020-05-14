@@ -171,10 +171,10 @@ public class GameView extends View<GameModel> {
 		lobbyBox = new VBox();
 		lobbyLabel = new Label(model.getLobbyName());
 	    startingPlayerText = new Label();
-	    startingPlayerLabel = new Label("is defined later");
+	    startingPlayerLabel = new Label();
 	   	lobbyBox.getChildren().addAll(lobbyLabel, startingPlayerText, startingPlayerLabel);
 	   	lobbyBox.setStyle("-fx-border-color: white");	
-	   	lobbyBox.setStyle("-fx-background-color: gold");
+	   	lobbyBox.setStyle("-fx-background-color: pink");
 				
 		// Cards and Trump images
 	    rects = new ArrayList();
@@ -355,7 +355,7 @@ public class GameView extends View<GameModel> {
 			this.rects.get(j).setFill(pattern);
 			this.rects.get(j).setStroke(Color.BLACK);
 			arrayIndex++;
-			//check
+	
 			if(arrayIndex == cards.size())
 				endeDerFahnenstange = true;
 		}
@@ -395,14 +395,16 @@ public class GameView extends View<GameModel> {
 			trickLabel2.setVisible(true);
 		}
 		//check
-		if(c.equals(model.getPlayers().get(1))) {
-			updateRightPlayer(model.getTrickNumber());
+		if(trick.size()>1) {
+			if(c.equals(model.getPlayers().get(1))) {
+				updateRightPlayer();
+			}
+			if(c.equals(model.getPlayers().get(2))) {
+				updateOppoPlayer();
+			}
+			if(c.equals(model.getPlayers().get(3))) {
+				updateLeftPlayer();
 		}
-		if(c.equals(model.getPlayers().get(2))) {
-			updateOppoPlayer(model.getTrickNumber());
-		}
-		if(c.equals(model.getPlayers().get(3))) {
-			updateLeftPlayer(model.getTrickNumber());
 		}
 		
 		if (s.equals(model.getPlayers().get(0))) {
@@ -457,8 +459,28 @@ public class GameView extends View<GameModel> {
 	
 	public void setOtherPlayers() {
 		// rightHandSide - cards in VBox, together with name in HBox
-		updateRightPlayer(0);
-		rightHandSide.setSpacing(-40.0);
+
+		for (int i= 0; i< MAX_CARDS; i++) {
+		Rotate rotateRight = new Rotate();
+		Rectangle rectangleRight = new Rectangle();
+		rectangleRight.setHeight(322/4);
+		rectangleRight.setWidth(514/4);		
+		rectangleRight.setArcHeight(20);
+		rectangleRight.setArcWidth(20);
+		String filenameRight = "Rückseite.jpg";
+		Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/"  + filenameRight));
+        ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
+        rectangleRight.setFill(patternRight);
+        rectangleRight.setStroke(Color.BLACK);
+        
+	    rotateRight.setAngle(-5*i); 
+	    rotateRight.setPivotX(322/4/2); 	
+	    rotateRight.setPivotY(-514/4); 
+	    rectangleRight.getTransforms().addAll(rotateRight);      
+        rightHandSide.getChildren().add(rectangleRight);     
+		}
+		
+        rightHandSide.setSpacing(-40.0);
 		rightHandSide.setMinWidth(100);
 		rightHandSide.setMaxHeight(500);
 		right.getChildren().add(rightHandLabel);
@@ -467,28 +489,8 @@ public class GameView extends View<GameModel> {
 		right.setPadding(new Insets(10, 10, 10, 10));
 		right.setAlignment(Pos.CENTER_RIGHT);
 		
-		updateLeftPlayer(0);
-		leftHandSide.setSpacing(-40.0);
-		leftHandSide.setMinWidth(100);
-		leftHandSide.setMaxHeight(400);
-		left.getChildren().add(leftHandSide);
-		left.getChildren().add(leftHandLabel);
-	    left.setSpacing(10.0);
-		left.setAlignment(Pos.CENTER_RIGHT);
-		
-		updateOppoPlayer(0);
-		oppositeSide.setSpacing(-70.0);
-		oppositeSide.setMinHeight(100);
-		oppositeSide.setAlignment(Pos.CENTER);
-		opposite.getChildren().add(oppositeSide);
-		opposite.getChildren().add(oppositeLabel);	
-		opposite.setAlignment(Pos.CENTER);
-		
-	}
-	
-	public void updateLeftPlayer(int trickNumber) {
-		leftHandSide.getChildren().clear();
-		for (int i= 0; i< MAX_CARDS-trickNumber; i++) {
+		//change
+		for (int i= 0; i< MAX_CARDS; i++) {
 		Rotate rotateLeft = new Rotate();
 		Rectangle rectangleLeft = new Rectangle();
 		rectangleLeft.setHeight(322/4);
@@ -504,60 +506,58 @@ public class GameView extends View<GameModel> {
 	    rotateLeft.setPivotX(322/4/2); 	
 	    rotateLeft.setPivotY(514/4); 
 	    rectangleLeft.getTransforms().addAll(rotateLeft);      
-        leftHandSide.getChildren().add(rectangleLeft);        
+        leftHandSide.getChildren().add(rectangleLeft); 
 		}
-	}
-	
-	public void updateRightPlayer(int trickNumber) {
 		
-		rightHandSide.getChildren().clear();
-		//check
-		for (int i= 0; i< MAX_CARDS-trickNumber; i++) {
-		Rotate rotateRight = new Rotate();
-		Rectangle rectangleRight = new Rectangle();
-		rectangleRight.setHeight(322/4);
-		rectangleRight.setWidth(514/4);		
-		rectangleRight.setArcHeight(20);
-		rectangleRight.setArcWidth(20);
-		String filenameRight = "Rückseite.jpg";
-		Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/"  + filenameRight));
-        ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
-        rectangleRight.setFill(patternRight);
-        rectangleRight.setStroke(Color.BLACK);
-        
-//	    rotateRight.setAngle(-70+5*i); 
-//	    rotateRight.setPivotX(322/4/2); 	
-//	    rotateRight.setPivotY(-514/4); 
-//	    rectangleRight.getTransforms().addAll(rotateRight);      
-        rightHandSide.getChildren().add(rectangleRight);        
-	}
-	}
-	
-	public void updateOppoPlayer(int trickNumber) {
+        leftHandSide.setSpacing(-40.0);
+		leftHandSide.setMinWidth(100);
+		leftHandSide.setMaxHeight(400);
+		left.getChildren().add(leftHandSide);
+		left.getChildren().add(leftHandLabel);
+	    left.setSpacing(10.0);
+		left.setAlignment(Pos.CENTER_RIGHT);
+		
 		// oppositeHandSide - cards in VBox, with name in HBox
 	//	oppositeSide.getChildren().add(spacerOppo); 
-		
-		oppositeSide.getChildren().clear();
-		
-		for (int i = 0; i<MAX_CARDS-trickNumber; i++) {
-        Rotate rotateOppo = new Rotate();
-        Rectangle rectangleOppo = new Rectangle();
-		rectangleOppo.setHeight(514/4);
-		rectangleOppo.setWidth(322/4);		
-		rectangleOppo.setArcHeight(20);
-		rectangleOppo.setArcWidth(20);
-        
-		String filenameOppo = "Rückseite.jpg";
-		Image imageOppo = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameOppo));
-        ImagePattern patternOppo = new ImagePattern(imageOppo, 0, 0, 322/4, 514/4, false);
-        rectangleOppo.setFill(patternOppo);
-	    rotateOppo.setAngle(20-5*i); 
-	    rotateOppo.setPivotX(322/4/2); 	
-	    rotateOppo.setPivotY(-514/4); 
-	    rectangleOppo.getTransforms().addAll(rotateOppo);      
-        oppositeSide.getChildren().add(rectangleOppo);  
+		for (int i = 0; i<MAX_CARDS; i++) {
+	        Rotate rotateOppo = new Rotate();
+	        Rectangle rectangleOppo = new Rectangle();
+			rectangleOppo.setHeight(514/4);
+			rectangleOppo.setWidth(322/4);		
+			rectangleOppo.setArcHeight(20);
+			rectangleOppo.setArcWidth(20);
+	        
+			String filenameOppo = "Rückseite.jpg";
+			Image imageOppo = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameOppo));
+	        ImagePattern patternOppo = new ImagePattern(imageOppo, 0, 0, 322/4, 514/4, false);
+	        rectangleOppo.setFill(patternOppo);
+		    rotateOppo.setAngle(20-5*i); 
+		    rotateOppo.setPivotX(322/4/2); 	
+		    rotateOppo.setPivotY(-514/4); 
+		    rectangleOppo.getTransforms().addAll(rotateOppo);      
+	        oppositeSide.getChildren().add(rectangleOppo); 
+	    
 		}
-
+		
+		oppositeSide.setSpacing(-70.0);
+		oppositeSide.setMinHeight(100);
+		oppositeSide.setAlignment(Pos.CENTER);
+		opposite.getChildren().add(oppositeSide);
+		opposite.getChildren().add(oppositeLabel);	
+		opposite.setAlignment(Pos.CENTER);
+		
+	}
+	
+	public void updateLeftPlayer() {
+        leftHandSide.getChildren().remove(0);
+	}
+	
+	public void updateRightPlayer() {
+		rightHandSide.getChildren().remove(0);
+	}
+	
+	public void updateOppoPlayer() {
+		oppositeSide.getChildren().remove(0);
 	}
 	
 	public void setTrumpOptions() {
@@ -622,6 +622,7 @@ public class GameView extends View<GameModel> {
 	
     private void setPointPane() {
     	pointsLabel = new Label();
+    	pointsLabel.setStyle("-fx-background-color:pink");
     	pointsPlayerLabel = new Label();
     	pointsPlayerLabel2 = new Label();
     	playedPointsLabel = new Label();
@@ -634,8 +635,7 @@ public class GameView extends View<GameModel> {
     	buttons.getChildren().addAll(revancheButton, quitButton);
     	buttons.setSpacing(40);
 		winnerBox.getChildren().addAll(winnerLabel2, winnerLabel);
-		winnerBox.setAlignment(Pos.CENTER_LEFT);
-		winnerBox.setStyle("-fx-background-color: aliceblue");
+
     	
     	String label = "";
     	for(int i = 0; i<4; i++) {
@@ -646,13 +646,16 @@ public class GameView extends View<GameModel> {
 		namesBox.getChildren().addAll(pointsPlayerLabel2, pointsPlayerLabel);
 		namesBox.setAlignment(Pos.CENTER_LEFT);
 		namesBox.setMaxWidth(200);
-		
-		playedPointsLabel.setText("");
+    	namesBox.setStyle("-fx-background-color:pink");
+
 		playedPointsLabel.setMaxWidth(150);
 	   
 		pointsBox.getChildren().addAll(playedPointsLabel2, playedPointsLabel);
 		pointsBox.setAlignment(Pos.CENTER_RIGHT);
-		pointsBox.setMaxWidth(50);
+		pointsBox.setMaxWidth(100);
+		
+		winnerBox.setAlignment(Pos.CENTER_LEFT);
+		winnerBox.setStyle("-fx-background-color: aliceblue");
 		
 		pointPane.setTop(pointsLabel);
 		pointPane.setLeft(namesBox);
@@ -680,21 +683,19 @@ public class GameView extends View<GameModel> {
     	}
 		playedPointsLabel.setText(labela);
 		
-		String labelw = ".. \n";
+		String labelw = "";
 		int highestScore = scores.get(0);
 		scorePosition = 0;
 		for(int i = 1; i<4; i++) {
 			highestScore = Math.max(highestScore, scores.get(i));
-			if (scores.get(i)== highestScore) {
+			if (scores.get(i) == highestScore) {
 				scorePosition = i;
 			}
 		}
 		
 		for (int i = 0; i< 4; i++) {
-			if(i == scorePosition) {
-				labelw = " \n .."+ "Winner";
-			}	
 			labelw += " \n .";
+			if(i == scorePosition)	labelw = "Winner";	
 		}
 		winnerLabel.setText(labelw);
 	}
@@ -731,7 +732,6 @@ public class GameView extends View<GameModel> {
 		menuCardSet.setText(t.getString("program.game.menuCardSet"));
 		trickLabel2.setText(t.getString("program.game.order"));
 		pointsLabel.setText(t.getString("program.game.pointsLabel"));
-		stage.setTitle(t.getString("program.name"));
 		trumpLabel.setText(t.getString("program.game.trump"));
 		startingPlayerText.setText(t.getString("program.game.startingPlayer"));
 		revancheButton.setText(t.getString("program.game.revancheButton"));

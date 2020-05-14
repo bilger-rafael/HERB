@@ -128,10 +128,10 @@ public class GameModel extends Model {
 		if (tricks.isEmpty())
 			return;
 
-		if (trick == null) {
-			trick = tricks.getLast();
-			trickIndex = tricks.indexOf(tricks.getLast());
-		}
+//		if (trick == null) {
+//			trick = tricks.getLast();
+//			trickIndex = tricks.indexOf(tricks.getLast());
+//		}
 
 		// delay when new trick is set
 		if (trickIndex != tricks.indexOf(tricks.getLast())) {
@@ -143,7 +143,7 @@ public class GameModel extends Model {
 				// to look at the finished trick
 			} else {
 				try {
-					Thread.sleep(100);
+					Thread.sleep(200);
 				} catch (InterruptedException e) {
 				}
 				trick = tricks.getLast();
@@ -156,10 +156,8 @@ public class GameModel extends Model {
 		this.startingPlayer = trick.getStartingPlayer();
 		this.currentPlayer = trick.getCurrentPlayer();
 		Card[] cards = (Card[]) trick.getPlayedCards();
-
 		ArrayList<Card> tmp = new ArrayList();
 		tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
-
 		trickCards.clear();
 
 		int l = tmp.size();
@@ -298,7 +296,7 @@ public class GameModel extends Model {
 				while (!stop) {
 					Platform.runLater(() -> refreshTrickCards());
 					try {
-						Thread.sleep(500);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// connection lost
 						
@@ -319,7 +317,7 @@ public class GameModel extends Model {
 				while (!stop) {
 					Platform.runLater(() -> refreshPlayables());
 					try {
-						Thread.sleep(500);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// connection lost
 					}
