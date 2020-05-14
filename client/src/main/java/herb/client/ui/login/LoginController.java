@@ -41,6 +41,7 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 			
 		} catch (ExceptionBase e) {
 			view.showError();
+			view.getMessage().setVisible(true);
 			serviceLocator.getLogger().info("Name oder Passwort falsch eingegeben.");
 			}
 
@@ -59,6 +60,7 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 	private void createUserView() {
 		this.view.resetPasswordField();
 		this.view.resetNameField();
+		this.view.getMessage().setVisible(false);
 		Main.getMainProgram().startRegistration();
 	}
 }
