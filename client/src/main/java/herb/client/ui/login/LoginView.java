@@ -6,6 +6,8 @@ import herb.client.utils.ServiceLocator;
 import herb.client.utils.Translator;
 
 import java.util.Locale;
+
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,17 +19,21 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
+//Herren
 public class LoginView extends View<LoginModel> {
 	
 	private LoginModel model;
+	
 	private BorderPane root, bottomBox;
-	private VBox centerBox;
-	private HBox messageBox;
-	private Region zero, one, two;	
+	private StackPane messageStackPane;
+	private VBox centerBox, labelBox, textFieldBox;
+	private HBox messageBox, fieldBox;
+	
+	private Region zero, one, two, three, four;	
 	
 	private TextField nameField;
 	private PasswordField pwField;
@@ -36,14 +42,12 @@ public class LoginView extends View<LoginModel> {
 
 	private Label nameLabel, pwLabel, connectedLabel;
 	private Label message;
-//	private FadeTransition transition;
 
 	private MenuBar headMenu;
 	private Menu menuLanguage;
 	
 	public LoginView(Stage stage, LoginModel model) {
 		super(stage, model);
-		stage.setTitle("HERB-Jass > Login");
 		ServiceLocator.getInstance().getLogger().info("Application view initialized");
 	}
 
@@ -52,7 +56,10 @@ public class LoginView extends View<LoginModel> {
 		ServiceLocator sl = ServiceLocator.getInstance();
 		Logger logger = sl.getLogger();		
 		this.root = new BorderPane();
-
+		
+		/**
+		 * menubar
+		 */
 		headMenu = new MenuBar();
 		menuLanguage = new Menu();
 		menuLanguage.getItems().addAll();
@@ -69,71 +76,82 @@ public class LoginView extends View<LoginModel> {
 				updateLabels();
 			});
 		}
-		// Roesti > VBox login data
+		//panes
+		// Herren - messages
+		messageBox = new HBox();
+		labelBox = new VBox();
+		textFieldBox = new VBox();
+		fieldBox = new HBox();
+		bottomBox = new BorderPane();
 		centerBox = new VBox();
+		messageStackPane = new StackPane();
+		
+		//items
 		nameLabel = new Label();
 		nameField = new TextField();
-		nameField.setId("textField");
 		pwLabel = new Label();
 		pwField = new PasswordField();
-		pwField.setId("textField");
+		message = new Label();
+		
 		zero = new Region();
 		one = new Region();
 		two = new Region();
-		nameLabel.setPrefSize(100, 20);
-		pwLabel.setPrefSize(100, 20);
-		zero.setPrefSize(80, 20);
-		one.setPrefSize(80,20);
-		two.setPrefSize(80,5);
-
-		HBox un = new HBox();
-		HBox pw = new HBox();		
-
-		un.getChildren().addAll(one, nameLabel, nameField);
-		pw.getChildren().addAll(zero, pwLabel, pwField);
+		three = new Region();
+		four = new Region();
 		
-		// Roesti > BorderPane login buttons
 		loginButton = new Button();
 		createUserButton = new Button();
-		loginButton.setPrefSize(200, 30);
-		createUserButton.setPrefSize(200, 30);
 
-		bottomBox = new BorderPane();
+		//get children in panes
+		labelBox.getChildren().addAll(nameLabel,zero,pwLabel);
+		textFieldBox.getChildren().addAll(nameField,one, pwField);
+		fieldBox.getChildren().addAll(four, labelBox,two,textFieldBox);
+		messageStackPane.getChildren().add(message);
+		centerBox.getChildren().addAll(fieldBox,messageStackPane);
 		bottomBox.setLeft(createUserButton);
+		bottomBox.setCenter(three);
 		bottomBox.setRight(loginButton);
 
+		//set size
+		nameField.setPrefSize(130, 60);
+		pwField.setPrefSize(130, 60);
+		zero.setPrefHeight(40);
+		one.setPrefHeight(48);
+		two.setPrefWidth(20);
+		three.setPrefWidth(20);
+		four.setPrefWidth(20);
+		labelBox.setPrefSize(130, 100);
+		textFieldBox.setPrefSize(230, 90);
+		loginButton.setPrefSize(220, 50);
+		createUserButton.setPrefSize(220, 50);
+		
+		//spacing		
+		bottomBox.setPadding(new Insets(20, 50, 15, 50));
+		centerBox.setPadding(new Insets(35, 50, 0, 50));
+		centerBox.setSpacing(10);
+		centerBox.setSpacing(10);
 		loginButton.setAlignment(Pos.BASELINE_CENTER);
 		createUserButton.setAlignment(Pos.BASELINE_CENTER);
-		
-		// Roesti - fill CenterBox
-		centerBox.getChildren().addAll(two, un, pw, bottomBox);
-		centerBox.setSpacing(10);
-
-		// Roesti - messages
-		messageBox = new HBox();
-		connectedLabel = new Label();
-//		connectedLabel.setId("connectedLabel");
-//		connectedLabel.setOpacity(0);
-		messageBox.getChildren().add(connectedLabel);	
-		// message for failed login
-		message = new Label();
-		message.setPrefHeight(40);
-//		message.setId("message");
-//		message.setOpacity(0);
-		messageBox.getChildren().add(message);
-		
+		centerBox.setAlignment(Pos.BASELINE_CENTER);
+	
+		//css id
+		pwField.setId("textField");
+		nameField.setId("textField");
+		message.setId("message");
+		message.setVisible(false);
 		root.setId("background");
+		
+
 		root.setTop(headMenu);
 		root.setCenter(centerBox);
-		root.setBottom(messageBox);
+		root.setBottom(bottomBox);
 
 		updateLabels();
-		Scene scene = new Scene(root);	
-//		scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
+		Scene scene = new Scene(root);		
 		return scene;
 	}
 	
-	// roesti 
+	// update items 
 	protected void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
@@ -145,13 +163,14 @@ public class LoginView extends View<LoginModel> {
 		pwLabel.setText(t.getString("program.login.pwLabel"));
 		loginButton.setText(t.getString("program.login.loginButton"));
 		createUserButton.setText(t.getString("program.login.createUserButton"));
-		stage.setTitle(t.getString("program.name"));
+		stage.setTitle(t.getString("program.menu.file.titel"));
+		//if label is not visible, do not update
 		if (message.getText()!="") {
 			message.setText(t.getString("program.login.message"));
 		}
 
 	}
-
+	//getter
 	public Button getLoginButton() {
 		return loginButton;
 	}
@@ -177,6 +196,10 @@ public class LoginView extends View<LoginModel> {
 	
 	public Label getMessage() {
 		return message;
+	}
+	
+	public void resetMessageLabel() {
+		message.setText("");
 	}
 
 	//To show the error message in GUI if Login fails
