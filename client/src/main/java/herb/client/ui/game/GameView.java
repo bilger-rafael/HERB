@@ -54,7 +54,7 @@ public class GameView extends View<GameModel> {
 	private TilePane trumpBox;
 	private HBox tMain, tRight, tOppo, tLeft, buttons;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
-	private Label pointsLabel, pointsPlayerLabel, playedPointsLabel, winnerLabel; 
+	private Label pointsLabel, pointsPlayerLabel, pointsPlayerLabel2, playedPointsLabel, playedPointsLabel2, winnerLabel, winnerLabel2; 
 	private Label trumpLabel, startingPlayerLabel, startingPlayerText;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
@@ -157,8 +157,9 @@ public class GameView extends View<GameModel> {
 		ownCards.setMinHeight(300);
 		ownCards.setMinWidth(1300);		
 		spacer = new Region();
-//		spacer.setMinWidth(670d);
-		spacer.setMinWidth(200d);
+		//change
+		spacer.setMinWidth(670d);
+		//spacer.setMinWidth(200d);
 		playerLabel = new Label(players.get(0).getUsername());
 		playerLabel.setMinHeight(20);
 		
@@ -180,40 +181,27 @@ public class GameView extends View<GameModel> {
 	    trickRects = new ArrayList();
 	    trumpRects = new ArrayList();
 		
-		setMyCards();
-		
+		setMyCards();	
 		setTrumpInfo();
-		
 		// nodes in StackPane - trump=2, table and points 0 or 1 
 		setTrick();
 		setPointPane();
 		setTrumpOptions();
 			
-		updateLeftPlayer();
-		setRightPlayer();
-        updateOppoPlayer();
+		setOtherPlayers();
        		
-		//BorderPane opposite Player and Table
+		//BorderPane other players and table
 		upperPart.setCenter(tablePart);
 		upperPart.setTop(opposite);
 		upperPart.setMinWidth(400d);
 		upperPart.setLeft(left);
 		upperPart.setRight(right);
 		
-		//root.getChildren().addAll(upperPart, bottom, left, right, menuBar, lobbyBox, showTrumpBox);
-		
 		root.getChildren().addAll(upperPart, bottom, menuBar, lobbyBox, showTrumpBox);
 
 		root.setLeftAnchor(menuBar, 0d);
 		root.setTopAnchor(menuBar, 0d);
 		root.setRightAnchor(menuBar, 0d);
-		
-//		root.setLeftAnchor(left, -10d);
-//		root.setTopAnchor(left, 70d);
-//		root.setBottomAnchor(left, 200d);
-//		root.setRightAnchor(right, -10d);
-//		root.setTopAnchor(right, 70d);
-//		root.setBottomAnchor(right, 200d);
 
 		root.setId("background");
 		root.setTopAnchor(upperPart, -40d);
@@ -253,26 +241,28 @@ public class GameView extends View<GameModel> {
 		    rectangleCard.setStroke(Color.BLACK);	    		    
 
 		      //  fan out cards
-//		    Rotate rotate = new Rotate();
-//		    rotate.setAngle(-40+10*i); 
-//		    rotate.setPivotX(322/2/2); 	
-//		    rotate.setPivotY(257*2.2);
-//		    rectangleCard.getTransforms().addAll(rotate);   
+		    Rotate rotate = new Rotate();
+		    rotate.setAngle(-40+5*i); 
+		    rotate.setPivotX(322/2/2); 	
+		    rotate.setPivotY(257*2.2);
+		    rectangleCard.getTransforms().addAll(rotate);   
 		    ownCards.add(rectangleCard, i+1, 1);	
 		    rects.add(rectangleCard); 
 		}			
 		// center fanned out Cards
 		updateImagePatterns();
-		ownCards.add(spacer, 0, 0);
+
 		ownCards.setMinHeight(250);
-		ownCards.setHgap(-100);
+		ownCards.setHgap(-150);
+		ownCards.add(spacer, 0, 0);
 		
-		//TODO show trickLabel2 "it's your turn" only when true
 		bottom.getChildren().add(trickLabel2);
 		trickLabel2.setVisible(false);
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
+		//ownCards.add(spacer, 18, 1);
+				
 	}
 	
 	public void updatePlayables(Player curr) {
@@ -311,13 +301,14 @@ public class GameView extends View<GameModel> {
 		rectangle.setWidth(322/3);		
 		rectangle.setArcHeight(20);
 		rectangle.setArcWidth(20);
-		rectangle.setStroke(Color.BLACK);
+		rectangle.setStroke(Color.TRANSPARENT);
 	    // Roesti - implement rotation  TODO implement Random()
-//		Rotate rotate = new Rotate();  
-//		rotate.setAngle(((10+i) % 2)+183-2*i); 
-//		rotate.setPivotX(30); 
-//		rotate.setPivotY(322/3+30); 
-//	    rectangle.getTransforms().addAll(rotate); 
+		//change
+		Rotate rotate = new Rotate();  
+		rotate.setAngle(((10+i) % 2)+183-2*i); 
+		rotate.setPivotX(30); 
+		rotate.setPivotY(322/3+30); 
+	    rectangle.getTransforms().addAll(rotate); 
 		trickRects.add(rectangle);
 	    }
 	    tMain.getChildren().add(trickRects.get(0));
@@ -339,6 +330,7 @@ public class GameView extends View<GameModel> {
 		}
 		cards = model.getMyCards();
 		
+		if(!cards.isEmpty()) {
 		startingPosition = MAX_CARDS - cards.size();
 		System.out.println(startingPosition);
 		System.out.println(MAX_CARDS);
@@ -363,18 +355,19 @@ public class GameView extends View<GameModel> {
 			this.rects.get(j).setFill(pattern);
 			this.rects.get(j).setStroke(Color.BLACK);
 			arrayIndex++;
-			
+			//check
 			if(arrayIndex == cards.size())
 				endeDerFahnenstange = true;
+		}
 		}
 		removeTurn();
 	}
 	
 	// Roesti - update trick ImagePatterns
-	// TODO card images from herb / client / ui / images / fr OR de
 	public void updateTrick(ArrayList<Card> cardSet) {
 		for (int d = 0; d<MAX_PLAYERS; d++)   {		
 			trickRects.get(d).setFill(null);
+			trickRects.get(d).setStroke(Color.TRANSPARENT);
 		}
 		trick = new ArrayList();
 		trick = cardSet;
@@ -400,6 +393,16 @@ public class GameView extends View<GameModel> {
 		Player c = model.getCurrentPlayer();
 		if(c.equals(model.getPlayers().get(0))) {
 			trickLabel2.setVisible(true);
+		}
+		//check
+		if(c.equals(model.getPlayers().get(1))) {
+			updateRightPlayer(model.getTrickNumber());
+		}
+		if(c.equals(model.getPlayers().get(2))) {
+			updateOppoPlayer(model.getTrickNumber());
+		}
+		if(c.equals(model.getPlayers().get(3))) {
+			updateLeftPlayer(model.getTrickNumber());
 		}
 		
 		if (s.equals(model.getPlayers().get(0))) {
@@ -452,9 +455,40 @@ public class GameView extends View<GameModel> {
 		}
 	}
 	
-	private void updateLeftPlayer() {
-		//TODO reduce cards
-		for (int i= 0; i< MAX_CARDS; i++) {
+	public void setOtherPlayers() {
+		// rightHandSide - cards in VBox, together with name in HBox
+		updateRightPlayer(0);
+		rightHandSide.setSpacing(-40.0);
+		rightHandSide.setMinWidth(100);
+		rightHandSide.setMaxHeight(500);
+		right.getChildren().add(rightHandLabel);
+		right.getChildren().add(rightHandSide);
+		right.setSpacing(10.0);
+		right.setPadding(new Insets(10, 10, 10, 10));
+		right.setAlignment(Pos.CENTER_RIGHT);
+		
+		updateLeftPlayer(0);
+		leftHandSide.setSpacing(-40.0);
+		leftHandSide.setMinWidth(100);
+		leftHandSide.setMaxHeight(400);
+		left.getChildren().add(leftHandSide);
+		left.getChildren().add(leftHandLabel);
+	    left.setSpacing(10.0);
+		left.setAlignment(Pos.CENTER_RIGHT);
+		
+		updateOppoPlayer(0);
+		oppositeSide.setSpacing(-70.0);
+		oppositeSide.setMinHeight(100);
+		oppositeSide.setAlignment(Pos.CENTER);
+		opposite.getChildren().add(oppositeSide);
+		opposite.getChildren().add(oppositeLabel);	
+		opposite.setAlignment(Pos.CENTER);
+		
+	}
+	
+	public void updateLeftPlayer(int trickNumber) {
+		leftHandSide.getChildren().clear();
+		for (int i= 0; i< MAX_CARDS-trickNumber; i++) {
 		Rotate rotateLeft = new Rotate();
 		Rectangle rectangleLeft = new Rectangle();
 		rectangleLeft.setHeight(322/4);
@@ -471,34 +505,13 @@ public class GameView extends View<GameModel> {
 	    rotateLeft.setPivotY(514/4); 
 	    rectangleLeft.getTransforms().addAll(rotateLeft);      
         leftHandSide.getChildren().add(rectangleLeft);        
-	}
-		leftHandSide.setSpacing(-40.0);
-		leftHandSide.setMinWidth(100);
-		leftHandSide.setMaxHeight(400);
-		left.getChildren().add(leftHandSide);
-		left.getChildren().add(leftHandLabel);
-	    left.setSpacing(10.0);
-		left.setAlignment(Pos.CENTER_RIGHT);
-	}
-	
-	public void setRightPlayer() {
-		// TODO reduce cards
-		// rightHandSide - cards in VBox, together with name in HBox
-		updateRightPlayer(0);
-		rightHandSide.setSpacing(-40.0);
-		rightHandSide.setMinWidth(100);
-		rightHandSide.setMaxHeight(500);
-		right.getChildren().add(rightHandLabel);
-		right.getChildren().add(rightHandSide);
-		right.setSpacing(10.0);
-		right.setPadding(new Insets(10, 10, 10, 10));
-		right.setAlignment(Pos.CENTER_RIGHT);
+		}
 	}
 	
 	public void updateRightPlayer(int trickNumber) {
 		
 		rightHandSide.getChildren().clear();
-		
+		//check
 		for (int i= 0; i< MAX_CARDS-trickNumber; i++) {
 		Rotate rotateRight = new Rotate();
 		Rectangle rectangleRight = new Rectangle();
@@ -510,6 +523,7 @@ public class GameView extends View<GameModel> {
 		Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/"  + filenameRight));
         ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
         rectangleRight.setFill(patternRight);
+        rectangleRight.setStroke(Color.BLACK);
         
 //	    rotateRight.setAngle(-70+5*i); 
 //	    rotateRight.setPivotX(322/4/2); 	
@@ -519,11 +533,13 @@ public class GameView extends View<GameModel> {
 	}
 	}
 	
-	private void updateOppoPlayer() {
-		// TODO reduce cards
+	public void updateOppoPlayer(int trickNumber) {
 		// oppositeHandSide - cards in VBox, with name in HBox
 	//	oppositeSide.getChildren().add(spacerOppo); 
-		for (int i = 0; i<MAX_CARDS; i++) {
+		
+		oppositeSide.getChildren().clear();
+		
+		for (int i = 0; i<MAX_CARDS-trickNumber; i++) {
         Rotate rotateOppo = new Rotate();
         Rectangle rectangleOppo = new Rectangle();
 		rectangleOppo.setHeight(514/4);
@@ -541,12 +557,7 @@ public class GameView extends View<GameModel> {
 	    rectangleOppo.getTransforms().addAll(rotateOppo);      
         oppositeSide.getChildren().add(rectangleOppo);  
 		}
-		oppositeSide.setSpacing(-70.0);
-		oppositeSide.setMinHeight(100);
-		oppositeSide.setAlignment(Pos.CENTER);
-		opposite.getChildren().add(oppositeSide);
-		opposite.getChildren().add(oppositeLabel);	
-		opposite.setAlignment(Pos.CENTER);
+
 	}
 	
 	public void setTrumpOptions() {
@@ -612,31 +623,34 @@ public class GameView extends View<GameModel> {
     private void setPointPane() {
     	pointsLabel = new Label();
     	pointsPlayerLabel = new Label();
+    	pointsPlayerLabel2 = new Label();
     	playedPointsLabel = new Label();
+    	playedPointsLabel2 = new Label();
     	winnerLabel = new Label();
+    	winnerLabel2 = new Label();
     	revancheButton = new Button();
     	quitButton = new Button();
     	buttons = new HBox();
-    	//change
     	buttons.getChildren().addAll(revancheButton, quitButton);
     	buttons.setSpacing(40);
-		winnerBox.getChildren().add(winnerLabel);
+		winnerBox.getChildren().addAll(winnerLabel2, winnerLabel);
 		winnerBox.setAlignment(Pos.CENTER_LEFT);
+		winnerBox.setStyle("-fx-background-color: aliceblue");
     	
-    	String label ="";
+    	String label = "";
     	for(int i = 0; i<4; i++) {
     		label += players.get(i).getUsername().toString();
     		label += "\n";
     	}
     	pointsPlayerLabel.setText(label);
-		namesBox.getChildren().add(pointsPlayerLabel);
+		namesBox.getChildren().addAll(pointsPlayerLabel2, pointsPlayerLabel);
 		namesBox.setAlignment(Pos.CENTER_LEFT);
 		namesBox.setMaxWidth(200);
 		
 		playedPointsLabel.setText("");
 		playedPointsLabel.setMaxWidth(150);
 	   
-		pointsBox.getChildren().add(playedPointsLabel);
+		pointsBox.getChildren().addAll(playedPointsLabel2, playedPointsLabel);
 		pointsBox.setAlignment(Pos.CENTER_RIGHT);
 		pointsBox.setMaxWidth(50);
 		
@@ -646,7 +660,6 @@ public class GameView extends View<GameModel> {
 		pointPane.setCenter(pointsBox);
 		pointPane.setBottom(buttons);	
 		pointPane.setPadding(new Insets(40, 40, 40, 40));
-		pointPane.setStyle("-fx-background-color: aliceblue");
 		pointPane.setMaxSize(400,  400);
 		tablePart.getChildren().add(pointPane);
 			
@@ -658,15 +671,16 @@ public class GameView extends View<GameModel> {
 	public void updatePointPane(ArrayList<Integer> scores) {
 		changeTopOfStackPane();
 		pointPane.setVisible(true);
+		trumpBox.setVisible(false);
 		
-		String labela ="";
+		String labela = "";
     	for(int i = 0; i<4; i++) {
     		labela += scores.get(i).toString();
     		labela += "\n";
     	}
 		playedPointsLabel.setText(labela);
 		
-		String labelw ="";
+		String labelw = ".. \n";
 		int highestScore = scores.get(0);
 		scorePosition = 0;
 		for(int i = 1; i<4; i++) {
@@ -678,10 +692,9 @@ public class GameView extends View<GameModel> {
 		
 		for (int i = 0; i< 4; i++) {
 			if(i == scorePosition) {
-				labelw = "Winner";
-			}
-			
-			labelw += "nothing \n";
+				labelw = " \n .."+ "Winner";
+			}	
+			labelw += " \n .";
 		}
 		winnerLabel.setText(labelw);
 	}
@@ -699,6 +712,10 @@ public class GameView extends View<GameModel> {
 		try {
 		Player s = model.getStartingPlayer();
 		startingPlayerLabel.setText(s.getUsername().toString());
+		// changed
+		int index = model.getPlayers().indexOf(s);
+		trickRects.get(index).setStroke(Color.BLUE);
+		
 		} catch(Exception e) {
 			startingPlayerLabel.setText("noch nicht festgelegt - oder kein Trick?");
 		}
@@ -721,8 +738,10 @@ public class GameView extends View<GameModel> {
 		quitButton.setText(t.getString("program.game.quitButton"));
 		frenchSet.setText(t.getString("program.game.frenchSet"));
 		germanSet.setText(t.getString("program.game.germanSet"));
-	
 		
+		pointsPlayerLabel2.setText(t.getString("program.game.pointsPlayerLabel"));
+		playedPointsLabel2.setText(t.getString("program.game.playedPointsLabel"));
+		winnerLabel2.setText(t.getString("program.game.winnerLabel"));
 	}
 	
 	public ArrayList<Card> getCardAreas(){
@@ -762,10 +781,4 @@ public class GameView extends View<GameModel> {
 	public int getStartingPosition() {
 		return startingPosition;
 	}
-
-//	public void updatePlayerBoxes(int trickNumber) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-	
 }

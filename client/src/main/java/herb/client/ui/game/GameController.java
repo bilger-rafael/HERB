@@ -37,7 +37,6 @@ public class GameController extends Controller<GameModel, GameView> {
 	private Card playedCard;
 	private Trump chosenTrump;
 	private int playedCardIndex;
-	private int trickNumber=0;
 	
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
@@ -45,8 +44,25 @@ public class GameController extends Controller<GameModel, GameView> {
 		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
 				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
-			//	trickNumber++;
-			//	view.updatePlayerBoxes(trickNumber);
+
+//				if(model.getStartingPlayer().equals(model.getPlayers().get(1)) ^ model.getCurrentPlayers().get(model.getCurrentPlayers().size()-1).equals(model.getPlayers().get(1)) ){
+//					view.updateRightPlayer(model.getTrickNumber());
+//				}
+////				if(model.getCurrentPlayers().get(model.getCurrentPlayers().size()-1).equals(model.getPlayers().get(1))){
+////					view.updateRightPlayer(model.getTrickNumber());
+////				}
+//				if(model.getStartingPlayer().equals(model.getPlayers().get(2))){
+//					view.updateOppoPlayer(model.getTrickNumber());
+//				}
+//				if(model.getCurrentPlayers().get(model.getCurrentPlayers().size()-1).equals(model.getPlayers().get(2))){
+//					view.updateOppoPlayer(model.getTrickNumber());
+//				}			
+//				if(model.getStartingPlayer().equals(model.getPlayers().get(3))){
+//					view.updateLeftPlayer(model.getTrickNumber());
+//				}
+//				if(model.getCurrentPlayers().get(model.getCurrentPlayers().size()-1).equals(model.getPlayers().get(3))){
+//					view.updateLeftPlayer(model.getTrickNumber());
+//				}
 			}
 		};
 		
@@ -55,11 +71,10 @@ public class GameController extends Controller<GameModel, GameView> {
 				
 				try {
 				if(model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
-					view.updatePointPane(model.getScores());
 					//stop all Listeners
 					model.setStopThread();
 					System.out.println("passed here");
-					
+					view.updatePointPane(model.getScores());
 					}
 				}
 				catch (Exception e){
@@ -73,10 +88,6 @@ public class GameController extends Controller<GameModel, GameView> {
 				if(pl.equals(model.getPlayers().get(0))) {
 					view.setTurn();
 				}
-				
-				if(model.getCurrentPlayers().get(i-2).equals(model.getLobbyPlayers().get(1))) {
-					view.updateRightPlayer(model.getTrickNumber());
-				}
 			}
 		};
 				
@@ -86,6 +97,7 @@ public class GameController extends Controller<GameModel, GameView> {
 					int round = model.getTrump().size();
 					chosenTrump = model.getTrump().get(round-1);
 					view.updateTrumpInfo(chosenTrump);
+					model.setStopTrumpThread();
 				}
 			}
 		};

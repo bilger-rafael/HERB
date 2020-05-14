@@ -45,6 +45,7 @@ public class GameModel extends Model {
 	private ArrayList<Integer> scoresList;
 	private Thread t, tu, tru;
 	private volatile boolean stop = false;
+	private volatile boolean trumpStop = false;
 	private String cardSet = "Fr";
 
 	public GameModel() {
@@ -142,7 +143,7 @@ public class GameModel extends Model {
 				// to look at the finished trick
 			} else {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 				}
 				trick = tricks.getLast();
@@ -317,7 +318,6 @@ public class GameModel extends Model {
 			public void run() {
 				while (!stop) {
 					Platform.runLater(() -> refreshPlayables());
-					System.out.println("playables-updater working");
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
@@ -335,7 +335,7 @@ public class GameModel extends Model {
 		Runnable run = new Runnable() {
 			@Override
 			public void run() {
-				while (!stop) {
+				while (!trumpStop) {
 					Platform.runLater(() -> refreshTrump());
 					try {
 						Thread.sleep(1000);
@@ -396,5 +396,7 @@ public class GameModel extends Model {
 	public void setStopThread() {
 		this.stop = true;
 	}
-
+	public void setStopTrumpThread() {
+		this.trumpStop = true;
+	}
 }
