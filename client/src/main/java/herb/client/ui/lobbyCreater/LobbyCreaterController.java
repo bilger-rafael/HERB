@@ -2,13 +2,13 @@ package herb.client.ui.lobbyCreater;
 
 import herb.client.Main;
 import herb.client.ui.core.Controller;
+import herb.client.utils.ServiceLocator;
 
 public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyCreaterView>{
+	ServiceLocator serviceLocator;
 	public LobbyCreaterController(LobbyCreaterModel model, LobbyCreaterView view) {
 		super(model, view);
-		
-		// TODO implementation
-		
+	
 		// Create Lobby
 		view.getOkButton().setOnAction(e -> createLobby());
 		
@@ -22,18 +22,17 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 	private void createLobby() {
 		try {
 		model.createLobby(view.getTextField().getText());
+		this.view.stop();
 		}catch(Exception e) {
 			view.showError();
+			//			serviceLocator.getLogger().info("Lobby existiert bereits.");
 		}
 		
-		//TODO if created back to Launcher
-		this.view.stop();
-		this.view.resetTextField();
-		Main.getMainProgram().getLauncher().start();
 	}
 	
 	private void getBackLauncherView() {
 		this.view.stop();
+		this.view.resetMessageLabel();
 		this.view.resetTextField();
 		Main.getMainProgram().getLauncher().start();
 	}
