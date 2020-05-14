@@ -20,6 +20,10 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 		// Action for CreateUserButton
 		view.getRegistrationButton().setOnAction(e -> registration());
 		
+		view.getRegistrationButton().disableProperty().bind(view.getNameField().textProperty().isEmpty());
+		
+		view.getRegistrationButton().disableProperty().bind(view.getPwField().textProperty().isEmpty());
+		
 		/**
 		 * action for cancelButton
 		 * Herren
@@ -44,8 +48,8 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 
 
 	private void registration() {
-		String username = view.getNameTextField().getText();
-		String password = view.getPasswordField().getText();
+		String username = view.getNameField().getText();
+		String password = view.getPwField().getText();
 		/**
 		 * new login
 		 * Herren
@@ -60,8 +64,10 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 			//reset textfield
 			this.view.resetNameField();
 			this.view.resetPasswordField();
+			this.view.getMessage().setVisible(false);
 		} catch (ExceptionBase e) {
 			view.showError();
+			view.getMessage().setVisible(true);
 			serviceLocator.getLogger().info("Name oder Passwort falsch eingegeben.");
 		}
 
@@ -73,6 +79,7 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 		this.view.stop();
 		this.view.resetNameField();
 		this.view.resetPasswordField();
+		this.view.getMessage().setVisible(false);
 		Main.getMainProgram().getLoginView().start();
 	}
 

@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 
 import herb.client.utils.Translator;
 import herb.client.ui.core.View;
+import herb.client.ui.login.LoginModel;
 import herb.client.utils.ServiceLocator;
 import javafx.animation.FadeTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class RegistrationView extends View<RegistrationModel> {
@@ -30,50 +33,44 @@ public class RegistrationView extends View<RegistrationModel> {
 	private RegistrationModel model;
 	
 	private BorderPane root, bottomBox;
-	private VBox centerBox;
-	private HBox topBox;
-	private HBox messageBox;
-	private Region zero, one, two;
+	private StackPane messageStackPane;
+	private VBox centerBox, labelBox, textFieldBox;
+	private HBox messageBox, fieldBox;
 	
-	private MenuBar menuBar;
+	private Region zero, one, two, three, four;	
+	
+	private TextField nameField;
+	private PasswordField pwField;
+	
+	private Button registrationButton, cancelButton;
+
+	private Label nameLabel, pwLabel, connectedLabel;
+	private Label message;
+
+	private MenuBar headMenu;
 	private Menu menuLanguage;
 	
-	private Button cancelButton, registrationButton;
-
-	private Label nameLabel, passwordLabel, connectedLabel;
-	private Label message;
-	private TextField nameTextField;
-	private PasswordField passwordField;
-	
-//	private FadeTransition transition;
-
 	public RegistrationView(Stage stage, RegistrationModel model) {
 		super(stage, model);
-		//Herren
-		ServiceLocator.getInstance().getLogger().info("Registration window initialized");
-		
-
+		ServiceLocator.getInstance().getLogger().info("Application view initialized");
 	}
 
 	@Override
 	protected Scene create_GUI() {
-		//Herren
 		ServiceLocator sl = ServiceLocator.getInstance();
-	    Logger logger = sl.getLogger();
-	  
+		Logger logger = sl.getLogger();		
 		this.root = new BorderPane();
-	    /**
-	     * Top/menu
-	     * Herren
-	     */
-	    menuBar = new MenuBar();
-	    menuLanguage = new Menu();
-	    menuLanguage.getItems().addAll();
-	    menuBar.getMenus().add(menuLanguage);
-	    /**
-	     * set local
-	     * Herren
-	     */
+		
+		/**
+		 * menubar
+		 */
+		headMenu = new MenuBar();
+		menuLanguage = new Menu();
+		menuLanguage.getItems().addAll();
+		headMenu.getMenus().addAll(menuLanguage);
+		// Top menu for language, TODO for passwordChange
+		
+		// link to Locale
 		for (Locale locale : sl.getLocales()) {
 			MenuItem language = new MenuItem(locale.getLanguage());
 			this.menuLanguage.getItems().add(language);
@@ -83,161 +80,135 @@ public class RegistrationView extends View<RegistrationModel> {
 				updateLabels();
 			});
 		}
-	    /**
-	     * Center with centerBox
-	     * Herren
-	     */
-	    centerBox = new VBox();
-	    nameLabel = new Label();
-	    passwordLabel = new Label();
-	    nameTextField = new TextField();
-	    passwordField = new PasswordField();
-	    nameTextField.setId("textField");
-	    passwordField.setId("textField");
-	    /**
-	     * spacing
-	     */
+		//panes
+		// Herren - messages
+		messageBox = new HBox();
+		labelBox = new VBox();
+		textFieldBox = new VBox();
+		fieldBox = new HBox();
+		bottomBox = new BorderPane();
+		centerBox = new VBox();
+		messageStackPane = new StackPane();
+		
+		//items
+		nameLabel = new Label();
+		nameField = new TextField();
+		pwLabel = new Label();
+		pwField = new PasswordField();
+		message = new Label();
+		
 		zero = new Region();
 		one = new Region();
 		two = new Region();
-		zero.setPrefSize(80, 20);
-		one.setPrefSize(80,20);
-		two.setPrefSize(80,5);
-	    /**
-	     * Bottom with bottomBox
-	     * Herren
-	     */
-	    bottomBox = new BorderPane();
-	    cancelButton = new Button();
-	    registrationButton = new Button();
-	    /**
-	     * add buttons in bottomBox
-	     * Herren
-	     */
-	    bottomBox.setRight(cancelButton);
-	    bottomBox.setLeft(registrationButton);	
-	    /**
-	     * place buttons in bottomBox
-	     * Herren
-	     */
-	    cancelButton.setAlignment(Pos.BASELINE_CENTER);
-	    registrationButton.setAlignment(Pos.BASELINE_CENTER);
-	    
-	    /**
-	     * set witdh
-	     * Herren
-	     */
-		nameLabel.setPrefSize(100, 20);
-		passwordLabel.setPrefSize(100, 20);
-	    nameTextField.setPrefSize(200, 30);
-	    passwordField.setPrefSize(200, 30);
-	    cancelButton.setPrefSize(200, 30);
-	    registrationButton.setPrefSize(200, 30);
-	    
-	    /**
-	     * hbox
-	     */
-		HBox username = new HBox();
-		HBox password = new HBox();	
+		three = new Region();
+		four = new Region();
 		
-		username.getChildren().addAll(one, nameLabel, nameTextField);
-		password.getChildren().addAll(zero, passwordLabel, passwordField);
+		registrationButton = new Button();
+		cancelButton = new Button();
+
+		//get children in panes
+		labelBox.getChildren().addAll(nameLabel,zero,pwLabel);
+		textFieldBox.getChildren().addAll(nameField,one, pwField);
+		fieldBox.getChildren().addAll(four, labelBox,two,textFieldBox);
+		messageStackPane.getChildren().add(message);
+		centerBox.getChildren().addAll(fieldBox,messageStackPane);
+		bottomBox.setLeft(registrationButton);
+		bottomBox.setCenter(three);
+		bottomBox.setRight(cancelButton);
+
+		//set size
+		nameField.setPrefSize(130, 60);
+		pwField.setPrefSize(130, 60);
+		zero.setPrefHeight(40);
+		one.setPrefHeight(48);
+		two.setPrefWidth(20);
+		three.setPrefWidth(20);
+		four.setPrefWidth(20);
+		labelBox.setPrefSize(130, 100);
+		textFieldBox.setPrefSize(230, 90);
+		registrationButton.setPrefSize(220, 50);
+		cancelButton.setPrefSize(220, 50);
 		
-	    /**
-	     * add items in centerBox
-	     * Herren
-	     */
-	    centerBox.getChildren().addAll(two, username, password, bottomBox);
-	    /**
-	     * space for each item in the vbox
-	     * Herren
-	     */
-	    centerBox.setSpacing(10);
-		
-	    /**
-	     * messages
-	     */
-		messageBox = new HBox();
-		connectedLabel = new Label();
-//		connectedLabel.setId("connectedLabel");
-//		connectedLabel.setOpacity(0);
-		messageBox.getChildren().add(connectedLabel);	
-		// message for failed login
-		message = new Label();
-		message.setPrefHeight(40);
-//		message.setId("message");
-//		message.setOpacity(0);
-		messageBox.getChildren().add(message);
-	    
-	    /**
-	     * if registration/login fails
-	     * Herren
-	     */
-//	    errorLabel = new Label();
-//		errorLabel.setId("errorLabel");
-//		errorLabel.setOpacity(0);
-	    
+		//spacing		
+		bottomBox.setPadding(new Insets(20, 50, 15, 50));
+		centerBox.setPadding(new Insets(35, 50, 0, 50));
+		centerBox.setSpacing(10);
+		centerBox.setSpacing(10);
+		registrationButton.setAlignment(Pos.BASELINE_CENTER);
+		cancelButton.setAlignment(Pos.BASELINE_CENTER);
+		centerBox.setAlignment(Pos.BASELINE_CENTER);
+	
+		//css id
+		pwField.setId("textField");
+		nameField.setId("textField");
+		message.setId("message");
+		message.setVisible(false);
 		root.setId("background");
-		root.setTop(menuBar);
+		
+
+		root.setTop(headMenu);
 		root.setCenter(centerBox);
-		root.setBottom(messageBox);
-        
-        updateLabels();     
-		Scene scene = new Scene(root);
-		//	scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());	
+		root.setBottom(bottomBox);
+
+		updateLabels();
+		Scene scene = new Scene(root);		
 		return scene;
 	}
 	
-	/**
-	 * names given by translator
-	 * Herren
-	 */
+	// update items 
 	protected void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
-		cancelButton.setText(t.getString("program.registration.cancelButton"));
-		registrationButton.setText(t.getString("program.registration.registrationButton"));
-		
-		nameLabel.setText(t.getString("program.registration.nameLabel"));
-		passwordLabel.setText(t.getString("program.registration.passwordLabel"));
-//		errorLabel.setText(t.getString("program.registration.errorLabel"));
-		
+		// language settings
 		menuLanguage.setText(t.getString("program.menu.file.language"));
 		
-        stage.setTitle(t.getString("program.registration.stage"));
-	}
-		
-	/**
-	 * 
-	 */
-	public Button getCancelButton() {
-		return cancelButton;
-	}
+		// screen labels
+		nameLabel.setText(t.getString("program.registration.nameLabel"));
+		pwLabel.setText(t.getString("program.registration.pwLabel"));
+		registrationButton.setText(t.getString("program.registration.registrationButton"));
+		cancelButton.setText(t.getString("program.registration.cancelButton"));
+		stage.setTitle(t.getString("program.registration.stage"));
+		//if label is not visible, do not update
+		if (message.getText()!="") {
+			message.setText(t.getString("program.registration.message"));
+		}
 
+	}
+	//getter
 	public Button getRegistrationButton() {
 		return registrationButton;
 	}
-	
-	public TextField getNameTextField() {
-		return nameTextField;
-	}
 
-	public PasswordField getPasswordField() {
-		return passwordField;
+	public Button getCancelButton() {
+		return cancelButton;
+}
+	public TextField getNameField() {
+		return nameField;
+	}
+	
+	public PasswordField getPwField() {
+		return pwField;
 	}
 	
 	public void resetPasswordField() {
-		passwordField.setText("");
+		pwField.setText("");
 	}
 	
 	public void resetNameField() {
-		nameTextField.setText("");
+		nameField.setText("");
 	}
 	
+	public Label getMessage() {
+		return message;
+	}
+	
+	public void resetMessageLabel() {
+		message.setText("");
+	}
+
+	//To show the error message in GUI if Login fails
 	public void showError() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		message.setText(t.getString("program.registration.message"));
 	}
-	
 }
-
