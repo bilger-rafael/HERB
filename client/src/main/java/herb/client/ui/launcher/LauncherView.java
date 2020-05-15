@@ -171,7 +171,8 @@ public class LauncherView extends View<LauncherModel> {
 		lobbyLabel.setText(t.getString("program.launcher.lobbyLabel"));
 		highscoreLabel.setText(t.getString("program.launcher.highscoreLabel"));
 		menuLanguage.setText(t.getString("program.launcher.menuLanguage"));
-		stage.setTitle("program.launcher.titel");
+		menuFile.setText(t.getString("program.launcher.menuFile"));
+		stage.setTitle(t.getString("program.launcher.titel"));
 		logoutMenuItem.setText(t.getString("program.launcher.logoutMenuItem"));
 		refreshButton.setText(t.getString("program.launcher.refreshButton"));
 	}
