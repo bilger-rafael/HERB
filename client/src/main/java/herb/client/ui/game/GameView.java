@@ -627,7 +627,7 @@ public class GameView extends View<GameModel> {
 	
     private void setPointPane() {
     	pointsLabel = new Label();
-    	pointPane.setStyle("-fx-background-color:pink");
+    	//pointPane.setStyle("-fx-background-color:pink");
     	pointsPlayerLabel = new Label();
     	pointsPlayerLabel2 = new Label();
     	playedPointsLabel = new Label();
@@ -662,6 +662,7 @@ public class GameView extends View<GameModel> {
 		winnerBox.setAlignment(Pos.CENTER_LEFT);
 	//	winnerBox.setStyle("-fx-background-color: aliceblue");
 		
+		pointPane.setId("tafel");
 		pointPane.setTop(winnerBox);
 		pointPane.setLeft(namesBox);
 		//pointPane.setRight(winnerBox);
