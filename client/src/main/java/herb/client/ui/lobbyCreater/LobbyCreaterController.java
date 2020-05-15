@@ -22,6 +22,7 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 	private void createLobby() {
 		try {
 		model.createLobby(view.getTextField().getText());
+		this.view.resetTextField();
 		this.view.stop();
 		}catch(Exception e) {
 			view.showError();
@@ -32,7 +33,6 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 	
 	private void getBackLauncherView() {
 		this.view.stop();
-		this.view.resetMessageLabel();
 		this.view.resetTextField();
 		Main.getMainProgram().getLauncher().start();
 	}
