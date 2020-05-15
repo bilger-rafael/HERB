@@ -35,7 +35,7 @@ public class RegistrationView extends View<RegistrationModel> {
 	private BorderPane root, bottomBox;
 	private StackPane messageStackPane;
 	private VBox centerBox, labelBox, textFieldBox;
-	private HBox messageBox, fieldBox;
+	private HBox fieldBox;
 	
 	private Region zero, one, two, three, four;	
 	
@@ -82,7 +82,6 @@ public class RegistrationView extends View<RegistrationModel> {
 		}
 		//panes
 		// Herren - messages
-		messageBox = new HBox();
 		labelBox = new VBox();
 		textFieldBox = new VBox();
 		fieldBox = new HBox();

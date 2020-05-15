@@ -17,25 +17,28 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	
 	private BorderPane root; 
-	private HBox bottomBox, topBox, messageBox;
+	private HBox bottomBox, topBox;
+	private StackPane messageStackPane;
 	private VBox centerBox ;
 	
 	private Button okButton, cancelButton;
 	private TextField text;
 	private Label message;
 	
+	private Region zero;
+	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
 	
 	public LobbyCreaterView(Stage stage, LobbyCreaterModel model) {
 		super(stage, model);
-		stage.setTitle("HERB-Jass Lobby Creater");
 		ServiceLocator.getInstance().getLogger().info("Application LobbyCreaterView initialized");
 	}
 	
@@ -68,10 +71,11 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		/**
 		 * messages
 		 */
-		messageBox = new HBox();
+		messageStackPane = new StackPane();
 		message = new Label();
-		message.setPrefHeight(40);
-		messageBox.getChildren().add(message);
+		message.setId("message");
+		message.setVisible(false);
+		messageStackPane.getChildren().add(message);
 		
 		// Buttons - not needed in final version - just to open the GameView
 		bottomBox = new HBox();
@@ -86,18 +90,18 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	    cancelButton.setPrefWidth(100);
 	    okButton.setPrefWidth(100);
 	    
+	    zero = new Region();
 	    topBox.getChildren().add(text);
 	    topBox.setPadding(new Insets(20));
-	    bottomBox.getChildren().addAll(okButton, cancelButton);
+	    bottomBox.getChildren().addAll(okButton,zero ,cancelButton);
 	    bottomBox.setPadding(new Insets(2));
 	    
 	    centerBox = new VBox();
-	    centerBox.getChildren().addAll(topBox, bottomBox);
+	    centerBox.getChildren().addAll(topBox,messageStackPane ,bottomBox);
 		
 		root.setId("background");
 	    root.setTop(menuBar);
 		root.setCenter(centerBox);
-		root.setBottom(messageBox);
 		
 		updateLabels();
 		Scene scene = new Scene(root);
@@ -111,6 +115,7 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		cancelButton.setText(t.getString("program.lobbyCreater.cancelButton"));
 		okButton.setText(t.getString("program.lobbyCreater.okButton"));
 		menuLanguage.setText(t.getString("program.lobbyCreater.menuLanguage"));
+		stage.setTitle(t.getString("program.lobbyCreater.titel"));
 		if (message.getText()!="") {
 			message.setText(t.getString("program.lobbyCreater.message"));
 		}
@@ -136,4 +141,5 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		message.setText(t.getString("program.lobbyCreater.message"));
 	}
+	
 }

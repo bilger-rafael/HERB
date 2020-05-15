@@ -31,7 +31,7 @@ public class LoginView extends View<LoginModel> {
 	private BorderPane root, bottomBox;
 	private StackPane messageStackPane;
 	private VBox centerBox, labelBox, textFieldBox;
-	private HBox messageBox, fieldBox;
+	private HBox fieldBox;
 	
 	private Region zero, one, two, three, four;	
 	
@@ -40,7 +40,7 @@ public class LoginView extends View<LoginModel> {
 	
 	private Button loginButton, createUserButton;
 
-	private Label nameLabel, pwLabel, connectedLabel;
+	private Label nameLabel, pwLabel;
 	private Label message;
 
 	private MenuBar headMenu;
@@ -78,7 +78,6 @@ public class LoginView extends View<LoginModel> {
 		}
 		//panes
 		// Herren - messages
-		messageBox = new HBox();
 		labelBox = new VBox();
 		textFieldBox = new VBox();
 		fieldBox = new HBox();
@@ -126,9 +125,9 @@ public class LoginView extends View<LoginModel> {
 		createUserButton.setPrefSize(220, 50);
 		
 		//spacing		
-		bottomBox.setPadding(new Insets(20, 50, 15, 50));
-		centerBox.setPadding(new Insets(35, 50, 0, 50));
-		centerBox.setSpacing(10);
+		bottomBox.setPadding(new Insets(20, 20, 15, 20));
+		centerBox.setPadding(new Insets(35, 20, 0, 20));
+		centerBox.setSpacing(20);
 		centerBox.setSpacing(10);
 		loginButton.setAlignment(Pos.BASELINE_CENTER);
 		createUserButton.setAlignment(Pos.BASELINE_CENTER);
