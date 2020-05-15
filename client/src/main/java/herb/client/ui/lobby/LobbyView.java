@@ -20,11 +20,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class LobbyView extends View<LobbyModel> {
 	
 	private BorderPane root, bottomBox; 
-	private HBox centerBox;
+	private VBox centerBox;
 	private Button cancelButton, botsButton;
 	private Label lobbyName;
 	
@@ -37,7 +38,7 @@ public class LobbyView extends View<LobbyModel> {
 		
 	public LobbyView(Stage stage, LobbyModel model) {
 		super(stage, model);
-		stage.setTitle("HERB-Jass > Lobby: " + model.getLobby() );
+		stage.setTitle("HERB-Jass > Lobby: ");
 		ServiceLocator.getInstance().getLogger().info("Application view initialized");
 	}
 
@@ -81,9 +82,9 @@ public class LobbyView extends View<LobbyModel> {
 	    playerOverview.setPrefWidth(300);
 	    playerOverview.setMaxHeight(125);
 
-	    
-	    centerBox  = new HBox();
-	    centerBox.getChildren().add(playerOverview);
+	    lobbyName = new Label(model.getLobby().getName());
+	    centerBox  = new VBox();
+	    centerBox.getChildren().addAll(lobbyName, playerOverview);
 	    centerBox.setPadding(new Insets(20));
 		/**
 		 * Buttons with bottomBox
@@ -129,5 +130,9 @@ public class LobbyView extends View<LobbyModel> {
 	
 	public Button getBotsButton() {
 		return botsButton;
+	}
+	
+	public Label getLobbyName() {
+		return lobbyName;
 	}
 }
