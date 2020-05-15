@@ -544,14 +544,17 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void updateLeftPlayer() {
+		if((MAX_CARDS - model.getTrickNumber()) <leftHandSide.getChildren().size())
         leftHandSide.getChildren().remove(0);
 	}
 	
 	public void updateRightPlayer() {
+		if((MAX_CARDS - model.getTrickNumber()) <rightHandSide.getChildren().size())
 		rightHandSide.getChildren().remove(0);
 	}
 	
 	public void updateOppoPlayer() {
+		if((MAX_CARDS - model.getTrickNumber()-1) <oppositeSide.getChildren().size())
 		oppositeSide.getChildren().remove(0);
 	}
 	
@@ -576,6 +579,7 @@ public class GameView extends View<GameModel> {
 	        trumpRects.add(rectangleTO);
 		}	
 		chooseTrumpBox.getChildren().addAll(trumpOrderLabel, trumpBox);
+		chooseTrumpBox.setAlignment(Pos.CENTER);
 		tablePart.getChildren().add(chooseTrumpBox);
 		trumpBox.setAlignment(Pos.CENTER);
         trumpBox.setVisible(true);

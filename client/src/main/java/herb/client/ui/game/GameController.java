@@ -46,12 +46,11 @@ public class GameController extends Controller<GameModel, GameView> {
 				while(c.next()) {
 					if (c.wasAdded()) {
 				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
-				
-	//			System.out.println(c.getAddedSubList().toString() + "is next Card.");
+				//System.out.println(c.toString() + "is played");			
 				}
 				}
+				}
 				
-			}
 		};
 		
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
@@ -66,38 +65,33 @@ public class GameController extends Controller<GameModel, GameView> {
 				}
 				
 				while(p.next()){
+					
+					int i = model.getCurrentPlayers().size();
+					Player pl = model.getCurrentPlayers().get(i-1);
+					
 					if (p.wasAdded()) {
-						//System.out.println(p.getAddedSubList().toString() + "is next Player.");
-				
+						System.out.println(p.getAddedSubList().toString() + "is next Player.");
+						
+						view.updatePlayables(pl);
+						view.setStartingPlayer();	
+						
+						System.out.println("CurrentPlayer is: "+ pl.getUsername().toString());
+						System.out.println("StartingPlayer is: "+ model.getStartingPlayer().getUsername().toString());
+						System.out.println();
+						
+						}
+					
 						if(p.wasUpdated()) {
+
 							System.out.println(p.getAddedSubList().toString() + "is next updated Player.");
-							int i = model.getCurrentPlayers().size();
-							Player pl = model.getCurrentPlayers().get(i-1);
-							System.out.println("CurrentPlayer is: "+ pl.getUsername().toString());
-							System.out.println("StartingPlayer is: "+ model.getStartingPlayer().getUsername().toString());
-							System.out.println();
-							view.updatePlayables(pl);
-							view.setStartingPlayer();	
+
 							if(pl.equals(model.getPlayers().get(0))) {
 								view.setTurn();
-							}
-							//check
-							if(model.getTrickCards().size()>1) {
-								if(pl.equals(model.getPlayers().get(1))) {
-									view.updateRightPlayer();
-								}
-								if(pl.equals(model.getPlayers().get(2))) {
-									view.updateOppoPlayer();
-								}
-								if(pl.equals(model.getPlayers().get(3))) {
-									view.updateLeftPlayer();
-								}
 							}
 						}
 				
 					}
 				}
-			}
 		};
 				
 		ListChangeListener<Trump> trumpListener = new ListChangeListener<Trump>() {
@@ -182,6 +176,13 @@ public class GameController extends Controller<GameModel, GameView> {
 		model.playCard(playedCard);
 		}
 		view.updateImagePatterns();	
+		
+		//check
+		view.updateRightPlayer();
+		view.updateOppoPlayer();
+		view.updateLeftPlayer();
+		
+		
 	}
 	
 	public void forwardTrump(MouseEvent f) {	

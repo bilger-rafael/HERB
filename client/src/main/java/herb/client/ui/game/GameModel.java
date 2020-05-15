@@ -158,6 +158,8 @@ public class GameModel extends Model {
 		this.currentPlayer = trick.getCurrentPlayer();
 		Card[] cards = (Card[]) trick.getPlayedCards();
 		ArrayList<Card> tmp = new ArrayList();
+		
+		if(!trickCards.contains(cards[0])){
 		tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
 
 
@@ -218,6 +220,7 @@ public class GameModel extends Model {
 				trickCards.add(tmp.get(2));
 			}
 			break;
+		}
 		}
 	}
 
