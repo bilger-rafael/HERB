@@ -83,12 +83,13 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		cancelButton = new Button();
    
 		bottomBox.setSpacing(10);
+		bottomBox.setPadding(new Insets(20, 50, 15, 50));
 	    
 	    cancelButton.setAlignment(Pos.BASELINE_CENTER);
 	    okButton.setAlignment(Pos.BASELINE_CENTER);
 	    
-	    cancelButton.setPrefWidth(100);
-	    okButton.setPrefWidth(100);
+	    cancelButton.setPrefSize(220, 50);
+	    okButton.setPrefSize(220, 50);
 	    
 	    zero = new Region();
 	    topBox.getChildren().add(text);
@@ -135,6 +136,10 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	
 	public Button getCancelButton() {
 		return cancelButton;
+	}
+	
+	public Label getMessage() {
+		return message;
 	}
 	//To show the error message in GUI if Login fails
 	public void showError() {

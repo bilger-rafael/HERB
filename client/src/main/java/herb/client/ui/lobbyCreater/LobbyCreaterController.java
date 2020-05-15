@@ -26,6 +26,7 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 		this.view.stop();
 		}catch(Exception e) {
 			view.showError();
+			view.getMessage().setVisible(true);
 			//			serviceLocator.getLogger().info("Lobby existiert bereits.");
 		}
 		
@@ -34,6 +35,7 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 	private void getBackLauncherView() {
 		this.view.stop();
 		this.view.resetTextField();
+		view.getMessage().setVisible(false);
 		Main.getMainProgram().getLauncher().start();
 	}
 
