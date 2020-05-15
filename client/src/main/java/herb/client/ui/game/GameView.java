@@ -49,13 +49,13 @@ public class GameView extends View<GameModel> {
 	
 	private AnchorPane root; 
 	private GridPane table, ownCards;
-	private VBox leftHandSide, rightHandSide, opposite, bottom, namesBox, pointsBox, winnerBox, lobbyBox, showTrumpBox;
+	private VBox leftHandSide, rightHandSide, opposite, bottom, namesBox, pointsBox, winnerBox, lobbyBox, showTrumpBox, chooseTrumpBox;
 	private HBox oppositeSide, left, right;
 	private TilePane trumpBox;
 	private HBox tMain, tRight, tOppo, tLeft, buttons;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
 	private Label pointsLabel, pointsPlayerLabel, pointsPlayerLabel2, playedPointsLabel, playedPointsLabel2, winnerLabel, winnerLabel2; 
-	private Label trumpLabel, startingPlayerLabel, startingPlayerText;
+	private Label trumpLabel, trumpOrderLabel, startingPlayerLabel, startingPlayerText;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
 	private StackPane tablePart;
@@ -110,6 +110,7 @@ public class GameView extends View<GameModel> {
 		// Roesti - create Panes and Controls 
 		upperPart = new BorderPane();
 		tablePart = new StackPane();
+		chooseTrumpBox = new VBox();
 		trumpBox = new TilePane();
 		showTrumpBox = new VBox();
 		
@@ -180,6 +181,7 @@ public class GameView extends View<GameModel> {
 	    rects = new ArrayList();
 	    trickRects = new ArrayList();
 	    trumpRects = new ArrayList();
+	    trumpOrderLabel = new Label();
 		
 		setMyCards();	
 		setTrumpInfo();
@@ -317,16 +319,19 @@ public class GameView extends View<GameModel> {
 		tLeft.getChildren().add(trickRects.get(3));
 		table.setHgap(10);
 		table.setVgap(10);
-		table.setStyle("-fx-alignement: center");
+	//	table.setStyle("-fx-alignement: center");
+		table.setAlignment(Pos.CENTER);
 		tablePart.getChildren().add(table);
 	}
 	
 	// Roesti - update ImagePatterns (getMyCards from Server)
 	// TODO card images from herb / client / ui / images / fr OR de 	
 	public void updateImagePatterns() {		
+		removeTurn();
 		for (int d = 0; d < MAX_RECTS+1; d++)   {		
 			rects.get(d).setFill(null);
 			rects.get(d).setStroke(Color.TRANSPARENT);
+			rects.get(d).setStrokeWidth(1);
 		}
 		cards = model.getMyCards();
 		
@@ -360,7 +365,6 @@ public class GameView extends View<GameModel> {
 				endeDerFahnenstange = true;
 		}
 		}
-		removeTurn();
 	}
 	
 	// Roesti - update trick ImagePatterns
@@ -369,6 +373,8 @@ public class GameView extends View<GameModel> {
 			trickRects.get(d).setFill(null);
 			trickRects.get(d).setStroke(Color.TRANSPARENT);
 		}
+		
+		if(!cardSet.isEmpty()) {
 		trick = new ArrayList();
 		trick = cardSet;
 		// update played cards
@@ -442,7 +448,7 @@ public class GameView extends View<GameModel> {
 				trickRects.get(2).setFill(pattern);
 			}
 		}
-		            
+		}           
 		}
 	}
 	
@@ -555,8 +561,8 @@ public class GameView extends View<GameModel> {
 			Rectangle rectangleTO = new Rectangle();
 			rectangleTO.setHeight(100);
 			rectangleTO.setWidth(100);
-			rectangleTO.setArcHeight(10);
-			rectangleTO.setArcWidth(10);
+			rectangleTO.setArcHeight(40);
+			rectangleTO.setArcWidth(40);
 	        
 	        Trump trump;
 	        trump = Trump.values()[i];
@@ -569,8 +575,14 @@ public class GameView extends View<GameModel> {
 	        trumpBox.getChildren().add(rectangleTO);  
 	        trumpRects.add(rectangleTO);
 		}	
-        tablePart.getChildren().add(trumpBox);
-		trumpBox.setVisible(true);
+		chooseTrumpBox.getChildren().addAll(trumpOrderLabel, trumpBox);
+		tablePart.getChildren().add(chooseTrumpBox);
+		trumpBox.setAlignment(Pos.CENTER);
+        trumpBox.setVisible(true);
+        trumpBox.setHgap(30);
+        trumpBox.setVgap(30);
+        chooseTrumpBox.setStyle("-fx-background-color: saddlebrown");
+        trumpBox.setPadding(new Insets(20, 20, 20, 20));
 		
 		//check if this player is the starting player and if trump is not yet set
 		Player x = Datastore.getInstance().getMainPlayer();
@@ -611,7 +623,7 @@ public class GameView extends View<GameModel> {
 	
     private void setPointPane() {
     	pointsLabel = new Label();
-    	pointsLabel.setStyle("-fx-background-color:pink");
+    	pointPane.setStyle("-fx-background-color:pink");
     	pointsPlayerLabel = new Label();
     	pointsPlayerLabel2 = new Label();
     	playedPointsLabel = new Label();
@@ -623,7 +635,7 @@ public class GameView extends View<GameModel> {
     	buttons = new HBox();
     	buttons.getChildren().addAll(revancheButton, quitButton);
     	buttons.setSpacing(40);
-		winnerBox.getChildren().addAll(winnerLabel2, winnerLabel);
+		winnerBox.getChildren().addAll(pointsLabel, winnerLabel2, winnerLabel);
 
     	
     	String label = "";
@@ -644,11 +656,11 @@ public class GameView extends View<GameModel> {
 		pointsBox.setMaxWidth(100);
 		
 		winnerBox.setAlignment(Pos.CENTER_LEFT);
-		winnerBox.setStyle("-fx-background-color: aliceblue");
+	//	winnerBox.setStyle("-fx-background-color: aliceblue");
 		
-		pointPane.setTop(pointsLabel);
+		pointPane.setTop(winnerBox);
 		pointPane.setLeft(namesBox);
-		pointPane.setRight(winnerBox);
+		//pointPane.setRight(winnerBox);
 		pointPane.setCenter(pointsBox);
 		pointPane.setBottom(buttons);	
 		pointPane.setPadding(new Insets(40, 40, 40, 40));
@@ -672,21 +684,18 @@ public class GameView extends View<GameModel> {
     	}
 		playedPointsLabel.setText(labela);
 		
-		String labelw = "";
+
+		Player winner = new Player();
 		int highestScore = scores.get(0);
 		scorePosition = 0;
 		for(int i = 1; i<4; i++) {
 			highestScore = Math.max(highestScore, scores.get(i));
 			if (scores.get(i) == highestScore) {
 				scorePosition = i;
+				winner = model.getPlayers().get(i);
 			}
 		}
-		
-		for (int i = 0; i< 4; i++) {
-			labelw += " \n .";
-			if(i == scorePosition)	labelw = "Winner";	
-		}
-		winnerLabel.setText(labelw);
+		winnerLabel.setText(winner.getUsername().toString());
 	}
 	
 	public void setTurn() {
@@ -731,6 +740,7 @@ public class GameView extends View<GameModel> {
 		pointsPlayerLabel2.setText(t.getString("program.game.pointsPlayerLabel"));
 		playedPointsLabel2.setText(t.getString("program.game.playedPointsLabel"));
 		winnerLabel2.setText(t.getString("program.game.winnerLabel"));
+		trumpOrderLabel.setText(t.getString("program.game.trumpOrder"));
 	}
 	
 	public ArrayList<Card> getCardAreas(){

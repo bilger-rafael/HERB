@@ -36,7 +36,6 @@ public class GameModel extends Model {
 	private Trick trick;
 	private int trickIndex;
 	private int trickNumber;
-	private int trickSize;
 	private Player startingPlayer, currentPlayer;
 	private Player[] pServerOrder;
 	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
@@ -153,12 +152,14 @@ public class GameModel extends Model {
 			trick = tricks.getLast();
 		}
 
+		trickCards.clear();
+		
 		this.startingPlayer = trick.getStartingPlayer();
 		this.currentPlayer = trick.getCurrentPlayer();
 		Card[] cards = (Card[]) trick.getPlayedCards();
 		ArrayList<Card> tmp = new ArrayList();
 		tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
-		trickCards.clear();
+
 
 		int l = tmp.size();
 		switch (l) {
@@ -253,16 +254,17 @@ public class GameModel extends Model {
 		return scoresList;
 	}
 
-	public void refreshPlayables() {
+	public void refreshCurrentPlayer() {
 
 		try {
-			trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
-			this.trickNumber = Datastore.getInstance().getMainPlayer().getRound().getTricks().size();
+		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
+		this.trickNumber = (Datastore.getInstance().getMainPlayer().getRound().getTricks().size());
+		if(currentPlayers.isEmpty() || trick.getCurrentPlayer() != currentPlayers.get(currentPlayers.size()-1)) {
 			currentPlayers.add(trick.getCurrentPlayer());
 			startingPlayers.add(trick.getStartingPlayer());
-			
-	} catch (Exception e) {
-			return;
+		}
+		}catch(Exception e) {
+			// to be catched
 		}
 	}
 
@@ -316,9 +318,9 @@ public class GameModel extends Model {
 			@Override
 			public void run() {
 				while (!stop) {
-					Platform.runLater(() -> refreshPlayables());
+					Platform.runLater(() -> refreshCurrentPlayer());
 					try {
-						Thread.sleep(100);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// connection lost
 					}
@@ -337,7 +339,7 @@ public class GameModel extends Model {
 				while (!trumpStop) {
 					Platform.runLater(() -> refreshTrump());
 					try {
-						Thread.sleep(800);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// message: Your choice couldn't be sent to others
 						
