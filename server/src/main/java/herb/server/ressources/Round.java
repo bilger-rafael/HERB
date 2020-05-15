@@ -7,7 +7,7 @@ import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
 
 //Etter
-public class Round extends RoundBase<Game, Player, Trick> implements Runnable {
+public class Round extends RoundBase<Game, Player, Trick> {
 	private DeckOfCards deck;
 	private boolean trumpChoosen;
 
@@ -18,19 +18,23 @@ public class Round extends RoundBase<Game, Player, Trick> implements Runnable {
 
 		this.setCurrentStartingPlayer(this.getPlayers()[new Random().nextInt(4)]);
 
-		Thread t = new Thread(this);
-		// t.setDaemon(true);
-		t.start();
-	}
-
-	@Override
-	public void run() {
+		/*
+		 * Thread t = new Thread(this); t.start();
+		 */
 		startRound();
 
 		playTricks();
 
 		endRound();
 	}
+
+	/*
+	 * @Override public void run() { startRound();
+	 * 
+	 * playTricks();
+	 * 
+	 * endRound(); }
+	 */
 
 	private void startRound() {
 		// Aktuelle Runde für Spieler setzten
@@ -59,7 +63,7 @@ public class Round extends RoundBase<Game, Player, Trick> implements Runnable {
 		this.getCurrentStartingPlayer().setTrumpListener(() -> {
 			this.trumpChoosen = true;
 		});
-		
+
 		while (!this.trumpChoosen) {
 			try {
 				Thread.sleep(1000);
@@ -98,7 +102,7 @@ public class Round extends RoundBase<Game, Player, Trick> implements Runnable {
 		for (int i = 0; i < this.getScores().length; i++) {
 			DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[i].toString(), this.getScores()[i]);
 		}
-		
+
 		this.getGame().endRound();
 	}
 
