@@ -48,6 +48,8 @@ public abstract class PlayerBase <Hand extends HandBase, Round extends RoundBase
 	
 	public abstract void chooseTrump(Trump trump) throws ExceptionBase;
 	
+	public abstract void demandRematch(Boolean rematch) throws ExceptionBase;
+	
 	public abstract void logout() throws ExceptionBase;
 
 	public String getUsername() {

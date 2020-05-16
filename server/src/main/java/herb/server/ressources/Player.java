@@ -16,6 +16,8 @@ public class Player extends PlayerBase<Hand, Round> {
 	private PlayListener playListener;
 	@JsonIgnore
 	private TrumpListener trumpListener;
+	@JsonIgnore
+	private RematchListener rematchListener;
 
 	public Player(String username, String authToken) {
 		super(username, authToken);
@@ -45,6 +47,15 @@ public class Player extends PlayerBase<Hand, Round> {
 			trumpListener = null;
 		}
 	}
+	
+	@Override
+	public void demandRematch(Boolean rematch) throws ExceptionBase {
+		if (rematchListener != null) {
+			rematchListener.decided(rematch);
+			rematchListener = null;
+		}
+	}
+
 
 	public void addCardtoHand(CardBase card) {
 		this.getHand().addCard((Card) card);
@@ -175,6 +186,14 @@ public class Player extends PlayerBase<Hand, Round> {
 
 	public void setTrumpListener(TrumpListener tumpListener) {
 		this.trumpListener = tumpListener;
+	}
+	
+	public RematchListener getRematchListener() {
+		return rematchListener;
+	}
+
+	public void setRematchListener(RematchListener rematchListener) {
+		this.rematchListener = rematchListener;
 	}
 
 	@Override

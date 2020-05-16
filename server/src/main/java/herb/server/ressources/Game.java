@@ -1,13 +1,12 @@
 package herb.server.ressources;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import herb.server.ressources.core.GameBase;
-import herb.server.ressources.core.PlayerBase;
-import herb.server.ressources.core.RoundBase;
 
 //Etter
-public class Game extends GameBase<Lobby, Player> implements Runnable{
+public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 
 	public Game(Lobby lobby, Player[] players) {
 		super(UUID.randomUUID(), lobby, players);
@@ -16,27 +15,33 @@ public class Game extends GameBase<Lobby, Player> implements Runnable{
 	}
 
 	@Override
-	public RoundBase startRound() {
+	public Round startRound() {
 		Round r = new Round(this);
-		this.rounds.add(r);		
+		this.rounds.add(r);
 		return r;
 	}
-	
-	public void endRound() {
-		//TODO wait for decision of users (next round or quit)
-		/*
-		while (!this.trumpChoosen) {
+
+	public void endRound(Round r) {
+		while (r.rematchDecisions.size() < 4 && !r.rematchDecisions.containsValue(false)) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
 		}
-		*/
+		
+		if (r.rematchDecisions.containsValue(false))
+			// quit game
+			return;
+		else
+			// rematch
+			return;
 	}
 
 	@Override
 	public void run() {
-		startRound();
+		Round r = startRound();
+		r.playRound();
+		endRound(r);
 	}
-	
+
 }

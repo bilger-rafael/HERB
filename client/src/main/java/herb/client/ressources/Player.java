@@ -87,4 +87,23 @@ public class Player extends PlayerBase<Hand, Round> {
 		}
 	}
 
+	@Override
+	public void demandRematch(Boolean rematch) throws ExceptionBase {
+		try {
+			RestClient.getClient()
+					.post()
+					.uri(uriBuilder -> uriBuilder.path("/Player({username})/demandRematch")
+		    	   		  				         .build(this.getUsername()))
+					.body(BodyInserters.fromValue(rematch))
+					.retrieve()
+					.bodyToMono(String.class)
+					.block();
+		} catch (WebClientResponseException e) {
+			//TODO check e.getStatusCode() and raise specific error
+			throw new PlayerException();
+		} catch (WebClientException e) {
+			throw new PlayerException();
+		}
+	}
+
 }

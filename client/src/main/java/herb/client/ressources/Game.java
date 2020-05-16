@@ -6,7 +6,7 @@ import herb.client.ressources.core.GameBase;
 import herb.client.ressources.core.RoundBase;
 import herb.client.rest.RestClient;
 
-public class Game extends GameBase<Lobby, Player>{
+public class Game extends GameBase<Lobby, Round, Player>{
 	
 	// default constructor for json deserialization
 	public Game() {
@@ -19,7 +19,7 @@ public class Game extends GameBase<Lobby, Player>{
 	}
 
 	@Override
-	public RoundBase startRound() {
+	public Round startRound() {
 		Round r = RestClient.getClient()
 							.post()
 							.uri("/Game(" + this.getUuid() + ")/startRound")

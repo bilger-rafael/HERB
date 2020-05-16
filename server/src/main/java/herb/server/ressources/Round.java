@@ -1,5 +1,6 @@
 package herb.server.ressources;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import herb.server.DataStore_Repository;
@@ -8,24 +9,18 @@ import herb.server.ressources.core.Trump;
 
 //Etter
 public class Round extends RoundBase<Game, Player, Trick> {
+	public HashMap<String, Boolean> rematchDecisions = new HashMap<String, Boolean>();
 	private DeckOfCards deck;
 	private boolean trumpChoosen;
-
+	
 	public Round(Game game) {
 		super(game, game.getPlayers());
-		// this.setTrump(randomTrump());
 		this.deck = new DeckOfCards();
-
 		this.setCurrentStartingPlayer(this.getPlayers()[new Random().nextInt(4)]);
 
 		/*
 		 * Thread t = new Thread(this); t.start();
 		 */
-		startRound();
-
-		playTricks();
-
-		endRound();
 	}
 
 	/*
@@ -35,6 +30,14 @@ public class Round extends RoundBase<Game, Player, Trick> {
 	 * 
 	 * endRound(); }
 	 */
+
+	public void playRound() {
+		startRound();
+
+		playTricks();
+
+		endRound();
+	}
 
 	private void startRound() {
 		// Aktuelle Runde für Spieler setzten
@@ -94,6 +97,17 @@ public class Round extends RoundBase<Game, Player, Trick> {
 	}
 
 	private void endRound() {
+		
+		//TODO set listener for RematchDecision 
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			Player p = this.getPlayers()[i];
+			p.setRematchListener((Boolean rematch) -> {
+				this.rematchDecisions.put(p.getUsername(), rematch);
+			});
+		}
+		
+		
+		
 
 		this.setScores(determinScores());
 
@@ -102,8 +116,6 @@ public class Round extends RoundBase<Game, Player, Trick> {
 		for (int i = 0; i < this.getScores().length; i++) {
 			DataStore_Repository.getDB().addPlayertoHighScore(this.getPlayers()[i].toString(), this.getScores()[i]);
 		}
-
-		this.getGame().endRound();
 	}
 
 	// Random Trump wählen

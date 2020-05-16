@@ -5,12 +5,12 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public abstract class GameBase<Lobby extends LobbyBase, Player extends PlayerBase> {
+public abstract class GameBase<Lobby extends LobbyBase, Round extends RoundBase, Player extends PlayerBase> {
 	private final UUID uuid;
 	@JsonIgnoreProperties({ "runningGame", "players" })
 	private final Lobby lobby;
 	protected Player[] players;
-	protected ArrayList<RoundBase> rounds = new ArrayList<RoundBase>();
+	protected ArrayList<Round> rounds = new ArrayList<Round>();
 	
 	public GameBase(UUID uuid, Lobby lobby, Player[] players) {
 		this.uuid = uuid;
@@ -18,7 +18,7 @@ public abstract class GameBase<Lobby extends LobbyBase, Player extends PlayerBas
 		this.players = players;
 	}
 	
-	public abstract RoundBase startRound();
+	public abstract Round startRound();
 
 	public UUID getUuid() {
 		return uuid;
@@ -28,7 +28,7 @@ public abstract class GameBase<Lobby extends LobbyBase, Player extends PlayerBas
 		return players;
 	}
 
-	public ArrayList<RoundBase> getRounds() {
+	public ArrayList<Round> getRounds() {
 		return rounds;
 	}
 
