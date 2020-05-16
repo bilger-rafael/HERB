@@ -266,6 +266,7 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void updatePlayables(Player curr) {
+		
 		if(curr.equals(model.getPlayers().get(0))) {
 		cards = model.getMyCards();
 		
@@ -274,7 +275,7 @@ public class GameView extends View<GameModel> {
 	   			int indexforRects = startingPosition + 2*cards.indexOf(cards.get(j));
 	   
 	   			this.rects.get(indexforRects).setStroke(Color.GOLD);
-	   			this.rects.get(indexforRects).setStyle("-fx-stroke-width: 5");
+	   			this.rects.get(indexforRects).setStrokeWidth(3);
 	    	}
 	    }
 	    updateLabels();
@@ -317,8 +318,7 @@ public class GameView extends View<GameModel> {
 		tLeft.getChildren().add(trickRects.get(3));
 		table.setHgap(10);
 		table.setVgap(10);
-	//	table.setStyle("-fx-alignement: center");
-		table.setAlignment(Pos.CENTER);
+		table.setAlignment(Pos.TOP_CENTER);
 		tablePart.getChildren().add(table);
 	}
 	
@@ -335,7 +335,6 @@ public class GameView extends View<GameModel> {
 		if(!cards.isEmpty()) {
 		startingPosition = MAX_CARDS - cards.size();
 		System.out.println(startingPosition);
-		System.out.println(MAX_CARDS);
 		System.out.println(cards.size());
 		
 		int arrayIndex = 0;
@@ -356,6 +355,7 @@ public class GameView extends View<GameModel> {
 			ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
 			this.rects.get(j).setFill(pattern);
 			this.rects.get(j).setStroke(Color.BLACK);
+			this.rects.get(j).setStrokeWidth(1);
 			arrayIndex++;
 	
 			if(arrayIndex == cards.size())
@@ -368,7 +368,8 @@ public class GameView extends View<GameModel> {
 	public void updateTrick(ArrayList<Card> cardSet) {
 		for (int d = 0; d<MAX_PLAYERS; d++)   {		
 			trickRects.get(d).setFill(null);
-			trickRects.get(d).setStroke(Color.TRANSPARENT);
+			trickRects.get(d).setStroke(Color.BLACK);
+			trickRects.get(d).setStrokeWidth(1);
 		}
 		
 		if(!cardSet.isEmpty()) {
@@ -391,7 +392,7 @@ public class GameView extends View<GameModel> {
 		
 		// goal: put the played card next to its player		
 		Player s = model.getStartingPlayer();
-	//	startingPlayerLabel.setText(s.getUsername().toString());
+		setStartingPlayer();
 		
 		Player c = model.getCurrentPlayer();
 		if(c.equals(model.getPlayers().get(0))) {
@@ -632,6 +633,7 @@ public class GameView extends View<GameModel> {
 	
     private void setPointPane() {
     	pointsLabel = new Label();
+    	pointsLabel.setVisible(false);
     	pointsPlayerLabel = new Label();
     	pointsPlayerLabel2 = new Label();
     	playedPointsLabel = new Label();
@@ -708,6 +710,9 @@ public class GameView extends View<GameModel> {
 		labelW += winners.get(i).getUsername().toString();
 		}
 		winnerLabel.setText(labelW);
+		if(winners.contains(model.getPlayers().get(0))){
+			pointsLabel.setVisible(true);
+		}
 	}
 	
 	public void setTurn() {
@@ -723,14 +728,23 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void setStartingPlayer() {
-		
+		playerLabel.setStyle("-fx-background-color: TRANSPAREND");
+		rightHandLabel.setStyle("-fx-background-color: TRANSPAREND");
+		oppositeLabel.setStyle("-fx-background-color: TRANSPAREND");
+		leftHandLabel.setStyle("-fx-background-color: TRANSPAREND");
 		try {
 		Player s = model.getStartingPlayer();
-		//startingPlayerLabel.setText(s.getUsername().toString());
 		// changed
 		int index = model.getPlayers().indexOf(s);
 		trickRects.get(index).setStroke(Color.BLUE);
+		trickRects.get(index).setStrokeWidth(2);
 		
+		if(s.equals(model.getPlayers().get(0))) playerLabel.setStyle("-fx-background-color: red");
+		if(s.equals(model.getPlayers().get(1))) rightHandLabel.setStyle("-fx-background-color: red");
+		if(s.equals(model.getPlayers().get(2))) oppositeLabel.setStyle("-fx-background-color: red");
+		if(s.equals(model.getPlayers().get(3))) leftHandLabel.setStyle("-fx-background-color: red");
+
+
 		} catch(Exception e) {
 			startingPlayerLabel.setText("noch nicht festgelegt - oder kein Trick?");
 		}
@@ -745,7 +759,6 @@ public class GameView extends View<GameModel> {
 		// screen labels
 		menuCardSet.setText(t.getString("program.game.menuCardSet"));
 		trickLabel2.setText(t.getString("program.game.order"));
-		pointsLabel.setText(t.getString("program.game.pointsLabel"));
 		trumpLabel.setText(t.getString("program.game.trump"));
 		startingPlayerText.setText(t.getString("program.game.startingPlayer"));
 		revancheButton.setText(t.getString("program.game.revancheButton"));
@@ -753,6 +766,7 @@ public class GameView extends View<GameModel> {
 		frenchSet.setText(t.getString("program.game.frenchSet"));
 		germanSet.setText(t.getString("program.game.germanSet"));
 		
+		pointsLabel.setText(t.getString("program.game.pointsLabel"));
 		pointsPlayerLabel2.setText(t.getString("program.game.pointsPlayerLabel"));
 		playedPointsLabel2.setText(t.getString("program.game.playedPointsLabel"));
 		winnerLabel2.setText(t.getString("program.game.winnerLabel"));
