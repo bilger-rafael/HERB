@@ -113,8 +113,9 @@
 }
 
 #tafel{
-	-fx-background-image:url("ui/images/background/tafel.jpg");
-}
+	-fx-background-image: url("ui/images/background/tafel.jpg");
+	-fx-background-size: cover;
+	}
 
 list{
     -fx-spacing: 70.0px;

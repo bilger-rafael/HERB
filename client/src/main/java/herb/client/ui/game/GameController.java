@@ -45,12 +45,10 @@ public class GameController extends Controller<GameModel, GameView> {
 			public void onChanged(Change<? extends Card> c) {
 				while(c.next()) {
 					if (c.wasAdded()) {
-				view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
-				//System.out.println(c.toString() + "is played");			
+						view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
+					}
 				}
-				}
-				}
-				
+			}	
 		};
 		
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
@@ -65,26 +63,19 @@ public class GameController extends Controller<GameModel, GameView> {
 				}
 				
 				while(p.next()){
-					
 					int i = model.getCurrentPlayers().size();
 					Player pl = model.getCurrentPlayers().get(i-1);
-					
 					if (p.wasAdded()) {
-						System.out.println(p.getAddedSubList().toString() + "is next Player.");
-						
 						view.updatePlayables(pl);
 						view.setStartingPlayer();	
 						
+						System.out.println(p.getAddedSubList().toString() + "is next Player.");
 						System.out.println("CurrentPlayer is: "+ pl.getUsername().toString());
-						System.out.println("StartingPlayer is: "+ model.getStartingPlayer().getUsername().toString());
 						System.out.println();
-						
 						}
 					
 						if(p.wasUpdated()) {
-
 							System.out.println(p.getAddedSubList().toString() + "is next updated Player.");
-
 							if(pl.equals(model.getPlayers().get(0))) {
 								view.setTurn();
 							}
@@ -107,20 +98,14 @@ public class GameController extends Controller<GameModel, GameView> {
 		
 		model.getTrickCards().addListener(trickListener);
 		model.getCurrentPlayers().addListener(myTurnListener);
-	//	model.getStartingPlayers().addListener(myTurnListener);
+		model.getStartingPlayers().addListener(myTurnListener);
 		model.getTrump().addListener(trumpListener);
 		
-		if (view.getTrumpChoice().size() >0) 
 			view.getTrumpChoice().get(0).setOnMouseClicked(e -> forwardTrump(e));
-		if (view.getTrumpChoice().size()>1) 
         	view.getTrumpChoice().get(1).setOnMouseClicked(e -> forwardTrump(e));
-        if (view.getTrumpChoice().size()>2) 
         	view.getTrumpChoice().get(2).setOnMouseClicked(e -> forwardTrump(e));
-        if (view.getTrumpChoice().size()>3) 
         	view.getTrumpChoice().get(3).setOnMouseClicked(e -> forwardTrump(e));
-        if (view.getTrumpChoice().size()>4) 
         	view.getTrumpChoice().get(4).setOnMouseClicked(e -> forwardTrump(e));
-        if (view.getTrumpChoice().size()>5) 
         	view.getTrumpChoice().get(5).setOnMouseClicked(e -> forwardTrump(e));
 			
 		// Event when card is chosen
@@ -199,11 +184,13 @@ public class GameController extends Controller<GameModel, GameView> {
 		model.setCardSet("Fr");
 		view.updateImagePatterns();
 		view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
+		view.updateTrumpOptions();
 	}
 	public void changeCardSet2German() {
 		model.setCardSet("De");
 		view.updateImagePatterns();
 		view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
+		view.updateTrumpOptions();
 	}
 	
 	public void quitGame() {
