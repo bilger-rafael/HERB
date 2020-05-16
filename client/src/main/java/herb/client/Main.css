@@ -6,10 +6,6 @@
 	-fx-background-image:url("ui/images/background/holz.jpg");
 }
 
-#tafel{
-	-fx-background-image:url("ui/images/background/tafel.jpg");
-}
-
 /*
  * all labels
  * Herren
@@ -116,7 +112,9 @@
 	-fx-border-color: #CC2200;
 }
 
-
+#tafel{
+	-fx-background-image:url("ui/images/background/tafel.jpg");
+}
 
 list{
     -fx-spacing: 70.0px;
