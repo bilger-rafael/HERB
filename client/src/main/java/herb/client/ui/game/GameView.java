@@ -149,7 +149,6 @@ public class GameView extends View<GameModel> {
 		spacerOppo= new Region();
 		spacerOppo.setMinWidth(300d);
 		oppositeLabel = new Label(players.get(2).getUsername());
-		oppositeLabel.setMinHeight(60);
 
 		// Cards of MainPlayer
 		bottom = new VBox();
@@ -197,6 +196,11 @@ public class GameView extends View<GameModel> {
 		upperPart.setLeft(left);
 		upperPart.setRight(right);
 		
+		playerLabel.setMinWidth(150);
+		rightHandLabel.setMinWidth(150);
+		oppositeLabel.setMinWidth(150);
+		leftHandLabel.setMinWidth(150);
+		
 		root.getChildren().addAll(upperPart, bottom, menuBar, lobbyBox, showTrumpBox);
 
 		root.setLeftAnchor(menuBar, 0d);
@@ -204,9 +208,9 @@ public class GameView extends View<GameModel> {
 		root.setRightAnchor(menuBar, 0d);
 
 		root.setId("background");
-		root.setTopAnchor(upperPart, -40d);
-		root.setLeftAnchor(upperPart, 0d);
-		root.setRightAnchor(upperPart, 0d);
+		root.setTopAnchor(upperPart, -20d);
+		root.setLeftAnchor(upperPart, -30d);
+		root.setRightAnchor(upperPart, -30d);
 		
 		root.setBottomAnchor(bottom, 10d);
 		root.setLeftAnchor(bottom, 10d);
@@ -464,18 +468,19 @@ public class GameView extends View<GameModel> {
 		Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/"  + filenameRight));
         ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
         rectangleRight.setFill(patternRight);
-        rectangleRight.setStroke(Color.BLACK);
+        rectangleRight.setStroke(Color.GREY);
         
-	    rotateRight.setAngle(-5*i); 
-	    rotateRight.setPivotX(322/4/2); 	
-	    rotateRight.setPivotY(-514/4); 
+	    rotateRight.setAngle(20-5*i); 
+	    rotateRight.setPivotX(514/4*3); 	
+	    rotateRight.setPivotY(322/4/2); 
 	    rectangleRight.getTransforms().addAll(rotateRight);      
         rightHandSide.getChildren().add(rectangleRight);     
 		}
 		
-        rightHandSide.setSpacing(-40.0);
+        rightHandSide.setSpacing(-70.0);
 		rightHandSide.setMinWidth(100);
-		rightHandSide.setMaxHeight(500);
+		rightHandSide.setMaxHeight(400);
+		rightHandSide.setAlignment(Pos.BOTTOM_LEFT);
 		right.getChildren().add(rightHandLabel);
 		right.getChildren().add(rightHandSide);
 		right.setSpacing(10.0);
@@ -494,24 +499,27 @@ public class GameView extends View<GameModel> {
 		Image imageLeft = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameLeft));
         ImagePattern patternLeft = new ImagePattern(imageLeft, 0, 0, 514/4,322/4, false);
         rectangleLeft.setFill(patternLeft);
+        rectangleLeft.setStroke(Color.GREY);
+
 	    
-	    rotateLeft.setAngle(5*i); 
-	    rotateLeft.setPivotX(322/4/2); 	
-	    rotateLeft.setPivotY(514/4); 
+	    rotateLeft.setAngle(20-5*i); 
+	    rotateLeft.setPivotX(-514/4*3); 	
+	    rotateLeft.setPivotY(322/4/2); 
 	    rectangleLeft.getTransforms().addAll(rotateLeft);      
         leftHandSide.getChildren().add(rectangleLeft); 
 		}
 		
-        leftHandSide.setSpacing(-40.0);
+        leftHandSide.setSpacing(-70.0);
 		leftHandSide.setMinWidth(100);
 		leftHandSide.setMaxHeight(400);
+		leftHandSide.setAlignment(Pos.CENTER_RIGHT);
 		left.getChildren().add(leftHandSide);
 		left.getChildren().add(leftHandLabel);
 	    left.setSpacing(10.0);
-		left.setAlignment(Pos.CENTER_RIGHT);
+		left.setPadding(new Insets(10, 10, 10, 10));
+		left.setAlignment(Pos.CENTER_LEFT);
 		
 		// oppositeHandSide - cards in VBox, with name in HBox
-	//	oppositeSide.getChildren().add(spacerOppo); 
 		for (int i = 0; i<MAX_CARDS; i++) {
 	        Rotate rotateOppo = new Rotate();
 	        Rectangle rectangleOppo = new Rectangle();
@@ -524,6 +532,7 @@ public class GameView extends View<GameModel> {
 			Image imageOppo = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameOppo));
 	        ImagePattern patternOppo = new ImagePattern(imageOppo, 0, 0, 322/4, 514/4, false);
 	        rectangleOppo.setFill(patternOppo);
+	        rectangleOppo.setStroke(Color.GREY);
 		    rotateOppo.setAngle(20-5*i); 
 		    rotateOppo.setPivotX(322/4/2); 	
 		    rotateOppo.setPivotY(-514/4); 
@@ -728,10 +737,12 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void setStartingPlayer() {
-		playerLabel.setStyle("-fx-background-color: TRANSPAREND");
-		rightHandLabel.setStyle("-fx-background-color: TRANSPAREND");
-		oppositeLabel.setStyle("-fx-background-color: TRANSPAREND");
-		leftHandLabel.setStyle("-fx-background-color: TRANSPAREND");
+
+		playerLabel.setStyle("-fx-border-width: 3");
+		rightHandLabel.setStyle("-fx-border-width: 3");
+		oppositeLabel.setStyle("-fx-border-width: 3");
+		leftHandLabel.setStyle("-fx-border-width: 3");
+		
 		try {
 		Player s = model.getStartingPlayer();
 		// changed
@@ -739,11 +750,10 @@ public class GameView extends View<GameModel> {
 		trickRects.get(index).setStroke(Color.BLUE);
 		trickRects.get(index).setStrokeWidth(2);
 		
-		if(s.equals(model.getPlayers().get(0))) playerLabel.setStyle("-fx-background-color: red");
-		if(s.equals(model.getPlayers().get(1))) rightHandLabel.setStyle("-fx-background-color: red");
-		if(s.equals(model.getPlayers().get(2))) oppositeLabel.setStyle("-fx-background-color: red");
-		if(s.equals(model.getPlayers().get(3))) leftHandLabel.setStyle("-fx-background-color: red");
-
+		if(s.equals(model.getPlayers().get(0))) playerLabel.setStyle("-fx-border-color: gold");
+		if(s.equals(model.getPlayers().get(1))) rightHandLabel.setStyle("-fx-border-color: gold");
+		if(s.equals(model.getPlayers().get(2))) oppositeLabel.setStyle("-fx-border-color: gold");
+		if(s.equals(model.getPlayers().get(3))) leftHandLabel.setStyle("-fx-border-color: gold");
 
 		} catch(Exception e) {
 			startingPlayerLabel.setText("noch nicht festgelegt - oder kein Trick?");

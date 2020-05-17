@@ -11,7 +11,6 @@
  * Herren
  */
 .label{
-	-fx-text-fill:black;
 	-fx-font-family: "Comic Sans MS", cursive, sans-serif;
 	-fx-font-size: 18px;
 	-fx-letter-spacing: 2px;
