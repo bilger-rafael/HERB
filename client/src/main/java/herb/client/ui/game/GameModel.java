@@ -348,7 +348,8 @@ public class GameModel extends Model {
 	}
 
 	public Player getCurrentPlayer() {
-		return this.currentPlayer;
+		this.currentPlayer = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast().getCurrentPlayer();
+		return currentPlayer;
 	}
 	
 	public String getLobbyName() {
@@ -356,10 +357,10 @@ public class GameModel extends Model {
 		return lobby;
 	}
 
-	public SimpleObjectProperty<Player> getCurrentPlayerProperty() {
-		SimpleObjectProperty<Player> curr = new SimpleObjectProperty<>(getCurrentPlayer());
-		return curr;
-	}
+//	public SimpleObjectProperty<Player> getCurrentPlayerProperty() {
+//		SimpleObjectProperty<Player> curr = new SimpleObjectProperty<>(getCurrentPlayer());
+//		return curr;
+//	}
 
 	public ArrayList<Player> getPlayers() {
 		return this.players;

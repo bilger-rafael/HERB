@@ -46,8 +46,17 @@ public class GameController extends Controller<GameModel, GameView> {
 			public void onChanged(Change<? extends Card> c) {
 				while(c.next()) {
 					if (c.wasAdded()) {
-						view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
-			}}}	
+						view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
+						
+						System.out.println("changedCard: "+c.getList().toString());
+						System.out.println("StartingPlayer "+ model.getStartingPlayer());
+						System.out.println("CurrentPlayer: " + model.getCurrentPlayer());
+						
+						for(int j = 0; j< model.getTrickCards().size(); j++) {	
+							System.out.println("TrickCards: "+ model.getTrickCards().get(j).getRank().toString() + model.getTrickCards().get(j).getSuit().toString() );
+						}
+						System.out.println();
+				}}}	
 		};
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> p) {
