@@ -126,6 +126,8 @@ public class GameView extends View<GameModel> {
 		trickLabel = new Label();
 		trickLabel.setMinHeight(70);
 		trickLabel2 = new Label();
+		trickLabel2.setStyle("-fx-text-fill: gold");
+
 		
 		// points - winner
 		pointPane = new BorderPane();
@@ -196,6 +198,11 @@ public class GameView extends View<GameModel> {
 		upperPart.setLeft(left);
 		upperPart.setRight(right);
 		
+		//  layout
+		playerLabel.setStyle("-fx-background-color: white");
+		rightHandLabel.setStyle("-fx-background-color: white");
+		oppositeLabel.setStyle("-fx-background-color: white");
+		leftHandLabel.setStyle("-fx-background-color: white");
 		playerLabel.setMinWidth(150);
 		rightHandLabel.setMinWidth(150);
 		oppositeLabel.setMinWidth(150);
@@ -666,30 +673,36 @@ public class GameView extends View<GameModel> {
     	buttons.setSpacing(40);
 		winnerBox.getChildren().addAll(pointsLabel, winnerLabel2, winnerLabel);
 
-    	
     	String label = "";
     	for(int i = 0; i<4; i++) {
     		label += players.get(i).getUsername().toString();
     		label += "\n";
     	}
     	pointsPlayerLabel.setText(label);
-		namesBox.getChildren().addAll(pointsPlayerLabel2, pointsPlayerLabel);
-		namesBox.setAlignment(Pos.CENTER_LEFT);
-	   
+		namesBox.getChildren().addAll(pointsPlayerLabel2, pointsPlayerLabel);	   
 		pointsBox.getChildren().addAll(playedPointsLabel2, playedPointsLabel);
-		pointsBox.setAlignment(Pos.CENTER_RIGHT);
-		
-		winnerBox.setAlignment(Pos.TOP_CENTER);
-		winnerBox.setStyle("-fx-background-color: WHITE");
-		
-		pointPane.setId("tafel");
+
 		pointPane.setTop(winnerBox);
 		pointPane.setLeft(namesBox);
 		pointPane.setCenter(pointsBox);
 		pointPane.setBottom(buttons);	
+
+		tablePart.getChildren().add(pointPane);
+		
+		//  layout
+		namesBox.setAlignment(Pos.CENTER_LEFT);
+		pointsBox.setAlignment(Pos.CENTER_RIGHT);
+		winnerBox.setAlignment(Pos.TOP_CENTER);
+		buttons.setAlignment(Pos.BOTTOM_CENTER);
 		pointPane.setPadding(new Insets(40, 40, 40, 40));
 		pointPane.setMaxSize(600,  400);
-		tablePart.getChildren().add(pointPane);
+		pointPane.setId("tafel");
+		pointsPlayerLabel.setStyle("-fx-text-fill: WHITE");
+		pointsPlayerLabel2.setStyle("-fx-text-fill: WHITE");
+		playedPointsLabel.setStyle("-fx-text-fill: WHITE");
+		playedPointsLabel2.setStyle("-fx-text-fill: WHITE");
+		winnerLabel.setStyle("-fx-text-fill: GOLD");
+		winnerLabel2.setStyle("-fx-text-fill: GOLD");
 			
 		pointPane.setVisible(false);
 		changeTopOfStackPane();
@@ -708,30 +721,33 @@ public class GameView extends View<GameModel> {
     	}
 		playedPointsLabel.setText(labela);
 		
-		
 		ArrayList<Player> winners = new ArrayList<>();
 		winners.add(model.getPlayers().get(0));
 		Integer highestScore = scores.get(0);
 		for(int i = 1; i<4; i++) {
-		int result = highestScore.compareTo(scores.get(i)); 
+			int result = highestScore.compareTo(scores.get(i)); 
 		 
-		if(result == 0) {
-		winners.add(model.getPlayers().get(i));
-		}
-		if(result < 0) {
-		winners.remove(winners.size()-1);
-		winners.add(model.getPlayers().get(i));
-		highestScore = scores.get(i);
-		}
+			if(result == 0) {
+				winners.add(model.getPlayers().get(i));
+			}
+			if(result < 0) {
+				winners.remove(winners.size()-1);
+				winners.add(model.getPlayers().get(i));
+				highestScore = scores.get(i);
+			}
 		}
 		String labelW = "";
 		for (int i = 0; i < winners.size(); i++) {
-		labelW += winners.get(i).getUsername().toString();
+			labelW += winners.get(i).getUsername().toString();
+			if(winners.size()>1) {
+				labelW += " & ";
+			}
 		}
 		winnerLabel.setText(labelW);
 		if(winners.contains(model.getPlayers().get(0))){
 			pointsLabel.setVisible(true);
-			pointsLabel.setStyle("-fx-font-color: gold");
+			pointsLabel.setStyle("-fx-text-fill: WHITE");
+
 		}
 	}
 	
@@ -747,28 +763,23 @@ public class GameView extends View<GameModel> {
 		trumpBox.setVisible(false);
 	}
 	
-	public void setStartingPlayer() {
+	public void setStartingPlayer() {		
+		playerLabel.setStyle("-fx-text-fill: black");
+		rightHandLabel.setStyle("-fx-text-fill: black");
+		oppositeLabel.setStyle("-fx-text-fill: black");
+		leftHandLabel.setStyle("-fx-text-fill: black");
 
-		playerLabel.setStyle("-fx-border-width: 3");
-		rightHandLabel.setStyle("-fx-border-width: 3");
-		oppositeLabel.setStyle("-fx-border-width: 3");
-		leftHandLabel.setStyle("-fx-border-width: 3");
-		
 		try {
 		Player s = model.getStartingPlayer();
-		// changed
 		int index = model.getPlayers().indexOf(s);
-		trickRects.get(index).setStroke(Color.BLUE);
-		trickRects.get(index).setStrokeWidth(2);
-		
-		if(s.equals(model.getPlayers().get(0))) playerLabel.setStyle("-fx-border-color: gold");
-		if(s.equals(model.getPlayers().get(1))) rightHandLabel.setStyle("-fx-border-color: gold");
-		if(s.equals(model.getPlayers().get(2))) oppositeLabel.setStyle("-fx-border-color: gold");
-		if(s.equals(model.getPlayers().get(3))) leftHandLabel.setStyle("-fx-border-color: gold");
-
+		if(s.equals(model.getPlayers().get(0))) playerLabel.setStyle("-fx-background-color: deepskyblue");
+		if(s.equals(model.getPlayers().get(1))) rightHandLabel.setStyle("-fx-background-color: deepskyblue");
+		if(s.equals(model.getPlayers().get(2))) oppositeLabel.setStyle("-fx-background-color: deepskyblue");
+		if(s.equals(model.getPlayers().get(3))) leftHandLabel.setStyle("-fx-background-color: deepskyblue");
 		} catch(Exception e) {
-			startingPlayerLabel.setText("noch nicht festgelegt - oder kein Trick?");
+			startingPlayerLabel.setText("to be defined");
 		}
+
 	}
 	
 	// Roesti 
@@ -792,6 +803,17 @@ public class GameView extends View<GameModel> {
 		playedPointsLabel2.setText(t.getString("program.game.playedPointsLabel"));
 		winnerLabel2.setText(t.getString("program.game.winnerLabel"));
 		trumpOrderLabel.setText(t.getString("program.game.trumpOrder"));
+	}
+	
+	public void cleanings() {
+		playerLabel.setStyle("-fx-text-fill: black");
+		rightHandLabel.setStyle("-fx-text-fill: black");
+		oppositeLabel.setStyle("-fx-text-fill: black");
+		leftHandLabel.setStyle("-fx-text-fill: black");
+		removeTurn();
+		leftHandSide.getChildren().clear();
+		rightHandSide.getChildren().clear();
+		oppositeSide.getChildren().clear();
 	}
 	
 	public ArrayList<Card> getCardAreas(){

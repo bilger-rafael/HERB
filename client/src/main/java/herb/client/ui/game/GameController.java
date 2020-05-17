@@ -56,7 +56,7 @@ public class GameController extends Controller<GameModel, GameView> {
 					System.out.println("passed here");
 					view.updatePointPane(model.getScores());
 					model.setStopThread();
-					view.removeTurn();
+					view.cleanings();
 				}
 				while(p.next()){
 					int i = model.getCurrentPlayers().size();
