@@ -29,52 +29,51 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class GameModel extends Model {
+	private Player[] playerServerOrder;
 	private ArrayList<Player> players;
+	private int playerServerPosition;
 	private ArrayList<Card> currentCards;
-	private ObservableList<Card> trickCards = FXCollections.observableArrayList();
-	private int position;
 	private Trick trick;
 	private int trickIndex;
 	private int trickNumber;
+	private ObservableList<Card> trickCards = FXCollections.observableArrayList();
 	private Player startingPlayer, currentPlayer;
-	private Player[] pServerOrder;
-	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
-	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
 	private ObservableList<Trump> trumps = FXCollections.observableArrayList();
 	private ArrayList<Integer> scoresList;
+	private String cardSet = "Fr";
 	private Thread t, tu, tru;
 	private volatile boolean stop = false;
 	private volatile boolean trumpStop = false;
-	private String cardSet = "Fr";
+	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
+	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
 
+	
 	public GameModel() {
 		super();
-
+		
 		startTrumpUpdater();
 		startTrickUpdater();
 		startPlayablesUpdater();
 	}
 
 	// Bilger - Input von Server
-	// Roesti - store MainPlayer in Pole-position
+	// roesti - store MainPlayer in Pole-position
 	public ArrayList<Player> getLobbyPlayers() {
-		pServerOrder = Datastore.getInstance().getMainPlayer().getRound().getPlayers();
-		players = new ArrayList<Player>(Arrays.asList(pServerOrder));
-
+		playerServerOrder = Datastore.getInstance().getMainPlayer().getRound().getPlayers();
+		players = new ArrayList<Player>(Arrays.asList(playerServerOrder));
 		LinkedList<Player> plys = new LinkedList();
 		for (Player p : players)
 			plys.add(p);
 
 		players.clear();
 		Player p0 = Datastore.getInstance().getMainPlayer();
-		this.position = plys.indexOf(p0);
-
-		ListIterator<Player> iter = plys.listIterator(position);
+		this.playerServerPosition = plys.indexOf(p0);
+		ListIterator<Player> iter = plys.listIterator(playerServerPosition);
 		while (iter.hasNext()) {
 			Player p = iter.next();
 			players.add(p);
 		}
-		switch (position) {
+		switch (playerServerPosition) {
 		case 0:
 			break;
 		case 1:
@@ -118,7 +117,7 @@ public class GameModel extends Model {
 		return chosenTrump;
 	}
 
-	// Roesti - trick array on server corresponds to the player order
+	// roesti - trick array on server corresponds to the player order
 	// goal: to put the cards in a array, starting with the card of the current
 	// starting player (of this trick)
 	public void refreshTrickCards() {
@@ -142,7 +141,7 @@ public class GameModel extends Model {
 				// to look at the finished trick
 			} else {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 				}
 				trick = tricks.getLast();
@@ -152,113 +151,112 @@ public class GameModel extends Model {
 			trick = tricks.getLast();
 		}
 
-		trickCards.clear();
-		
 		this.startingPlayer = trick.getStartingPlayer();
 		this.currentPlayer = trick.getCurrentPlayer();
+		trickCards.clear();
 		Card[] cards = (Card[]) trick.getPlayedCards();
 		ArrayList<Card> tmp = new ArrayList();
-		
+	
 		if(!trickCards.contains(cards[0])){
-		tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
-
-
-		int l = tmp.size();
-		switch (l) {
-		case 1:
-			trickCards.add(tmp.get(0));
-			break;
-		case 2:
-			if (startingPlayer.equals(pServerOrder[3])) {
-				trickCards.add(tmp.get(1));
-				trickCards.add(tmp.get(0));
-			} else {
-				trickCards.add(tmp.get(0));
-				trickCards.add(tmp.get(1));
-			}
-			break;
-		case 3:
-			if (startingPlayer.equals(pServerOrder[0]) || startingPlayer.equals(pServerOrder[1])) {
-				trickCards.add(tmp.get(0));
-				trickCards.add(tmp.get(1));
-				trickCards.add(tmp.get(2));
-			}
-			if (startingPlayer.equals(pServerOrder[3])) {
-				trickCards.add(tmp.get(2));
-				trickCards.add(tmp.get(0));
-				trickCards.add(tmp.get(1));
-			}
-			if (startingPlayer.equals(pServerOrder[2])) {
-				trickCards.add(tmp.get(1));
-				trickCards.add(tmp.get(2));
-				trickCards.add(tmp.get(0));
-			}
-			break;
-		case 4:
-			if (startingPlayer.equals(pServerOrder[0])) {
-				trickCards.add(tmp.get(0));
-				trickCards.add(tmp.get(1));
-				trickCards.add(tmp.get(2));
-				trickCards.add(tmp.get(3));
-			}
-			if (startingPlayer.equals(pServerOrder[1])) {
-				trickCards.add(tmp.get(1));
-				trickCards.add(tmp.get(2));
-				trickCards.add(tmp.get(3));
-				trickCards.add(tmp.get(0));
-			}
-			if (startingPlayer.equals(pServerOrder[2])) {
-				trickCards.add(tmp.get(2));
-				trickCards.add(tmp.get(3));
-				trickCards.add(tmp.get(0));
-				trickCards.add(tmp.get(1));
-			}
-			if (startingPlayer.equals(pServerOrder[3])) {
-				trickCards.add(tmp.get(3));
-				trickCards.add(tmp.get(0));
-				trickCards.add(tmp.get(1));
-				trickCards.add(tmp.get(2));
-			}
-			break;
-		}
+			tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
+			int trickSize = tmp.size();
+			switch (trickSize) {
+				case 1:
+					trickCards.add(tmp.get(0));
+					break;
+				case 2:
+					if (startingPlayer.equals(playerServerOrder[3])) {
+						trickCards.add(tmp.get(1));
+						trickCards.add(tmp.get(0));
+					} else {
+						trickCards.add(tmp.get(0));
+						trickCards.add(tmp.get(1));
+					}
+					break;
+				case 3:
+					if (startingPlayer.equals(playerServerOrder[0]) || startingPlayer.equals(playerServerOrder[1])) {
+						trickCards.add(tmp.get(0));
+						trickCards.add(tmp.get(1));
+						trickCards.add(tmp.get(2));
+					}
+					if (startingPlayer.equals(playerServerOrder[3])) {
+						trickCards.add(tmp.get(2));
+						trickCards.add(tmp.get(0));
+						trickCards.add(tmp.get(1));
+					}
+					if (startingPlayer.equals(playerServerOrder[2])) {
+						trickCards.add(tmp.get(1));
+						trickCards.add(tmp.get(2));
+						trickCards.add(tmp.get(0));
+					}
+					break;
+				case 4:
+					if (startingPlayer.equals(playerServerOrder[0])) {
+						trickCards.add(tmp.get(0));
+						trickCards.add(tmp.get(1));
+						trickCards.add(tmp.get(2));
+						trickCards.add(tmp.get(3));
+					}
+					if (startingPlayer.equals(playerServerOrder[1])) {
+						trickCards.add(tmp.get(1));
+						trickCards.add(tmp.get(2));
+						trickCards.add(tmp.get(3));
+						trickCards.add(tmp.get(0));
+					}
+					if (startingPlayer.equals(playerServerOrder[2])) {
+						trickCards.add(tmp.get(2));
+						trickCards.add(tmp.get(3));
+						trickCards.add(tmp.get(0));
+						trickCards.add(tmp.get(1));
+					}
+					if (startingPlayer.equals(playerServerOrder[3])) {
+						trickCards.add(tmp.get(3));
+						trickCards.add(tmp.get(0));
+						trickCards.add(tmp.get(1));
+						trickCards.add(tmp.get(2));
+					}
+					break;
+				}
 		}
 	}
 
+	//  get scores for n rounds
 	public ArrayList<Integer> getScores() {
-
 		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getScores();
+		// TODO - count end result
+	//	Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().get(0).getScores();
 		scoresList = new ArrayList(Arrays.asList(serverScores));
 		LinkedList<Integer> scrs = new LinkedList();
 		for (Integer i : scoresList) {
 			scrs.add(i);
 		}
 		scoresList.clear();
-		ListIterator<Integer> itera = scrs.listIterator(position);
+		ListIterator<Integer> itera = scrs.listIterator(playerServerPosition);
 		while (itera.hasNext()) {
 			Integer j = itera.next();
 			scoresList.add(j);
 		}
-		switch (position) {
-		case 0:
-			break;
-		case 1:
-			scoresList.add(scrs.get(0));
-			break;
-		case 2:
-			scoresList.add(scrs.get(0));
-			scoresList.add(scrs.get(1));
-			break;
-		case 3:
-			scoresList.add(scrs.get(0));
-			scoresList.add(scrs.get(1));
-			scoresList.add(scrs.get(2));
-		}
-		System.out.println("Erhaltene Scores " + scoresList.toString());
+		switch (playerServerPosition) {
+			case 0:
+				break;
+			case 1:
+				scoresList.add(scrs.get(0));
+				break;
+			case 2:
+				scoresList.add(scrs.get(0));
+				scoresList.add(scrs.get(1));
+				break;
+			case 3:
+				scoresList.add(scrs.get(0));
+				scoresList.add(scrs.get(1));
+				scoresList.add(scrs.get(2));
+			}
+			System.out.println("Erhaltene Scores " + scoresList.toString());
 		return scoresList;
 	}
 
 	public void refreshCurrentPlayer() {
-
+// TODO - check
 		try {
 		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
 		this.trickNumber = (Datastore.getInstance().getMainPlayer().getRound().getTricks().size());
@@ -272,7 +270,6 @@ public class GameModel extends Model {
 	}
 
 	public void refreshTrump() {
-
 		if (Datastore.getInstance().getMainPlayer().getRound().getTrump() == null)
 			return;
 
@@ -305,12 +302,8 @@ public class GameModel extends Model {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// connection lost
-						
-					}
-				}
-			}
+				}}}
 		};
-
 		t = new Thread(r);
 		t.setDaemon(true);
 		t.start();
@@ -326,9 +319,7 @@ public class GameModel extends Model {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// connection lost
-					}
-				}
-			}
+				}}}
 		};
 		tu = new Thread(ru);
 		tu.setDaemon(true);
@@ -345,10 +336,7 @@ public class GameModel extends Model {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// message: Your choice couldn't be sent to others
-						
-					}
-				}
-			}
+				}}}
 		};
 		tru = new Thread(run);
 		tru.setDaemon(true);

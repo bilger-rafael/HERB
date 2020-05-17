@@ -455,28 +455,26 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void setOtherPlayers() {
-		// rightHandSide - cards in VBox, together with name in HBox
-
+		// rightHandSide - cards in HBox, together with name in VBox
 		for (int i= 0; i< MAX_CARDS; i++) {
-		Rotate rotateRight = new Rotate();
-		Rectangle rectangleRight = new Rectangle();
-		rectangleRight.setHeight(322/4);
-		rectangleRight.setWidth(514/4);		
-		rectangleRight.setArcHeight(20);
-		rectangleRight.setArcWidth(20);
-		String filenameRight = "Rückseite.jpg";
-		Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/"  + filenameRight));
-        ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
-        rectangleRight.setFill(patternRight);
-        rectangleRight.setStroke(Color.GREY);
-        
-	    rotateRight.setAngle(20-5*i); 
-	    rotateRight.setPivotX(514/4*3); 	
-	    rotateRight.setPivotY(322/4/2); 
-	    rectangleRight.getTransforms().addAll(rotateRight);      
-        rightHandSide.getChildren().add(rectangleRight);     
+			Rotate rotateRight = new Rotate();
+			Rectangle rectangleRight = new Rectangle();
+			rectangleRight.setHeight(322/4);
+			rectangleRight.setWidth(514/4);		
+			rectangleRight.setArcHeight(20);
+			rectangleRight.setArcWidth(20);
+			String filenameRight = "Rückseite.jpg";
+			Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/"  + filenameRight));
+	        ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
+	        rectangleRight.setFill(patternRight);
+	        rectangleRight.setStroke(Color.GREY);
+	        
+		    rotateRight.setAngle(20-5*i); 
+		    rotateRight.setPivotX(514/4*3); 	
+		    rotateRight.setPivotY(322/4/2); 
+		    rectangleRight.getTransforms().addAll(rotateRight);      
+	        rightHandSide.getChildren().add(rectangleRight);     
 		}
-		
         rightHandSide.setSpacing(-70.0);
 		rightHandSide.setMinWidth(100);
 		rightHandSide.setMaxHeight(400);
@@ -487,28 +485,25 @@ public class GameView extends View<GameModel> {
 		right.setPadding(new Insets(10, 10, 10, 10));
 		right.setAlignment(Pos.CENTER_RIGHT);
 		
-		//change
+		// rightHandSide - cards in HBox, together with name in VBox
 		for (int i= 0; i< MAX_CARDS; i++) {
-		Rotate rotateLeft = new Rotate();
-		Rectangle rectangleLeft = new Rectangle();
-		rectangleLeft.setHeight(322/4);
-		rectangleLeft.setWidth(514/4);
-        rectangleLeft.setArcHeight(20);
-        rectangleLeft.setArcWidth(20);
-        String filenameLeft = "Rückseite.jpg";
-		Image imageLeft = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameLeft));
-        ImagePattern patternLeft = new ImagePattern(imageLeft, 0, 0, 514/4,322/4, false);
-        rectangleLeft.setFill(patternLeft);
-        rectangleLeft.setStroke(Color.GREY);
-
-	    
-	    rotateLeft.setAngle(20-5*i); 
-	    rotateLeft.setPivotX(-514/4*3); 	
-	    rotateLeft.setPivotY(322/4/2); 
-	    rectangleLeft.getTransforms().addAll(rotateLeft);      
-        leftHandSide.getChildren().add(rectangleLeft); 
+			Rotate rotateLeft = new Rotate();
+			Rectangle rectangleLeft = new Rectangle();
+			rectangleLeft.setHeight(322/4);
+			rectangleLeft.setWidth(514/4);
+	        rectangleLeft.setArcHeight(20);
+	        rectangleLeft.setArcWidth(20);
+	        String filenameLeft = "Rückseite.jpg";
+			Image imageLeft = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameLeft));
+	        ImagePattern patternLeft = new ImagePattern(imageLeft, 0, 0, 514/4,322/4, false);
+	        rectangleLeft.setFill(patternLeft);
+	        rectangleLeft.setStroke(Color.GREY);
+		    rotateLeft.setAngle(20-5*i); 
+		    rotateLeft.setPivotX(-514/4*3); 	
+		    rotateLeft.setPivotY(322/4/2); 
+		    rectangleLeft.getTransforms().addAll(rotateLeft);      
+	        leftHandSide.getChildren().add(rectangleLeft); 
 		}
-		
         leftHandSide.setSpacing(-70.0);
 		leftHandSide.setMinWidth(100);
 		leftHandSide.setMaxHeight(400);
@@ -538,31 +533,46 @@ public class GameView extends View<GameModel> {
 		    rotateOppo.setPivotY(-514/4); 
 		    rectangleOppo.getTransforms().addAll(rotateOppo);      
 	        oppositeSide.getChildren().add(rectangleOppo); 
-	    
 		}
-		
 		oppositeSide.setSpacing(-70.0);
 		oppositeSide.setMinHeight(100);
 		oppositeSide.setAlignment(Pos.CENTER);
 		opposite.getChildren().add(oppositeSide);
 		opposite.getChildren().add(oppositeLabel);	
 		opposite.setAlignment(Pos.CENTER);
-		
 	}
 	
 	public void updateLeftPlayer() {
-		if((MAX_CARDS - model.getTrickNumber()) <leftHandSide.getChildren().size())
-        leftHandSide.getChildren().remove(0);
+		int round = MAX_CARDS - model.getTrickNumber();
+		if(round <leftHandSide.getChildren().size()) {
+			if(round % 2 == 0) {
+				leftHandSide.getChildren().remove(0);
+			}else {
+				leftHandSide.getChildren().remove(round);
+			}
+		}    
 	}
 	
 	public void updateRightPlayer() {
-		if((MAX_CARDS - model.getTrickNumber()) <rightHandSide.getChildren().size())
-		rightHandSide.getChildren().remove(0);
+		int round = MAX_CARDS - model.getTrickNumber();
+		if(round <rightHandSide.getChildren().size()) {
+			if(round % 2 == 0) {
+				rightHandSide.getChildren().remove(0);
+			}else {
+				rightHandSide.getChildren().remove(round);
+			}
+		}
 	}
 	
 	public void updateOppoPlayer() {
-		if((MAX_CARDS - model.getTrickNumber()-1) <oppositeSide.getChildren().size())
-		oppositeSide.getChildren().remove(0);
+		int round = MAX_CARDS - model.getTrickNumber();
+		if(round <oppositeSide.getChildren().size()) {
+			if(round % 2 == 0) {
+				oppositeSide.getChildren().remove(0);
+			}else {
+				oppositeSide.getChildren().remove(round);
+			}
+		}
 	}
 	
 	public void setTrumpOptions() {
@@ -721,6 +731,7 @@ public class GameView extends View<GameModel> {
 		winnerLabel.setText(labelW);
 		if(winners.contains(model.getPlayers().get(0))){
 			pointsLabel.setVisible(true);
+			pointsLabel.setStyle("-fx-font-color: gold");
 		}
 	}
 	
