@@ -47,10 +47,9 @@ public class GameModel extends Model {
 	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
 	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
 
-	
 	public GameModel() {
 		super();
-		
+
 		startTrumpUpdater();
 		startTrickUpdater();
 		startPlayablesUpdater();
@@ -147,7 +146,7 @@ public class GameModel extends Model {
 				trick = tricks.getLast();
 				trickIndex = tricks.indexOf(tricks.getLast());
 			}
-		}else {
+		} else {
 			trick = tricks.getLast();
 		}
 
@@ -156,75 +155,76 @@ public class GameModel extends Model {
 		trickCards.clear();
 		Card[] cards = (Card[]) trick.getPlayedCards();
 		ArrayList<Card> tmp = new ArrayList();
-	
-		if(!trickCards.contains(cards[0])){
+
+		if (!trickCards.contains(cards[0])) {
 			tmp.addAll((Arrays.asList(cards).stream().filter(c -> c != null).collect(Collectors.toList())));
 			int trickSize = tmp.size();
 			switch (trickSize) {
-				case 1:
+			case 1:
+				trickCards.add(tmp.get(0));
+				break;
+			case 2:
+				if (startingPlayer.equals(playerServerOrder[3])) {
+					trickCards.add(tmp.get(1));
 					trickCards.add(tmp.get(0));
-					break;
-				case 2:
-					if (startingPlayer.equals(playerServerOrder[3])) {
-						trickCards.add(tmp.get(1));
-						trickCards.add(tmp.get(0));
-					} else {
-						trickCards.add(tmp.get(0));
-						trickCards.add(tmp.get(1));
-					}
-					break;
-				case 3:
-					if (startingPlayer.equals(playerServerOrder[0]) || startingPlayer.equals(playerServerOrder[1])) {
-						trickCards.add(tmp.get(0));
-						trickCards.add(tmp.get(1));
-						trickCards.add(tmp.get(2));
-					}
-					if (startingPlayer.equals(playerServerOrder[3])) {
-						trickCards.add(tmp.get(2));
-						trickCards.add(tmp.get(0));
-						trickCards.add(tmp.get(1));
-					}
-					if (startingPlayer.equals(playerServerOrder[2])) {
-						trickCards.add(tmp.get(1));
-						trickCards.add(tmp.get(2));
-						trickCards.add(tmp.get(0));
-					}
-					break;
-				case 4:
-					if (startingPlayer.equals(playerServerOrder[0])) {
-						trickCards.add(tmp.get(0));
-						trickCards.add(tmp.get(1));
-						trickCards.add(tmp.get(2));
-						trickCards.add(tmp.get(3));
-					}
-					if (startingPlayer.equals(playerServerOrder[1])) {
-						trickCards.add(tmp.get(1));
-						trickCards.add(tmp.get(2));
-						trickCards.add(tmp.get(3));
-						trickCards.add(tmp.get(0));
-					}
-					if (startingPlayer.equals(playerServerOrder[2])) {
-						trickCards.add(tmp.get(2));
-						trickCards.add(tmp.get(3));
-						trickCards.add(tmp.get(0));
-						trickCards.add(tmp.get(1));
-					}
-					if (startingPlayer.equals(playerServerOrder[3])) {
-						trickCards.add(tmp.get(3));
-						trickCards.add(tmp.get(0));
-						trickCards.add(tmp.get(1));
-						trickCards.add(tmp.get(2));
-					}
-					break;
+				} else {
+					trickCards.add(tmp.get(0));
+					trickCards.add(tmp.get(1));
 				}
+				break;
+			case 3:
+				if (startingPlayer.equals(playerServerOrder[0]) || startingPlayer.equals(playerServerOrder[1])) {
+					trickCards.add(tmp.get(0));
+					trickCards.add(tmp.get(1));
+					trickCards.add(tmp.get(2));
+				}
+				if (startingPlayer.equals(playerServerOrder[3])) {
+					trickCards.add(tmp.get(2));
+					trickCards.add(tmp.get(0));
+					trickCards.add(tmp.get(1));
+				}
+				if (startingPlayer.equals(playerServerOrder[2])) {
+					trickCards.add(tmp.get(1));
+					trickCards.add(tmp.get(2));
+					trickCards.add(tmp.get(0));
+				}
+				break;
+			case 4:
+				if (startingPlayer.equals(playerServerOrder[0])) {
+					trickCards.add(tmp.get(0));
+					trickCards.add(tmp.get(1));
+					trickCards.add(tmp.get(2));
+					trickCards.add(tmp.get(3));
+				}
+				if (startingPlayer.equals(playerServerOrder[1])) {
+					trickCards.add(tmp.get(1));
+					trickCards.add(tmp.get(2));
+					trickCards.add(tmp.get(3));
+					trickCards.add(tmp.get(0));
+				}
+				if (startingPlayer.equals(playerServerOrder[2])) {
+					trickCards.add(tmp.get(2));
+					trickCards.add(tmp.get(3));
+					trickCards.add(tmp.get(0));
+					trickCards.add(tmp.get(1));
+				}
+				if (startingPlayer.equals(playerServerOrder[3])) {
+					trickCards.add(tmp.get(3));
+					trickCards.add(tmp.get(0));
+					trickCards.add(tmp.get(1));
+					trickCards.add(tmp.get(2));
+				}
+				break;
+			}
 		}
 	}
 
-	//  get scores for n rounds
+	// get scores for n rounds
 	public ArrayList<Integer> getScores() {
 		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getScores();
 		// TODO - count end result
-	//	Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().get(0).getScores();
+		// Integer[] serverScores = (Integer[])
+		// Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().get(0).getScores();
 		scoresList = new ArrayList(Arrays.asList(serverScores));
 		LinkedList<Integer> scrs = new LinkedList();
 		for (Integer i : scoresList) {
@@ -237,34 +237,34 @@ public class GameModel extends Model {
 			scoresList.add(j);
 		}
 		switch (playerServerPosition) {
-			case 0:
-				break;
-			case 1:
-				scoresList.add(scrs.get(0));
-				break;
-			case 2:
-				scoresList.add(scrs.get(0));
-				scoresList.add(scrs.get(1));
-				break;
-			case 3:
-				scoresList.add(scrs.get(0));
-				scoresList.add(scrs.get(1));
-				scoresList.add(scrs.get(2));
-			}
-			System.out.println("Erhaltene Scores " + scoresList.toString());
+		case 0:
+			break;
+		case 1:
+			scoresList.add(scrs.get(0));
+			break;
+		case 2:
+			scoresList.add(scrs.get(0));
+			scoresList.add(scrs.get(1));
+			break;
+		case 3:
+			scoresList.add(scrs.get(0));
+			scoresList.add(scrs.get(1));
+			scoresList.add(scrs.get(2));
+		}
+		System.out.println("Erhaltene Scores " + scoresList.toString());
 		return scoresList;
 	}
 
 	public void refreshCurrentPlayer() {
 // TODO - check
 		try {
-		trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
-		this.trickNumber = (Datastore.getInstance().getMainPlayer().getRound().getTricks().size());
-		if(currentPlayers.isEmpty() || trick.getCurrentPlayer() != currentPlayers.get(currentPlayers.size()-1)) {
-			currentPlayers.add(trick.getCurrentPlayer());
-			startingPlayers.add(trick.getStartingPlayer());
-		}
-		}catch(Exception e) {
+			trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
+			this.trickNumber = (Datastore.getInstance().getMainPlayer().getRound().getTricks().size());
+			if (currentPlayers.isEmpty() || trick.getCurrentPlayer() != currentPlayers.get(currentPlayers.size() - 1)) {
+				currentPlayers.add(trick.getCurrentPlayer());
+				startingPlayers.add(trick.getStartingPlayer());
+			}
+		} catch (Exception e) {
 			// to be catched
 		}
 	}
@@ -302,7 +302,9 @@ public class GameModel extends Model {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// connection lost
-				}}}
+					}
+				}
+			}
 		};
 		t = new Thread(r);
 		t.setDaemon(true);
@@ -319,7 +321,9 @@ public class GameModel extends Model {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// connection lost
-				}}}
+					}
+				}
+			}
 		};
 		tu = new Thread(ru);
 		tu.setDaemon(true);
@@ -336,11 +340,22 @@ public class GameModel extends Model {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						// message: Your choice couldn't be sent to others
-				}}}
+					}
+				}
+			}
 		};
 		tru = new Thread(run);
 		tru.setDaemon(true);
 		tru.start();
+	}
+
+	public void demandRematch(Boolean rematch) {
+		try {
+			Datastore.getInstance().getMainPlayer().demandRematch(rematch);
+		} catch (ExceptionBase e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Player getStartingPlayer() {
@@ -348,12 +363,13 @@ public class GameModel extends Model {
 	}
 
 	public Player getCurrentPlayer() {
-		this.currentPlayer = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast().getCurrentPlayer();
+		this.currentPlayer = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast()
+				.getCurrentPlayer();
 		return currentPlayer;
 	}
-	
+
 	public String getLobbyName() {
-		String lobby =  Datastore.getInstance().getMainPlayer().getRound().getGame().getLobby().getName();
+		String lobby = Datastore.getInstance().getMainPlayer().getRound().getGame().getLobby().getName();
 		return lobby;
 	}
 
@@ -385,10 +401,11 @@ public class GameModel extends Model {
 	public String getCardSet() {
 		return this.cardSet;
 	}
-	
+
 	public void setStopThread() {
 		this.stop = true;
 	}
+
 	public void setStopTrumpThread() {
 		this.trumpStop = true;
 	}

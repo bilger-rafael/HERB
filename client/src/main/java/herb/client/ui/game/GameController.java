@@ -183,13 +183,15 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.updateTrumpOptions();
 	}
 	
-	// TODO bilger ??
 	public void quitGame() {
+		model.demandRematch(false);
 		goToLauncher();
 	}
 
-	// TODO bilger ??
 	private void startRevanche() {
+		model.demandRematch(true);
+		// TODO wait for other players to decide, if one quit the game, quit as well
+		// TODO When Revanche is pressed, the button should not be pressable anymore 
 		enterGame();
 	}
 	
