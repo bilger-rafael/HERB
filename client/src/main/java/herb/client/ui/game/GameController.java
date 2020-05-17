@@ -191,7 +191,7 @@ public class GameController extends Controller<GameModel, GameView> {
 	private void startRevanche() {
 		model.demandRematch(true);
 		// TODO wait for other players to decide, if one quit the game, quit as well
-		// TODO When Revanche is pressed, the button should not be pressable anymore 
+		// TODO When Revanche is pressed, the button should not be pressable anymore (maybe show Text that we have to wait until the other players decided)
 		enterGame();
 	}
 	
@@ -202,6 +202,8 @@ public class GameController extends Controller<GameModel, GameView> {
 	
 	private void enterGame() {
 		this.view.stop();
+		//TODO either create view again from scratch or reset view 
+		this.view = null;
 		Main.getMainProgram().getGameView().start();
 	}
 }
