@@ -28,10 +28,13 @@ public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 			}
 		}
 
-		if (r.rematchDecisions.containsValue(false))
+		if (r.rematchDecisions.containsValue(false)) {
+			r.setRematch(false);
 			endGame();
-		else
+		} else {
+			r.setRematch(true);
 			playRound();
+		}
 	}
 
 	public void playRound() {

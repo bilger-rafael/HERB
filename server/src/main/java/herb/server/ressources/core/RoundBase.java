@@ -2,7 +2,6 @@ package herb.server.ressources.core;
 
 import java.util.LinkedList;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //Etter
@@ -16,7 +15,8 @@ public abstract class RoundBase<Game extends GameBase, Player extends PlayerBase
 	private Integer[] scores;
 	@JsonIgnoreProperties({ "round", "hand" })
 	private Player currentStartingPlayer;
-	
+	private Boolean rematch;
+
 	public RoundBase(Game game, Player[] players) {
 		this.game = game;
 		this.players = players;
@@ -62,4 +62,11 @@ public abstract class RoundBase<Game extends GameBase, Player extends PlayerBase
 		this.scores = scores;
 	}
 
+	public Boolean getRematch() {
+		return rematch;
+	}
+
+	public void setRematch(Boolean rematch) {
+		this.rematch = rematch;
+	}
 }
