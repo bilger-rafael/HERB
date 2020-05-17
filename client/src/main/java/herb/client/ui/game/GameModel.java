@@ -1,32 +1,21 @@
 package herb.client.ui.game;
 
-import static java.util.Locale.forLanguageTag;
-
 import java.util.ArrayList;
-import javafx.beans.property.SimpleObjectProperty;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
-import herb.client.ressources.Round;
 import herb.client.ressources.Trick;
 import herb.client.ressources.core.ExceptionBase;
-import herb.client.ressources.core.Rank;
-import herb.client.ressources.core.Suit;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Model;
 import herb.client.utils.Datastore;
-import herb.client.utils.ServiceLocator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleBooleanProperty;
 
 public class GameModel extends Model {
 	private Player[] playerServerOrder;
@@ -46,6 +35,8 @@ public class GameModel extends Model {
 	private volatile boolean trumpStop = false;
 	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
 	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
+	private SimpleBooleanProperty rematch;
+	private boolean rematchUpdater;
 
 	public GameModel() {
 		super();
@@ -358,6 +349,38 @@ public class GameModel extends Model {
 		}
 	}
 
+	public void startRematchUpdater() {
+		this.rematch = new SimpleBooleanProperty();
+		this.rematchUpdater = true;
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				while (rematchUpdater) {
+					Platform.runLater(() -> refreshRematch());
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// message: Your choice couldn't be sent to others
+					}
+				}
+			}
+		};
+		Thread t = new Thread(r);
+		t.setDaemon(true);
+		t.start();
+	}
+
+	public void stopRematchUpdater() {
+		this.rematchUpdater = false;
+	}
+	
+	private void refreshRematch() {
+		Boolean r = Datastore.getInstance().getMainPlayer().getRound().getRematch();
+		if (r == null)
+			return;
+		this.rematch.setValue(r);
+	}
+
 	public Player getStartingPlayer() {
 		return this.startingPlayer;
 	}
@@ -408,5 +431,9 @@ public class GameModel extends Model {
 
 	public void setStopTrumpThread() {
 		this.trumpStop = true;
+	}
+	
+	public SimpleBooleanProperty getRematch() {
+		return rematch;
 	}
 }

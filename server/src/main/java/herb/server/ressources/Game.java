@@ -33,6 +33,11 @@ public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 			endGame();
 		} else {
 			r.setRematch(true);
+			// ugly hack to make sure, the client can use the players current round to determin if rematch is set
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+			}
 			playRound();
 		}
 	}
@@ -49,6 +54,12 @@ public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 	}
 
 	public void endGame() {
+		// remove round from player
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			if (this.getPlayers()[i] != null)
+				this.getPlayers()[i].setRound(null);
+		}
+
 		this.getLobby().removeAllPlayer();
 		this.setOver(true);
 	}

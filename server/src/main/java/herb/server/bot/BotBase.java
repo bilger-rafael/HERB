@@ -9,6 +9,7 @@ import herb.server.ressources.Card;
 import herb.server.ressources.PlayListener;
 import herb.server.ressources.TrumpListener;
 import herb.server.ressources.Player;
+import herb.server.ressources.RematchListener;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.Trump;
@@ -58,4 +59,16 @@ public abstract class BotBase extends Player {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void setRematchListener(RematchListener rematchListener) {
+		super.setRematchListener(rematchListener);
+		try {
+			this.demandRematch(true);
+		} catch (ExceptionBase e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }
