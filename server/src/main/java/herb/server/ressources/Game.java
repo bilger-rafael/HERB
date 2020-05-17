@@ -1,6 +1,5 @@
 package herb.server.ressources;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import herb.server.ressources.core.GameBase;
@@ -28,20 +27,27 @@ public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 			} catch (InterruptedException e) {
 			}
 		}
-		
+
 		if (r.rematchDecisions.containsValue(false))
-			// quit game
-			return;
+			endGame();
 		else
-			// rematch
-			return;
+			playRound();
+	}
+
+	public void playRound() {
+		Round r = startRound();
+		r.playRound();
+		endRound(r);
 	}
 
 	@Override
 	public void run() {
-		Round r = startRound();
-		r.playRound();
-		endRound(r);
+		playRound();
+	}
+
+	public void endGame() {
+		this.getLobby().removeAllPlayer();
+		this.setOver(true);
 	}
 
 }

@@ -12,7 +12,7 @@ public class Round extends RoundBase<Game, Player, Trick> {
 	public HashMap<String, Boolean> rematchDecisions = new HashMap<String, Boolean>();
 	private DeckOfCards deck;
 	private boolean trumpChoosen;
-	
+
 	public Round(Game game) {
 		super(game, game.getPlayers());
 		this.deck = new DeckOfCards();
@@ -97,17 +97,14 @@ public class Round extends RoundBase<Game, Player, Trick> {
 	}
 
 	private void endRound() {
-		
-		//TODO set listener for RematchDecision 
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			Player p = this.getPlayers()[i];
+			if (p == null)
+				continue;
 			p.setRematchListener((Boolean rematch) -> {
 				this.rematchDecisions.put(p.getUsername(), rematch);
 			});
 		}
-		
-		
-		
 
 		this.setScores(determinScores());
 

@@ -29,10 +29,15 @@ public class PlayerController {
 
 		return p;
 	}
-
+	
 	@GetMapping("/Player({username})/Round")
 	public RoundBase getPlayerRound(@PathVariable String username) throws ExceptionBase {
 		return getPlayer(username).getRound();
+	}
+	
+	@PostMapping("/Player({username})/demandRematch")
+	public void demandRematch(@PathVariable String username, @RequestBody Boolean rematch) throws ExceptionBase {
+		getPlayer(username).demandRematch(rematch);
 	}
 
 	@PostMapping("/Player({username})/play")

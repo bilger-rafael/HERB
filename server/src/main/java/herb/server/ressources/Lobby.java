@@ -60,18 +60,24 @@ public class Lobby extends LobbyBase<Player> {
 			}
 		}
 	}
-	
+
+	public void removeAllPlayer() {
+		for (int i = 0; i < this.players.length; i++) {
+			this.players[i] = null;
+		}
+	}
+
 	public void addBot(boolean advanced) throws ExceptionBase {
 		BotBase bot;
-		String str; 
+		String str;
 		if (advanced) {
 			str = "Advanced Bot";
 			bot = new BetterBot(str);
-		}else {
-			str ="Easy Bot";
+		} else {
+			str = "Easy Bot";
 			bot = new Bot(str);
 		}
-		
+
 		Datastore.getInstance().players.put(bot.getUsername(), bot);
 		this.addPlayer(bot);
 	}
@@ -83,9 +89,9 @@ public class Lobby extends LobbyBase<Player> {
 		// TODO check name, if needed
 
 		Lobby lobby = new Lobby(name);
-		
+
 		DataStore_Repository.getDB().addLobby(name);
-		
+
 		Datastore.getInstance().lobbys.put(name, lobby);
 
 		return lobby;
