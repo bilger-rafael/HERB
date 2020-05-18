@@ -18,6 +18,7 @@ public class BotController extends Controller<BotModel, BotView> {
 	}
 	
 	private void getBackLobbyView() {
+		view.getMessage().setVisible(false);
 		this.view.stop();
 	}
 	
@@ -33,8 +34,9 @@ public class BotController extends Controller<BotModel, BotView> {
 	private void getEasyBot() {
 		try{
 			this.model.getLobby().addBot(false);
+			view.getMessage().setVisible(false);
 		}catch (Exception e){
-			// TODO show error message
+			view.getMessage().setVisible(true);
 		}
 		this.view.stop();
 	}
@@ -42,8 +44,9 @@ public class BotController extends Controller<BotModel, BotView> {
 	private void getAdvancedBot() {
 		try{
 			this.model.getLobby().addBot(true);
+			view.getMessage().setVisible(false);
 		}catch (Exception e){
-			// TODO show error message
+			view.getMessage().setVisible(true);
 		}
 		this.view.stop();
 	}
