@@ -128,7 +128,7 @@ public class RegistrationView extends View<RegistrationModel> {
 		registrationButton.setPrefSize(220, 50);
 		cancelButton.setPrefSize(220, 50);
 		
-		//spacing		
+		//spacing & position	
 		bottomBox.setPadding(new Insets(20, 50, 15, 50));
 		centerBox.setPadding(new Insets(35, 50, 0, 50));
 		centerBox.setSpacing(10);

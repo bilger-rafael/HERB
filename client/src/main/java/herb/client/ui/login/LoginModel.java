@@ -16,6 +16,7 @@ public class LoginModel extends Model{
     public void login(String username, String password) throws ExceptionBase {
     	Login login = new Login(username, password);
     	
+    	//?
     	this.player = (Player) login.login();
     	
     	Datastore.getInstance().setMainPlayer(this.player);
