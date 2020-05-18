@@ -21,7 +21,17 @@ public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 	}
 
 	public void endRound(Round r) {
-		while (r.rematchDecisions.size() < 4 && !r.rematchDecisions.containsValue(false)) {
+		// add up scores
+		if (this.scores == null)
+			this.scores = new Integer[this.getPlayers().length];
+		for (int i = 0; i < this.getPlayers().length; i++) {
+			if (this.scores[i] == null)
+				this.scores[i] = 0;
+			this.scores[i] += r.getScores()[i];
+		}
+
+		// wait for rematch decisions
+		while (r.rematchDecisions.size() < this.getPlayers().length && !r.rematchDecisions.containsValue(false)) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -33,7 +43,8 @@ public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 			endGame();
 		} else {
 			r.setRematch(true);
-			// ugly hack to make sure, the client can use the players current round to determin if rematch is set
+			// ugly hack to make sure, the client can use the players current round to
+			// determin if rematch is set
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {

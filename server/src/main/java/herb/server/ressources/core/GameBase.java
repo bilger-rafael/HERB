@@ -3,6 +3,7 @@ package herb.server.ressources.core;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public abstract class GameBase<Lobby extends LobbyBase, Round extends RoundBase, Player extends PlayerBase> {
@@ -11,10 +12,12 @@ public abstract class GameBase<Lobby extends LobbyBase, Round extends RoundBase,
 
 	@JsonIgnoreProperties({ "runningGame", "players" })
 	private final Lobby lobby;
-	protected Player[] players;
-	@JsonIgnoreProperties({ "tricks", "game", "players", "trump", "currentStartingPlayer", "rematch", "rematchDecisions", "scores" })
+	private Player[] players;
+	protected Integer[] scores;
+
+	@JsonIgnore
 	protected ArrayList<Round> rounds = new ArrayList<Round>();
-	
+
 	public GameBase(UUID uuid, Lobby lobby, Player[] players) {
 		this.uuid = uuid;
 		this.lobby = lobby;
@@ -46,5 +49,8 @@ public abstract class GameBase<Lobby extends LobbyBase, Round extends RoundBase,
 	public void setOver(boolean over) {
 		this.over = over;
 	}
-
+	
+	public Integer[] getScores() {
+		return scores;
+	}
 }
