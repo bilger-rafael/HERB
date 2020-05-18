@@ -14,7 +14,6 @@ public class Card extends CardBase {
 	
 	public Card(Suit suit, Rank rank) {
 		super(suit, rank);
-		// TODO Auto-generated constructor stub
 	}
 
 }
