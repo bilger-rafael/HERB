@@ -247,4 +247,8 @@ public class Main extends Application {
 	public void clearBotView() {
 		this.botView = null;
 	}
+	
+	public void clearGameView() {
+		this.gameView = null;
+	}
 }
