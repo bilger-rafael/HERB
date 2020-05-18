@@ -109,7 +109,6 @@ public class DataStore_Repository {
 					temp = Lobby.createLobby(s);
 					Datastore.getInstance().lobbys.put(s, temp);
 				} catch (ExceptionBase e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
