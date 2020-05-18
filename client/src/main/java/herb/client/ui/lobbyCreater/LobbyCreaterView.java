@@ -24,13 +24,13 @@ import javafx.stage.Stage;
 public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	
 	private BorderPane root; 
-	private HBox bottomBox, topBox;
+	private HBox bottomBox, labelBox, textFieldBox;
 	private StackPane messageStackPane;
-	private VBox centerBox ;
+	private VBox centerBox, topBox;
 	
 	private Button okButton, cancelButton;
 	private TextField text;
-	private Label message;
+	private Label message, info;
 	
 	private Region zero;
 	
@@ -44,7 +44,6 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	
 	@Override
 	protected Scene create_GUI() {
-		
 		ServiceLocator sl = ServiceLocator.getInstance();
 		this.root = new BorderPane();
 		
@@ -62,47 +61,51 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 				updateLabels();
 			});
 		}
-		
-		//Text field
-		topBox = new HBox();
-		text = new TextField();
-		text.setId("textField");
-		
-		/**
-		 * messages
-		 */
-		messageStackPane = new StackPane();
-		message = new Label();
-		message.setId("message");
-		message.setVisible(false);
-		messageStackPane.getChildren().add(message);
-		
-		// Buttons - not needed in final version - just to open the GameView
+		//panes
+		topBox = new VBox();
+	    centerBox = new VBox();
 		bottomBox = new HBox();
+		labelBox = new HBox();
+		messageStackPane = new StackPane();
+
+		//items
 		okButton = new Button();
 		cancelButton = new Button();
-   
-		bottomBox.setSpacing(10);
-		bottomBox.setPadding(new Insets(20, 50, 15, 50));
-	    
+		textFieldBox = new HBox();
+		text = new TextField();
+		info = new Label();
+	    zero = new Region();
+		message = new Label();
+
+		//set size
 	    cancelButton.setAlignment(Pos.BASELINE_CENTER);
 	    okButton.setAlignment(Pos.BASELINE_CENTER);
-	    
+		//spacing & position
+		bottomBox.setSpacing(10);
+		bottomBox.setPadding(new Insets(10, 50, 15, 50));
+	    topBox.setPadding(new Insets(35, 50, 10, 50));
+	    text.setPrefWidth(470);
+		zero.setMinWidth(20);
 	    cancelButton.setPrefSize(220, 50);
-	    okButton.setPrefSize(220, 50);
+	    okButton.setPrefSize(220, 50);   
+
+	    //css id
+		message.setId("message");
+		message.setVisible(false);
+		text.setId("textField");
 	    
-	    zero = new Region();
-	    topBox.getChildren().add(text);
-	    topBox.setPadding(new Insets(20));
+		labelBox.getChildren().add(info);
+		textFieldBox.getChildren().add(text);
+	    topBox.getChildren().addAll(labelBox, textFieldBox);
 	    bottomBox.getChildren().addAll(okButton,zero ,cancelButton);
-	    bottomBox.setPadding(new Insets(2));
-	    
-	    centerBox = new VBox();
-	    centerBox.getChildren().addAll(topBox,messageStackPane ,bottomBox);
+		messageStackPane.getChildren().add(message);
+	    centerBox.getChildren().addAll(topBox,messageStackPane);
+	    centerBox.setSpacing(10);
 		
 		root.setId("background");
 	    root.setTop(menuBar);
 		root.setCenter(centerBox);
+		root.setBottom(bottomBox);
 		
 		updateLabels();
 		Scene scene = new Scene(root);
@@ -116,6 +119,7 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		cancelButton.setText(t.getString("program.lobbyCreater.cancelButton"));
 		okButton.setText(t.getString("program.lobbyCreater.okButton"));
 		menuLanguage.setText(t.getString("program.lobbyCreater.menuLanguage"));
+		info.setText(t.getString("program.lobbyCreater.info"));
 		stage.setTitle(t.getString("program.lobbyCreater.titel"));
 		if (message.getText()!="") {
 			message.setText(t.getString("program.lobbyCreater.message"));

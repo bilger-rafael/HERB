@@ -122,7 +122,7 @@ public class LauncherView extends View<LauncherModel> {
 	    lobbyListBox.getChildren().addAll(lobbyLabel, lobbyRoomCenter);
 	    highscoreListBox.getChildren().addAll(highscoreLabel,highscoreList );
 	    centerBox.getChildren().addAll(lobbyListBox, highscoreListBox);
-	    bottomBox.getChildren().addAll(joinButton,zero, createButton,one, refreshButton);
+	    bottomBox.getChildren().addAll(createButton,zero, refreshButton,one,joinButton);
 
 		//spacing
 	    lobbyLabel.setAlignment(Pos.BASELINE_CENTER);
@@ -171,9 +171,9 @@ public class LauncherView extends View<LauncherModel> {
 		lobbyLabel.setText(t.getString("program.launcher.lobbyLabel"));
 		highscoreLabel.setText(t.getString("program.launcher.highscoreLabel"));
 		menuLanguage.setText(t.getString("program.launcher.menuLanguage"));
-		menuFile.setText(t.getString("program.launcher.menuFile"));
+		menuFile.setText(t.getString("program.menu.file.logout"));
 		stage.setTitle(t.getString("program.launcher.titel"));
-		logoutMenuItem.setText(t.getString("program.launcher.logoutMenuItem"));
+		logoutMenuItem.setText(t.getString("program.menu.file.logoutMenuItem"));
 		refreshButton.setText(t.getString("program.launcher.refreshButton"));
 	}
 	//getter

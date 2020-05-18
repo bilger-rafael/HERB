@@ -19,15 +19,20 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class LobbyView extends View<LobbyModel> {
 	
-	private BorderPane root, bottomBox; 
+	private BorderPane root; 
 	private VBox centerBox;
+	private HBox bottomBox;
+	private StackPane messageStackPane;
 	private Button cancelButton, botsButton;
-	private Label lobbyName;
+	private Label lobbyName, message;
+	
+	private Region zero;
 	
 	private MenuBar menuBar;
 	private Menu menuLanguage;
@@ -38,7 +43,6 @@ public class LobbyView extends View<LobbyModel> {
 		
 	public LobbyView(Stage stage, LobbyModel model) {
 		super(stage, model);
-		stage.setTitle("HERB-Jass > Lobby: ");
 		ServiceLocator.getInstance().getLogger().info("Application view initialized");
 	}
 
@@ -81,22 +85,34 @@ public class LobbyView extends View<LobbyModel> {
 	    
 	    playerOverview.setPrefWidth(300);
 	    playerOverview.setMaxHeight(125);
-
+	    
+	    message = new Label();
+	    messageStackPane = new StackPane();
+	    messageStackPane.getChildren().add(message);
+		message.setId("message");
+		message.setVisible(false);
+		
+	    zero = new Region();
+		zero.setMinWidth(20);
 	    lobbyName = new Label(model.getLobby().getName());
 	    centerBox  = new VBox();
-	    centerBox.getChildren().addAll(lobbyName, playerOverview);
-	    centerBox.setPadding(new Insets(20));
+	    centerBox.setPadding(new Insets(35, 50, 10, 50));
+	    centerBox.getChildren().addAll(lobbyName, playerOverview, messageStackPane);
+	    centerBox.setSpacing(10);
+
 		/**
 		 * Buttons with bottomBox
 		 * Herren
 		 */
-		bottomBox = new BorderPane();
-		cancelButton = new Button("cancel");
-		botsButton = new Button("New Bot");
+		bottomBox = new HBox();
+		bottomBox.setSpacing(10);
+		cancelButton = new Button();
+		botsButton = new Button();
+	    cancelButton.setPrefSize(220, 50);
+	    botsButton.setPrefSize(220, 50);  
 		
-		bottomBox.setRight(botsButton);
-		bottomBox.setLeft(cancelButton);
-		bottomBox.setPadding(new Insets(2));
+	    bottomBox.getChildren().addAll(cancelButton, zero,botsButton );
+		bottomBox.setPadding(new Insets(5, 50, 15, 50));
 	    
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
 		botsButton.setAlignment(Pos.BASELINE_CENTER);
@@ -120,7 +136,13 @@ public class LobbyView extends View<LobbyModel> {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
 		cancelButton.setText(t.getString("program.lobby.cancelButton"));
+		botsButton.setText(t.getString("program.lobby.botsButton"));
 		menuLanguage.setText(t.getString("program.lobby.menuLanguage"));
+		message.setText(t.getString("program.lobby.message"));
+		stage.setTitle(t.getString("program.lobby.titel"));
+		if (message.getText()!="") {
+			message.setText(t.getString("program.lobby.message"));
+		}
 		
 	}
 
@@ -134,5 +156,14 @@ public class LobbyView extends View<LobbyModel> {
 	
 	public Label getLobbyName() {
 		return lobbyName;
+	}
+	
+	public Label getMessage() {
+		return message;
+	}
+	//To show the error message in GUI if Login fails
+	public void showError() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		message.setText(t.getString("program.lobby.message"));
 	}
 }

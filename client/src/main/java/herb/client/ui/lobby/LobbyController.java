@@ -33,7 +33,7 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		try {
 			this.model.getLobby().removePlayer(Datastore.getInstance().getMainPlayer());
 		} catch (ExceptionBase e) {
-			// TODO if exception occurs, DONT LEAVE, bc game is already started
+			view.getMessage().setVisible(true);
 			return;
 		}
 		this.view.stop();
