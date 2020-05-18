@@ -243,4 +243,8 @@ public class Main extends Application {
 		}
 		return botView;
 	}
+	
+	public void clearBotView() {
+		this.botView = null;
+	}
 }

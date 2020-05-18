@@ -20,6 +20,7 @@ public class BotController extends Controller<BotModel, BotView> {
 	private void getBackLobbyView() {
 		view.getMessage().setVisible(false);
 		this.view.stop();
+		Main.getMainProgram().clearBotView();
 	}
 	
 	private void startSelectedBot() {
@@ -38,7 +39,7 @@ public class BotController extends Controller<BotModel, BotView> {
 		}catch (Exception e){
 			view.getMessage().setVisible(true);
 		}
-		this.view.stop();
+		getBackLobbyView();
 	}
 	
 	private void getAdvancedBot() {
@@ -48,6 +49,6 @@ public class BotController extends Controller<BotModel, BotView> {
 		}catch (Exception e){
 			view.getMessage().setVisible(true);
 		}
-		this.view.stop();
+		getBackLobbyView();
 	}
 }
