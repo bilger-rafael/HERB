@@ -3,6 +3,8 @@ package herb.server.ressources;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import herb.server.DataStore_Repository;
 import herb.server.ressources.core.RoundBase;
 import herb.server.ressources.core.Trump;
@@ -12,7 +14,7 @@ public class Round extends RoundBase<Game, Player, Trick> {
 	public HashMap<String, Boolean> rematchDecisions = new HashMap<String, Boolean>();
 	private DeckOfCards deck;
 	private boolean trumpChoosen;
-
+	
 	public Round(Game game) {
 		super(game, game.getPlayers());
 		this.deck = new DeckOfCards();
