@@ -12,6 +12,7 @@ public abstract class GameBase<Lobby extends LobbyBase, Round extends RoundBase,
 	@JsonIgnoreProperties({ "runningGame", "players" })
 	private final Lobby lobby;
 	protected Player[] players;
+	@JsonIgnoreProperties({ "tricks", "game", "players" })
 	protected ArrayList<Round> rounds = new ArrayList<Round>();
 	
 	public GameBase(UUID uuid, Lobby lobby, Player[] players) {
