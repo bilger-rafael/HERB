@@ -43,6 +43,20 @@ import javafx.collections.ObservableList;
 import javafx.collections.ListChangeListener.Change;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.animation.PathTransition; 
+import javafx.scene.shape.MoveTo; 
+import javafx.scene.shape.HLineTo; 
+import javafx.scene.shape.VLineTo;
+import javafx.scene.shape.Path; 
+import javafx.scene.shape.CubicCurveTo; 
+import javafx.util.Duration; 
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polyline;
+import java.util.Random;
+import javafx.animation.TranslateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.ParallelTransition;
+
 
 
 public class GameView extends View<GameModel> {
@@ -73,6 +87,8 @@ public class GameView extends View<GameModel> {
 	private final int MAX_CARDS = 9; 
 	int startingPosition;
 
+	
+	//  roesti
 	public GameView(Stage stage, GameModel model) {
 		super(stage, model);
 		stage.setTitle("HERB-Jass > Spieltisch");
@@ -106,13 +122,13 @@ public class GameView extends View<GameModel> {
 			});
 		}	
 		
-		// Roesti - create Panes and Controls 
+		// create Panes and Controls 
+		
 		upperPart = new BorderPane();
 		tablePart = new StackPane();
 		chooseTrumpBox = new VBox();
 		trumpBox = new TilePane();
 		showTrumpBox = new VBox();
-		
 		// trick
 		table = new GridPane();
 		spacerTable = new Region();
@@ -127,8 +143,6 @@ public class GameView extends View<GameModel> {
 		trickLabel.setMinHeight(70);
 		trickLabel2 = new Label();
 		trickLabel2.setStyle("-fx-text-fill: gold");
-
-		
 		// points - winner
 		pointPane = new BorderPane();
 		namesBox = new VBox();
@@ -174,16 +188,16 @@ public class GameView extends View<GameModel> {
 	    startingPlayerText = new Label();
 	    startingPlayerLabel = new Label();
 	   	lobbyBox.getChildren().addAll(lobbyLabel);
-
-				
+		
 		// Cards and Trump images
-	    rects = new ArrayList();
-	    trickRects = new ArrayList();
-	    trumpRects = new ArrayList();
+	    rects = new ArrayList<>();
+	    trickRects = new ArrayList<>();
+	    trumpRects = new ArrayList<>();
 	    trumpOrderLabel = new Label();
 		
 		setMyCards();	
 		setTrumpInfo();
+		
 		// nodes in StackPane - trump=2, table and points 0 or 1 
 		setTrick();
 		setPointPane();
@@ -272,8 +286,6 @@ public class GameView extends View<GameModel> {
 		bottom.getChildren().add(playerLabel);
 		bottom.getChildren().add(ownCards);
 		bottom.setAlignment(Pos.CENTER);
-		//ownCards.add(spacer, 18, 1);
-				
 	}
 	
 	public void updatePlayables(Player curr) {
@@ -305,7 +317,7 @@ public class GameView extends View<GameModel> {
 	    table.add(tOppo, 2,  0, 1, 2);
 	    table.add(tLeft,  1,  1, 1, 2);
 	    table.add(tMain, 2,  2, 1, 2);
-	    table.add(tRight,  3,  1, 1, 2);
+	    table.add(tRight,  3,  1, 1, 2);	    
 	    
 	    for (int i=0; i<MAX_PLAYERS; i++) {
 		Rectangle rectangle = new Rectangle();
@@ -316,11 +328,11 @@ public class GameView extends View<GameModel> {
 		rectangle.setStroke(Color.TRANSPARENT);
 	    // Roesti - implement rotation  TODO implement Random()
 		//change
-		Rotate rotate = new Rotate();  
-		rotate.setAngle(((10+i) % 2)+183-2*i); 
-		rotate.setPivotX(30); 
-		rotate.setPivotY(322/3+30); 
-	    rectangle.getTransforms().addAll(rotate); 
+//		Rotate rotate = new Rotate();  
+//		rotate.setAngle(((10+i) % 2)+183-2*i); 
+//		rotate.setPivotX(30); 
+//		rotate.setPivotY(322/3+30); 
+//	    rectangle.getTransforms().addAll(rotate); 
 		trickRects.add(rectangle);
 	    }
 	    tMain.getChildren().add(trickRects.get(0));
@@ -458,6 +470,219 @@ public class GameView extends View<GameModel> {
 			}
 		}
 		}           
+		}
+	}
+	
+	public void updateTMain(Card c) {
+		String r1; 
+		String s1;
+		if (model.getCardSet().equals("De")){
+			r1 = c.getRank().toStringDe();
+			s1 = c.getSuit().toStringDe();
+		}else {
+			r1 = c.getRank().toStringFr();
+			s1 = c.getSuit().toStringFr();
+		}
+		String filename = s1 + "_" + r1 + ".jpg";
+		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
+		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+		
+//		Random rand = new Random();
+//		int newR = rand.nextInt(10);
+//		newR -= 5;
+//		Rotate rotate = new Rotate();  
+//		rotate.setAngle(0-newR); 
+//		rotate.setPivotX(30); 
+//		rotate.setPivotY(322/3+30); 
+//		trickRects.get(0).getTransforms().addAll(rotate); 
+		trickRects.get(0).setFill(pattern);
+
+		// idea from Genuine Coder (youtube: https://www.youtube.com/watch?v=dyS0tdJ5wTw)
+
+		trickRects.get(0).setArcHeight(15);
+		trickRects.get(0).setArcWidth(15);
+		trickRects.get(0).setTranslateX(50);
+		trickRects.get(0).setTranslateY(50);
+		 
+		TranslateTransition translateTransition =
+		            new TranslateTransition(Duration.millis(2000), trickRects.get(0));
+		        translateTransition.setFromX(100);
+		        translateTransition.setToX(100);
+		        translateTransition.setFromY(200);
+		        translateTransition.setToY(50);
+		        translateTransition.setCycleCount(1);
+		        translateTransition.setAutoReverse(true);
+		 
+		        ScaleTransition scaleTransition = 
+		            new ScaleTransition(Duration.millis(1000), trickRects.get(0));
+		        scaleTransition.setFromX(2);
+		        scaleTransition.setFromY(2);
+		        scaleTransition.setToX(1);
+		        scaleTransition.setToY(1);
+		        scaleTransition.setCycleCount(1);
+		        scaleTransition.setAutoReverse(true);
+
+		       ParallelTransition parallelTransition = new ParallelTransition();
+		        parallelTransition.getChildren().addAll(
+		                translateTransition,
+		                scaleTransition
+		        );
+		        parallelTransition.setCycleCount(1);
+		        parallelTransition.play();      
+
+	}
+	
+	public void updateTRight(Card c) {
+		String r1; 
+		String s1;
+		if (model.getCardSet().equals("De")){
+			r1 = c.getRank().toStringDe();
+			s1 = c.getSuit().toStringDe();
+		}else {
+			r1 = c.getRank().toStringFr();
+			s1 = c.getSuit().toStringFr();
+		}
+		String filename = s1 + "_" + r1 + ".jpg";
+		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
+		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+		trickRects.get(1).setFill(pattern);
+		
+		trickRects.get(1).setArcHeight(15);
+		trickRects.get(1).setArcWidth(15);
+		trickRects.get(1).setTranslateX(50);
+		trickRects.get(1).setTranslateY(50);
+		 
+		TranslateTransition translateTransition =
+		            new TranslateTransition(Duration.millis(2000), trickRects.get(1));
+		        translateTransition.setFromX(400);
+		        translateTransition.setToX(100);
+//		        translateTransition.setFromY(200);
+//		        translateTransition.setToY(50);
+		        translateTransition.setCycleCount(1);
+		        translateTransition.setAutoReverse(true);
+		 
+		        ScaleTransition scaleTransition = 
+		            new ScaleTransition(Duration.millis(1000), trickRects.get(1));
+		        scaleTransition.setFromX(2);
+		        scaleTransition.setFromY(2);
+		        scaleTransition.setToX(1);
+		        scaleTransition.setToY(1);
+		        scaleTransition.setCycleCount(1);
+		        scaleTransition.setAutoReverse(true);
+
+		       ParallelTransition parallelTransition = new ParallelTransition();
+		        parallelTransition.getChildren().addAll(
+		                translateTransition,
+		                scaleTransition
+		        );
+		        parallelTransition.setCycleCount(1);
+		        parallelTransition.play();
+		        
+	}
+	
+	public void updateTOppo(Card c) {
+		String r1; 
+		String s1;
+		if (model.getCardSet().equals("De")){
+			r1 = c.getRank().toStringDe();
+			s1 = c.getSuit().toStringDe();
+		}else {
+			r1 = c.getRank().toStringFr();
+			s1 = c.getSuit().toStringFr();
+		}
+		String filename = s1 + "_" + r1 + ".jpg";
+		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
+		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+		trickRects.get(2).setFill(pattern);
+		
+		trickRects.get(2).setArcHeight(15);
+		trickRects.get(2).setArcWidth(15);
+		trickRects.get(2).setTranslateX(50);
+		trickRects.get(2).setTranslateY(50);
+		
+		TranslateTransition translateTransition =
+	            new TranslateTransition(Duration.millis(2000), trickRects.get(2));
+	        translateTransition.setFromX(100);
+	        translateTransition.setToX(10);
+	        translateTransition.setFromY(-200);
+	        translateTransition.setToY(50);
+	        translateTransition.setCycleCount(1);
+	        translateTransition.setAutoReverse(true);
+	 
+	        ScaleTransition scaleTransition = 
+	            new ScaleTransition(Duration.millis(1000), trickRects.get(2));
+	        scaleTransition.setFromX(2);
+	        scaleTransition.setFromY(2);
+	        scaleTransition.setToX(1);
+	        scaleTransition.setToY(1);
+	        scaleTransition.setCycleCount(1);
+	        scaleTransition.setAutoReverse(true);
+
+	       ParallelTransition parallelTransition = new ParallelTransition();
+	        parallelTransition.getChildren().addAll(
+	                translateTransition,
+	                scaleTransition
+	        );
+	        parallelTransition.setCycleCount(1);
+	        parallelTransition.play();
+	        
+	}
+	
+	public void updateTLeft(Card c) {
+		String r1; 
+		String s1;
+		if (model.getCardSet().equals("De")){
+			r1 = c.getRank().toStringDe();
+			s1 = c.getSuit().toStringDe();
+		}else {
+			r1 = c.getRank().toStringFr();
+			s1 = c.getSuit().toStringFr();
+		}
+		String filename = s1 + "_" + r1 + ".jpg";
+		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
+		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+		trickRects.get(3).setFill(pattern);
+		
+		trickRects.get(3).setArcHeight(15);
+		trickRects.get(3).setArcWidth(15);
+		trickRects.get(3).setTranslateX(50);
+		trickRects.get(3).setTranslateY(50);
+		
+		TranslateTransition translateTransition =
+	            new TranslateTransition(Duration.millis(2000), trickRects.get(3));
+	        translateTransition.setFromX(-400);
+	        translateTransition.setToX(100);
+//	        translateTransition.setFromY(200);
+//	        translateTransition.setToY(50);
+	        translateTransition.setCycleCount(1);
+	        translateTransition.setAutoReverse(true);
+	 
+	        ScaleTransition scaleTransition = 
+	            new ScaleTransition(Duration.millis(1000), trickRects.get(3));
+	        scaleTransition.setFromX(2);
+	        scaleTransition.setFromY(2);
+	        scaleTransition.setToX(1);
+	        scaleTransition.setToY(1);
+	        scaleTransition.setCycleCount(1);
+	        scaleTransition.setAutoReverse(true);
+
+	       ParallelTransition parallelTransition = new ParallelTransition();
+	        parallelTransition.getChildren().addAll(
+	                translateTransition,
+	                scaleTransition
+	        );
+	        parallelTransition.setCycleCount(1);
+	        parallelTransition.play();
+	        
+			
+ 
+	}
+	
+	public void clearTrick() {
+		for (int d = 0; d<MAX_PLAYERS; d++)   {		
+			trickRects.get(d).setFill(null);
+			trickRects.get(d).setStroke(Color.BLACK);
+			trickRects.get(d).setStrokeWidth(1);
 		}
 	}
 	
