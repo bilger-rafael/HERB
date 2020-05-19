@@ -256,8 +256,11 @@ public class GameModel extends Model {
 	
 	// get scores for n rounds
 	public ArrayList<Integer> getScores() {
-		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getScores();
+		// Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getScores();
 	
+		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getGame().getScores();
+		
+		
 		// TODO - count end result
 //		int playedRounds = Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().size();
 //		Integer[] serverScores = {0, 0, 0, 0}; 

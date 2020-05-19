@@ -243,7 +243,7 @@ public class GameController extends Controller<GameModel, GameView> {
 
 	private void startRevanche() {
 		model.demandRematch(true);
-		model.startRematchUpdater();
+		model.startRematchUpdater();		
 		model.getRematch().addListener((obs, oldVal, newVal) -> {
 			model.stopRematchUpdater();
 			enterGame();
@@ -259,9 +259,15 @@ public class GameController extends Controller<GameModel, GameView> {
 	}
 
 	private void enterGame() {
+		try {
+			Thread.sleep(5000);
+		}
+		catch(Exception e) {
+			// Message - 
+		}
 		this.view.stop();
 		// TODO either create view again from scratch or reset view
-		this.view = null;
+		Main.getMainProgram().clearGameView();
 		Main.getMainProgram().getGameView().start();
 	}
 }
