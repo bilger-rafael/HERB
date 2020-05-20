@@ -142,7 +142,7 @@ public class GameModel extends Model {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					System.out.println("Server connection lost - trick update not running (4)");
+					System.out.println("Server connection lost - trick (4)");
 
 				}
 				trick = tricks.getLast();
@@ -224,14 +224,14 @@ public class GameModel extends Model {
 	//	fillRealList(trickCards);
 	}
 
-	private void fillRealList(ObservableList<Card> tc) {
-		if (betterTrickCards.size()< tc.size() ) {
-			betterTrickCards.add(tc.get(trickSize-1));
-		}
-		if(betterTrickCards.size() % 4 == 0) {
-			betterTrickCards.clear();
-		}
-		
+//	private void fillRealList(ObservableList<Card> tc) {
+//		if (betterTrickCards.size()< tc.size() ) {
+//			betterTrickCards.add(tc.get(trickSize-1));
+//		}
+//		if(betterTrickCards.size() % 4 == 0) {
+//			betterTrickCards.clear();
+//		}
+//		
 //		switch (tc.size()) {		
 //		case 1:
 //			localTrick[trickNumber][0]= betterTrickCards.get(0);
@@ -252,24 +252,12 @@ public class GameModel extends Model {
 //			localTrick[trickNumber][3]= betterTrickCards.get(3);
 //			break;
 //		}	
-	}
+//	}
 	
-	// get scores for n rounds
+	// get scores
 	public ArrayList<Integer> getScores() {
-		// Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getScores();
-	
+		
 		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getGame().getScores();
-		
-		
-		// TODO - count end result
-//		int playedRounds = Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().size();
-//		Integer[] serverScores = {0, 0, 0, 0}; 
-//		for (int i = 0; i< playedRounds; i ++) {
-//			serverScores[0] +=  Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().get(i).getScores()[0];
-//			serverScores[1] +=  Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().get(i).getScores()[1];
-//			serverScores[2] +=  Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().get(i).getScores()[2];
-//			serverScores[3] +=  Datastore.getInstance().getMainPlayer().getRound().getGame().getRounds().get(i).getScores()[3];	
-//		}
 		scoresList = new ArrayList(Arrays.asList(serverScores));
 		LinkedList<Integer> scrs = new LinkedList();
 		for (Integer i : scoresList) {
@@ -296,7 +284,6 @@ public class GameModel extends Model {
 			scoresList.add(scrs.get(1));
 			scoresList.add(scrs.get(2));
 		}
-		System.out.println("Erhaltene Scores " + scoresList.toString());
 		return scoresList;
 	}
 
@@ -328,8 +315,7 @@ public class GameModel extends Model {
 	
 	public ObservableList<Card> getBetterTrickCards() {
 		return betterTrickCards;
-	}
-	
+	}	
 	
 	public Card[][] getLocalTrick(){
 		return localTrick;

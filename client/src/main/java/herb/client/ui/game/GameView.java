@@ -85,8 +85,10 @@ public class GameView extends View<GameModel> {
 	private final int MAX_PLAYERS = 4; 
 	private final int MAX_RECTS = 16;
 	private final int MAX_CARDS = 9; 
-	int startingPosition;
-
+	private int startingPosition;
+	private int tCounter = 0;
+	private int plCardsCounter = 0;
+	private boolean done1, done2, done3, done4, done;
 	
 	//  roesti
 	public GameView(Stage stage, GameModel model) {
@@ -357,8 +359,6 @@ public class GameView extends View<GameModel> {
 		
 		if(!cards.isEmpty()) {
 		startingPosition = MAX_CARDS - cards.size();
-		System.out.println(startingPosition);
-		System.out.println(cards.size());
 		
 		int arrayIndex = 0;
 		boolean endeDerFahnenstange = false;
@@ -389,89 +389,89 @@ public class GameView extends View<GameModel> {
 	
 	// Roesti - update trick ImagePatterns
 	public void updateTrick(ArrayList<Card> cardSet) {
-		for (int d = 0; d<MAX_PLAYERS; d++)   {		
-			trickRects.get(d).setFill(null);
-			trickRects.get(d).setStroke(Color.BLACK);
-			trickRects.get(d).setStrokeWidth(1);
-		}
 		
+		clearTrick();
+
 		if(!cardSet.isEmpty()) {
 		trick = new ArrayList();
 		trick = cardSet;
-		// update played cards
-		for (int i = 0; i< trick.size(); i++) {	
-			String r1; 
-			String s1;
-			if (model.getCardSet().equals("De")){
-				r1 = trick.get(i).getRank().toStringDe();
-				s1 = trick.get(i).getSuit().toStringDe();
-			}else {
-				r1 = trick.get(i).getRank().toStringFr();
-				s1 = trick.get(i).getSuit().toStringFr();
+		// update played card			
+			for (int i = 0; i< trick.size(); i++) {	
+				String r1; 
+				String s1;
+				if (model.getCardSet().equals("De")){
+					r1 = trick.get(i).getRank().toStringDe();
+					s1 = trick.get(i).getSuit().toStringDe();
+				}else {
+					r1 = trick.get(i).getRank().toStringFr();
+					s1 = trick.get(i).getSuit().toStringFr();
+				}
+				String filename = s1 + "_" + r1 + ".jpg";
+				Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
+				ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+					
+				// goal: put the played card next to its player		
+				Player s = model.getStartingPlayer();
+				setStartingPlayer();	
+				Player c = model.getCurrentPlayer();
+				
+				if(c.equals(model.getPlayers().get(0))) {
+						setTurn();
+					}
+					
+				if (s.equals(model.getPlayers().get(0))) {
+						trickRects.get(i).setFill(pattern);
+				}		
+			
+				if (s.equals(model.getPlayers().get(1))) {
+						if(i == 0) {
+							trickRects.get(1).setFill(pattern);
+							//updateTRight(pattern);
+						}
+						if (i == 1) {
+							trickRects.get(2).setFill(pattern);
+						}
+						if (i == 2) {
+							trickRects.get(3).setFill(pattern);
+						}
+						if (i == 3) {
+							trickRects.get(0).setFill(pattern);
+						}
+					}
+				if (s.equals(model.getPlayers().get(2))) {
+						if(i == 0) {
+							trickRects.get(2).setFill(pattern);
+						}
+						if (i == 1) {
+							trickRects.get(3).setFill(pattern);
+						}
+						if (i == 2) {
+							trickRects.get(0).setFill(pattern);
+						}
+						if (i == 3) {
+							trickRects.get(1).setFill(pattern);
+							//updateTRight(pattern);
+						}
+					}
+				if (s.equals(model.getPlayers().get(3))) {
+						if(i == 0) {
+							trickRects.get(3).setFill(pattern);
+						}
+						if (i == 1) {
+							trickRects.get(0).setFill(pattern);
+						}
+						if (i == 2) {
+							trickRects.get(1).setFill(pattern);
+							//updateTRight(pattern);
+						}
+						if (i == 3) {
+							trickRects.get(2).setFill(pattern);
+						}
+					}
+				}     
 			}
-		String filename = s1 + "_" + r1 + ".jpg";
-		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
-		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
 		
-		// goal: put the played card next to its player		
-		Player s = model.getStartingPlayer();
-		setStartingPlayer();
-		
-		Player c = model.getCurrentPlayer();
-		if(c.equals(model.getPlayers().get(0))) {
-			trickLabel2.setVisible(true);
-
 		}
-		
-		if (s.equals(model.getPlayers().get(0))) {
-			trickRects.get(i).setFill(pattern);
-		}
-		
-		if (s.equals(model.getPlayers().get(1))) {
-			if(i == 0) {
-				trickRects.get(1).setFill(pattern);
-			}
-			if (i == 1) {
-				trickRects.get(2).setFill(pattern);
-			}
-			if (i == 2) {
-				trickRects.get(3).setFill(pattern);
-			}
-			if (i == 3) {
-				trickRects.get(0).setFill(pattern);
-			}
-		}
-		if (s.equals(model.getPlayers().get(2))) {
-			if(i == 0) {
-				trickRects.get(2).setFill(pattern);
-			}
-			if (i == 1) {
-				trickRects.get(3).setFill(pattern);
-			}
-			if (i == 2) {
-				trickRects.get(0).setFill(pattern);
-			}
-			if (i == 3) {
-				trickRects.get(1).setFill(pattern);
-			}
-		}
-		if (s.equals(model.getPlayers().get(3))) {
-			if(i == 0) {
-				trickRects.get(3).setFill(pattern);
-			}
-			if (i == 1) {
-				trickRects.get(0).setFill(pattern);
-			}
-			if (i == 2) {
-				trickRects.get(1).setFill(pattern);
-			}
-			if (i == 3) {
-				trickRects.get(2).setFill(pattern);
-			}
-		}
-		}           
-		}
-	}
 	
 	public void updateTMain(Card c) {
 		String r1; 
@@ -498,182 +498,108 @@ public class GameView extends View<GameModel> {
 		trickRects.get(0).setFill(pattern);
 
 		// idea from Genuine Coder (youtube: https://www.youtube.com/watch?v=dyS0tdJ5wTw)
-
-		trickRects.get(0).setArcHeight(15);
-		trickRects.get(0).setArcWidth(15);
-		trickRects.get(0).setTranslateX(50);
-		trickRects.get(0).setTranslateY(50);
+		trickRects.get(0).setTranslateX(0);
+		trickRects.get(0).setTranslateY(0);
+		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), trickRects.get(0));
+		translateTransition.setFromY(200);
+		translateTransition.setToY(30);
+		translateTransition.setCycleCount(1);
+		translateTransition.setAutoReverse(true);
 		 
-		TranslateTransition translateTransition =
-		            new TranslateTransition(Duration.millis(2000), trickRects.get(0));
-		        translateTransition.setFromX(100);
-		        translateTransition.setToX(100);
-		        translateTransition.setFromY(200);
-		        translateTransition.setToY(50);
-		        translateTransition.setCycleCount(1);
-		        translateTransition.setAutoReverse(true);
-		 
-		        ScaleTransition scaleTransition = 
-		            new ScaleTransition(Duration.millis(1000), trickRects.get(0));
-		        scaleTransition.setFromX(2);
-		        scaleTransition.setFromY(2);
-		        scaleTransition.setToX(1);
-		        scaleTransition.setToY(1);
-		        scaleTransition.setCycleCount(1);
-		        scaleTransition.setAutoReverse(true);
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), trickRects.get(0));
+		scaleTransition.setFromX(2);
+		scaleTransition.setFromY(2);
+		scaleTransition.setToX(1);
+		scaleTransition.setToY(1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
 
-		       ParallelTransition parallelTransition = new ParallelTransition();
-		        parallelTransition.getChildren().addAll(
-		                translateTransition,
-		                scaleTransition
-		        );
-		        parallelTransition.setCycleCount(1);
-		        parallelTransition.play();      
-
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
+		parallelTransition.setCycleCount(1);
+		parallelTransition.play();
 	}
 	
-	public void updateTRight(Card c) {
-		String r1; 
-		String s1;
-		if (model.getCardSet().equals("De")){
-			r1 = c.getRank().toStringDe();
-			s1 = c.getSuit().toStringDe();
-		}else {
-			r1 = c.getRank().toStringFr();
-			s1 = c.getSuit().toStringFr();
-		}
-		String filename = s1 + "_" + r1 + ".jpg";
-		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
-		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
-		trickRects.get(1).setFill(pattern);
-		
-		trickRects.get(1).setArcHeight(15);
-		trickRects.get(1).setArcWidth(15);
-		trickRects.get(1).setTranslateX(50);
-		trickRects.get(1).setTranslateY(50);
-		 
-		TranslateTransition translateTransition =
-		            new TranslateTransition(Duration.millis(2000), trickRects.get(1));
-		        translateTransition.setFromX(400);
-		        translateTransition.setToX(100);
-//		        translateTransition.setFromY(200);
-//		        translateTransition.setToY(50);
-		        translateTransition.setCycleCount(1);
-		        translateTransition.setAutoReverse(true);
-		 
-		        ScaleTransition scaleTransition = 
-		            new ScaleTransition(Duration.millis(1000), trickRects.get(1));
-		        scaleTransition.setFromX(2);
-		        scaleTransition.setFromY(2);
-		        scaleTransition.setToX(1);
-		        scaleTransition.setToY(1);
-		        scaleTransition.setCycleCount(1);
-		        scaleTransition.setAutoReverse(true);
+	public void updateTRight(ImagePattern pattern) {
 
-		       ParallelTransition parallelTransition = new ParallelTransition();
-		        parallelTransition.getChildren().addAll(
-		                translateTransition,
-		                scaleTransition
-		        );
-		        parallelTransition.setCycleCount(1);
-		        parallelTransition.play();
+		trickRects.get(1).setFill(pattern);
+		 
+		updateRightPlayer();
+		
+		trickRects.get(1).setTranslateX(0);
+		trickRects.get(1).setTranslateY(0);
+		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(1));
+		translateTransition.setFromX(400);
+		translateTransition.setToX(0);
+		translateTransition.setCycleCount(1);
+		translateTransition.setAutoReverse(true);
+		 
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), trickRects.get(1));
+		scaleTransition.setFromX(2);
+		scaleTransition.setFromY(2);
+		scaleTransition.setToX(1);
+		scaleTransition.setToY(1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
+
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
+		parallelTransition.setCycleCount(1);
+		parallelTransition.play();
 		        
 	}
 	
-	public void updateTOppo(Card c) {
-		String r1; 
-		String s1;
-		if (model.getCardSet().equals("De")){
-			r1 = c.getRank().toStringDe();
-			s1 = c.getSuit().toStringDe();
-		}else {
-			r1 = c.getRank().toStringFr();
-			s1 = c.getSuit().toStringFr();
-		}
-		String filename = s1 + "_" + r1 + ".jpg";
-		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
-		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+	public void updateTOppo(ImagePattern pattern) {
+
 		trickRects.get(2).setFill(pattern);
 		
-		trickRects.get(2).setArcHeight(15);
-		trickRects.get(2).setArcWidth(15);
-		trickRects.get(2).setTranslateX(50);
-		trickRects.get(2).setTranslateY(50);
-		
-		TranslateTransition translateTransition =
-	            new TranslateTransition(Duration.millis(2000), trickRects.get(2));
-	        translateTransition.setFromX(100);
-	        translateTransition.setToX(10);
-	        translateTransition.setFromY(-200);
-	        translateTransition.setToY(50);
-	        translateTransition.setCycleCount(1);
-	        translateTransition.setAutoReverse(true);
-	 
-	        ScaleTransition scaleTransition = 
-	            new ScaleTransition(Duration.millis(1000), trickRects.get(2));
-	        scaleTransition.setFromX(2);
-	        scaleTransition.setFromY(2);
-	        scaleTransition.setToX(1);
-	        scaleTransition.setToY(1);
-	        scaleTransition.setCycleCount(1);
-	        scaleTransition.setAutoReverse(true);
+		trickRects.get(2).setTranslateX(0);
+		trickRects.get(2).setTranslateY(0);
+		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), trickRects.get(2));
+		translateTransition.setFromY(-200);
+		translateTransition.setToY(0);
+		translateTransition.setCycleCount(1);
+		translateTransition.setAutoReverse(true);
+		 
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(1000), trickRects.get(2));
+		scaleTransition.setFromX(2);
+		scaleTransition.setFromY(2);
+		scaleTransition.setToX(1);
+		scaleTransition.setToY(1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
 
-	       ParallelTransition parallelTransition = new ParallelTransition();
-	        parallelTransition.getChildren().addAll(
-	                translateTransition,
-	                scaleTransition
-	        );
-	        parallelTransition.setCycleCount(1);
-	        parallelTransition.play();
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
+		parallelTransition.setCycleCount(1);
+		parallelTransition.play();
 	        
 	}
 	
-	public void updateTLeft(Card c) {
-		String r1; 
-		String s1;
-		if (model.getCardSet().equals("De")){
-			r1 = c.getRank().toStringDe();
-			s1 = c.getSuit().toStringDe();
-		}else {
-			r1 = c.getRank().toStringFr();
-			s1 = c.getSuit().toStringFr();
-		}
-		String filename = s1 + "_" + r1 + ".jpg";
-		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
-		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
+	public void updateTLeft(ImagePattern pattern) {
+
 		trickRects.get(3).setFill(pattern);
 		
-		trickRects.get(3).setArcHeight(15);
-		trickRects.get(3).setArcWidth(15);
-		trickRects.get(3).setTranslateX(50);
-		trickRects.get(3).setTranslateY(50);
-		
-		TranslateTransition translateTransition =
-	            new TranslateTransition(Duration.millis(2000), trickRects.get(3));
-	        translateTransition.setFromX(-400);
-	        translateTransition.setToX(100);
-//	        translateTransition.setFromY(200);
-//	        translateTransition.setToY(50);
-	        translateTransition.setCycleCount(1);
-	        translateTransition.setAutoReverse(true);
-	 
-	        ScaleTransition scaleTransition = 
-	            new ScaleTransition(Duration.millis(1000), trickRects.get(3));
-	        scaleTransition.setFromX(2);
-	        scaleTransition.setFromY(2);
-	        scaleTransition.setToX(1);
-	        scaleTransition.setToY(1);
-	        scaleTransition.setCycleCount(1);
-	        scaleTransition.setAutoReverse(true);
+		trickRects.get(3).setTranslateX(0);
+		trickRects.get(3).setTranslateY(0);
+		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), trickRects.get(3));
+		translateTransition.setFromX(-400);
+		translateTransition.setToX(0);
+		translateTransition.setCycleCount(1);
+		translateTransition.setAutoReverse(true);
+		 
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(1000), trickRects.get(3));
+		scaleTransition.setFromX(2);
+		scaleTransition.setFromY(2);
+		scaleTransition.setToX(1);
+		scaleTransition.setToY(1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
 
-	       ParallelTransition parallelTransition = new ParallelTransition();
-	        parallelTransition.getChildren().addAll(
-	                translateTransition,
-	                scaleTransition
-	        );
-	        parallelTransition.setCycleCount(1);
-	        parallelTransition.play();
-	        
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
+		parallelTransition.setCycleCount(1);
+		parallelTransition.play();
 			
  
 	}

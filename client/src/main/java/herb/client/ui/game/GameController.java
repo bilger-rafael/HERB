@@ -47,70 +47,16 @@ public class GameController extends Controller<GameModel, GameView> {
 				while (c.next()) {
 					if (c.wasAdded()) {
 						view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
-						
-//						ArrayList<Card> localTrick = new ArrayList<>();
-//						localTrick.add(model.getLocalTrick()[model.getTrickNumber()][0]);
-//						localTrick.add(model.getLocalTrick()[model.getTrickNumber()][1]);
-//						localTrick.add(model.getLocalTrick()[model.getTrickNumber()][2]);
-//						localTrick.add(model.getLocalTrick()[model.getTrickNumber()][3]);
-//						view.updateTrick(localTrick);			
-						
-					//	 try alternative solution
-//					view.setStartingPlayer();
-//						
-//					int trickStatus = model.getTrickCards().size();
-//					ArrayList<Card> cards = new ArrayList<>();
-//					cards = (ArrayList<Card>) model.getBetterTrickCards().stream().collect(Collectors.toList());						
-//					
-//					if (model.getStartingPlayer().equals(model.getPlayers().get(0))) {
-//							if(trickStatus == 1)  view.updateTMain(cards.get(0));		
-//							if(trickStatus == 2)  view.updateTRight(cards.get(1));
-//							if(trickStatus == 3)  view.updateTOppo(cards.get(2));
-//							if(trickStatus == 4)  view.updateTLeft(cards.get(3));
-//							}
-//						
-//						if (model.getStartingPlayer().equals(model.getPlayers().get(1))) {
-//							if(trickStatus == 4)  view.updateTMain(cards.get(3));		
-//							if(trickStatus == 1)  view.updateTRight(cards.get(0));
-//							if(trickStatus == 2)  view.updateTOppo(cards.get(1));
-//							if(trickStatus == 3)  view.updateTLeft(cards.get(2));
-//							}
-//						
-//						if (model.getStartingPlayer().equals(model.getPlayers().get(2))) {
-//							if(trickStatus == 3)  view.updateTMain(cards.get(2));		
-//							if(trickStatus == 4)  view.updateTRight(cards.get(3));
-//							if(trickStatus == 1)  view.updateTOppo(cards.get(0));
-//							if(trickStatus == 2)  view.updateTLeft(cards.get(1));
-//							}
-//						
-//						if (model.getStartingPlayer().equals(model.getPlayers().get(3))) {
-//							if(trickStatus == 2)  view.updateTMain(cards.get(1));		
-//							if(trickStatus == 3)  view.updateTRight(cards.get(2));
-//							if(trickStatus == 4)  view.updateTOppo(cards.get(3));
-//							if(trickStatus == 1)  view.updateTLeft(cards.get(0));
-//							}
-//						if(trickStatus == 4) {
-//							view.clearTrick();
-//						}				
-//						System.out.println("StartingPlayer " + model.getStartingPlayer());
-//						String sysout = new String();
-//						for (Card m : model.getLocalTrick()[model.getTrickNumber()])
-//							sysout += m;
-					//	System.out.println("localTrick-Array "+ sysout);
-//						for (int j = 0; j < model.getBetterTrickCards().size(); j++) {
-//							System.out.println("betterTrickCards: " + model.getBetterTrickCards().get(j).getRank().toString()
-//									+ model.getBetterTrickCards().get(j).getSuit().toString());
-//						}
-//						System.out.println();
 					}
 				}
 			}
 		};
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> p) {
+						
+				
 				if (model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
 					// stop all Listeners
-					System.out.println("passed here");
 					view.updatePointPane(model.getScores());
 					model.setStopThread();
 					view.cleanings();
@@ -152,7 +98,6 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.getTrumpChoice().get(5).setOnMouseClicked(e -> forwardTrump(e));
 
 		// handling played card
-		// TODO - check: remove last rectangle every time a card was played?
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));
 		if (view.getRects().size() > 1)
 			view.getRects().get(1).setOnMouseClicked(e -> forwardPlayedCard(e));
@@ -205,9 +150,10 @@ public class GameController extends Controller<GameModel, GameView> {
 
 		if (playedCard.isPlayable()) {
 			model.playCard(playedCard);
+	//		view.updateTMain(playedCard);		
 		}
 		view.updateImagePatterns();
-
+		
 		// reduce other players cards
 		// TODO - check and correct
 		view.updateRightPlayer();
@@ -266,7 +212,6 @@ public class GameController extends Controller<GameModel, GameView> {
 			// Message - 
 		}
 		this.view.stop();
-		// TODO either create view again from scratch or reset view
 		Main.getMainProgram().clearGameView();
 		Main.getMainProgram().getGameView().start();
 	}
