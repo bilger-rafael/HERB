@@ -281,11 +281,10 @@ public class BetterBot extends BotBase {
 
 		}
 		//Falls BestCard noch leer ist, random (nur zur Sicherheit)
-		if(bestCard==null) {
+		if(bestCard==null || bestCard.getSuit()==null || bestCard.getRank()==null || bestCard.getTrump()==null) {
 			randInt = rand.nextInt(this.getPlayableCards().size());
 			bestCard = this.getPlayableCards().get(randInt);
 		}
-		
 		return bestCard;
 	}
 
