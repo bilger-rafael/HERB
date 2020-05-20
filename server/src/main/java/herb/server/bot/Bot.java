@@ -54,7 +54,6 @@ public class Bot extends BotBase {
 	@Override // Gibt einen Random Trumpf zurück
 	protected Trump determinBestTrump() {
 		 randInt = rand.nextInt(6);
-		 
-		return Trump.values()[randInt];
+		 return Trump.values()[randInt];
 	}
 }
