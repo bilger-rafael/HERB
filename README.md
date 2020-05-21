@@ -2,6 +2,10 @@
 
 ## IT Project FS20
 
+### Prerequisites
+* Java JDK 1.8
+* MySQL Server 8
+
 ### Start Server
 HERB/server/src/main/java/herb/server/RestServer.java
 
