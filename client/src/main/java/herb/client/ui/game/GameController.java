@@ -11,6 +11,7 @@ import herb.client.ressources.Hand;
 import herb.client.ressources.Player;
 import herb.client.ressources.Trick;
 import herb.client.ressources.core.CardBase;
+import herb.client.ressources.core.ExceptionBase;
 import herb.client.ressources.core.HandBase;
 import herb.client.ressources.core.Rank;
 import herb.client.ressources.core.Suit;
@@ -18,9 +19,11 @@ import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Controller;
 import herb.client.utils.Datastore;
+import herb.client.utils.ServiceLocator;
 import javafx.event.EventHandler;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -36,10 +39,15 @@ public class GameController extends Controller<GameModel, GameView> {
 
 	private Card playedCard;
 	private Trump chosenTrump;
-	private int playedCardIndex;
-
+	private ServiceLocator serviceLocator;
+	private Trick trick; 
+	private Thread tu;
+	private volatile boolean currentStop = false;
+	
 	public GameController(GameModel model, GameView view) {
 		super(model, view);
+
+		startPlayablesUpdater();
 
 		// trick-listener, nextPlayer-listener and trump listener
 		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {
@@ -48,10 +56,7 @@ public class GameController extends Controller<GameModel, GameView> {
 					if (c.wasAdded()) {
 						ArrayList<Card> filter = (ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList());
 						view.updateTrick(filter);	
-						
-					}
-				}
-			}
+			}}}
 		};
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> p) {
@@ -60,7 +65,7 @@ public class GameController extends Controller<GameModel, GameView> {
 					// stop all Listeners
 					view.updatePointPane(model.getScores());
 					model.setStopThread();
-					model.setCurrentStopThread();
+					setCurrentStopThread();
 					view.cleanings();
 				}
 				while (p.next()) {
@@ -71,10 +76,7 @@ public class GameController extends Controller<GameModel, GameView> {
 						view.setStartingPlayer();
 						if (pl.equals(model.getPlayers().get(0))) {
 							view.setTurn();
-						}
-					}
-				}
-			}
+			}}}}
 		};
 		ListChangeListener<Trump> trumpListener = new ListChangeListener<Trump>() {
 			public void onChanged(Change<? extends Trump> tr) {
@@ -83,8 +85,7 @@ public class GameController extends Controller<GameModel, GameView> {
 					chosenTrump = model.getTrump().get(round - 1);
 					view.updateTrumpInfo(chosenTrump);
 					model.setStopTrumpThread();
-				}
-			}
+			}}
 		};
 		model.getTrickCards().addListener(trickListener);
 		model.getCurrentPlayers().addListener(myTurnListener);
@@ -151,26 +152,46 @@ public class GameController extends Controller<GameModel, GameView> {
 		playedCard = model.getMyCards().get((index));
 
 		if (playedCard.isPlayable()) {
-			model.playCard(playedCard);
-		//	view.updateTMain(playedCard);
+			playCard(playedCard);
 			view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
-		//	model.setStopThread();
 		}
 		view.updateImagePatterns();
-		
-		
+				
 		// reduce other players cards
-		// TODO - check and correct
 		view.updateRightPlayer();
 		view.updateOppoPlayer();
 		view.updateLeftPlayer();
+	}
+	
+	public Card playCard(Card playedCard) {
+		try {
+			Datastore.getInstance().getMainPlayer().play(playedCard);
+		} catch (ExceptionBase e) {
+			view.showErrorMessage();
+			view.getMessageLabel().setVisible(true);
+			serviceLocator.getLogger().info("connection problems- playCard");
+			e.printStackTrace();
+		}
+		return playedCard;
 	}
 
 	public void forwardTrump(MouseEvent f) {
 		Rectangle recti = (Rectangle) f.getSource();
 		chosenTrump = Trump.values()[view.getTrumpChoice().indexOf(recti)];
-		model.setTrump(chosenTrump);
+		setTrump(chosenTrump);
 		view.changeTopOfStackPane();
+	}
+	
+	public Trump setTrump(Trump chosenTrump) {
+		try {
+			Datastore.getInstance().getMainPlayer().chooseTrump(chosenTrump);
+		} catch (ExceptionBase e) {
+			view.showErrorMessage();
+			view.getMessageLabel().setVisible(true);
+			serviceLocator.getLogger().info("connection problems- trump");
+			e.printStackTrace();
+		}
+		return chosenTrump;
 	}
 
 	public void changeCardSet2French() {
@@ -188,20 +209,20 @@ public class GameController extends Controller<GameModel, GameView> {
 	}
 
 	public void quitGame() {
-		model.demandRematch(false);
+		demandRematch(false);
 		goToLauncher();
 	}
 
 	private void startRevanche() {
-		model.demandRematch(true);
+		demandRematch(true);
 		model.startRematchUpdater();		
 		model.getRematch().addListener((obs, oldVal, newVal) -> {
 			model.stopRematchUpdater();
 			enterGame();
 		});
-
-		// TODO When Revanche is pressed, the button should not be pressable anymore
-		// (maybe show Text that we have to wait until the other players decided)
+		view.setRevancheLabel();
+		view.getRevancheButton().disableProperty();
+		// When Revanche is pressed, the button should not be pressable anymore
 	}
 
 	private void goToLauncher() {
@@ -218,5 +239,54 @@ public class GameController extends Controller<GameModel, GameView> {
 		this.view.stop();
 		Main.getMainProgram().clearGameView();
 		Main.getMainProgram().getGameView().start();
+	}
+	
+	public void demandRematch(Boolean rematch) {
+		try {
+			Datastore.getInstance().getMainPlayer().demandRematch(rematch);
+		} catch (ExceptionBase e) {
+			view.showErrorMessageS();
+			view.getMessageLabelS().setVisible(true);
+			serviceLocator.getLogger().info("connection lost- gameOver");
+			e.printStackTrace();
+		}
+	}
+	
+	public void refreshCurrentPlayer() {
+		try {
+			trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
+			model.setTrickNumber(Datastore.getInstance().getMainPlayer().getRound().getTricks().size());
+			if (model.getCurrentPlayers().isEmpty() || trick.getCurrentPlayer() != model.getCurrentPlayers().get(model.getCurrentPlayers().size() - 1)) {
+				model.getCurrentPlayers().add(trick.getCurrentPlayer());
+				model.getStartingPlayers().add(trick.getStartingPlayer());
+				}
+			} catch (Exception e) {
+			// if trump is not yet defined, no message
+			if(Datastore.getInstance().getMainPlayer().getRound().getTrump() != null) {
+				view.showErrorMessageS();
+				view.getMessageLabelS().setVisible(true);
+				serviceLocator.getLogger().info("connection lost- gameInterrupted");
+			}
+		}
+	}
+	
+	private void startPlayablesUpdater() {
+		Runnable ru = new Runnable() {
+			@Override
+			public void run() {
+				while (!currentStop) {
+					Platform.runLater(() -> refreshCurrentPlayer());
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+			}}}
+		};
+		tu = new Thread(ru);
+		tu.setDaemon(true);
+		tu.start();
+	}
+	
+	public void setCurrentStopThread() {
+		this.currentStop = true;
 	}
 }

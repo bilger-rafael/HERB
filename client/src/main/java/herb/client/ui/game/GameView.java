@@ -63,13 +63,14 @@ public class GameView extends View<GameModel> {
 	
 	private AnchorPane root; 
 	private GridPane table, ownCards;
-	private VBox leftHandSide, rightHandSide, opposite, bottom, namesBox, pointsBox, winnerBox, lobbyBox, showTrumpBox, chooseTrumpBox;
-	private HBox oppositeSide, left, right;
+	private VBox leftHandSide, rightHandSide, opposite, bottom, namesBox, pointsBox, winnerBox; 
+	private VBox lobbyBox, showTrumpBox, chooseTrumpBox, buttonsBox;
+	private HBox oppositeSide, left, right, topBox;
 	private TilePane trumpBox;
 	private HBox tMain, tRight, tOppo, tLeft, buttons;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
 	private Label pointsLabel, pointsPlayerLabel, pointsPlayerLabel2, playedPointsLabel, playedPointsLabel2, winnerLabel, winnerLabel2; 
-	private Label trumpLabel, trumpOrderLabel, startingPlayerLabel, startingPlayerText, messageLabel;
+	private Label trumpLabel, trumpOrderLabel, startingPlayerLabel, startingPlayerText, messageLabel, messageLabelS, revancheLabel;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
 	private StackPane tablePart, messageBox;
@@ -85,11 +86,11 @@ public class GameView extends View<GameModel> {
 	private final int MAX_PLAYERS = 4; 
 	private final int MAX_RECTS = 16;
 	private final int MAX_CARDS = 9; 
-	private final int mCARD_W = 322/2;
+	private final int mCARD_W = 322/2; 
 	private final int mCARD_H = 514/2;
-	private final int tCARD_W = 322/3;
+	private final int tCARD_W = 322/3; 
 	private final int tCARD_H = 514/3;
-	private final int oCARD_W = 322/4;
+	private final int oCARD_W = 322/4; 
 	private final int oCARD_H = 514/4;
 	private int startingPosition;
 	private int tCounter = 0;
@@ -153,6 +154,7 @@ public class GameView extends View<GameModel> {
 		namesBox = new VBox();
 		pointsBox = new VBox();	
 		winnerBox = new VBox();
+		topBox = new HBox();
 		
 		// get lobby players
 		players = model.getLobbyPlayers();
@@ -194,7 +196,15 @@ public class GameView extends View<GameModel> {
 	    startingPlayerLabel = new Label();
 	   	lobbyBox.getChildren().addAll(lobbyLabel);
 	   	messageLabel = new Label();
-		
+	   	messageLabel.setId("message");
+	   	messageLabel.setVisible(false);
+	   	messageLabelS = new Label();
+	   	messageLabelS.setId("message");
+	   	messageLabelS.setVisible(false);
+	   	messageBox = new StackPane();
+		messageBox.getChildren().addAll(messageLabel, messageLabelS);
+
+	   	
 		// Cards and Trump images
 	    rects = new ArrayList<>();
 	    trickRects = new ArrayList<>();
@@ -228,7 +238,7 @@ public class GameView extends View<GameModel> {
 		oppositeLabel.setMinWidth(150);
 		leftHandLabel.setMinWidth(150);
 		
-		root.getChildren().addAll(upperPart, bottom, menuBar, lobbyBox, showTrumpBox);
+		root.getChildren().addAll(upperPart, bottom, menuBar, lobbyBox, showTrumpBox, messageBox);
 
 		root.setLeftAnchor(menuBar, 0d);
 		root.setTopAnchor(menuBar, 0d);
@@ -248,6 +258,9 @@ public class GameView extends View<GameModel> {
 	
 		root.setTopAnchor(lobbyBox, 50d);
 		root.setLeftAnchor(lobbyBox, 10d);
+		
+		root.setTopAnchor(messageBox, 80d);
+		root.setLeftAnchor(messageBox, 10d);
 		
 		updateLabels();
 		Scene scene = new Scene(root, 1200, 1000);
@@ -333,12 +346,7 @@ public class GameView extends View<GameModel> {
 		rectangle.setArcHeight(20);
 		rectangle.setArcWidth(20);
 		rectangle.setStroke(Color.TRANSPARENT);
-	    //  TODO implement Random()
-//		Rotate rotate = new Rotate();  
-//		rotate.setAngle(((10+i) % 2)+183-2*i); 
-//		rotate.setPivotX(30); 
-//		rotate.setPivotY(322/3+30); 
-//	    rectangle.getTransforms().addAll(rotate); 
+
 		trickRects.add(rectangle);
 	    }
 	    tMain.getChildren().add(trickRects.get(0));
@@ -347,7 +355,8 @@ public class GameView extends View<GameModel> {
 		tLeft.getChildren().add(trickRects.get(3));
 		table.setHgap(10);
 		table.setVgap(10);
-		table.setAlignment(Pos.TOP_CENTER);
+		//changed
+		table.setAlignment(Pos.CENTER);
 		tablePart.getChildren().add(table);
 	}
 	
@@ -399,7 +408,7 @@ public class GameView extends View<GameModel> {
 		if(!cardSet.isEmpty()) {
 			trick = new ArrayList();
 			trick = cardSet;
-			System.out.println(trick.toString());
+
 			// update played card			
 			for (int i = 0; i< trick.size(); i++) {	
 				String r1; 
@@ -414,7 +423,16 @@ public class GameView extends View<GameModel> {
 				String filename = s1 + "_" + r1 + ".jpg";
 				Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
 				ImagePattern pattern = new ImagePattern(imageTable, 0, 0, tCARD_W, tCARD_H, false);
-						
+				
+				Random rand = new Random();
+				int newR = rand.nextInt(10);
+				newR -= 5;
+				Rotate rotate = new Rotate();  
+				rotate.setAngle(10+i) % 2)+183-newR); 
+				rotate.setPivotX(30); 
+				rotate.setPivotY(tCARD_W + 30); 
+				trickRects.get(0).getTransforms().addAll(rotate); 
+							
 				// goal: put the played card next to its player		
 				Player s = model.getStartingPlayer();
 				setStartingPlayer();	
@@ -865,11 +883,18 @@ public class GameView extends View<GameModel> {
     	winnerLabel = new Label();
     	winnerLabel2 = new Label();
     	revancheButton = new Button();
+    	revancheButton.setPrefSize(220, 50);
     	quitButton = new Button();
+    	quitButton.setPrefSize(220, 50);
+		revancheLabel = new Label();
+		revancheLabel.setAlignment(Pos.CENTER);
     	buttons = new HBox();
     	buttons.getChildren().addAll(revancheButton, quitButton);
-    	buttons.setSpacing(40);
-		winnerBox.getChildren().addAll(pointsLabel, winnerLabel2, winnerLabel);
+    	buttons.setSpacing(10);
+    	buttonsBox = new VBox();
+    	buttonsBox.getChildren().addAll(buttons, revancheLabel);
+		topBox.getChildren().addAll(winnerLabel2, winnerLabel);
+		winnerBox.getChildren().addAll(pointsLabel, topBox);
 
     	String label = "";
     	for(int i = 0; i<4; i++) {
@@ -889,8 +914,9 @@ public class GameView extends View<GameModel> {
 		
 		//  layout
 		namesBox.setAlignment(Pos.CENTER_LEFT);
-		pointsBox.setAlignment(Pos.CENTER_RIGHT);
+		pointsBox.setAlignment(Pos.CENTER);
 		winnerBox.setAlignment(Pos.TOP_CENTER);
+		winnerLabel2.setAlignment(Pos.CENTER);
 		buttons.setAlignment(Pos.BOTTOM_CENTER);
 		pointPane.setPadding(new Insets(30, 30, 30, 30));
 		pointPane.setMaxSize(530,  350);
@@ -990,17 +1016,28 @@ public class GameView extends View<GameModel> {
 		menuCardSet.setText(t.getString("program.game.menuCardSet"));
 		trickLabel2.setText(t.getString("program.game.order"));
 		trumpLabel.setText(t.getString("program.game.trump"));
-		startingPlayerText.setText(t.getString("program.game.startingPlayer"));
+		//startingPlayerText.setText(t.getString("program.game.startingPlayer"));
 		revancheButton.setText(t.getString("program.game.revancheButton"));
 		quitButton.setText(t.getString("program.game.quitButton"));
 		frenchSet.setText(t.getString("program.game.frenchSet"));
 		germanSet.setText(t.getString("program.game.germanSet"));
-		
 		pointsLabel.setText(t.getString("program.game.pointsLabel"));
 		pointsPlayerLabel2.setText(t.getString("program.game.pointsPlayerLabel"));
 		playedPointsLabel2.setText(t.getString("program.game.playedPointsLabel"));
 		winnerLabel2.setText(t.getString("program.game.winnerLabel"));
 		trumpOrderLabel.setText(t.getString("program.game.trumpOrder"));
+	
+		revancheLabel.setText(t.getString("program.game.revanche"));
+		
+		// Herren: if label is not visible, do not update
+		if (messageLabel.getText()!="") {
+			messageLabel.setText(t.getString("program.game.message"));
+		}
+		if (messageLabelS.getText() !="") {
+			messageLabelS.setText(t.getString("program.game.messageServer")); 
+		}
+		
+		
 	}
 	
 	// TODO check
@@ -1052,4 +1089,32 @@ public class GameView extends View<GameModel> {
 	public int getStartingPosition() {
 		return startingPosition;
 	}
+	
+	public void setRevancheLabel() {
+		revancheLabel.setVisible(true);
+		revancheLabel.setStyle("-fx-text-fill: WHITE");
+	}
+	
+	public Label getMessageLabel() {
+		return messageLabel;
+	}
+	public void resetMessageLabel() {
+		messageLabel.setText("");
+	}
+	public void showErrorMessage() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		messageLabel.setText(t.getString("program.game.message"));
+	}
+	
+	public Label getMessageLabelS() {
+		return messageLabelS;
+	}
+	public void resetMessageLabelS() {
+		messageLabelS.setText("");
+	}
+	public void showErrorMessage() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		messageLabelS.setText(t.getString("program.game.messageServer"));
+	}
+	
 }
