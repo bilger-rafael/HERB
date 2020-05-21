@@ -165,7 +165,7 @@ public class BotView extends View<BotModel>{
 		message.setText(t.getString("program.botSelectioner.message"));
 		stage.setTitle(t.getString("program.botSelectioner.titel"));
 		if (message.getText()!="") {
-			message.setText(t.getString("program.lobbyCreater.message"));
+			message.setText(t.getString("program.botSelectioner.message"));
 		}
 	}
 	
