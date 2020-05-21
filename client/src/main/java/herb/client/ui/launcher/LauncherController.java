@@ -8,37 +8,30 @@ import herb.client.utils.Datastore;
 import herb.client.utils.ServiceLocator;
 import javafx.application.Platform;
 
+//Herren
 public class LauncherController extends Controller<LauncherModel, LauncherView> {
 	ServiceLocator serviceLocator;
 
 	public LauncherController(LauncherModel model, LauncherView view) {
 		super(model, view);
 
-		// join a lobby
+		//action for joinButton
 		view.getJoinButton().setOnAction(e -> joinLobby());
 
-		// got to lobby create view
+		//action for createButton
 		view.getCreateButton().setOnAction(e -> getLobbyCreaterView());
 
-		/**
-		 * refresh lobby
-		 */
+		//action for refreshButton
 		view.getRefreshButton().setOnAction(e -> model.refreshLobbyList());
-
-		/**
-		 * refresh highscore
-		 */
+		
+		//action for refreshButton
 		view.getRefreshButton().setOnAction(e -> model.refreshHighscoreList());
 
-		/**
-		 * join a lobby
-		 */
+		//if selection is empty, joinButton is disabled
 		view.getJoinButton().disableProperty()
 				.bind(view.lobbyRoomCenter.getSelectionModel().selectedItemProperty().isNull());
 
-		/**
-		 * logout
-		 */
+		//action for logoutItem
 		view.getLogoutMenuItem().setOnAction(e -> getBackLoginView());
 
 		serviceLocator = ServiceLocator.getInstance();
@@ -46,12 +39,13 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 
 	}
 
-	// join a lobby
+	//methode for joinButton
 	private void joinLobby() {
-		if (view.lobbyRoomCenter.getSelectionModel().isEmpty())
-			return;
+//		if (view.lobbyRoomCenter.getSelectionModel().isEmpty())
+//			return;
 		Lobby lobby = view.lobbyRoomCenter.getSelectionModel().getSelectedItem();
 		try {
+			//if selection is not empty, join lobby and add player
 			lobby.addPlayer(Datastore.getInstance().getMainPlayer());
 		} catch (ExceptionBase e) {
 			// TODO show error message and DONT call new lobby view
@@ -61,32 +55,21 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 
 	}
 
-	// got to Lobby create view
+	//methode for createLobbyButton
 	private void getLobbyCreaterView() {
 		Main.getMainProgram().getLobbyCreater().start();
 	}
-
+	//methode for logoutButton
 	private void getBackLoginView() {
 		try {
 			model.logout();
 		} catch (ExceptionBase e) {
+			view.showError();
 		}
+		//in every case do the logout
 		view.stop();
 		serviceLocator.getLogger().info("Logout");
 		Main.getMainProgram().getLoginView().start();
 	}
 
-	// gets the actual Lobby-selection in the model
-	private void getSelection() {
-		if (view.getLobbyRoomCenter().getSelectionModel().getSelectedItem() != null) {
-			this.model.setTempSelectedLobby(view.getLobbyRoomCenter().getSelectionModel().getSelectedItem());
-		}
-		;
-	}
-
-	// sets the actual Lobby-selection after the Refresh // TODO debugging => set
-	// the Selection correctly
-	private void setSelection() {
-		view.getLobbyRoomCenter().getSelectionModel().select(this.model.getTempSelectedLobby());
-	}
 }

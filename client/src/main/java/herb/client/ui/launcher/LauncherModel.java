@@ -9,11 +9,13 @@ import herb.client.utils.ServiceLocator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+import javafx.scene.control.MultipleSelectionModel;
+//Herren
 public class LauncherModel extends Model {
+	
 	private ObservableList<Lobby> lobbys = FXCollections.observableArrayList();
 	private ObservableList<HighScore> highScore = FXCollections.observableArrayList();
-	Lobby tempSelectedLobby;
+	private Lobby tempSelectedLobby;
 	
 
 
@@ -26,7 +28,7 @@ public class LauncherModel extends Model {
 		
 	}
 
-	
+	//refresh amount lobbys in the list
 	public void refreshLobbyList() {
 		try {
 			this.lobbys.clear();
@@ -57,7 +59,7 @@ public class LauncherModel extends Model {
 		t.start();
 
 	}
-	
+	//refresh amount lobbys in the list
 	public void refreshHighscoreList() {
 		try {
 			this.highScore.clear();
@@ -68,7 +70,7 @@ public class LauncherModel extends Model {
 		}
 	}
 	
-	// Create thread to update Lobby periodically
+	// Create thread to update highscore periodically
 	private void startHighScoreUpdater() {
 		Runnable r = new Runnable() {
 			@Override
@@ -88,7 +90,7 @@ public class LauncherModel extends Model {
 		t.start();
 
 	}
-	
+	//getter
 
 	public ObservableList<Lobby> getLobbys() {
 		return lobbys;
@@ -98,15 +100,6 @@ public class LauncherModel extends Model {
 		return highScore;
 	}
 
-	
-	public Lobby getTempSelectedLobby() {
-		return tempSelectedLobby;
-	}
-
-	public void setTempSelectedLobby(Lobby tempSelectedLobby) {
-		this.tempSelectedLobby = tempSelectedLobby;
-	}
-	
 	public void logout() throws ExceptionBase {
 		Datastore.getInstance().getMainPlayer().logout();
 	}
