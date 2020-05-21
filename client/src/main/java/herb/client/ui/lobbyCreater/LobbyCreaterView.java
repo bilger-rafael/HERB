@@ -20,7 +20,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+//Herren
 public class LobbyCreaterView extends View<LobbyCreaterModel> {
 	
 	private BorderPane root; 
@@ -47,9 +47,11 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		ServiceLocator sl = ServiceLocator.getInstance();
 		this.root = new BorderPane();
 		
+		/**
+		 * menu
+		 */
 		menuBar = new MenuBar();
 		menuLanguage = new Menu();
-		menuLanguage.getItems().addAll();
 	    menuBar.getMenus().add(menuLanguage);
 		
 		for (Locale locale : sl.getLocales()) {
@@ -61,14 +63,9 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 				updateLabels();
 			});
 		}
-		//panes
-		topBox = new VBox();
-	    centerBox = new VBox();
-		bottomBox = new HBox();
-		labelBox = new HBox();
-		messageStackPane = new StackPane();
-
-		//items
+		/**
+		 * items
+		 */
 		okButton = new Button();
 		cancelButton = new Button();
 		textFieldBox = new HBox();
@@ -76,33 +73,44 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 		info = new Label();
 	    zero = new Region();
 		message = new Label();
-
-		//set size
-	    cancelButton.setAlignment(Pos.BASELINE_CENTER);
-	    okButton.setAlignment(Pos.BASELINE_CENTER);
-		//spacing & position
-		bottomBox.setSpacing(10);
-		bottomBox.setPadding(new Insets(10, 50, 15, 50));
-	    topBox.setPadding(new Insets(35, 50, 10, 50));
-	    text.setPrefWidth(470);
-		zero.setMinWidth(20);
-	    cancelButton.setPrefSize(220, 50);
-	    okButton.setPrefSize(220, 50);   
-
-	    //css id
-		message.setId("message");
-		message.setVisible(false);
-		text.setId("textField");
-	    
+		
+		//panes
+		topBox = new VBox();
+	    centerBox = new VBox();
+		bottomBox = new HBox();
+		labelBox = new HBox();
+		messageStackPane = new StackPane();
+		
+		//get children
 		labelBox.getChildren().add(info);
 		textFieldBox.getChildren().add(text);
 	    topBox.getChildren().addAll(labelBox, textFieldBox);
 	    bottomBox.getChildren().addAll(okButton,zero ,cancelButton);
 		messageStackPane.getChildren().add(message);
 	    centerBox.getChildren().addAll(topBox,messageStackPane);
+
+		//position
+	    cancelButton.setAlignment(Pos.BASELINE_CENTER);
+	    okButton.setAlignment(Pos.BASELINE_CENTER);
+	    
+		//spacing and padding
+		bottomBox.setSpacing(10);
 	    centerBox.setSpacing(10);
+		bottomBox.setPadding(new Insets(10, 50, 15, 50));
+	    topBox.setPadding(new Insets(35, 50, 10, 50));
+	    text.setPrefWidth(470);
+		zero.setMinWidth(20);
 		
+		//size
+	    cancelButton.setPrefSize(220, 50);
+	    okButton.setPrefSize(220, 50);   
+
+	    //css
+		message.setId("message");
+		message.setVisible(false);
+		text.setId("textField");
 		root.setId("background");
+
 	    root.setTop(menuBar);
 		root.setCenter(centerBox);
 		root.setBottom(bottomBox);
