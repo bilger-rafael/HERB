@@ -22,10 +22,8 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		view.getCreateButton().setOnAction(e -> getLobbyCreaterView());
 
 		//action for refreshButton
-		view.getRefreshButton().setOnAction(e -> model.refreshLobbyList());
-		
-		//action for refreshButton
-		view.getRefreshButton().setOnAction(e -> model.refreshHighscoreList());
+		view.getRefreshButton().setOnAction(e -> {model.refreshLobbyList(); 
+			model.refreshHighscoreList();});
 
 		//if selection is empty, joinButton is disabled
 		view.getJoinButton().disableProperty()
