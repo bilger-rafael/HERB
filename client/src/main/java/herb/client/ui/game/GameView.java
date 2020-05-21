@@ -58,7 +58,7 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.ParallelTransition;
 
 
-
+// roesti
 public class GameView extends View<GameModel> {
 	
 	private AnchorPane root; 
@@ -69,10 +69,10 @@ public class GameView extends View<GameModel> {
 	private HBox tMain, tRight, tOppo, tLeft, buttons;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
 	private Label pointsLabel, pointsPlayerLabel, pointsPlayerLabel2, playedPointsLabel, playedPointsLabel2, winnerLabel, winnerLabel2; 
-	private Label trumpLabel, trumpOrderLabel, startingPlayerLabel, startingPlayerText;
+	private Label trumpLabel, trumpOrderLabel, startingPlayerLabel, startingPlayerText, messageLabel;
 	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
 	private BorderPane upperPart, pointPane;
-	private StackPane tablePart;
+	private StackPane tablePart, messageBox;
 	private ArrayList<Rectangle> rects, trickRects, trumpRects;
 	private ArrayList<Card> cardAreas;
 	private ArrayList<Player> players;
@@ -96,12 +96,10 @@ public class GameView extends View<GameModel> {
 	private int plCardsCounter = 0;
 	private boolean done1 = false, done2 = false, done3 = false, done4 = false, done = false;
 	
-	//  roesti
 	public GameView(Stage stage, GameModel model) {
 		super(stage, model);
 		stage.setTitle("HERB-Jass > Spieltisch");
 		ServiceLocator.getInstance().getLogger().info("GameView initialized");
-	
 	}
 
 	@Override
@@ -131,7 +129,6 @@ public class GameView extends View<GameModel> {
 		}	
 		
 		// create Panes and Controls 
-		
 		upperPart = new BorderPane();
 		tablePart = new StackPane();
 		chooseTrumpBox = new VBox();
@@ -196,6 +193,7 @@ public class GameView extends View<GameModel> {
 	    startingPlayerText = new Label();
 	    startingPlayerLabel = new Label();
 	   	lobbyBox.getChildren().addAll(lobbyLabel);
+	   	messageLabel = new Label();
 		
 		// Cards and Trump images
 	    rects = new ArrayList<>();
@@ -982,7 +980,7 @@ public class GameView extends View<GameModel> {
 
 	}
 	
-	// Roesti 
+	//  change language 
 	private void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
@@ -1005,6 +1003,7 @@ public class GameView extends View<GameModel> {
 		trumpOrderLabel.setText(t.getString("program.game.trumpOrder"));
 	}
 	
+	// TODO check
 	public void cleanings() {
 		playerLabel.setStyle("-fx-text-fill: black");
 		rightHandLabel.setStyle("-fx-text-fill: black");
@@ -1020,12 +1019,12 @@ public class GameView extends View<GameModel> {
 		return cardAreas;
 	}
 	
-	// current cardSet
+	//  current cardSet
 	public ArrayList<Card> getCards(){
 		return cards;
 	}
 	
-	// Roesti - chosen card disposable for controller
+	//  chosen card disposable for controller
 	public ArrayList<Rectangle> getRects() {
 		return this.rects;
 	}

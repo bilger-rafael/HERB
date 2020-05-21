@@ -161,7 +161,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		
 		// reduce other players cards
 		// TODO - check and correct
-	//	view.updateRightPlayer();
+		view.updateRightPlayer();
 		view.updateOppoPlayer();
 		view.updateLeftPlayer();
 	}
