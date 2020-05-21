@@ -1,38 +1,22 @@
 package herb.client.ui.game;
 
-import javafx.scene.input.MouseEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import herb.client.Main;
 import herb.client.ressources.Card;
-import herb.client.ressources.Hand;
 import herb.client.ressources.Player;
 import herb.client.ressources.Trick;
-import herb.client.ressources.core.CardBase;
 import herb.client.ressources.core.ExceptionBase;
-import herb.client.ressources.core.HandBase;
-import herb.client.ressources.core.Rank;
-import herb.client.ressources.core.Suit;
-import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Controller;
 import herb.client.utils.Datastore;
 import herb.client.utils.ServiceLocator;
-import javafx.event.EventHandler;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
-import javafx.beans.property.SimpleObjectProperty;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 
 // roesti
 public class GameController extends Controller<GameModel, GameView> {
@@ -199,6 +183,11 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.updateImagePatterns();
 		view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
 		view.updateTrumpOptions();
+		view.updateLeftPlayer();
+		view.updateOppoPlayer();
+		view.updateRightPlayer();
+		view.updateTrumpInfo(chosenTrump);
+
 	}
 
 	public void changeCardSet2German() {
@@ -206,6 +195,10 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.updateImagePatterns();
 		view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
 		view.updateTrumpOptions();
+		view.updateLeftPlayer();
+		view.updateOppoPlayer();
+		view.updateRightPlayer();
+		view.updateTrumpInfo(chosenTrump);
 	}
 
 	public void quitGame() {

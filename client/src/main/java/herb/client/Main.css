@@ -81,8 +81,10 @@
 }
 
 #splash {
-	-fx-background-color: transparent;
-	-fx-background-size: 300 300;
+	-fx-background-size: 300 250; 
+	-fx-background-color: skyblue;
+	-fx-text-alignment: center;
+
 }
 
 .progress-bar>.bar {
@@ -91,10 +93,10 @@
 
 #center {
 	-fx-background-image: url("dreiblatt.jpg");
-	-fx-background-color: grey;
+	-fx-background-color: transparent;
+	-fx-background-size: cover;
 	-fx-background-repeat: stretch;
-	-fx-background-size: 100% 100%;
-	-fx-background-position: center center;
+	-fx-background-position: center;
 }
 
 #progressbox {

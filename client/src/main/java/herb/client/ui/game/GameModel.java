@@ -202,34 +202,36 @@ public class GameModel extends Model {
 		
 		try {
 			ArrayList<Integer> tmp = new ArrayList(Arrays.asList(serverScores));
+		
+			scoresList = new ArrayList(Arrays.asList(serverScores));
+			LinkedList<Integer> scrs = new LinkedList();
+			for (Integer i : scoresList) {
+				scrs.add(i);
+			}
+			scoresList.clear();
+			ListIterator<Integer> itera = scrs.listIterator(playerServerPosition);
+			while (itera.hasNext()) {
+				Integer j = itera.next();
+				scoresList.add(j);
+			}
+			switch (playerServerPosition) {
+				case 0:
+					break;
+				case 1:
+					scoresList.add(scrs.get(0));
+					break;
+				case 2:
+					scoresList.add(scrs.get(0));
+					scoresList.add(scrs.get(1));
+					break;
+				case 3:
+					scoresList.add(scrs.get(0));
+					scoresList.add(scrs.get(1));
+					scoresList.add(scrs.get(2));
+			}
 		}catch (Exception e) {
 		}
-		scoresList = new ArrayList(Arrays.asList(serverScores));
-		LinkedList<Integer> scrs = new LinkedList();
-		for (Integer i : scoresList) {
-			scrs.add(i);
-		}
-		scoresList.clear();
-		ListIterator<Integer> itera = scrs.listIterator(playerServerPosition);
-		while (itera.hasNext()) {
-			Integer j = itera.next();
-			scoresList.add(j);
-		}
-		switch (playerServerPosition) {
-		case 0:
-			break;
-		case 1:
-			scoresList.add(scrs.get(0));
-			break;
-		case 2:
-			scoresList.add(scrs.get(0));
-			scoresList.add(scrs.get(1));
-			break;
-		case 3:
-			scoresList.add(scrs.get(0));
-			scoresList.add(scrs.get(1));
-			scoresList.add(scrs.get(2));
-		}
+			
 		return scoresList;
 	}
 

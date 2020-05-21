@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
-import herb.client.ressources.core.Rank;
-import herb.client.ressources.core.Suit;
-import herb.client.ressources.core.TrickBase;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.View;
 import herb.client.utils.Datastore;
@@ -17,12 +14,10 @@ import herb.client.utils.Translator;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -34,13 +29,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Color;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.ListChangeListener.Change;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.animation.PathTransition; 
@@ -181,7 +173,6 @@ public class GameView extends View<GameModel> {
 		spacer = new Region();
 		//change
 		spacer.setMinWidth(670d);
-		//spacer.setMinWidth(200d);
 		playerLabel = new Label(players.get(0).getUsername());
 		playerLabel.setMinHeight(20);
 		
@@ -346,8 +337,16 @@ public class GameView extends View<GameModel> {
 		rectangle.setArcHeight(20);
 		rectangle.setArcWidth(20);
 		rectangle.setStroke(Color.TRANSPARENT);
-
 		trickRects.add(rectangle);
+		
+		Random rand = new Random();
+		int newR = rand.nextInt(10);
+		newR -= 5;
+		Rotate rotate = new Rotate();  
+		rotate.setAngle(newR); 
+		rotate.setPivotX(30); 
+		rotate.setPivotY(tCARD_W + 30); 
+		trickRects.get(i).getTransforms().addAll(rotate); 
 	    }
 	    tMain.getChildren().add(trickRects.get(0));
 		tRight.getChildren().add(trickRects.get(1));
@@ -355,7 +354,6 @@ public class GameView extends View<GameModel> {
 		tLeft.getChildren().add(trickRects.get(3));
 		table.setHgap(10);
 		table.setVgap(10);
-		//changed
 		table.setAlignment(Pos.CENTER);
 		tablePart.getChildren().add(table);
 	}
@@ -423,15 +421,6 @@ public class GameView extends View<GameModel> {
 				String filename = s1 + "_" + r1 + ".jpg";
 				Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
 				ImagePattern pattern = new ImagePattern(imageTable, 0, 0, tCARD_W, tCARD_H, false);
-				
-				Random rand = new Random();
-				int newR = rand.nextInt(10);
-				newR -= 5;
-				Rotate rotate = new Rotate();  
-				rotate.setAngle(10+i) % 2)+183-newR); 
-				rotate.setPivotX(30); 
-				rotate.setPivotY(tCARD_W + 30); 
-				trickRects.get(0).getTransforms().addAll(rotate); 
 							
 				// goal: put the played card next to its player		
 				Player s = model.getStartingPlayer();
@@ -542,14 +531,6 @@ public class GameView extends View<GameModel> {
 	public void updateTMain(ImagePattern pattern) {
 //		model.setStopThread();
 	
-//		Random rand = new Random();
-//		int newR = rand.nextInt(10);
-//		newR -= 5;
-//		Rotate rotate = new Rotate();  
-//		rotate.setAngle(0-newR); 
-//		rotate.setPivotX(30); 
-//		rotate.setPivotY(322/3+30); 
-//		trickRects.get(0).getTransforms().addAll(rotate); 
 		trickRects.get(0).setFill(pattern);
 
 		// idea from Genuine Coder (youtube: https://www.youtube.com/watch?v=dyS0tdJ5wTw)
@@ -671,7 +652,7 @@ public class GameView extends View<GameModel> {
 	public void clearTrick() {
 		for (int d = 0; d<MAX_PLAYERS; d++)   {		
 			trickRects.get(d).setFill(null);
-			trickRects.get(d).setStroke(Color.BLACK);
+			trickRects.get(d).setStroke(Color.TRANSPARENT);
 			trickRects.get(d).setStrokeWidth(1);
 		}
 	}
@@ -887,12 +868,14 @@ public class GameView extends View<GameModel> {
     	quitButton = new Button();
     	quitButton.setPrefSize(220, 50);
 		revancheLabel = new Label();
-		revancheLabel.setAlignment(Pos.CENTER);
+		revancheLabel.setVisible(false);
+		
     	buttons = new HBox();
     	buttons.getChildren().addAll(revancheButton, quitButton);
     	buttons.setSpacing(10);
     	buttonsBox = new VBox();
     	buttonsBox.getChildren().addAll(buttons, revancheLabel);
+    	buttonsBox.setAlignment(Pos.CENTER);
 		topBox.getChildren().addAll(winnerLabel2, winnerLabel);
 		winnerBox.getChildren().addAll(pointsLabel, topBox);
 
@@ -908,7 +891,7 @@ public class GameView extends View<GameModel> {
 		pointPane.setTop(winnerBox);
 		pointPane.setLeft(namesBox);
 		pointPane.setCenter(pointsBox);
-		pointPane.setBottom(buttons);	
+		pointPane.setBottom(buttonsBox);	
 
 		tablePart.getChildren().add(pointPane);
 		
@@ -971,7 +954,6 @@ public class GameView extends View<GameModel> {
 		if(winners.contains(model.getPlayers().get(0))){
 			pointsLabel.setVisible(true);
 			pointsLabel.setStyle("-fx-text-fill: WHITE");
-
 		}
 	}
 	
@@ -1112,7 +1094,7 @@ public class GameView extends View<GameModel> {
 	public void resetMessageLabelS() {
 		messageLabelS.setText("");
 	}
-	public void showErrorMessage() {
+	public void showErrorMessageS() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		messageLabelS.setText(t.getString("program.game.messageServer"));
 	}

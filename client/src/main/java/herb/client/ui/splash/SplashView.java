@@ -6,9 +6,12 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.geometry.Pos;
+
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -30,17 +33,22 @@ public class SplashView extends View<SplashModel> {
         BorderPane root = new BorderPane();
         root.setId("splash");
         
+        Label hello = new Label("HERB-Jass - 2020");
+        VBox topBox = new VBox( );
+        topBox.getChildren().add(hello);
+        topBox.setAlignment(Pos.TOP_CENTER);
         VBox centerBox = new VBox( );
         centerBox.setId("center");
         root.setCenter(centerBox);
-        
+        root.setTop(topBox);
+
         progress = new ProgressBar();
         HBox bottomBox = new HBox();
         bottomBox.setId("progressbox");
         bottomBox.getChildren().add(progress);
         root.setBottom(bottomBox);
 
-        Scene scene = new Scene(root, 300, 300, Color.TRANSPARENT);
+        Scene scene = new Scene(root, 300, 200);
         
         return scene;
     }
