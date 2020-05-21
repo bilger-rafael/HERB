@@ -21,7 +21,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+//Herren
 public class BotView extends View<BotModel>{
 	
 	private BorderPane root;
@@ -50,17 +50,9 @@ public class BotView extends View<BotModel>{
 		ServiceLocator sl = ServiceLocator.getInstance();
 		
 		this.root = new BorderPane();
-		
-		/**
-		 * Top/menu
-		 * Herren
-		 */
-		menuBar = new MenuBar();
-		menuLanguage = new Menu("Sprache");
-	    menuBar.getMenus().add(menuLanguage);
-		
+			
 	    /**
-	     * set local
+	     * set local for language
 	     */
 		for (Locale locale : sl.getLocales()) {
 			MenuItem language = new MenuItem(locale.getLanguage());
@@ -73,67 +65,83 @@ public class BotView extends View<BotModel>{
 		}
 		
 		/**
-		 * Buttons with bottomBox
-		 * Herren
+		 * menu, labels, textfield, regions, buttons, radiobutton, toogle group
 		 */
-		
+		menuBar = new MenuBar();
+		menuLanguage = new Menu();
+		message = new Label();
+		easyLabel = new Label();
+		heavyLabel = new Label();
+		info = new Label();
 		zero = new Region();
 		one = new Region();
 		two = new Region();
 		three = new Region();
 		four = new Region();
+		cancelButton = new Button();
+		okButton = new Button();
+		easyRadioButton = new RadioButton();
+		heavyRadioButton = new RadioButton();
+		toggleGroup = new ToggleGroup();
+		
+		/**
+		 * panes
+		 */
+		topBox = new HBox();
+		centerBox = new HBox();
+		labelBox = new VBox();
+		radioButtonBox = new VBox();
+		messageStackPane = new StackPane();
+		bottomBox = new HBox();
+		
+		/**
+		 * size
+		 */
+
 		zero.setMinWidth(20);
 		one.setPrefHeight(10);
 		two.setPrefHeight(20);
 		three.setPrefWidth(35);
 		four.setPrefHeight(50);
-		bottomBox = new HBox();
-		cancelButton = new Button("cancel");
-		okButton = new Button("ok");
 	    cancelButton.setPrefSize(220, 50);
 	    okButton.setPrefSize(220, 50); 
 		
-		bottomBox.getChildren().addAll(okButton, zero, cancelButton);
+	    /**
+	     * spacing and padding
+	     */
 		bottomBox.setPadding(new Insets(5, 50, 15, 50));
+		radioButtonBox.setPadding(new Insets(53, 50, 15, 50));
+		messageStackPane.setPadding(new Insets(5, 0, 0, 0));
+	    centerBox.setPadding(new Insets(35, 50, 15, 50));
+		centerBox.setSpacing(10);
 		bottomBox.setSpacing(10);
 		
+		/**
+		 * position
+		 */
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
 		okButton.setAlignment(Pos.BASELINE_CENTER);
-		
-		/*
-		 * CenterBox
-		 */
-		labelBox = new VBox();
-		radioButtonBox = new VBox();
-		
-		topBox = new HBox();		
-		info = new Label();
-		topBox.getChildren().addAll(info,four);
-		easyLabel = new Label();
-		heavyLabel = new Label();
-		message = new Label();
-		messageStackPane = new StackPane();
-		easyRadioButton = new RadioButton();
-		heavyRadioButton = new RadioButton();
-		
-		toggleGroup = new ToggleGroup();
-		easyRadioButton.setToggleGroup(toggleGroup);
-		heavyRadioButton.setToggleGroup(toggleGroup);
-		
 		easyRadioButton.setAlignment(Pos.CENTER_RIGHT);
 		heavyRadioButton.setAlignment(Pos.CENTER_RIGHT);
+		
+		/*
+		 * get children
+		 */
+	    menuBar.getMenus().add(menuLanguage);
+		topBox.getChildren().addAll(info,four);
+		easyRadioButton.setToggleGroup(toggleGroup);
+		heavyRadioButton.setToggleGroup(toggleGroup);
 		messageStackPane.getChildren().add(message);
 		labelBox.getChildren().addAll(topBox, easyLabel, one, heavyLabel, messageStackPane);
 		radioButtonBox.getChildren().addAll(easyRadioButton, two , heavyRadioButton );
-		radioButtonBox.setPadding(new Insets(53, 50, 15, 50));
-		messageStackPane.setPadding(new Insets(5, 0, 0, 0));
+		centerBox.getChildren().addAll(labelBox, three, radioButtonBox);
+		bottomBox.getChildren().addAll(okButton, zero, cancelButton);
+
+		/**
+		 * css
+		 */
 		message.setId("message");
 		message.setVisible(false);
-		
-		centerBox = new HBox();
-		centerBox.getChildren().addAll(labelBox, three, radioButtonBox);
-	    centerBox.setPadding(new Insets(35, 50, 15, 50));
-		centerBox.setSpacing(10);
 		
 		root.setId("background");
 		root.setTop(menuBar);
@@ -181,7 +189,9 @@ public class BotView extends View<BotModel>{
 	public Label getMessage() {
 		return message;
 	}
-	//To show the error message in GUI if Login fails
+	/**
+	 * To show the error message in GUI if Login fails
+	 */
 	public void showError() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		message.setText(t.getString("program.botSelectioner.message"));
