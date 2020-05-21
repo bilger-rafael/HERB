@@ -27,9 +27,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
+//Herren
 public class RegistrationView extends View<RegistrationModel> {
-	//Herren
+
 	private RegistrationModel model;
 	
 	private BorderPane root, bottomBox;
@@ -44,7 +44,7 @@ public class RegistrationView extends View<RegistrationModel> {
 	
 	private Button registrationButton, cancelButton;
 
-	private Label nameLabel, pwLabel, connectedLabel;
+	private Label nameLabel, pwLabel;
 	private Label message;
 
 	private MenuBar headMenu;
@@ -62,15 +62,15 @@ public class RegistrationView extends View<RegistrationModel> {
 		this.root = new BorderPane();
 		
 		/**
-		 * menubar
+		 * menu
 		 */
 		headMenu = new MenuBar();
 		menuLanguage = new Menu();
-		menuLanguage.getItems().addAll();
 		headMenu.getMenus().addAll(menuLanguage);
-		// Top menu for language, TODO for passwordChange
 		
-		// link to Locale
+		/**
+		 *  link to Locale
+		 */
 		for (Locale locale : sl.getLocales()) {
 			MenuItem language = new MenuItem(locale.getLanguage());
 			this.menuLanguage.getItems().add(language);
@@ -80,32 +80,32 @@ public class RegistrationView extends View<RegistrationModel> {
 				updateLabels();
 			});
 		}
-		//panes
-		// Herren - messages
-		labelBox = new VBox();
-		textFieldBox = new VBox();
-		fieldBox = new HBox();
-		bottomBox = new BorderPane();
-		centerBox = new VBox();
-		messageStackPane = new StackPane();
 		
-		//items
+		/**
+		 * items
+		 */
 		nameLabel = new Label();
 		nameField = new TextField();
 		pwLabel = new Label();
 		pwField = new PasswordField();
 		message = new Label();
-		
 		zero = new Region();
 		one = new Region();
 		two = new Region();
 		three = new Region();
 		four = new Region();
-		
 		registrationButton = new Button();
 		cancelButton = new Button();
-
-		//get children in panes
+		
+		//panes
+		labelBox = new VBox();
+		textFieldBox = new VBox();
+		fieldBox = new HBox();
+		messageStackPane = new StackPane();
+		centerBox = new VBox();
+		bottomBox = new BorderPane();
+		
+		//get children
 		labelBox.getChildren().addAll(nameLabel,zero,pwLabel);
 		textFieldBox.getChildren().addAll(nameField,one, pwField);
 		fieldBox.getChildren().addAll(four, labelBox,two,textFieldBox);
@@ -115,7 +115,7 @@ public class RegistrationView extends View<RegistrationModel> {
 		bottomBox.setCenter(three);
 		bottomBox.setRight(cancelButton);
 
-		//set size
+		//size
 		nameField.setPrefSize(130, 60);
 		pwField.setPrefSize(130, 60);
 		zero.setPrefHeight(40);
@@ -128,23 +128,24 @@ public class RegistrationView extends View<RegistrationModel> {
 		registrationButton.setPrefSize(220, 50);
 		cancelButton.setPrefSize(220, 50);
 		
-		//spacing & position	
+		//spacing and padding
 		bottomBox.setPadding(new Insets(20, 50, 15, 50));
-		centerBox.setPadding(new Insets(35, 50, 0, 50));
+		centerBox.setPadding(new Insets(35, 20, 0, 20));
 		centerBox.setSpacing(10);
 		centerBox.setSpacing(10);
+		
+		//position
 		registrationButton.setAlignment(Pos.BASELINE_CENTER);
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
 		centerBox.setAlignment(Pos.BASELINE_CENTER);
 	
-		//css id
+		//css
 		pwField.setId("textField");
 		nameField.setId("textField");
 		message.setId("message");
 		message.setVisible(false);
 		root.setId("background");
 		
-
 		root.setTop(headMenu);
 		root.setCenter(centerBox);
 		root.setBottom(bottomBox);
@@ -153,14 +154,11 @@ public class RegistrationView extends View<RegistrationModel> {
 		Scene scene = new Scene(root);		
 		return scene;
 	}
-	
-	// update items 
+	//update items
 	protected void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
-		
 		// language settings
 		menuLanguage.setText(t.getString("program.menu.file.language"));
-		
 		// screen labels
 		nameLabel.setText(t.getString("program.registration.nameLabel"));
 		pwLabel.setText(t.getString("program.registration.pwLabel"));
@@ -173,7 +171,9 @@ public class RegistrationView extends View<RegistrationModel> {
 		}
 
 	}
-	//getter
+	/**
+	 * getter
+	 */
 	public Button getRegistrationButton() {
 		return registrationButton;
 	}
@@ -205,7 +205,9 @@ public class RegistrationView extends View<RegistrationModel> {
 		message.setText("");
 	}
 
-	//To show the error message in GUI if Login fails
+	/**
+	 * To show the error message in GUI if Login fails
+	 */
 	public void showError() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		message.setText(t.getString("program.registration.message"));
