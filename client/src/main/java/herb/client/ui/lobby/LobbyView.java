@@ -17,20 +17,22 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
+//Herren
 public class LobbyView extends View<LobbyModel> {
 	
 	private BorderPane root; 
 	private VBox centerBox;
 	private HBox bottomBox;
-	private StackPane messageStackPane;
+	private StackPane stPane, messageStackPane;
+	
 	private Button cancelButton, botsButton;
-	private Label lobbyName, message;
+	private Label lobbyName, message, messageRefresh;
 	
 	private Region zero;
 	
@@ -52,17 +54,12 @@ public class LobbyView extends View<LobbyModel> {
 		
 		this.root = new BorderPane();
 
-		/**
-		 * Top/menu
-		 * Herren
-		 */
+		//menu
 		menuBar = new MenuBar();
 		menuLanguage = new Menu();
 	    menuBar.getMenus().add(menuLanguage);
 	    
-	    /**
-	     * set local
-	     */
+	    //link to local
 		for (Locale locale : sl.getLocales()) {
 			MenuItem language = new MenuItem(locale.getLanguage());
 			this.menuLanguage.getItems().add(language);
@@ -72,66 +69,65 @@ public class LobbyView extends View<LobbyModel> {
 				updateLabels();
 			});
 		}
-		
-	    /**
-	     * list
-	     * Herren
-	     */
-   
+		//label, button, region, list
+	    message = new Label();
+	    messageRefresh = new Label();
+	    lobbyName = new Label(model.getLobby().getName());
+		cancelButton = new Button();
+		botsButton = new Button();
+	    zero = new Region();
 	    playerOverview = new ListView<>(model.getPlayers());
+	   
+	    //panes
+	    centerBox  = new VBox();
+		bottomBox = new HBox();
+	    messageStackPane = new StackPane();
+	    stPane = new StackPane();
 	    
-	    StackPane stPane = new StackPane();
+	    //get children
 	    stPane.getChildren().add(playerOverview);
-	    
+	    messageStackPane.getChildren().addAll(message, messageRefresh);
+	    centerBox.getChildren().addAll(lobbyName, playerOverview, messageStackPane);
+	    bottomBox.getChildren().addAll(cancelButton, zero,botsButton );
+
+
+	    //size
+	    cancelButton.setPrefSize(220, 50);
+	    botsButton.setPrefSize(220, 50);  
 	    playerOverview.setPrefWidth(300);
 	    playerOverview.setMaxHeight(125);
 	    
-	    message = new Label();
-	    messageStackPane = new StackPane();
-	    messageStackPane.getChildren().add(message);
-		message.setId("message");
-		message.setVisible(false);
-		
-	    zero = new Region();
 		zero.setMinWidth(20);
-	    lobbyName = new Label(model.getLobby().getName());
-	    centerBox  = new VBox();
+		//spacing and padding
+		bottomBox.setPadding(new Insets(5, 50, 15, 50));
 	    centerBox.setPadding(new Insets(35, 50, 10, 50));
-	    centerBox.getChildren().addAll(lobbyName, playerOverview, messageStackPane);
+		bottomBox.setSpacing(10);
 	    centerBox.setSpacing(10);
 
-		/**
-		 * Buttons with bottomBox
-		 * Herren
-		 */
-		bottomBox = new HBox();
-		bottomBox.setSpacing(10);
-		cancelButton = new Button();
-		botsButton = new Button();
-	    cancelButton.setPrefSize(220, 50);
-	    botsButton.setPrefSize(220, 50);  
-		
-	    bottomBox.getChildren().addAll(cancelButton, zero,botsButton );
-		bottomBox.setPadding(new Insets(5, 50, 15, 50));
-	    
+	    //position
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
 		botsButton.setAlignment(Pos.BASELINE_CENTER);
 		
-		
-//		cancelButton.setPrefWidth(100);
-
-
+		//css
+		message.setId("message");
+		message.setVisible(false);
+		messageRefresh.setId("message");
+		messageRefresh.setVisible(false);
 		root.setId("background");
+
+		//list not selectable
+	    playerOverview.setMouseTransparent(true);
+	    playerOverview.setFocusTraversable(false);
+		
 		root.setTop(menuBar);
 		root.setCenter(centerBox);
 		root.setBottom(bottomBox);
 		
         updateLabels();  
 		Scene scene = new Scene(root);
-		//	scene.getStylesheets().add(getClass().getResource("Main.css").toExternalForm());
 		return scene;
 	}
-	
+	//update items
 	private void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
@@ -139,13 +135,14 @@ public class LobbyView extends View<LobbyModel> {
 		botsButton.setText(t.getString("program.lobby.botsButton"));
 		menuLanguage.setText(t.getString("program.lobby.menuLanguage"));
 		message.setText(t.getString("program.lobby.message"));
+		messageRefresh.setText(t.getString("program.lobby.messageRefresh"));
 		stage.setTitle(t.getString("program.lobby.titel"));
 		if (message.getText()!="") {
 			message.setText(t.getString("program.lobby.message"));
 		}
 		
 	}
-
+	//getter
 	public Button getCancelButton() {
 		return cancelButton;
 	}
