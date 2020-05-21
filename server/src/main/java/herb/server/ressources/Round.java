@@ -14,24 +14,20 @@ public class Round extends RoundBase<Game, Player, Trick> {
 	public HashMap<String, Boolean> rematchDecisions = new HashMap<String, Boolean>();
 	private DeckOfCards deck;
 	private boolean trumpChoosen;
-	
+
 	public Round(Game game) {
 		super(game, game.getPlayers());
 		this.deck = new DeckOfCards();
-		this.setCurrentStartingPlayer(this.getPlayers()[new Random().nextInt(4)]);
 
-		/*
-		 * Thread t = new Thread(this); t.start();
-		 */
+		if (this.getGame().getRounds().isEmpty()) {
+			this.setCurrentStartingPlayer(this.getPlayers()[new Random().nextInt(4)]);
+		} else {
+			Trick t = this.getGame().getRounds().get(this.getGame().getRounds().size() - 1).getTricks().getFirst();
+			Player p = t.getNextPlayer(t.getStartingPlayer());
+			this.setCurrentStartingPlayer(p);
+		}
+
 	}
-
-	/*
-	 * @Override public void run() { startRound();
-	 * 
-	 * playTricks();
-	 * 
-	 * endRound(); }
-	 */
 
 	public void playRound() {
 		startRound();
