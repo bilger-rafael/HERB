@@ -35,6 +35,7 @@ public class GameModel extends Model {
 	private Thread t, tu, tru;
 	private volatile boolean stop = false;
 	private volatile boolean trumpStop = false;
+	private volatile boolean currentStop = false;
 	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
 	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
 	private SimpleBooleanProperty rematch;
@@ -142,8 +143,6 @@ public class GameModel extends Model {
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					System.out.println("Server connection lost - trick (4)");
-
 				}
 				trick = tricks.getLast();
 				trickIndex = tricks.indexOf(tricks.getLast());
@@ -221,68 +220,41 @@ public class GameModel extends Model {
 					}
 					break;
 			}
-	//	fillRealList(trickCards);
 	}
-
-//	private void fillRealList(ObservableList<Card> tc) {
-//		if (betterTrickCards.size()< tc.size() ) {
-//			betterTrickCards.add(tc.get(trickSize-1));
-//		}
-//		if(betterTrickCards.size() % 4 == 0) {
-//			betterTrickCards.clear();
-//		}
-//		
-//		switch (tc.size()) {		
-//		case 1:
-//			localTrick[trickNumber][0]= betterTrickCards.get(0);
-//			break;
-//		case 2:
-//			localTrick[trickNumber][0]= betterTrickCards.get(0);
-//			localTrick[trickNumber][1]= betterTrickCards.get(1);
-//			break;
-//		case 3:
-//			localTrick[trickNumber][0]= betterTrickCards.get(0);
-//			localTrick[trickNumber][1]= betterTrickCards.get(1);
-//			localTrick[trickNumber][2]= betterTrickCards.get(2);
-//			break;
-//		case 4:
-//			localTrick[trickNumber][0]= betterTrickCards.get(0);
-//			localTrick[trickNumber][1]= betterTrickCards.get(1);
-//			localTrick[trickNumber][2]= betterTrickCards.get(2);
-//			localTrick[trickNumber][3]= betterTrickCards.get(3);
-//			break;
-//		}	
-//	}
 	
 	// get scores
 	public ArrayList<Integer> getScores() {
 		
 		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getGame().getScores();
-		scoresList = new ArrayList(Arrays.asList(serverScores));
-		LinkedList<Integer> scrs = new LinkedList();
-		for (Integer i : scoresList) {
-			scrs.add(i);
-		}
-		scoresList.clear();
-		ListIterator<Integer> itera = scrs.listIterator(playerServerPosition);
-		while (itera.hasNext()) {
-			Integer j = itera.next();
-			scoresList.add(j);
-		}
-		switch (playerServerPosition) {
-		case 0:
-			break;
-		case 1:
-			scoresList.add(scrs.get(0));
-			break;
-		case 2:
-			scoresList.add(scrs.get(0));
-			scoresList.add(scrs.get(1));
-			break;
-		case 3:
-			scoresList.add(scrs.get(0));
-			scoresList.add(scrs.get(1));
-			scoresList.add(scrs.get(2));
+		
+		ArrayList<Integer> tmp = new ArrayList(Arrays.asList(serverScores));
+		if(!tmp.isEmpty()) {
+			scoresList = new ArrayList(Arrays.asList(serverScores));
+			LinkedList<Integer> scrs = new LinkedList();
+			for (Integer i : scoresList) {
+				scrs.add(i);
+			}
+			scoresList.clear();
+			ListIterator<Integer> itera = scrs.listIterator(playerServerPosition);
+			while (itera.hasNext()) {
+				Integer j = itera.next();
+				scoresList.add(j);
+			}
+			switch (playerServerPosition) {
+			case 0:
+				break;
+			case 1:
+				scoresList.add(scrs.get(0));
+				break;
+			case 2:
+				scoresList.add(scrs.get(0));
+				scoresList.add(scrs.get(1));
+				break;
+			case 3:
+				scoresList.add(scrs.get(0));
+				scoresList.add(scrs.get(1));
+				scoresList.add(scrs.get(2));
+			}
 		}
 		return scoresList;
 	}
@@ -297,9 +269,9 @@ public class GameModel extends Model {
 				startingPlayers.add(trick.getStartingPlayer());
 			}
 		} catch (Exception e) {
-			// to be catched
-			System.out.println("Server connection lost - currentPlayer (myTurn");
-		}
+			// Message: interruption - game is over.
+			// if trumpf null , no message
+			}
 	}
 
 	public void refreshTrump() {
@@ -342,9 +314,6 @@ public class GameModel extends Model {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
-						// connection lost
-						System.out.println("Server connection lost - trick updater");
-
 					}
 				}
 			}
@@ -358,14 +327,11 @@ public class GameModel extends Model {
 		Runnable ru = new Runnable() {
 			@Override
 			public void run() {
-				while (!stop) {
+				while (!currentStop) {
 					Platform.runLater(() -> refreshCurrentPlayer());
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// connection lost
-						System.out.println("Server connection lost - playables");
-
 					}
 				}
 			}
@@ -384,9 +350,6 @@ public class GameModel extends Model {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// message: Your choice couldn't be sent to others
-						System.out.println("Server connection lost - no trump");
-
 					}
 				}
 			}
@@ -400,9 +363,7 @@ public class GameModel extends Model {
 		try {
 			Datastore.getInstance().getMainPlayer().demandRematch(rematch);
 		} catch (ExceptionBase e) {
-			// TODO Auto-generated catch block
-			System.out.println("Server connection lost - rematch problem");
-
+			// TODO message 
 			e.printStackTrace();
 		}
 	}
@@ -418,9 +379,6 @@ public class GameModel extends Model {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// message: Your choice couldn't be sent to others
-						System.out.println("Server connection lost - rematch problem 2");
-
 					}
 				}
 			}
@@ -483,9 +441,17 @@ public class GameModel extends Model {
 	public void setStopThread() {
 		this.stop = true;
 	}
+	
+	public void unsetStopThread() {
+		this.stop = false;
+	}
 
 	public void setStopTrumpThread() {
 		this.trumpStop = true;
+	}
+	
+	public void setCurrentStopThread() {
+		this.currentStop = true;
 	}
 	
 	public SimpleBooleanProperty getRematch() {

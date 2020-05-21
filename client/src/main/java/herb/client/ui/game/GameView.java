@@ -85,10 +85,16 @@ public class GameView extends View<GameModel> {
 	private final int MAX_PLAYERS = 4; 
 	private final int MAX_RECTS = 16;
 	private final int MAX_CARDS = 9; 
+	private final int mCARD_W = 322/2;
+	private final int mCARD_H = 514/2;
+	private final int tCARD_W = 322/3;
+	private final int tCARD_H = 514/3;
+	private final int oCARD_W = 322/4;
+	private final int oCARD_H = 514/4;
 	private int startingPosition;
 	private int tCounter = 0;
 	private int plCardsCounter = 0;
-	private boolean done1, done2, done3, done4, done;
+	private boolean done1 = false, done2 = false, done3 = false, done4 = false, done = false;
 	
 	//  roesti
 	public GameView(Stage stage, GameModel model) {
@@ -215,10 +221,10 @@ public class GameView extends View<GameModel> {
 		upperPart.setRight(right);
 		
 		//  layout
-		playerLabel.setStyle("-fx-background-color: white");
-		rightHandLabel.setStyle("-fx-background-color: white");
-		oppositeLabel.setStyle("-fx-background-color: white");
-		leftHandLabel.setStyle("-fx-background-color: white");
+//		playerLabel.setStyle("-fx-background-color: white");
+//		rightHandLabel.setStyle("-fx-background-color: white");
+//		oppositeLabel.setStyle("-fx-background-color: white");
+//		leftHandLabel.setStyle("-fx-background-color: white");
 		playerLabel.setMinWidth(150);
 		rightHandLabel.setMinWidth(150);
 		oppositeLabel.setMinWidth(150);
@@ -261,8 +267,8 @@ public class GameView extends View<GameModel> {
 
 		    // rectangle with ImagePattern (imageview cannot be fanned out)
 		    Rectangle rectangleCard = new Rectangle();
-		    rectangleCard.setHeight(514/2);
-		    rectangleCard.setWidth(322/2);		
+		    rectangleCard.setHeight(mCARD_H);
+		    rectangleCard.setWidth(mCARD_W);		
 		    rectangleCard.setArcHeight(20);
 		    rectangleCard.setArcWidth(20);
 		    rectangleCard.setStroke(Color.BLACK);	    		    
@@ -270,7 +276,7 @@ public class GameView extends View<GameModel> {
 		      //  fan out cards
 		    Rotate rotate = new Rotate();
 		    rotate.setAngle(-40+5*i); 
-		    rotate.setPivotX(322/2/2); 	
+		    rotate.setPivotX(mCARD_W/2); 	
 		    rotate.setPivotY(257*2.2);
 		    rectangleCard.getTransforms().addAll(rotate);   
 		    ownCards.add(rectangleCard, i+1, 1);	
@@ -279,7 +285,8 @@ public class GameView extends View<GameModel> {
 		// center fanned out Cards
 		updateImagePatterns();
 
-		ownCards.setMinHeight(250);
+		//changed
+		ownCards.setMinHeight(200);
 		ownCards.setHgap(-150);
 		ownCards.add(spacer, 0, 0);
 		
@@ -312,10 +319,10 @@ public class GameView extends View<GameModel> {
 		table.add(trickLabel, 1, 0, 1, 1);
 	    table.add(spacerTable, 0, 0, 1, 1);
 	    table.add(spacerTable2, 3, 0, 1, 1);
-	    tOppo.setPrefSize(322/3,  514/3);
-	    tLeft.setPrefSize(322/3,  514/3);
-	    tMain.setPrefSize(322/3,  514/3);
-	    tRight.setPrefSize(322/3,  514/3);
+	    tOppo.setPrefSize(tCARD_W,  tCARD_H);
+	    tLeft.setPrefSize(tCARD_W,  tCARD_H);
+	    tMain.setPrefSize(tCARD_W,  tCARD_H);
+	    tRight.setPrefSize(tCARD_W,  tCARD_H);
 	    table.add(tOppo, 2,  0, 1, 2);
 	    table.add(tLeft,  1,  1, 1, 2);
 	    table.add(tMain, 2,  2, 1, 2);
@@ -323,13 +330,12 @@ public class GameView extends View<GameModel> {
 	    
 	    for (int i=0; i<MAX_PLAYERS; i++) {
 		Rectangle rectangle = new Rectangle();
-		rectangle.setHeight(514/3);
-		rectangle.setWidth(322/3);		
+		rectangle.setHeight(tCARD_H);
+		rectangle.setWidth(tCARD_W);		
 		rectangle.setArcHeight(20);
 		rectangle.setArcWidth(20);
 		rectangle.setStroke(Color.TRANSPARENT);
-	    // Roesti - implement rotation  TODO implement Random()
-		//change
+	    //  TODO implement Random()
 //		Rotate rotate = new Rotate();  
 //		rotate.setAngle(((10+i) % 2)+183-2*i); 
 //		rotate.setPivotX(30); 
@@ -347,7 +353,7 @@ public class GameView extends View<GameModel> {
 		tablePart.getChildren().add(table);
 	}
 	
-	// Roesti - update ImagePatterns (getMyCards from Server)
+	// update ImagePatterns (getMyCards from Server)
 	public void updateImagePatterns() {		
 		removeTurn();
 		for (int d = 0; d < MAX_RECTS+1; d++)   {		
@@ -358,44 +364,45 @@ public class GameView extends View<GameModel> {
 		cards = model.getMyCards();
 		
 		if(!cards.isEmpty()) {
-		startingPosition = MAX_CARDS - cards.size();
+			startingPosition = MAX_CARDS - cards.size();
 		
-		int arrayIndex = 0;
-		boolean endeDerFahnenstange = false;
-		for(int j=startingPosition; !endeDerFahnenstange; j += 2) {
-			String rank; 
-			String suit;
-			if(model.getCardSet().equals("De")){		
-				rank = cards.get(arrayIndex).getRank().toStringDe();
-				suit = cards.get(arrayIndex).getSuit().toStringDe();
-			}else {		
-				rank = cards.get(arrayIndex).getRank().toStringFr();
-				suit = cards.get(arrayIndex).getSuit().toStringFr();
-			}
-
-			String filename = suit + "_" + rank + ".jpg";
-			Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/"+ model.getCardSet() +"/" + filename));		
-			ImagePattern pattern = new ImagePattern(image, 0, 0, 322/2, 514/2, false);
-			this.rects.get(j).setFill(pattern);
-			this.rects.get(j).setStroke(Color.BLACK);
-			this.rects.get(j).setStrokeWidth(1);
-			arrayIndex++;
+			int arrayIndex = 0;
+			boolean endeDerFahnenstange = false;
+			for(int j=startingPosition; !endeDerFahnenstange; j += 2) {
+				String rank; 
+				String suit;
+				if(model.getCardSet().equals("De")){		
+					rank = cards.get(arrayIndex).getRank().toStringDe();
+					suit = cards.get(arrayIndex).getSuit().toStringDe();
+				}else {		
+					rank = cards.get(arrayIndex).getRank().toStringFr();
+					suit = cards.get(arrayIndex).getSuit().toStringFr();
+				}
 	
-			if(arrayIndex == cards.size())
-				endeDerFahnenstange = true;
-		}
+				String filename = suit + "_" + rank + ".jpg";
+				Image image = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/"+ model.getCardSet() +"/" + filename));		
+				ImagePattern pattern = new ImagePattern(image, 0, 0, mCARD_W, mCARD_H, false);
+				this.rects.get(j).setFill(pattern);
+				this.rects.get(j).setStroke(Color.BLACK);
+				this.rects.get(j).setStrokeWidth(1);
+				arrayIndex++;
+		
+				if(arrayIndex == cards.size())
+					endeDerFahnenstange = true;
+			}
 		}
 	}
 	
-	// Roesti - update trick ImagePatterns
+	// update trick ImagePatterns
 	public void updateTrick(ArrayList<Card> cardSet) {
 		
 		clearTrick();
 
 		if(!cardSet.isEmpty()) {
-		trick = new ArrayList();
-		trick = cardSet;
-		// update played card			
+			trick = new ArrayList();
+			trick = cardSet;
+			System.out.println(trick.toString());
+			// update played card			
 			for (int i = 0; i< trick.size(); i++) {	
 				String r1; 
 				String s1;
@@ -408,85 +415,117 @@ public class GameView extends View<GameModel> {
 				}
 				String filename = s1 + "_" + r1 + ".jpg";
 				Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
-				ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
-					
+				ImagePattern pattern = new ImagePattern(imageTable, 0, 0, tCARD_W, tCARD_H, false);
+						
 				// goal: put the played card next to its player		
 				Player s = model.getStartingPlayer();
 				setStartingPlayer();	
 				Player c = model.getCurrentPlayer();
-				
-				if(c.equals(model.getPlayers().get(0))) {
-						setTurn();
-					}
-					
-				if (s.equals(model.getPlayers().get(0))) {
-						trickRects.get(i).setFill(pattern);
-				}		
 			
+				if(c.equals(model.getPlayers().get(0))) {
+					setTurn();
+				}
+				
+				if (tCounter < model.getTrickNumber()) {
+					tCounter++;
+					done1 = false;
+					done = false;
+				}
+				
+				if (s.equals(model.getPlayers().get(0))) {	
+					trickRects.get(i).setFill(pattern);
+					
+//					if(i == 0) {
+//						updateTMain(pattern);
+//					}
+//					if (i == 1) {
+//			//			trickRects.get(1).setFill(pattern);
+//						updateTRight(pattern);
+//					}
+//					if (i == 2) {
+//			//			trickRects.get(2).setFill(pattern);
+//						updateTOppo(pattern);
+//					}
+//					if (i == 3) {
+//			//			trickRects.get(3).setFill(pattern);
+//						done = true;
+//						updateTLeft(pattern);
+//						System.out.println("I'm here");	
+//					}	
+				}
+				
 				if (s.equals(model.getPlayers().get(1))) {
-						if(i == 0) {
-							trickRects.get(1).setFill(pattern);
-							//updateTRight(pattern);
-						}
-						if (i == 1) {
-							trickRects.get(2).setFill(pattern);
-						}
-						if (i == 2) {
-							trickRects.get(3).setFill(pattern);
-						}
-						if (i == 3) {
-							trickRects.get(0).setFill(pattern);
-						}
+					if(i == 0) {
+						trickRects.get(1).setFill(pattern);
+//						updateTRight(pattern);
+//						System.out.println(" hello again ");
 					}
+					if (i == 1) {
+						trickRects.get(2).setFill(pattern);
+					//	updateTOppo(pattern);
+
+					}
+					if (i == 2) {
+						trickRects.get(3).setFill(pattern);
+					//	updateTLeft(pattern);
+
+					}
+					if (i == 3) {
+						trickRects.get(0).setFill(pattern);
+//						done = true;
+//						updateTMain(pattern);
+//						System.out.println("I'm the fourth");
+					}
+				}
+				
 				if (s.equals(model.getPlayers().get(2))) {
-						if(i == 0) {
-							trickRects.get(2).setFill(pattern);
-						}
-						if (i == 1) {
-							trickRects.get(3).setFill(pattern);
-						}
-						if (i == 2) {
-							trickRects.get(0).setFill(pattern);
-						}
-						if (i == 3) {
-							trickRects.get(1).setFill(pattern);
-							//updateTRight(pattern);
-						}
+					if(i == 0) {
+						trickRects.get(2).setFill(pattern);
+//						updateTOppo(pattern);
+//						System.out.println("Iwas");
 					}
+					if (i == 1) {
+						trickRects.get(3).setFill(pattern);
+						//updateTLeft(pattern);
+					}
+					if (i == 2) {
+						//updateTMain(pattern);
+						trickRects.get(0).setFill(pattern);
+					}
+					if (i == 3) {
+						trickRects.get(1).setFill(pattern);
+//						done = true;
+//						updateTRight(pattern);
+//						System.out.println("Iwas4");
+					}
+				}
+				
 				if (s.equals(model.getPlayers().get(3))) {
-						if(i == 0) {
-							trickRects.get(3).setFill(pattern);
-						}
-						if (i == 1) {
-							trickRects.get(0).setFill(pattern);
-						}
-						if (i == 2) {
-							trickRects.get(1).setFill(pattern);
-							//updateTRight(pattern);
-						}
-						if (i == 3) {
-							trickRects.get(2).setFill(pattern);
-						}
+					if(i == 0) {
+						trickRects.get(3).setFill(pattern);
+					//	updateTLeft(pattern);
 					}
-				}     
-			}
-		
+					if (i == 1) {
+					//	updateTMain(pattern);
+						trickRects.get(0).setFill(pattern);
+					}
+					if (i == 2) {
+						trickRects.get(1).setFill(pattern);
+					//	updateTRight(pattern);
+					}
+					if (i == 3) {
+						trickRects.get(2).setFill(pattern);
+//						done = true;
+//						updateTOppo(pattern);
+					}
+				}
+			}     
 		}
+	}
 	
-	public void updateTMain(Card c) {
-		String r1; 
-		String s1;
-		if (model.getCardSet().equals("De")){
-			r1 = c.getRank().toStringDe();
-			s1 = c.getSuit().toStringDe();
-		}else {
-			r1 = c.getRank().toStringFr();
-			s1 = c.getSuit().toStringFr();
-		}
-		String filename = s1 + "_" + r1 + ".jpg";
-		Image imageTable = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() +"/" + filename));
-		ImagePattern pattern = new ImagePattern(imageTable, 0, 0, 322/3, 514/3, false);
-		
+	public void updateTMain(ImagePattern pattern) {
+//		model.setStopThread();
+	
 //		Random rand = new Random();
 //		int newR = rand.nextInt(10);
 //		newR -= 5;
@@ -500,13 +539,13 @@ public class GameView extends View<GameModel> {
 		// idea from Genuine Coder (youtube: https://www.youtube.com/watch?v=dyS0tdJ5wTw)
 		trickRects.get(0).setTranslateX(0);
 		trickRects.get(0).setTranslateY(0);
-		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), trickRects.get(0));
+		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(0));
 		translateTransition.setFromY(200);
 		translateTransition.setToY(30);
 		translateTransition.setCycleCount(1);
 		translateTransition.setAutoReverse(true);
 		 
-		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), trickRects.get(0));
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(0));
 		scaleTransition.setFromX(2);
 		scaleTransition.setFromY(2);
 		scaleTransition.setToX(1);
@@ -518,12 +557,14 @@ public class GameView extends View<GameModel> {
 		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
 		parallelTransition.setCycleCount(1);
 		parallelTransition.play();
+		model.unsetStopThread();
 	}
 	
 	public void updateTRight(ImagePattern pattern) {
 
 		trickRects.get(1).setFill(pattern);
-		 
+		model.setStopThread();
+
 		updateRightPlayer();
 		
 		trickRects.get(1).setTranslateX(0);
@@ -534,7 +575,7 @@ public class GameView extends View<GameModel> {
 		translateTransition.setCycleCount(1);
 		translateTransition.setAutoReverse(true);
 		 
-		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), trickRects.get(1));
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(1));
 		scaleTransition.setFromX(2);
 		scaleTransition.setFromY(2);
 		scaleTransition.setToX(1);
@@ -546,22 +587,25 @@ public class GameView extends View<GameModel> {
 		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
 		parallelTransition.setCycleCount(1);
 		parallelTransition.play();
-		        
+
+		model.unsetStopThread();
+     
 	}
 	
 	public void updateTOppo(ImagePattern pattern) {
+		model.setStopThread();
 
 		trickRects.get(2).setFill(pattern);
 		
 		trickRects.get(2).setTranslateX(0);
 		trickRects.get(2).setTranslateY(0);
-		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), trickRects.get(2));
+		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(2));
 		translateTransition.setFromY(-200);
 		translateTransition.setToY(0);
 		translateTransition.setCycleCount(1);
 		translateTransition.setAutoReverse(true);
 		 
-		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(1000), trickRects.get(2));
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(2));
 		scaleTransition.setFromX(2);
 		scaleTransition.setFromY(2);
 		scaleTransition.setToX(1);
@@ -573,22 +617,25 @@ public class GameView extends View<GameModel> {
 		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
 		parallelTransition.setCycleCount(1);
 		parallelTransition.play();
-	        
+
+		model.unsetStopThread();
+
 	}
 	
 	public void updateTLeft(ImagePattern pattern) {
 
 		trickRects.get(3).setFill(pattern);
+		model.setStopThread();
 		
 		trickRects.get(3).setTranslateX(0);
 		trickRects.get(3).setTranslateY(0);
-		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), trickRects.get(3));
+		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(3));
 		translateTransition.setFromX(-400);
 		translateTransition.setToX(0);
 		translateTransition.setCycleCount(1);
 		translateTransition.setAutoReverse(true);
 		 
-		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(1000), trickRects.get(3));
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(3));
 		scaleTransition.setFromX(2);
 		scaleTransition.setFromY(2);
 		scaleTransition.setToX(1);
@@ -601,7 +648,8 @@ public class GameView extends View<GameModel> {
 		parallelTransition.setCycleCount(1);
 		parallelTransition.play();
 			
- 
+		model.unsetStopThread();
+
 	}
 	
 	public void clearTrick() {
@@ -617,26 +665,26 @@ public class GameView extends View<GameModel> {
 		for (int i= 0; i< MAX_CARDS; i++) {
 			Rotate rotateRight = new Rotate();
 			Rectangle rectangleRight = new Rectangle();
-			rectangleRight.setHeight(322/4);
-			rectangleRight.setWidth(514/4);		
+			rectangleRight.setHeight(oCARD_W);
+			rectangleRight.setWidth(oCARD_H);		
 			rectangleRight.setArcHeight(20);
 			rectangleRight.setArcWidth(20);
 			String filenameRight = "Rückseite.jpg";
 			Image imageRight = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/"  + filenameRight));
-	        ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, 514/4, 322/4, false);
+	        ImagePattern patternRight = new ImagePattern(imageRight, 0, 0, oCARD_H, oCARD_W, false);
 	        rectangleRight.setFill(patternRight);
 	        rectangleRight.setStroke(Color.GREY);
 	        
 		    rotateRight.setAngle(20-5*i); 
-		    rotateRight.setPivotX(514/4*3); 	
-		    rotateRight.setPivotY(322/4/2); 
+		    rotateRight.setPivotX(oCARD_H*3); 	
+		    rotateRight.setPivotY(oCARD_W/2); 
 		    rectangleRight.getTransforms().addAll(rotateRight);      
 	        rightHandSide.getChildren().add(rectangleRight);     
 		}
         rightHandSide.setSpacing(-70.0);
 		rightHandSide.setMinWidth(100);
 		rightHandSide.setMaxHeight(400);
-		rightHandSide.setAlignment(Pos.BOTTOM_LEFT);
+		rightHandSide.setAlignment(Pos.CENTER_LEFT);
 		right.getChildren().add(rightHandLabel);
 		right.getChildren().add(rightHandSide);
 		right.setSpacing(10.0);
@@ -647,18 +695,18 @@ public class GameView extends View<GameModel> {
 		for (int i= 0; i< MAX_CARDS; i++) {
 			Rotate rotateLeft = new Rotate();
 			Rectangle rectangleLeft = new Rectangle();
-			rectangleLeft.setHeight(322/4);
-			rectangleLeft.setWidth(514/4);
+			rectangleLeft.setHeight(oCARD_W);
+			rectangleLeft.setWidth(oCARD_H);
 	        rectangleLeft.setArcHeight(20);
 	        rectangleLeft.setArcWidth(20);
 	        String filenameLeft = "Rückseite.jpg";
 			Image imageLeft = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameLeft));
-	        ImagePattern patternLeft = new ImagePattern(imageLeft, 0, 0, 514/4,322/4, false);
+	        ImagePattern patternLeft = new ImagePattern(imageLeft, 0, 0, oCARD_H, oCARD_W, false);
 	        rectangleLeft.setFill(patternLeft);
 	        rectangleLeft.setStroke(Color.GREY);
 		    rotateLeft.setAngle(20-5*i); 
-		    rotateLeft.setPivotX(-514/4*3); 	
-		    rotateLeft.setPivotY(322/4/2); 
+		    rotateLeft.setPivotX(-oCARD_H*3); 	
+		    rotateLeft.setPivotY(oCARD_W/2); 
 		    rectangleLeft.getTransforms().addAll(rotateLeft);      
 	        leftHandSide.getChildren().add(rectangleLeft); 
 		}
@@ -676,19 +724,19 @@ public class GameView extends View<GameModel> {
 		for (int i = 0; i<MAX_CARDS; i++) {
 	        Rotate rotateOppo = new Rotate();
 	        Rectangle rectangleOppo = new Rectangle();
-			rectangleOppo.setHeight(514/4);
-			rectangleOppo.setWidth(322/4);		
+			rectangleOppo.setHeight(oCARD_H);
+			rectangleOppo.setWidth(oCARD_W);		
 			rectangleOppo.setArcHeight(20);
 			rectangleOppo.setArcWidth(20);
 	        
 			String filenameOppo = "Rückseite.jpg";
 			Image imageOppo = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameOppo));
-	        ImagePattern patternOppo = new ImagePattern(imageOppo, 0, 0, 322/4, 514/4, false);
+	        ImagePattern patternOppo = new ImagePattern(imageOppo, 0, 0, oCARD_W, oCARD_H, false);
 	        rectangleOppo.setFill(patternOppo);
 	        rectangleOppo.setStroke(Color.GREY);
 		    rotateOppo.setAngle(20-5*i); 
-		    rotateOppo.setPivotX(322/4/2); 	
-		    rotateOppo.setPivotY(-514/4); 
+		    rotateOppo.setPivotX(oCARD_W/2); 	
+		    rotateOppo.setPivotY(-oCARD_H); 
 		    rectangleOppo.getTransforms().addAll(rotateOppo);      
 	        oppositeSide.getChildren().add(rectangleOppo); 
 		}
@@ -752,9 +800,10 @@ public class GameView extends View<GameModel> {
 		tablePart.getChildren().add(chooseTrumpBox);
 		trumpBox.setAlignment(Pos.CENTER);
         trumpBox.setVisible(true);
-        trumpBox.setHgap(30);
-        trumpBox.setVgap(30);
+        trumpBox.setHgap(20);
+        trumpBox.setVgap(20);
         chooseTrumpBox.setStyle("-fx-background-color: saddlebrown");
+        chooseTrumpBox.setMaxSize(500,  300);
         trumpBox.setPadding(new Insets(20, 20, 20, 20));
 		
 		//check if this player is the starting player and if trump is not yet set
@@ -845,8 +894,8 @@ public class GameView extends View<GameModel> {
 		pointsBox.setAlignment(Pos.CENTER_RIGHT);
 		winnerBox.setAlignment(Pos.TOP_CENTER);
 		buttons.setAlignment(Pos.BOTTOM_CENTER);
-		pointPane.setPadding(new Insets(40, 40, 40, 40));
-		pointPane.setMaxSize(600,  400);
+		pointPane.setPadding(new Insets(30, 30, 30, 30));
+		pointPane.setMaxSize(530,  350);
 		pointPane.setId("tafel");
 		pointsPlayerLabel.setStyle("-fx-text-fill: WHITE");
 		pointsPlayerLabel2.setStyle("-fx-text-fill: WHITE");

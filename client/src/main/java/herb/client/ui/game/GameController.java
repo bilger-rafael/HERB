@@ -46,7 +46,9 @@ public class GameController extends Controller<GameModel, GameView> {
 			public void onChanged(Change<? extends Card> c) {
 				while (c.next()) {
 					if (c.wasAdded()) {
-						view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));	
+						ArrayList<Card> filter = (ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList());
+						view.updateTrick(filter);	
+						
 					}
 				}
 			}
@@ -54,11 +56,11 @@ public class GameController extends Controller<GameModel, GameView> {
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> p) {
 						
-				
 				if (model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
 					// stop all Listeners
 					view.updatePointPane(model.getScores());
 					model.setStopThread();
+					model.setCurrentStopThread();
 					view.cleanings();
 				}
 				while (p.next()) {
@@ -150,13 +152,16 @@ public class GameController extends Controller<GameModel, GameView> {
 
 		if (playedCard.isPlayable()) {
 			model.playCard(playedCard);
-	//		view.updateTMain(playedCard);		
+		//	view.updateTMain(playedCard);
+			view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
+		//	model.setStopThread();
 		}
 		view.updateImagePatterns();
 		
+		
 		// reduce other players cards
 		// TODO - check and correct
-		view.updateRightPlayer();
+	//	view.updateRightPlayer();
 		view.updateOppoPlayer();
 		view.updateLeftPlayer();
 	}
@@ -208,8 +213,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		try {
 			Thread.sleep(5000);
 		}
-		catch(Exception e) {
-			// Message - 
+		catch(Exception e) { 
 		}
 		this.view.stop();
 		Main.getMainProgram().clearGameView();
