@@ -1,5 +1,6 @@
 package herb.server.ressources.core;
 
+//Etter, Vorlage SE Herbstsemester 19
 public enum Rank { Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace;
     @Override
     public String toString() {

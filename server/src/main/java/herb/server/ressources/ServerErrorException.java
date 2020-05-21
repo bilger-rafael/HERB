@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import herb.server.ressources.core.ExceptionBase;
 
+//Bilger
 @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Unknown Server Error")
 public class ServerErrorException extends ExceptionBase {
 

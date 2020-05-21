@@ -7,7 +7,6 @@ import herb.server.Datastore;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.LoginBase;
 
-//Bilger
 public class Login extends LoginBase<Player> {
 
 	public Login(String username, String password) {
@@ -23,29 +22,26 @@ public class Login extends LoginBase<Player> {
 			throw new PlayerNotFoundException();
 		}
 
-		// Check Passwort stimmt
+		// Etter Check Passwort stimmt
 		if (!this.getPassword().equals(DataStore_Repository.getDB().showLoginPasswordfromDB(this.getUsername()))) {
 			throw new PlayerLoginFailedException();
 		}
 
-		// check if player is already logged in
+		// Bilger check if player is already logged in
 		if (Datastore.getInstance().players.get(this.getUsername()) != null)
 			return Datastore.getInstance().players.get(this.getUsername());
 
-		// add player and return it
+		// Bilger add player and return it
 		Player player = new Player(this.getUsername(), UUID.randomUUID().toString().toUpperCase());
 		Datastore.getInstance().players.put(player.getUsername(), player);
 		return player;
 
 	}
 
-	@Override
+	@Override //Bilger
 	public void register() throws ExceptionBase {
 		if (Datastore.getInstance().logins.containsKey(this.getUsername()))
 			throw new PlayerAlreadyExistsException();
-
-		// TODO check username and password length, if needed
-		// TODO check username is not Bot...
 
 		// Etter Eintrag in MYSQL-DB
 		int i = DataStore_Repository.getDB().addLoginToDB(this.getUsername(), this.getPassword());

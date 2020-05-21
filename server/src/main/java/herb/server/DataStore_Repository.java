@@ -13,7 +13,8 @@ import java.util.HashMap;
 import herb.server.ressources.Lobby;
 import herb.server.ressources.core.ExceptionBase;
 
-//ETTER fast Singleton
+//ETTER 
+//fast Singleton, Unterschied ist resetDB
 public class DataStore_Repository {
 	private Connection cn = null;
 	private static DataStore_Repository db; // singleton

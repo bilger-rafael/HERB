@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
-import herb.server.ressources.core.Trump;
 
 //Etter
 public class Card extends CardBase {
@@ -119,7 +118,7 @@ public class Card extends CardBase {
 		return points;
 	}
 	
-	//o ist die Karte vom vorherigen Spieler, dies die neue Karte
+	//o ist die Karte vom vorherigen Spieler, gibt Int mit der Rank-Differenz zurück
 	public int compareTo(CardBase o) {
 		int result=0;
 		//Ich habe Trumpf

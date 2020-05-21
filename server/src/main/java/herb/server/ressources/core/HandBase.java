@@ -2,6 +2,7 @@ package herb.server.ressources.core;
 
 import java.util.ArrayList;
 
+//Etter
 public abstract class HandBase<Card extends CardBase> {
 	protected ArrayList<Card> cards;
 

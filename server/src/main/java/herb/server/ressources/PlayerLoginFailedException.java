@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import herb.server.ressources.core.ExceptionBase;
 
+//Bilger
 @ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "Login Failed")
 public class PlayerLoginFailedException extends ExceptionBase {
 

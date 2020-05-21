@@ -2,6 +2,7 @@ package herb.server.ressources.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+//Etter
 public abstract class CardBase {
     protected final Suit suit;
     protected final Rank rank;
@@ -9,7 +10,7 @@ public abstract class CardBase {
     protected Trump trump;
 	protected boolean playable;
     
-	@Override
+	@Override //Bilger
 	public boolean equals(Object o) {
 		// self check
 		if (this == o)

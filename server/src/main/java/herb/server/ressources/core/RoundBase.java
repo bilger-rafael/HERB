@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-//Etter
+//Bilger//Etter
 public abstract class RoundBase<Game extends GameBase, Player extends PlayerBase, Trick extends TrickBase> {
 	private LinkedList<Trick> tricks = new LinkedList<Trick>();
 	private Trump trump;

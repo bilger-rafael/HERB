@@ -94,6 +94,7 @@ public class Round extends RoundBase<Game, Player, Trick> {
 		}
 	}
 
+	//Gewinner ermitteln und DB-Highscore updaten
 	private void endRound() {
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			Player p = this.getPlayers()[i];

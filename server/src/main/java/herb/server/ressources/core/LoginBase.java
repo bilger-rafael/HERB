@@ -2,6 +2,7 @@ package herb.server.ressources.core;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+//Bilger
 public abstract class LoginBase<Player extends PlayerBase> {
 	private final String username;
 	private final String password;

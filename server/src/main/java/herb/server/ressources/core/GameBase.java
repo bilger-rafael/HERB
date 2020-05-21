@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+//Bilger
 public abstract class GameBase<Lobby extends LobbyBase, Round extends RoundBase, Player extends PlayerBase> {
 	private final UUID uuid;
 	private boolean over;

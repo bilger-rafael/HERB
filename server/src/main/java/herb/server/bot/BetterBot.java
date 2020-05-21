@@ -13,6 +13,7 @@ import herb.server.ressources.core.Suit;
 import herb.server.ressources.core.Trump;
 
 //Etter
+//Beinhaltet gewisse Logik bei der Kartenauswahl, aus Zeitgründen teileweise Umgesetzt
 public class BetterBot extends BotBase {
 
 	public BetterBot(String s) {

@@ -10,8 +10,8 @@ import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
 import herb.server.ressources.core.Trump;
 
-
-//Funktioniert nicht mehr, weil Trump nun nicht mehr Trump als Parameter erhält.
+//Etter
+//Funktioniert nicht mehr, weil die Karte nun nicht mehr Trump als Parameter erhält. Diente zur Prüfung ganz zu beginn.
 public class CardTest {
 	private static String cardTrump9s = "H9H";
 	private static String card6s = "D6C";

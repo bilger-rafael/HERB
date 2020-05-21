@@ -10,6 +10,7 @@ import herb.server.bot.BotBase;
 import herb.server.ressources.core.ExceptionBase;
 import herb.server.ressources.core.LobbyBase;
 
+//Bilger
 public class Lobby extends LobbyBase<Player> {
 
 	@JsonCreator
@@ -23,7 +24,6 @@ public class Lobby extends LobbyBase<Player> {
 		runningGame = new Game(this, this.players);
 	}
 
-	// Etter Spieler dem Array hinzufügen
 	public void addPlayer(Player player) throws ExceptionBase {
 		if (isFull())
 			throw new ServerErrorException();
@@ -60,7 +60,8 @@ public class Lobby extends LobbyBase<Player> {
 			}
 		}
 	}
-
+	
+	//Etter
 	public void removeAllPlayer() {
 		for (int i = 0; i < this.players.length; i++) {
 			this.players[i] = null;
@@ -86,10 +87,8 @@ public class Lobby extends LobbyBase<Player> {
 		if (Datastore.getInstance().lobbys.containsKey(name))
 			throw new LobbyAlreadyExistsException();
 
-		// TODO check name, if needed
-
 		Lobby lobby = new Lobby(name);
-
+		
 		DataStore_Repository.getDB().addLobby(name);
 
 		Datastore.getInstance().lobbys.put(name, lobby);

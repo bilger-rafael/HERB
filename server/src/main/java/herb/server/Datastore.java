@@ -8,6 +8,7 @@ import herb.server.ressources.Lobby;
 import herb.server.ressources.Login;
 import herb.server.ressources.Player;
 
+//Bilger
 public class Datastore {
 	
     private static Datastore datastore; // singleton

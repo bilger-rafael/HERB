@@ -1,5 +1,6 @@
 package herb.server.ressources.core;
 
+//Etter Vorlage SE Herbstsemester 19
 public enum Suit { Clubs, Diamonds, Hearts, Spades;
     @Override
     public String toString() {

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import herb.server.ressources.core.GameBase;
 
-//Etter
+//Bilger
 public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 
 	public Game(Lobby lobby, Player[] players) {
@@ -20,6 +20,7 @@ public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 		return r;
 	}
 
+	
 	public void endRound(Round r) {
 		// add up scores
 		if (this.scores == null)

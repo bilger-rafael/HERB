@@ -3,7 +3,7 @@ package herb.server.ressources.core;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-//Bilger/Etter
+//Bilger//Etter
 public abstract class TrickBase<Player extends PlayerBase, Card extends CardBase> {
 
 	@JsonIgnoreProperties({ "round", "hand" })

@@ -1,7 +1,9 @@
-package herb.server;
+package CoreTest;
 
 import java.util.ArrayList;
 
+//Etter 
+//Ursprüngliche Klasse um die MySQL-Verbindung zu testen, funtkioniert nun nicht mehr.
 public class TestDBConnection {
 	
 	public static void main(String[] args) {

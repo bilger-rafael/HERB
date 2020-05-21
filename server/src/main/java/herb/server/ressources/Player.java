@@ -29,16 +29,14 @@ public class Player extends PlayerBase<Hand, Round> {
 		// Aus Hand entfernen
 		this.getHand().play((Card) card);
 		// Karte dem Trick hinzufügen
-
 		getLastTrick().addCardtoTrick((Card) card);
-
 		if (playListener != null) {
 			playListener.played();
 			playListener = null;
 		}
 	}
 
-	@Override
+	@Override //Bilger
 	public void chooseTrump(Trump trump) throws ExceptionBase {
 		this.getRound().setTrump(trump);
 		
@@ -48,14 +46,13 @@ public class Player extends PlayerBase<Hand, Round> {
 		}
 	}
 	
-	@Override
+	@Override //Bilger
 	public void demandRematch(Boolean rematch) throws ExceptionBase {
 		if (rematchListener != null) {
 			rematchListener.decided(rematch);
 			rematchListener = null;
 		}
 	}
-
 
 	public void addCardtoHand(CardBase card) {
 		this.getHand().addCard((Card) card);
@@ -85,7 +82,7 @@ public class Player extends PlayerBase<Hand, Round> {
 	private void determinPlayableCards(Trick t) {
 		Trick.PlayerNode startingPlayer = t.buildCircularLinkedList();
 
-		// if its not the players turn, no card is playable
+		// Falls Spieler nicht an der Reihe keine Karte spielbar
 		if (!this.equals(t.getCurrentPlayer())) {
 			this.getHand().getCards().forEach(x -> x.setPlayable(false));
 			return;

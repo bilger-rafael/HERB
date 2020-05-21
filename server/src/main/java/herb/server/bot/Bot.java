@@ -1,14 +1,10 @@
 package herb.server.bot;
 
-import java.util.Arrays;
 import java.util.Random;
-import java.util.stream.Collectors;
-
 import herb.server.ressources.Card;
-import herb.server.ressources.core.CardBase;
 import herb.server.ressources.core.Trump;
 
-//ETTER Computerspieler, spielt Randomkarte
+//ETTER Computerspieler, spielt Randomkarte und wählt bei Bedarf Random Trumpf
 public class Bot extends BotBase {
 	public Bot(String s) {
 		super(s);

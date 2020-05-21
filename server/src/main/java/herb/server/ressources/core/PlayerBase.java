@@ -1,8 +1,8 @@
 package herb.server.ressources.core;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+//Bilger
 public abstract class PlayerBase <Hand extends HandBase, Round extends RoundBase> {
 	private final String username;
 	private final String authToken;
