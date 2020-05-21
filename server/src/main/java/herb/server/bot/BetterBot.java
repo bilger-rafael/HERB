@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import herb.server.ressources.Card;
 import herb.server.ressources.DeckOfCards;
 import herb.server.ressources.Trick;
-import herb.server.ressources.core.Rank;
 import herb.server.ressources.core.Suit;
 import herb.server.ressources.core.Trump;
 
@@ -389,7 +387,7 @@ public class BetterBot extends BotBase {
 	}
 
 	// Höchster Wert einer Farbe der verbleibenden Karten
-	private int returnHighestValueSuit(Suit s) {
+	/*private int returnHighestValueSuit(Suit s) {
 		int value = 0;
 
 		for (Card c : this.remainingCards) {
@@ -401,6 +399,7 @@ public class BetterBot extends BotBase {
 		}
 		return value;
 	}
+	*/
 
 	// Hat Bot die höchste Karte einer Suit
 	private boolean BotHasHighstCard(Suit s) {
