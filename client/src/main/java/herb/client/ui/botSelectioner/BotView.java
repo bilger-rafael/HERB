@@ -50,6 +50,11 @@ public class BotView extends View<BotModel>{
 		ServiceLocator sl = ServiceLocator.getInstance();
 		
 		this.root = new BorderPane();
+		
+		menuBar = new MenuBar();
+		menuLanguage = new Menu();
+		menuBar = new MenuBar();
+		menuLanguage = new Menu();
 			
 	    /**
 	     * set local for language
@@ -67,8 +72,6 @@ public class BotView extends View<BotModel>{
 		/**
 		 * menu, labels, textfield, regions, buttons, radiobutton, toogle group
 		 */
-		menuBar = new MenuBar();
-		menuLanguage = new Menu();
 		message = new Label();
 		easyLabel = new Label();
 		heavyLabel = new Label();
@@ -127,7 +130,6 @@ public class BotView extends View<BotModel>{
 		/*
 		 * get children
 		 */
-	    menuBar.getMenus().add(menuLanguage);
 		topBox.getChildren().addAll(info,four);
 		easyRadioButton.setToggleGroup(toggleGroup);
 		heavyRadioButton.setToggleGroup(toggleGroup);
