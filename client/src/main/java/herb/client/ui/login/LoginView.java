@@ -58,13 +58,11 @@ public class LoginView extends View<LoginModel> {
 		this.root = new BorderPane();
 		
 		/**
-		 * menubar
+		 * menu
 		 */
 		headMenu = new MenuBar();
 		menuLanguage = new Menu();
-		menuLanguage.getItems().addAll();
 		headMenu.getMenus().addAll(menuLanguage);
-		// Top menu for language, TODO for passwordChange
 		
 		// link to Locale
 		for (Locale locale : sl.getLocales()) {
@@ -76,15 +74,6 @@ public class LoginView extends View<LoginModel> {
 				updateLabels();
 			});
 		}
-		//panes
-		// Herren - messages
-		labelBox = new VBox();
-		textFieldBox = new VBox();
-		fieldBox = new HBox();
-		bottomBox = new BorderPane();
-		centerBox = new VBox();
-		messageStackPane = new StackPane();
-		
 		//items
 		nameLabel = new Label();
 		nameField = new TextField();
@@ -100,6 +89,14 @@ public class LoginView extends View<LoginModel> {
 		
 		loginButton = new Button();
 		createUserButton = new Button();
+		
+		//panes
+		labelBox = new VBox();
+		textFieldBox = new VBox();
+		fieldBox = new HBox();
+		bottomBox = new BorderPane();
+		centerBox = new VBox();
+		messageStackPane = new StackPane();
 
 		//get children in panes
 		labelBox.getChildren().addAll(nameLabel,zero,pwLabel);
@@ -125,7 +122,7 @@ public class LoginView extends View<LoginModel> {
 		createUserButton.setPrefSize(220, 50);
 		
 		//spacing		
-		bottomBox.setPadding(new Insets(20, 20, 15, 20));
+		bottomBox.setPadding(new Insets(20, 50, 15, 50));
 		centerBox.setPadding(new Insets(35, 20, 0, 20));
 		centerBox.setSpacing(20);
 		centerBox.setSpacing(10);

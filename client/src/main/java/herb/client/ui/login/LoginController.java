@@ -16,30 +16,32 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 	public LoginController(LoginModel model, LoginView view) {
 		super(model, view);
 
-		// Event on LoginButton
+		//action for loginButton
 		view.getLoginButton().setOnAction(e -> login());
-
-		// Event on CreateUserButton
+		//action for createUserButton
 		view.getCreateUserButton().setOnAction(e -> createUserView());
-		
+		//if nameField and pwField are empty loginButton is disabled
 		view.getLoginButton().disableProperty().bind(view.getNameField().textProperty().isEmpty());
-		
 		view.getLoginButton().disableProperty().bind(view.getPwField().textProperty().isEmpty());
 
 		serviceLocator = ServiceLocator.getInstance();
 		serviceLocator.getLogger().info("Login controller initialized");
 	}
-
+	//methode for loginButton
 	private void login() {
+		//get username and password
 		String username = view.getNameField().getText();
 		String password = view.getPwField().getText();
-
+		
+		//try catch for exception handling
 		try {
+			//if user already exist
 			model.login(username, password);
 			goToLauncher();
 			serviceLocator.getLogger().info("Login war erfolgreich.");
 			
 		} catch (ExceptionBase e) {
+			//if user do not exist
 			view.showError();
 			view.getMessage().setVisible(true);
 			serviceLocator.getLogger().info("Name oder Passwort falsch eingegeben.");
@@ -47,16 +49,16 @@ public class LoginController extends Controller<LoginModel, LoginView> {
 
 	}
 
-	// Connector to Launcher and reset text fields
+	// Connector to Launcher, reset text fields and sets message invisible in LoginView
 	private void goToLauncher() {
 		this.view.resetPasswordField();
 		this.view.resetNameField();
-		view.getMessage().setText("");
+		this.view.getMessage().setVisible(false);
 		this.view.stop();
 		Main.getMainProgram().getLauncher().start();
 	}
 
-	// forwards to the CreatUserView
+	// forwards to the RegistraionView, reset text fields and sets message invisible in LoginView
 	private void createUserView() {
 		this.view.resetPasswordField();
 		this.view.resetNameField();
