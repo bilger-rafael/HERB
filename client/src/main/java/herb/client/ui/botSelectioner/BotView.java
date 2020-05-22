@@ -53,8 +53,8 @@ public class BotView extends View<BotModel>{
 		
 		menuBar = new MenuBar();
 		menuLanguage = new Menu();
-		menuBar = new MenuBar();
-		menuLanguage = new Menu();
+		menuBar.getMenus().add(menuLanguage);
+		
 			
 	    /**
 	     * set local for language
@@ -163,6 +163,7 @@ public class BotView extends View<BotModel>{
 		cancelButton.setText(t.getString("program.botSelectioner.cancelButton"));
 		info.setText(t.getString("program.botSelectioner.info"));
 		message.setText(t.getString("program.botSelectioner.message"));
+		menuLanguage.setText(t.getString("program.menu.file.language"));
 		stage.setTitle(t.getString("program.botSelectioner.titel"));
 		if (message.getText()!="") {
 			message.setText(t.getString("program.botSelectioner.message"));
