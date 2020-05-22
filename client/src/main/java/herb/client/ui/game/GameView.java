@@ -162,7 +162,7 @@ public class GameView extends View<GameModel> {
 		opposite = new VBox();
 		oppositeSide = new HBox();
 		spacerOppo= new Region();
-		spacerOppo.setMinWidth(300d);
+		spacerOppo.setMinWidth(400d);
 		oppositeLabel = new Label(players.get(2).getUsername());
 
 		// Cards of MainPlayer
@@ -171,7 +171,6 @@ public class GameView extends View<GameModel> {
 		ownCards.setMinHeight(300);
 		ownCards.setMinWidth(1300);		
 		spacer = new Region();
-		//changed
 		spacer.setMinWidth(600d);
 		playerLabel = new Label(players.get(0).getUsername());
 		playerLabel.setMinHeight(20);
@@ -189,19 +188,11 @@ public class GameView extends View<GameModel> {
 	   	messageLabel = new Label();
 	   	messageLabel.setId("message");
 	   	messageLabel.setVisible(false);
-	   	messageLabel.setMaxSize(400, 100);
 	   	messageLabelS = new Label();
 	   	messageLabelS.setId("message");
 	   	messageLabelS.setVisible(false);
-	   	messageLabelS.setMaxSize(400, 100);
 	   	messageBox = new StackPane();
 		messageBox.getChildren().addAll(messageLabel, messageLabelS);
-
-	   	
-//		tMain.setAlignment(Pos.CENTER);
-//		tRight.setAlignment(Pos.CENTER);
-//		tOppo.setAlignment(Pos.CENTER);
-//		tLeft.setAlignment(Pos.CENTER);
 		
 		// Cards and Trump images
 	    rects = new ArrayList<>();
@@ -359,7 +350,7 @@ public class GameView extends View<GameModel> {
 		table.setVgap(10);
 		table.setAlignment(Pos.CENTER);
 		tablePart.getChildren().add(table);
-		tablePart.setAlignment(Pos.TOP_CENTER);
+		tablePart.setAlignment(Pos.CENTER);
 	}
 	
 	// update ImagePatterns (getMyCards from Server)
@@ -973,7 +964,6 @@ public class GameView extends View<GameModel> {
 		playedPointsLabel2.setText(t.getString("program.game.playedPointsLabel"));
 		winnerLabel2.setText(t.getString("program.game.winnerLabel"));
 		trumpOrderLabel.setText(t.getString("program.game.trumpOrder"));
-	
 		revancheLabel.setText(t.getString("program.game.revanche"));
 		
 		// Herren: if label is not visible, do not update
@@ -1039,7 +1029,7 @@ public class GameView extends View<GameModel> {
 	
 	public void setRevancheLabel() {
 		revancheLabel.setVisible(true);
-		revancheLabel.setStyle("-fx-text-fill: GOLD");
+		revancheLabel.setStyle("-fx-text-fill: WHITE");
 		revancheLabel.setStyle("-fx-text-size: 14px");
 	}
 	
