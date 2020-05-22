@@ -141,12 +141,6 @@ public class Main extends Application {
 			new LoginController(loginModel, loginView);
 		}
 		return loginView;
-		//}
-		/*
-		String url = serviceLocator.getConfiguration().getOption("rootURL");
-		Player player = restTemplate.getForObject(url.concat("/player"), Player.class);
-		System.out.println(player.getName() + player.getRank());
-		*/
 	}
 
 

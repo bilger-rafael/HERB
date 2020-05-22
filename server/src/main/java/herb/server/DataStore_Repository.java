@@ -115,7 +115,7 @@ public class DataStore_Repository {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Initialisierung hat nicht funktioniert");
+			e.printStackTrace();
 		}
 	}
 
@@ -190,8 +190,7 @@ public class DataStore_Repository {
 			answer = stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			System.out.println(e);
-
+			e.printStackTrace();
 		} finally {
 
 			if (rs != null)
@@ -221,8 +220,7 @@ public class DataStore_Repository {
 			stmt.setString(1, playername);
 			answer = stmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
-
+			e.printStackTrace();
 		} finally {
 			if (rs != null)
 				try {
@@ -254,7 +252,7 @@ public class DataStore_Repository {
 			password = rs.getString(2);
 
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (rs != null)
 				try {
@@ -288,7 +286,7 @@ public class DataStore_Repository {
 				b = true;
 
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (rs != null)
 				try {
@@ -324,7 +322,7 @@ public class DataStore_Repository {
 				//Jetzt gibt es den Player in der Liste => Scores sicher updaten
 				updateHighScoreOfPlayer(playername,points);
 			} catch (SQLException e) {
-				System.out.println(e);
+				e.printStackTrace();
 			} finally {
 				if (rs != null)
 					try {
@@ -355,7 +353,7 @@ public class DataStore_Repository {
 			stmt.setString(2, playername);
 			answer = stmt.executeUpdate();
 		}catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (rs != null)
 				try {
@@ -417,7 +415,7 @@ public class DataStore_Repository {
 			stmt.setString(1, playername);
 			answer = stmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (rs != null)
 				try {
@@ -448,7 +446,7 @@ public class DataStore_Repository {
 				tempList.put(rs.getString(1), rs.getInt(2));
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (rs != null)
 				try {
@@ -478,7 +476,7 @@ public class DataStore_Repository {
 			stmt.setString(1, lobbyName);
 			answer = stmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (rs != null)
 				try {
@@ -541,7 +539,7 @@ public class DataStore_Repository {
 				tempList.add(tempLobbyName);
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		} finally {
 			if (rs != null)
 				try {
