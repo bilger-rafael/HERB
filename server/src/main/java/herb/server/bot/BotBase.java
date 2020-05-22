@@ -24,13 +24,13 @@ public abstract class BotBase extends Player {
 	}
 
 	protected abstract Card determinBestCard();
-	
+
 	protected abstract Trump determinBestTrump();
 
 	protected List<Card> getPlayableCards() {
 		return this.getHand().getCards().stream().filter(c -> c.isPlayable()).collect(Collectors.toList());
 	}
-	
+
 	protected int getNumberPlayedCards() {
 		CardBase[] cards = this.getRound().getTricks().getLast().getPlayedCards();
 		return (int) Arrays.asList(cards).stream().filter(c -> c != null).count();
@@ -40,14 +40,15 @@ public abstract class BotBase extends Player {
 	public void setPlayListener(PlayListener playListener) {
 		super.setPlayListener(playListener);
 		Card c = determinBestCard();
-		if(c == null) System.out.println("ERROR");
+		if (c == null)
+			c = this.getHand().getCards().stream().filter(x -> x.isPlayable()).findFirst().get();
 		try {
 			this.play(c);
 		} catch (ExceptionBase e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void setTrumpListener(TrumpListener trumpListener) {
 		super.setTrumpListener(trumpListener);
@@ -57,7 +58,7 @@ public abstract class BotBase extends Player {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void setRematchListener(RematchListener rematchListener) {
 		super.setRematchListener(rematchListener);
@@ -67,5 +68,5 @@ public abstract class BotBase extends Player {
 			e.printStackTrace();
 		}
 	}
-	
+
 }
