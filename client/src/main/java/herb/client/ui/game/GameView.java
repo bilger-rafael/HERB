@@ -893,7 +893,7 @@ public class GameView extends View<GameModel> {
 				winners.add(model.getPlayers().get(i));
 			}
 			if(result < 0) {
-				winners.remove(winners.size()-1);
+				winners.clear();
 				winners.add(model.getPlayers().get(i));
 				highestScore = scores.get(i);
 			}
