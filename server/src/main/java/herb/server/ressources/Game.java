@@ -44,8 +44,7 @@ public class Game extends GameBase<Lobby, Round, Player> implements Runnable {
 			endGame();
 		} else {
 			r.setRematch(true);
-			// ugly hack to make sure, the client can use the players current round to
-			// determin if rematch is set
+			// make sure, the client can use the players current round to determin if rematch is set
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {

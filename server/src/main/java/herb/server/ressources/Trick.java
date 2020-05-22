@@ -65,7 +65,6 @@ public class Trick extends TrickBase<Player, Card> {
 			while (!played) {
 				try {
 					Thread.sleep(1000);
-					// this.wait(); //is it possible to wait on Object Round?
 				} catch (InterruptedException e) {
 				}
 			}

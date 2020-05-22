@@ -13,9 +13,6 @@ import herb.server.ressources.core.PlayerBase;
 @RestController
 public class AuthenticationController {
 
-	// TODO implement JWT Token
-	// (https://ertan-toker.de/spring-boot-spring-security-jwt-token/
-
 	@PostMapping("/register")
 	public void register(@RequestBody Login login) throws ExceptionBase {
 		login.register();

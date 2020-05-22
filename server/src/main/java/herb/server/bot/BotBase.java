@@ -44,7 +44,6 @@ public abstract class BotBase extends Player {
 		try {
 			this.play(c);
 		} catch (ExceptionBase e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -55,7 +54,6 @@ public abstract class BotBase extends Player {
 		try {
 			this.chooseTrump(determinBestTrump());
 		} catch (ExceptionBase e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -66,7 +64,6 @@ public abstract class BotBase extends Player {
 		try {
 			this.demandRematch(true);
 		} catch (ExceptionBase e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
