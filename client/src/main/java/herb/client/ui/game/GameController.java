@@ -130,11 +130,16 @@ public class GameController extends Controller<GameModel, GameView> {
 
 	// identify clicked Card and play if isPlayable
 	public void forwardPlayedCard(MouseEvent e) {
-
+		try {
 		Rectangle recti = (Rectangle) e.getSource();
 		int index = ((view.getRects().indexOf(recti) / 2 - view.getStartingPosition() / 2));
 		playedCard = model.getMyCards().get((index));
-
+		}
+		catch(Exception error) {
+			view.showErrorMessage();
+			view.getMessageLabel().setVisible(true);
+			serviceLocator.getLogger().info("wrong choise - playCard");
+		}
 		if (playedCard.isPlayable()) {
 			playCard(playedCard);
 			view.updateTrick((ArrayList<Card>) model.getTrickCards().stream().collect(Collectors.toList()));
@@ -237,6 +242,7 @@ public class GameController extends Controller<GameModel, GameView> {
 	public void demandRematch(Boolean rematch) {
 		try {
 			Datastore.getInstance().getMainPlayer().demandRematch(rematch);
+			view.getMessageLabelS().setVisible(false);
 		} catch (ExceptionBase e) {
 			view.showErrorMessageS();
 			view.getMessageLabelS().setVisible(true);
@@ -253,6 +259,7 @@ public class GameController extends Controller<GameModel, GameView> {
 				model.getCurrentPlayers().add(trick.getCurrentPlayer());
 				model.getStartingPlayers().add(trick.getStartingPlayer());
 				}
+			view.getMessageLabelS().setVisible(false);
 			} catch (Exception e) {
 			// if trump is not yet defined, no message
 			if(Datastore.getInstance().getMainPlayer().getRound().getTrump() != null) {
