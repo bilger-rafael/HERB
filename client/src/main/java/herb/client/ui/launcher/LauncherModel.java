@@ -21,22 +21,16 @@ public class LauncherModel extends Model {
 
 	public LauncherModel() {
 		super();
-		refreshLobbyList();
-		refreshHighscoreList();
 		startLobbyUpdater();
 		startHighScoreUpdater();
 		
 	}
 
 	//refresh amount lobbys in the list
-	public void refreshLobbyList() {
-		try {
+	public void refreshLobbyList() throws ExceptionBase {
 			this.lobbys.clear();
 			this.lobbys.addAll(Lobby.readLobbyList());
-		} catch (ExceptionBase e) {
-			// TODO show error message
-			e.printStackTrace();
-		}
+
 	}
 	
 	// Create thread to update Lobby periodically
@@ -45,7 +39,13 @@ public class LauncherModel extends Model {
 			@Override
 			public void run() {
 				while (true) {
-					Platform.runLater(() -> refreshLobbyList());
+					Platform.runLater(() -> {
+						try {
+							refreshLobbyList();
+						} catch (ExceptionBase e1) {
+							e1.printStackTrace();
+						}
+					});
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {
@@ -60,14 +60,9 @@ public class LauncherModel extends Model {
 
 	}
 	//refresh amount lobbys in the list
-	public void refreshHighscoreList() {
-		try {
+	public void refreshHighscoreList() throws ExceptionBase{
 			this.highScore.clear();
 			this.highScore.addAll(HighScore.readHighScoreList());
-		}catch(ExceptionBase e) {
-			// TODO show error message
-			e.printStackTrace();
-		}
 	}
 	
 	// Create thread to update highscore periodically
@@ -76,7 +71,13 @@ public class LauncherModel extends Model {
 			@Override
 			public void run() {
 				while (true) {
-					Platform.runLater(() -> refreshHighscoreList());
+					Platform.runLater(() -> {
+						try {
+							refreshHighscoreList();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					});
 					try {
 						Thread.sleep(10000);
 					} catch (InterruptedException e) {

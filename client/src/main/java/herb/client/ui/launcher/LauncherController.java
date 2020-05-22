@@ -15,21 +15,27 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 	public LauncherController(LauncherModel model, LauncherView view) {
 		super(model, view);
 
-		//action for joinButton
+		// action for joinButton
 		view.getJoinButton().setOnAction(e -> joinLobby());
 
-		//action for createButton
+		// action for createButton
 		view.getCreateButton().setOnAction(e -> getLobbyCreaterView());
 
-		//action for refreshButton
-		view.getRefreshButton().setOnAction(e -> {model.refreshLobbyList(); 
-			model.refreshHighscoreList();});
+		// action for refreshButton
+		view.getRefreshButton().setOnAction(e -> {
+			refreshLobbyList();
+			refreshHighscoreList();
+		});
 
-		//if selection is empty, joinButton is disabled
+		// if selection is empty, joinButton is disabled
 		view.getJoinButton().disableProperty()
 				.bind(view.lobbyRoomCenter.getSelectionModel().selectedItemProperty().isNull());
 
-		//action for logoutItem
+		// if selection in lobby-list is made, createButton is disabled
+		view.getCreateButton().disableProperty()
+				.bind(view.lobbyRoomCenter.getSelectionModel().selectedItemProperty().isNotNull());
+
+		// action for logoutItem
 		view.getLogoutMenuItem().setOnAction(e -> getBackLoginView());
 
 		serviceLocator = ServiceLocator.getInstance();
@@ -37,37 +43,56 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 
 	}
 
-	//methode for joinButton
+	// methode for joinButton
 	private void joinLobby() {
-//		if (view.lobbyRoomCenter.getSelectionModel().isEmpty())
-//			return;
 		Lobby lobby = view.lobbyRoomCenter.getSelectionModel().getSelectedItem();
 		try {
-			//if selection is not empty, join lobby and add player
+			// if selection is not empty, join lobby and add player
 			lobby.addPlayer(Datastore.getInstance().getMainPlayer());
+			view.getMessage().setVisible(false);
+			Main.getMainProgram().getLobbyView(lobby).start();
 		} catch (ExceptionBase e) {
-			// TODO show error message and DONT call new lobby view
-			e.printStackTrace();
+			view.showError();
+			view.getMessage().setVisible(true);
+			Main.getMainProgram().getLauncher().start();
 		}
-		Main.getMainProgram().getLobbyView(lobby).start();
 
 	}
 
-	//methode for createLobbyButton
+	// methode for createLobbyButton
 	private void getLobbyCreaterView() {
 		Main.getMainProgram().getLobbyCreater().start();
+
 	}
-	//methode for logoutButton
+
+	// methode for logoutButton
 	private void getBackLoginView() {
 		try {
 			model.logout();
 		} catch (ExceptionBase e) {
 			view.showError();
 		}
-		//in every case do the logout
+		// in every case do the logout
 		view.stop();
 		serviceLocator.getLogger().info("Logout");
 		Main.getMainProgram().getLoginView().start();
 	}
 
+	private void refreshLobbyList() {
+		try {
+			model.refreshLobbyList();
+		} catch (Exception e) {
+			view.showErrorRefresh();
+
+		}
+	}
+
+	private void refreshHighscoreList() {
+		try {
+			model.refreshHighscoreList();
+		} catch (Exception e) {
+			view.showErrorRefresh();
+
+		}
+	}
 }

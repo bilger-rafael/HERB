@@ -37,9 +37,10 @@ public class LauncherView extends View<LauncherModel> {
 	private BorderPane root;
 	private VBox lobbyListBox, highscoreListBox;
 	private HBox centerBox, bottomBox;
+	private StackPane messageStackPane;
 
 	private Button joinButton, createButton, refreshButton;
-	private Label lobbyLabel, highscoreLabel, message;
+	private Label lobbyLabel, highscoreLabel, message, messageRefresh;
 	private Region zero, one;
 
 	private MenuBar menuBar;
@@ -84,6 +85,8 @@ public class LauncherView extends View<LauncherModel> {
 		highscoreList = new ListView<>(model.getHighScore());
 		lobbyLabel = new Label();
 		highscoreLabel = new Label();
+		message = new Label();
+		messageRefresh = new Label();
 		joinButton = new Button();
 		refreshButton = new Button();
 		createButton = new Button();
@@ -97,17 +100,21 @@ public class LauncherView extends View<LauncherModel> {
 		bottomBox = new HBox();
 		StackPane stPane = new StackPane();
 		StackPane stPane1 = new StackPane();
+		messageStackPane = new StackPane();
 
 		// get children in panes
+		messageStackPane.getChildren().addAll(message, messageRefresh);
 		stPane.getChildren().add(lobbyRoomCenter);
 		stPane1.getChildren().add(highscoreList);
-		lobbyListBox.getChildren().addAll(lobbyLabel, lobbyRoomCenter);
+		lobbyListBox.getChildren().addAll(lobbyLabel, lobbyRoomCenter, messageStackPane);
 		highscoreListBox.getChildren().addAll(highscoreLabel, highscoreList);
 		centerBox.getChildren().addAll(lobbyListBox, highscoreListBox);
 		bottomBox.getChildren().addAll(createButton, zero, refreshButton, one, joinButton);
 
 		// spacing
 		centerBox.setSpacing(10);
+		lobbyListBox.setSpacing(10);
+		highscoreListBox.setSpacing(10);
 		centerBox.setPadding(new Insets(35, 50, 15, 55));
 		bottomBox.setPadding(new Insets(20, 50, 15, 50));
 
@@ -135,6 +142,10 @@ public class LauncherView extends View<LauncherModel> {
 
 		// css
 		root.setId("background");
+		message.setId("message");
+		message.setVisible(false);
+		messageRefresh.setId("message");
+		messageRefresh.setVisible(false);
 
 		root.setTop(menuBar);
 		root.setCenter(centerBox);
@@ -159,6 +170,13 @@ public class LauncherView extends View<LauncherModel> {
 		stage.setTitle(t.getString("program.launcher.titel"));
 		logoutMenuItem.setText(t.getString("program.menu.file.logoutMenuItem"));
 		refreshButton.setText(t.getString("program.launcher.refreshButton"));
+		if (message.getText()!="") {
+			message.setText(t.getString("program.launcher.message"));
+		}
+		if (messageRefresh.getText()!="") {
+			messageRefresh.setText(t.getString("program.launcher.messageRefresh"));
+		}
+		
 	}
 
 	// getter
@@ -181,11 +199,21 @@ public class LauncherView extends View<LauncherModel> {
 	public ListView<Lobby> getLobbyRoomCenter() {
 		return lobbyRoomCenter;
 	}
+	public Label getMessage() {
+		return message;
+	}
+	public Label getMessageRefresh() {
+		return messageRefresh;
+	}
 
 	// To show the error message in GUI if Login fails
 	public void showError() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		message.setText(t.getString("program.launcher.message"));
+	}
+	public void showErrorRefresh() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		messageRefresh.setText(t.getString("program.launcher.messageRefresh"));
 	}
 
 	/**
