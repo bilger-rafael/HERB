@@ -1,6 +1,7 @@
 package herb.client.ui.lobby;
 
 import herb.client.Main;
+import herb.client.ressources.Lobby;
 import herb.client.ressources.Player;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Controller;
@@ -54,6 +55,15 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 	private void createViewBot() {
 		Main.getMainProgram().getBotView(this.model.getLobby()).start();
 
+	}
+	
+	private void refreshLobby() {
+		try {
+			model.refreshLobby();
+		} catch (ExceptionBase e) {
+			view.showError();
+			e.printStackTrace();
+		}
 	}
 
 }

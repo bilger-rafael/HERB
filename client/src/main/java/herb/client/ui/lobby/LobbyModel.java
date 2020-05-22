@@ -21,13 +21,13 @@ public class LobbyModel extends Model {
 		startLobbyUpdater();
 	}
 	//refresh lobby
-	private void refreshLobby() {
-		try {
+	public void refreshLobby()  throws ExceptionBase{
+//		try {
 			lobby = Lobby.readLobby(lobby.getName());
-		} catch (ExceptionBase e) {
-			// TODO show error message
-			e.printStackTrace();
-		}
+//		} catch (ExceptionBase e) {
+//			// TODO show error message
+//			e.printStackTrace();
+//		}
 		//update amount of players by clearing and adding again
 		this.players.clear();
 		this.players.addAll(Arrays.asList(lobby.getPlayers()).stream().filter(x -> x != null).collect(Collectors.toList()));
@@ -38,7 +38,13 @@ public class LobbyModel extends Model {
 			@Override
 			public void run() {
 				while (!getLobby().isFull()) {
-					Platform.runLater(() -> refreshLobby());
+					Platform.runLater(() -> {
+						try {
+							refreshLobby();
+						} catch (ExceptionBase e1) {
+							e1.printStackTrace();
+						}
+					});
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
