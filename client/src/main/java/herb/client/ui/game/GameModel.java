@@ -321,10 +321,14 @@ public class GameModel extends Model {
 	}
 	
 	private void refreshRematch() {
+		try {
 		Boolean r = Datastore.getInstance().getMainPlayer().getRound().getRematch();
 		if (r == null)
 			return;
 		this.rematch.setValue(r);
+		}catch (Exception e){
+			// error is handled - if one quits, the others are also put back to the Launcher
+		}
 	}
 
 	public Player getStartingPlayer() {

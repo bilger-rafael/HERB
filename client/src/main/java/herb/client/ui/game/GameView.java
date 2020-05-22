@@ -171,8 +171,8 @@ public class GameView extends View<GameModel> {
 		ownCards.setMinHeight(300);
 		ownCards.setMinWidth(1300);		
 		spacer = new Region();
-		//change
-		spacer.setMinWidth(670d);
+		//changed
+		spacer.setMinWidth(600d);
 		playerLabel = new Label(players.get(0).getUsername());
 		playerLabel.setMinHeight(20);
 		
@@ -189,13 +189,20 @@ public class GameView extends View<GameModel> {
 	   	messageLabel = new Label();
 	   	messageLabel.setId("message");
 	   	messageLabel.setVisible(false);
+	   	messageLabel.setMaxSize(400, 100);
 	   	messageLabelS = new Label();
 	   	messageLabelS.setId("message");
 	   	messageLabelS.setVisible(false);
+	   	messageLabelS.setMaxSize(400, 100);
 	   	messageBox = new StackPane();
 		messageBox.getChildren().addAll(messageLabel, messageLabelS);
 
 	   	
+//		tMain.setAlignment(Pos.CENTER);
+//		tRight.setAlignment(Pos.CENTER);
+//		tOppo.setAlignment(Pos.CENTER);
+//		tLeft.setAlignment(Pos.CENTER);
+		
 		// Cards and Trump images
 	    rects = new ArrayList<>();
 	    trickRects = new ArrayList<>();
@@ -220,10 +227,6 @@ public class GameView extends View<GameModel> {
 		upperPart.setRight(right);
 		
 		//  layout
-//		playerLabel.setStyle("-fx-background-color: white");
-//		rightHandLabel.setStyle("-fx-background-color: white");
-//		oppositeLabel.setStyle("-fx-background-color: white");
-//		leftHandLabel.setStyle("-fx-background-color: white");
 		playerLabel.setMinWidth(150);
 		rightHandLabel.setMinWidth(150);
 		oppositeLabel.setMinWidth(150);
@@ -319,7 +322,7 @@ public class GameView extends View<GameModel> {
 	// Roesti - GridPane with trick rectangles
 	private void setTrick() {
 		table.add(trickLabel, 1, 0, 1, 1);
-	    table.add(spacerTable, 0, 0, 1, 1);
+//		table.add(spacerTable, 0, 0, 1, 1);
 	    table.add(spacerTable2, 3, 0, 1, 1);
 	    tOppo.setPrefSize(tCARD_W,  tCARD_H);
 	    tLeft.setPrefSize(tCARD_W,  tCARD_H);
@@ -356,6 +359,7 @@ public class GameView extends View<GameModel> {
 		table.setVgap(10);
 		table.setAlignment(Pos.CENTER);
 		tablePart.getChildren().add(table);
+		tablePart.setAlignment(Pos.TOP_CENTER);
 	}
 	
 	// update ImagePatterns (getMyCards from Server)
@@ -439,89 +443,50 @@ public class GameView extends View<GameModel> {
 				
 				if (s.equals(model.getPlayers().get(0))) {	
 					trickRects.get(i).setFill(pattern);
-					
-//					if(i == 0) {
-//						updateTMain(pattern);
-//					}
-//					if (i == 1) {
-//			//			trickRects.get(1).setFill(pattern);
-//						updateTRight(pattern);
-//					}
-//					if (i == 2) {
-//			//			trickRects.get(2).setFill(pattern);
-//						updateTOppo(pattern);
-//					}
-//					if (i == 3) {
-//			//			trickRects.get(3).setFill(pattern);
-//						done = true;
-//						updateTLeft(pattern);
-//						System.out.println("I'm here");	
-//					}	
 				}
 				
 				if (s.equals(model.getPlayers().get(1))) {
 					if(i == 0) {
 						trickRects.get(1).setFill(pattern);
-//						updateTRight(pattern);
-//						System.out.println(" hello again ");
 					}
 					if (i == 1) {
 						trickRects.get(2).setFill(pattern);
-					//	updateTOppo(pattern);
-
 					}
 					if (i == 2) {
 						trickRects.get(3).setFill(pattern);
-					//	updateTLeft(pattern);
-
 					}
 					if (i == 3) {
 						trickRects.get(0).setFill(pattern);
-//						done = true;
-//						updateTMain(pattern);
-//						System.out.println("I'm the fourth");
 					}
 				}
 				
 				if (s.equals(model.getPlayers().get(2))) {
 					if(i == 0) {
 						trickRects.get(2).setFill(pattern);
-//						updateTOppo(pattern);
-//						System.out.println("Iwas");
 					}
 					if (i == 1) {
 						trickRects.get(3).setFill(pattern);
-						//updateTLeft(pattern);
 					}
 					if (i == 2) {
-						//updateTMain(pattern);
 						trickRects.get(0).setFill(pattern);
 					}
 					if (i == 3) {
 						trickRects.get(1).setFill(pattern);
-//						done = true;
-//						updateTRight(pattern);
-//						System.out.println("Iwas4");
 					}
 				}
 				
 				if (s.equals(model.getPlayers().get(3))) {
 					if(i == 0) {
 						trickRects.get(3).setFill(pattern);
-					//	updateTLeft(pattern);
 					}
 					if (i == 1) {
-					//	updateTMain(pattern);
 						trickRects.get(0).setFill(pattern);
 					}
 					if (i == 2) {
 						trickRects.get(1).setFill(pattern);
-					//	updateTRight(pattern);
 					}
 					if (i == 3) {
 						trickRects.get(2).setFill(pattern);
-//						done = true;
-//						updateTOppo(pattern);
 					}
 				}
 			}     
@@ -529,8 +494,6 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void updateTMain(ImagePattern pattern) {
-//		model.setStopThread();
-	
 		trickRects.get(0).setFill(pattern);
 
 		// idea from Genuine Coder (youtube: https://www.youtube.com/watch?v=dyS0tdJ5wTw)
@@ -875,8 +838,9 @@ public class GameView extends View<GameModel> {
     	buttons.setSpacing(10);
     	buttonsBox = new VBox();
     	buttonsBox.getChildren().addAll(buttons, revancheLabel);
-    	buttonsBox.setAlignment(Pos.CENTER);
+
 		topBox.getChildren().addAll(winnerLabel2, winnerLabel);
+
 		winnerBox.getChildren().addAll(pointsLabel, topBox);
 
     	String label = "";
@@ -897,10 +861,10 @@ public class GameView extends View<GameModel> {
 		
 		//  layout
 		namesBox.setAlignment(Pos.CENTER_LEFT);
-		pointsBox.setAlignment(Pos.CENTER);
+		pointsBox.setAlignment(Pos.CENTER_RIGHT);
 		winnerBox.setAlignment(Pos.TOP_CENTER);
-		winnerLabel2.setAlignment(Pos.CENTER);
-		buttons.setAlignment(Pos.BOTTOM_CENTER);
+		topBox.setAlignment(Pos.TOP_CENTER);
+    	buttonsBox.setAlignment(Pos.TOP_LEFT);
 		pointPane.setPadding(new Insets(30, 30, 30, 30));
 		pointPane.setMaxSize(530,  350);
 		pointPane.setId("tafel");
@@ -945,9 +909,11 @@ public class GameView extends View<GameModel> {
 		}
 		String labelW = "";
 		for (int i = 0; i < winners.size(); i++) {
-			labelW += winners.get(i).getUsername().toString();
-			if(winners.size()>1) {
-				labelW += " & ";
+			if(i==0) {
+				labelW += winners.get(i).getUsername().toString();
+			}
+			if(i>0) {
+				labelW += " & "+winners.get(i).getUsername().toString();
 			}
 		}
 		winnerLabel.setText(labelW);
@@ -998,7 +964,6 @@ public class GameView extends View<GameModel> {
 		menuCardSet.setText(t.getString("program.game.menuCardSet"));
 		trickLabel2.setText(t.getString("program.game.order"));
 		trumpLabel.setText(t.getString("program.game.trump"));
-		//startingPlayerText.setText(t.getString("program.game.startingPlayer"));
 		revancheButton.setText(t.getString("program.game.revancheButton"));
 		quitButton.setText(t.getString("program.game.quitButton"));
 		frenchSet.setText(t.getString("program.game.frenchSet"));
@@ -1074,7 +1039,8 @@ public class GameView extends View<GameModel> {
 	
 	public void setRevancheLabel() {
 		revancheLabel.setVisible(true);
-		revancheLabel.setStyle("-fx-text-fill: WHITE");
+		revancheLabel.setStyle("-fx-text-fill: GOLD");
+		revancheLabel.setStyle("-fx-text-size: 14px");
 	}
 	
 	public Label getMessageLabel() {
