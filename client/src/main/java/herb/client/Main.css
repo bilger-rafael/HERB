@@ -37,7 +37,7 @@
 	-fx-font-size: 18.0px;
 	-fx-letter-spacing: 2.0px;
 	-fx-word-spacing: 2.0px;
-	-fx-font-weight: 700.0;
+	-fx-font-weight: bold;
 	-fx-text-decoration: none;
 	-fx-font-style: italic;
 	-fx-font-variant: small-caps;
@@ -71,7 +71,7 @@
 	-fx-font-weight: bold;
 	-fx-letter-spacing: 2.0px;
 	-fx-word-spacing: 2.0px;
-	-fx-font-weight: 700.0;
+	-fx-font-weight: bold;
 	-fx-text-decoration: none;
 	-fx-font-style: italic;
 	-fx-font-variant: small-caps;
