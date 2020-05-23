@@ -10,15 +10,16 @@ import javafx.collections.ListChangeListener;
 
 //Herren
 public class LobbyController extends Controller<LobbyModel, LobbyView> {
+
 	private ListChangeListener<Player> changeListener;
 
 	public LobbyController(LobbyModel model, LobbyView view) {
 		super(model, view);
-		//action for cancelButton
+		// action for cancelButton
 		view.getCancelButton().setOnAction(e -> getBackLauncherView());
-		//action for botButton
+		// action for botButton
 		view.getBotsButton().setOnAction(e -> createViewBot());
-		//update the amount of players in a lobby
+		// update the amount of players in a lobby
 		changeListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> c) {
 				if (model.getLobby().isFull()) {
@@ -31,13 +32,15 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		model.getPlayers().addListener(changeListener);
 
 	}
-	//methode for cancelButton
+
+	// methode for cancelButton
 	private void getBackLauncherView() {
 		try {
-			//if lobby contains less then 4 players, player can leave the lobby
+			// if lobby contains less then 4 players, player can leave the lobby
 			this.model.getLobby().removePlayer(Datastore.getInstance().getMainPlayer());
+			view.getMessage().setVisible(false);
 		} catch (ExceptionBase e) {
-			//if lobby contains 4 players it is not possible anymore
+			// if lobby contains 4 players it is not possible anymore
 			view.getMessage().setVisible(true);
 			return;
 		}
@@ -49,19 +52,25 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 	private void enterGame() {
 		// automatically, when 4 players chose that lobby
 		Main.getMainProgram().getGameView().start();
+		view.getMessageRefresh().setVisible(false);
+		view.getMessage().setVisible(false);
 		this.view.stop();
 	}
-	//methode for botButton
+
+	// methode for botButton
 	private void createViewBot() {
+		view.getMessage().setVisible(false);
 		Main.getMainProgram().getBotView(this.model.getLobby()).start();
 
 	}
-	
+
 	private void refreshLobby() {
 		try {
 			model.refreshLobby();
+			view.getMessageRefresh().setVisible(false);
 		} catch (ExceptionBase e) {
-			view.showError();
+			view.showErrorRefresh();
+			view.getMessageRefresh().setVisible(true);
 			e.printStackTrace();
 		}
 	}

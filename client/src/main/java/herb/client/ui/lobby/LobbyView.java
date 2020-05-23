@@ -3,6 +3,7 @@ package herb.client.ui.lobby;
 import javafx.stage.Stage;
 
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import herb.client.ressources.Player;
 import herb.client.ui.core.View;
@@ -45,13 +46,13 @@ public class LobbyView extends View<LobbyModel> {
 		
 	public LobbyView(Stage stage, LobbyModel model) {
 		super(stage, model);
-		ServiceLocator.getInstance().getLogger().info("Application view initialized");
+		ServiceLocator.getInstance().getLogger().info("Application Lobby view initialized");
 	}
 
 	@Override
 	protected Scene create_GUI() {
 		ServiceLocator sl = ServiceLocator.getInstance();
-		
+		Logger logger = sl.getLogger();
 		this.root = new BorderPane();
 
 		//menu
@@ -96,8 +97,8 @@ public class LobbyView extends View<LobbyModel> {
 	    botsButton.setPrefSize(220, 50);  
 	    playerOverview.setPrefWidth(300);
 	    playerOverview.setMaxHeight(125);
-	    
 		zero.setMinWidth(20);
+		
 		//spacing and padding
 		bottomBox.setPadding(new Insets(5, 50, 15, 50));
 	    centerBox.setPadding(new Insets(35, 50, 10, 50));
@@ -115,7 +116,7 @@ public class LobbyView extends View<LobbyModel> {
 		messageRefresh.setVisible(false);
 		root.setId("background");
 
-		//list not selectable
+		//list not selectable: just to look at
 	    playerOverview.setMouseTransparent(true);
 	    playerOverview.setFocusTraversable(false);
 		
@@ -140,6 +141,9 @@ public class LobbyView extends View<LobbyModel> {
 		if (message.getText()!="") {
 			message.setText(t.getString("program.lobby.message"));
 		}
+		if (messageRefresh.getText()!="") {
+			messageRefresh.setText(t.getString("program.lobby.messageRefresh"));
+		}
 		
 	}
 	//getter
@@ -158,9 +162,17 @@ public class LobbyView extends View<LobbyModel> {
 	public Label getMessage() {
 		return message;
 	}
+	
+	public Label getMessageRefresh() {
+		return messageRefresh;
+	}
 	//To show the error message in GUI if Login fails
 	public void showError() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		message.setText(t.getString("program.lobby.message"));
+	}
+	public void showErrorRefresh() {
+		Translator t = ServiceLocator.getInstance().getTranslator();
+		messageRefresh.setText(t.getString("program.lobby.messageRefresh"));
 	}
 }

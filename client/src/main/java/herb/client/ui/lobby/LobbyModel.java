@@ -7,11 +7,14 @@ import herb.client.ressources.Lobby;
 import herb.client.ressources.Player;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Model;
+import herb.client.utils.ServiceLocator;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 //Herren
 public class LobbyModel extends Model {
+	ServiceLocator serviceLocator;
 	private Lobby lobby;
 	private ObservableList<Player> players = FXCollections.observableArrayList();
 
@@ -19,19 +22,20 @@ public class LobbyModel extends Model {
 		super();
 		this.lobby = lobby;
 		startLobbyUpdater();
+		serviceLocator = ServiceLocator.getInstance();
+		serviceLocator.getLogger().info("Application Lobby model initialized");
 	}
-	//refresh lobby
-	public void refreshLobby()  throws ExceptionBase{
-//		try {
-			lobby = Lobby.readLobby(lobby.getName());
-//		} catch (ExceptionBase e) {
-//			// TODO show error message
-//			e.printStackTrace();
-//		}
-		//update amount of players by clearing and adding again
+
+	// refresh lobby
+	public void refreshLobby() throws ExceptionBase {
+		lobby = Lobby.readLobby(lobby.getName());
+
+		// update amount of players by clearing and adding again
 		this.players.clear();
-		this.players.addAll(Arrays.asList(lobby.getPlayers()).stream().filter(x -> x != null).collect(Collectors.toList()));
+		this.players
+				.addAll(Arrays.asList(lobby.getPlayers()).stream().filter(x -> x != null).collect(Collectors.toList()));
 	}
+
 	// Create thread to update Lobby periodically
 	private void startLobbyUpdater() {
 		Runnable r = new Runnable() {
@@ -58,11 +62,12 @@ public class LobbyModel extends Model {
 		t.start();
 
 	}
-	//getter
+
+	// getter
 	public Lobby getLobby() {
 		return lobby;
 	}
-	
+
 	public ObservableList<Player> getPlayers() {
 		return players;
 	}
