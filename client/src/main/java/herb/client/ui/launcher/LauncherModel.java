@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
 //Herren
 public class LauncherModel extends Model {
-	
+	ServiceLocator serviceLocator;
 	private ObservableList<Lobby> lobbys = FXCollections.observableArrayList();
 	private ObservableList<HighScore> highScore = FXCollections.observableArrayList();
 	private Lobby tempSelectedLobby;
@@ -23,7 +23,8 @@ public class LauncherModel extends Model {
 		super();
 		startLobbyUpdater();
 		startHighScoreUpdater();
-		
+		serviceLocator = ServiceLocator.getInstance();
+		serviceLocator.getLogger().info("Application Launcher model initialized");
 	}
 
 	//refresh amount lobbys in the list

@@ -51,10 +51,12 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 			lobby.addPlayer(Datastore.getInstance().getMainPlayer());
 			view.getMessage().setVisible(false);
 			Main.getMainProgram().getLobbyView(lobby).start();
+			serviceLocator.getLogger().info("Es konnte erfolgreich der Lobby beigetreten werden.");
 		} catch (ExceptionBase e) {
 			view.showError();
 			view.getMessage().setVisible(true);
 			Main.getMainProgram().getLauncher().start();
+			serviceLocator.getLogger().info("Lobby ist voll.");
 		}
 
 	}
@@ -76,6 +78,7 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		view.stop();
 		serviceLocator.getLogger().info("Logout");
 		Main.getMainProgram().getLoginView().start();
+		serviceLocator.getLogger().info("Erfolgreich ausgeloggt.");
 	}
 
 	private void refreshLobbyList() {
