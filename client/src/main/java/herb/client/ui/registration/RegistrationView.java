@@ -2,7 +2,6 @@
 package herb.client.ui.registration;
 
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -11,7 +10,6 @@ import herb.client.utils.Translator;
 import herb.client.ui.core.View;
 import herb.client.ui.login.LoginModel;
 import herb.client.utils.ServiceLocator;
-import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,21 +25,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
 //Herren
 public class RegistrationView extends View<RegistrationModel> {
 
 	private RegistrationModel model;
-	
+
 	private BorderPane root, bottomBox;
 	private StackPane messageStackPane;
 	private VBox centerBox, labelBox, textFieldBox;
 	private HBox fieldBox;
-	
-	private Region zero, one, two, three, four;	
-	
+
+	private Region zero, one, two, three, four;
+
 	private TextField nameField;
 	private PasswordField pwField;
-	
+
 	private Button registrationButton, cancelButton;
 
 	private Label nameLabel, pwLabel;
@@ -49,7 +48,7 @@ public class RegistrationView extends View<RegistrationModel> {
 
 	private MenuBar headMenu;
 	private Menu menuLanguage;
-	
+
 	public RegistrationView(Stage stage, RegistrationModel model) {
 		super(stage, model);
 		ServiceLocator.getInstance().getLogger().info("Application view initialized");
@@ -58,18 +57,18 @@ public class RegistrationView extends View<RegistrationModel> {
 	@Override
 	protected Scene create_GUI() {
 		ServiceLocator sl = ServiceLocator.getInstance();
-		Logger logger = sl.getLogger();		
+		Logger logger = sl.getLogger();
 		this.root = new BorderPane();
-		
+
 		/**
 		 * menu
 		 */
 		headMenu = new MenuBar();
 		menuLanguage = new Menu();
 		headMenu.getMenus().addAll(menuLanguage);
-		
+
 		/**
-		 *  link to Locale
+		 * link to Locale
 		 */
 		for (Locale locale : sl.getLocales()) {
 			MenuItem language = new MenuItem(locale.getLanguage());
@@ -80,7 +79,7 @@ public class RegistrationView extends View<RegistrationModel> {
 				updateLabels();
 			});
 		}
-		
+
 		/**
 		 * items
 		 */
@@ -96,26 +95,26 @@ public class RegistrationView extends View<RegistrationModel> {
 		four = new Region();
 		registrationButton = new Button();
 		cancelButton = new Button();
-		
-		//panes
+
+		// panes
 		labelBox = new VBox();
 		textFieldBox = new VBox();
 		fieldBox = new HBox();
 		messageStackPane = new StackPane();
 		centerBox = new VBox();
 		bottomBox = new BorderPane();
-		
-		//get children
-		labelBox.getChildren().addAll(nameLabel,zero,pwLabel);
-		textFieldBox.getChildren().addAll(nameField,one, pwField);
-		fieldBox.getChildren().addAll(four, labelBox,two,textFieldBox);
+
+		// get children
+		labelBox.getChildren().addAll(nameLabel, zero, pwLabel);
+		textFieldBox.getChildren().addAll(nameField, one, pwField);
+		fieldBox.getChildren().addAll(four, labelBox, two, textFieldBox);
 		messageStackPane.getChildren().add(message);
-		centerBox.getChildren().addAll(fieldBox,messageStackPane);
+		centerBox.getChildren().addAll(fieldBox, messageStackPane);
 		bottomBox.setLeft(registrationButton);
 		bottomBox.setCenter(three);
 		bottomBox.setRight(cancelButton);
 
-		//size
+		// size
 		nameField.setPrefSize(130, 60);
 		pwField.setPrefSize(130, 60);
 		zero.setPrefHeight(40);
@@ -127,34 +126,34 @@ public class RegistrationView extends View<RegistrationModel> {
 		textFieldBox.setPrefSize(230, 90);
 		registrationButton.setPrefSize(220, 50);
 		cancelButton.setPrefSize(220, 50);
-		
-		//spacing and padding
+
+		// spacing and padding
 		bottomBox.setPadding(new Insets(20, 50, 15, 50));
 		centerBox.setPadding(new Insets(35, 20, 0, 20));
 		centerBox.setSpacing(10);
 		centerBox.setSpacing(10);
-		
-		//position
+
+		// position
 		registrationButton.setAlignment(Pos.BASELINE_CENTER);
 		cancelButton.setAlignment(Pos.BASELINE_CENTER);
 		centerBox.setAlignment(Pos.BASELINE_CENTER);
-	
-		//css
+
+		// css
 		pwField.setId("textField");
 		nameField.setId("textField");
 		message.setId("message");
-		message.setVisible(false);
 		root.setId("background");
-		
+
 		root.setTop(headMenu);
 		root.setCenter(centerBox);
 		root.setBottom(bottomBox);
 
 		updateLabels();
-		Scene scene = new Scene(root);		
+		Scene scene = new Scene(root);
 		return scene;
 	}
-	//update items
+
+	// update items
 	protected void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		// language settings
@@ -165,12 +164,13 @@ public class RegistrationView extends View<RegistrationModel> {
 		registrationButton.setText(t.getString("program.registration.registrationButton"));
 		cancelButton.setText(t.getString("program.registration.cancelButton"));
 		stage.setTitle(t.getString("program.registration.stage"));
-		//if label is not visible, do not update
-		if (message.getText()!="") {
+		// if label is not visible, do not update
+		if (message.getText() != "") {
 			message.setText(t.getString("program.registration.message"));
 		}
 
 	}
+
 	/**
 	 * getter
 	 */
@@ -180,29 +180,26 @@ public class RegistrationView extends View<RegistrationModel> {
 
 	public Button getCancelButton() {
 		return cancelButton;
-}
+	}
+
 	public TextField getNameField() {
 		return nameField;
 	}
-	
+
 	public PasswordField getPwField() {
 		return pwField;
 	}
-	
+
 	public void resetPasswordField() {
 		pwField.setText("");
 	}
-	
+
 	public void resetNameField() {
 		nameField.setText("");
 	}
-	
+
 	public Label getMessage() {
 		return message;
-	}
-	
-	public void resetMessageLabel() {
-		message.setText("");
 	}
 
 	/**
