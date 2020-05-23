@@ -7,7 +7,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.geometry.Pos;
@@ -43,12 +42,13 @@ public class SplashView extends View<SplashModel> {
         root.setTop(topBox);
 
         progress = new ProgressBar();
+        progress.setPrefWidth(200);
         HBox bottomBox = new HBox();
         bottomBox.setId("progressbox");
         bottomBox.getChildren().add(progress);
         root.setBottom(bottomBox);
 
-        Scene scene = new Scene(root, 300, 200);
+        Scene scene = new Scene(root, 600, 350);
         
         return scene;
     }
