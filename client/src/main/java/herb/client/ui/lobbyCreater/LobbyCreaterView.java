@@ -128,7 +128,7 @@ public class LobbyCreaterView extends View<LobbyCreaterModel> {
 
 		cancelButton.setText(t.getString("program.lobbyCreater.cancelButton"));
 		okButton.setText(t.getString("program.lobbyCreater.okButton"));
-		menuLanguage.setText(t.getString("program.lobbyCreater.menuLanguage"));
+		menuLanguage.setText(t.getString("program.menu.file.language"));
 		info.setText(t.getString("program.lobbyCreater.info"));
 		stage.setTitle(t.getString("program.lobbyCreater.titel"));
 		if (message.getText() != "") {
