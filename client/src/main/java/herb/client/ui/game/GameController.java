@@ -1,6 +1,5 @@
 package herb.client.ui.game;
 
-
 import herb.client.Main;
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 
-// roesti
+//  roesti
 public class GameController extends Controller<GameModel, GameView> {
 
 	private Card playedCard;
@@ -33,7 +32,7 @@ public class GameController extends Controller<GameModel, GameView> {
 
 		startPlayablesUpdater();
 
-		// trick-listener, nextPlayer-listener and trump listener
+		// trickListener updates the trickCards in view
 		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {
 			public void onChanged(Change<? extends Card> c) {
 				while (c.next()) {
@@ -42,11 +41,13 @@ public class GameController extends Controller<GameModel, GameView> {
 						view.updateTrick(filter);	
 			}}}
 		};
+		//  myTurnListener updates the starting player in view
+		//  updates the playable cards and the label 'it's your turn' of MainPlayer when his turn comes
+		//  shows the points after the last trick
 		ListChangeListener<Player> myTurnListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> p) {
 						
 				if (model.getTrickNumber() == 9 && model.getTrickCards().size() == 4) {
-					// stop all Listeners
 					view.updatePointPane(model.getScores());
 					model.setStopThread();
 					setCurrentStopThread();
@@ -62,6 +63,7 @@ public class GameController extends Controller<GameModel, GameView> {
 							view.setTurn();
 			}}}}
 		};
+		//  trumpListener waits for chosen trump and is then stopped
 		ListChangeListener<Trump> trumpListener = new ListChangeListener<Trump>() {
 			public void onChanged(Change<? extends Trump> tr) {
 				if (model.getTrump().size() > 0) {
@@ -76,7 +78,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		model.getStartingPlayers().addListener(myTurnListener);
 		model.getTrump().addListener(trumpListener);
 
-		// handling trump choice
+		// handling trump choice of MainPlayer
 		view.getTrumpChoice().get(0).setOnMouseClicked(e -> forwardTrump(e));
 		view.getTrumpChoice().get(1).setOnMouseClicked(e -> forwardTrump(e));
 		view.getTrumpChoice().get(2).setOnMouseClicked(e -> forwardTrump(e));
@@ -84,7 +86,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.getTrumpChoice().get(4).setOnMouseClicked(e -> forwardTrump(e));
 		view.getTrumpChoice().get(5).setOnMouseClicked(e -> forwardTrump(e));
 
-		// handling played card
+		// handling played card of MainPlayer
 		view.getRects().get(0).setOnMouseClicked(e -> forwardPlayedCard(e));
 		if (view.getRects().size() > 1)
 			view.getRects().get(1).setOnMouseClicked(e -> forwardPlayedCard(e));
@@ -119,26 +121,26 @@ public class GameController extends Controller<GameModel, GameView> {
 		if (view.getRects().size() > 16)
 			view.getRects().get(16).setOnMouseClicked(e -> forwardPlayedCard(e));
 
-		// handling end of a round
+		// handling end of a round - user choices 'revanche' or 'quit'
 		view.getRevancheButton().setOnAction(e -> startRevanche());
 		view.getQuitButton().setOnAction(e -> quitGame());
 
-		// change card set
+		// change card set if changed via menu option
 		view.getFrenchOption().setOnAction(e -> changeCardSet2French());
 		view.getGermanOption().setOnAction(e -> changeCardSet2German());
 	}
 
-	// identify clicked Card and play if isPlayable
+	// identify clicked Card and play if isPlayable, update MainPlayers cards
 	public void forwardPlayedCard(MouseEvent e) {
 		try {
-		Rectangle recti = (Rectangle) e.getSource();
-		int index = ((view.getRects().indexOf(recti) / 2 - view.getStartingPosition() / 2));
-		playedCard = model.getMyCards().get((index));
+			Rectangle recti = (Rectangle) e.getSource();
+			int index = ((view.getRects().indexOf(recti) / 2 - view.getStartingPosition() / 2));
+			playedCard = model.getMyCards().get((index));
 		}
 		catch(Exception error) {
 			view.showErrorMessage();
 			view.getMessageLabel().setVisible(true);
-			serviceLocator.getLogger().info("wrong choise - playCard");
+			serviceLocator.getLogger().info("wrong choice - playCard");
 		}
 		if (playedCard.isPlayable()) {
 			playCard(playedCard);
@@ -152,6 +154,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.updateLeftPlayer();
 	}
 	
+	//  send played card to server
 	public Card playCard(Card playedCard) {
 		try {
 			Datastore.getInstance().getMainPlayer().play(playedCard);
@@ -164,6 +167,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		return playedCard;
 	}
 
+	//  identify chosen trump, show trump in view and put trumpChoice panel to back
 	public void forwardTrump(MouseEvent f) {
 		Rectangle recti = (Rectangle) f.getSource();
 		chosenTrump = Trump.values()[view.getTrumpChoice().indexOf(recti)];
@@ -171,6 +175,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.changeTopOfStackPane();
 	}
 	
+	//  send chosen trump to server
 	public Trump setTrump(Trump chosenTrump) {
 		try {
 			Datastore.getInstance().getMainPlayer().chooseTrump(chosenTrump);
@@ -183,6 +188,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		return chosenTrump;
 	}
 
+	//  update ImagePatterns of cards and shown trump image - frenchSet
 	public void changeCardSet2French() {
 		model.setCardSet("Fr");
 		view.updateImagePatterns();
@@ -192,9 +198,9 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.updateOppoPlayer();
 		view.updateRightPlayer();
 		view.updateTrumpInfo(chosenTrump);
-
 	}
 
+	//  update ImagePatterns of cards and shown trump image - germanSet
 	public void changeCardSet2German() {
 		model.setCardSet("De");
 		view.updateImagePatterns();
@@ -206,11 +212,13 @@ public class GameController extends Controller<GameModel, GameView> {
 		view.updateTrumpInfo(chosenTrump);
 	}
 
+	// open launcher
 	public void quitGame() {
 		demandRematch(false);
 		goToLauncher();
 	}
 
+	// set up next round in same lobby 
 	private void startRevanche() {
 		demandRematch(true);
 		model.startRematchUpdater();		
@@ -219,8 +227,8 @@ public class GameController extends Controller<GameModel, GameView> {
 			enterGame();
 		});
 		view.setRevancheLabel();
-		view.getRevancheButton().disableProperty();
 		// When Revanche is pressed, the button should not be pressable anymore
+		view.getRevancheButton().disableProperty();
 	}
 
 	private void goToLauncher() {
@@ -228,6 +236,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		Main.getMainProgram().getLauncher().start();
 	}
 
+	// start next round in same lobby
 	private void enterGame() {
 		try {
 			Thread.sleep(5000);
@@ -251,6 +260,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		}
 	}
 	
+	// updates current player to know when playable cards must be updated and label 'it's your turn' should be set
 	public void refreshCurrentPlayer() {
 		try {
 			trick = Datastore.getInstance().getMainPlayer().getRound().getTricks().getLast();
@@ -270,6 +280,7 @@ public class GameController extends Controller<GameModel, GameView> {
 		}
 	}
 	
+	// start Thread PlayablesUpdater for current playable cards
 	private void startPlayablesUpdater() {
 		Runnable ru = new Runnable() {
 			@Override

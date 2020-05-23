@@ -62,8 +62,8 @@ public class GameView extends View<GameModel> {
 	private HBox tMain, tRight, tOppo, tLeft, buttons;
 	private Label trickLabel, trickLabel2, playerLabel, leftHandLabel, rightHandLabel, oppositeLabel, lobbyLabel;
 	private Label pointsLabel, pointsPlayerLabel, pointsPlayerLabel2, playedPointsLabel, playedPointsLabel2, winnerLabel, winnerLabel2; 
-	private Label trumpLabel, trumpOrderLabel, startingPlayerLabel, startingPlayerText, messageLabel, messageLabelS, revancheLabel;
-	private Region spacer, spacerTable, spacerTable2, spacerRight, spacerOppo;
+	private Label trumpLabel, trumpOrderLabel, messageLabel, messageLabelS, revancheLabel;
+	private Region spacer, spacerTable, spacerTable2, spacerOppo;
 	private BorderPane upperPart, pointPane;
 	private StackPane tablePart, messageBox;
 	private ArrayList<Rectangle> rects, trickRects, trumpRects;
@@ -86,8 +86,7 @@ public class GameView extends View<GameModel> {
 	private final int oCARD_H = 514/4;
 	private int startingPosition;
 	private int tCounter = 0;
-	private int plCardsCounter = 0;
-	private boolean done1 = false, done2 = false, done3 = false, done4 = false, done = false;
+
 	
 	public GameView(Stage stage, GameModel model) {
 		super(stage, model);
@@ -101,7 +100,7 @@ public class GameView extends View<GameModel> {
 	
 		this.root = new AnchorPane();
 		
-		// create MenuBar for language and exit
+		// create MenuBar for language and card set
 		menuBar = new MenuBar();
 		menuLanguage = new Menu();	
 		menuCardSet = new Menu();
@@ -158,7 +157,6 @@ public class GameView extends View<GameModel> {
 		right = new HBox();
 		rightHandSide = new VBox();
 		rightHandLabel = new Label(players.get(1).getUsername());
-		spacerRight = new Region();
 		opposite = new VBox();
 		oppositeSide = new HBox();
 		spacerOppo= new Region();
@@ -182,8 +180,6 @@ public class GameView extends View<GameModel> {
 		// display lobby and starting player (currentPlayer only temporary)
 		lobbyBox = new VBox();
 		lobbyLabel = new Label(model.getLobbyName());
-	    startingPlayerText = new Label();
-	    startingPlayerLabel = new Label();
 	   	lobbyBox.getChildren().addAll(lobbyLabel);
 	   	messageLabel = new Label();
 	   	messageLabel.setId("message");
@@ -223,6 +219,7 @@ public class GameView extends View<GameModel> {
 		oppositeLabel.setMinWidth(150);
 		leftHandLabel.setMinWidth(150);
 		
+		//  anchorPane keeps the cards of MainPlayer visible when resized
 		root.getChildren().addAll(upperPart, bottom, menuBar, lobbyBox, showTrumpBox, messageBox);
 
 		root.setLeftAnchor(menuBar, 0d);
@@ -252,15 +249,14 @@ public class GameView extends View<GameModel> {
 		return scene;
 	}
 	
-///////////////////////////////////////////////////////////////
+//-------------------------------------------------------------------------------------------
 	
 	
-	// Roesti - create hand of MainPlayer: ownCards GridPane
+	// create hand of MainPlayer: ownCards GridPane
 	private void setMyCards() {
 		cards = model.getMyCards();
 		
 		for (int i=0; i<MAX_RECTS+1; i++) {
-
 		    // rectangle with ImagePattern (imageview cannot be fanned out)
 		    Rectangle rectangleCard = new Rectangle();
 		    rectangleCard.setHeight(mCARD_H);
@@ -268,8 +264,7 @@ public class GameView extends View<GameModel> {
 		    rectangleCard.setArcHeight(20);
 		    rectangleCard.setArcWidth(20);
 		    rectangleCard.setStroke(Color.BLACK);	    		    
-
-		      //  fan out cards
+		    //  fan out cards
 		    Rotate rotate = new Rotate();
 		    rotate.setAngle(-40+5*i); 
 		    rotate.setPivotX(mCARD_W/2); 	
@@ -280,8 +275,6 @@ public class GameView extends View<GameModel> {
 		}			
 		// center fanned out Cards
 		updateImagePatterns();
-
-		//changed
 		ownCards.setMinHeight(200);
 		ownCards.setHgap(-150);
 		ownCards.add(spacer, 0, 0);
@@ -293,8 +286,8 @@ public class GameView extends View<GameModel> {
 		bottom.setAlignment(Pos.CENTER);
 	}
 	
-	public void updatePlayables(Player curr) {
-		
+	// update playable cards of MainPlayer (fitting to 17 rectangles)
+	public void updatePlayables(Player curr) {		
 		if(curr.equals(model.getPlayers().get(0))) {
 		cards = model.getMyCards();
 		
@@ -310,7 +303,7 @@ public class GameView extends View<GameModel> {
 	    }
 	}
 	
-	// Roesti - GridPane with trick rectangles
+	// create trick on table: GridPane with trick rectangles, including random rotation
 	private void setTrick() {
 		table.add(trickLabel, 1, 0, 1, 1);
 //		table.add(spacerTable, 0, 0, 1, 1);
@@ -353,7 +346,7 @@ public class GameView extends View<GameModel> {
 		tablePart.setAlignment(Pos.CENTER);
 	}
 	
-	// update ImagePatterns (getMyCards from Server)
+	// update ImagePatterns after card is played or card set is changed (getMyCards from Server)
 	public void updateImagePatterns() {		
 		removeTurn();
 		for (int d = 0; d < MAX_RECTS+1; d++)   {		
@@ -393,16 +386,16 @@ public class GameView extends View<GameModel> {
 		}
 	}
 	
-	// update trick ImagePatterns
-	public void updateTrick(ArrayList<Card> cardSet) {
-		
+	// update ImagePatterns of trick pushed by TrickUpdater
+	public void updateTrick(ArrayList<Card> cardSet) {	
 		clearTrick();
 
 		if(!cardSet.isEmpty()) {
-			trick = new ArrayList();
+			trick = new ArrayList<>();
 			trick = cardSet;
 
-			// update played card			
+			// update played cards, choose the correct starting point (starting player)
+			// bot cards are updated very quickly, need to update more than one card per time
 			for (int i = 0; i< trick.size(); i++) {	
 				String r1; 
 				String s1;
@@ -424,12 +417,6 @@ public class GameView extends View<GameModel> {
 			
 				if(c.equals(model.getPlayers().get(0))) {
 					setTurn();
-				}
-				
-				if (tCounter < model.getTrickNumber()) {
-					tCounter++;
-					done1 = false;
-					done = false;
 				}
 				
 				if (s.equals(model.getPlayers().get(0))) {	
@@ -484,124 +471,112 @@ public class GameView extends View<GameModel> {
 		}
 	}
 	
-	public void updateTMain(ImagePattern pattern) {
-		trickRects.get(0).setFill(pattern);
-
-		// idea from Genuine Coder (youtube: https://www.youtube.com/watch?v=dyS0tdJ5wTw)
-		trickRects.get(0).setTranslateX(0);
-		trickRects.get(0).setTranslateY(0);
-		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(0));
-		translateTransition.setFromY(200);
-		translateTransition.setToY(30);
-		translateTransition.setCycleCount(1);
-		translateTransition.setAutoReverse(true);
-		 
-		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(0));
-		scaleTransition.setFromX(2);
-		scaleTransition.setFromY(2);
-		scaleTransition.setToX(1);
-		scaleTransition.setToY(1);
-		scaleTransition.setCycleCount(1);
-		scaleTransition.setAutoReverse(true);
-
-		ParallelTransition parallelTransition = new ParallelTransition();
-		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
-		parallelTransition.setCycleCount(1);
-		parallelTransition.play();
-		model.unsetStopThread();
-	}
-	
-	public void updateTRight(ImagePattern pattern) {
-
-		trickRects.get(1).setFill(pattern);
-		model.setStopThread();
-
-		updateRightPlayer();
-		
-		trickRects.get(1).setTranslateX(0);
-		trickRects.get(1).setTranslateY(0);
-		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(1));
-		translateTransition.setFromX(400);
-		translateTransition.setToX(0);
-		translateTransition.setCycleCount(1);
-		translateTransition.setAutoReverse(true);
-		 
-		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(1));
-		scaleTransition.setFromX(2);
-		scaleTransition.setFromY(2);
-		scaleTransition.setToX(1);
-		scaleTransition.setToY(1);
-		scaleTransition.setCycleCount(1);
-		scaleTransition.setAutoReverse(true);
-
-		ParallelTransition parallelTransition = new ParallelTransition();
-		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
-		parallelTransition.setCycleCount(1);
-		parallelTransition.play();
-
-		model.unsetStopThread();
-     
-	}
-	
-	public void updateTOppo(ImagePattern pattern) {
-		model.setStopThread();
-
-		trickRects.get(2).setFill(pattern);
-		
-		trickRects.get(2).setTranslateX(0);
-		trickRects.get(2).setTranslateY(0);
-		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(2));
-		translateTransition.setFromY(-200);
-		translateTransition.setToY(0);
-		translateTransition.setCycleCount(1);
-		translateTransition.setAutoReverse(true);
-		 
-		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(2));
-		scaleTransition.setFromX(2);
-		scaleTransition.setFromY(2);
-		scaleTransition.setToX(1);
-		scaleTransition.setToY(1);
-		scaleTransition.setCycleCount(1);
-		scaleTransition.setAutoReverse(true);
-
-		ParallelTransition parallelTransition = new ParallelTransition();
-		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
-		parallelTransition.setCycleCount(1);
-		parallelTransition.play();
-
-		model.unsetStopThread();
-
-	}
-	
-	public void updateTLeft(ImagePattern pattern) {
-
-		trickRects.get(3).setFill(pattern);
-		model.setStopThread();
-		
-		trickRects.get(3).setTranslateX(0);
-		trickRects.get(3).setTranslateY(0);
-		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(3));
-		translateTransition.setFromX(-400);
-		translateTransition.setToX(0);
-		translateTransition.setCycleCount(1);
-		translateTransition.setAutoReverse(true);
-		 
-		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(3));
-		scaleTransition.setFromX(2);
-		scaleTransition.setFromY(2);
-		scaleTransition.setToX(1);
-		scaleTransition.setToY(1);
-		scaleTransition.setCycleCount(1);
-		scaleTransition.setAutoReverse(true);
-
-		ParallelTransition parallelTransition = new ParallelTransition();
-		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
-		parallelTransition.setCycleCount(1);
-		parallelTransition.play();
-			
-		model.unsetStopThread();
-
-	}
+	// animation not implemented - could have been done in next sprint
+//	public void updateTMain(ImagePattern pattern) {
+//		trickRects.get(0).setFill(pattern);
+//		// idea from Genuine Coder (youtube: https://www.youtube.com/watch?v=dyS0tdJ5wTw)
+//		trickRects.get(0).setTranslateX(0);
+//		trickRects.get(0).setTranslateY(0);
+//		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(0));
+//		translateTransition.setFromY(200);
+//		translateTransition.setToY(30);
+//		translateTransition.setCycleCount(1);
+//		translateTransition.setAutoReverse(true);
+//		 
+//		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(0));
+//		scaleTransition.setFromX(2);
+//		scaleTransition.setFromY(2);
+//		scaleTransition.setToX(1);
+//		scaleTransition.setToY(1);
+//		scaleTransition.setCycleCount(1);
+//		scaleTransition.setAutoReverse(true);
+//
+//		ParallelTransition parallelTransition = new ParallelTransition();
+//		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
+//		parallelTransition.setCycleCount(1);
+//		parallelTransition.play();
+//		model.unsetStopThread();
+//	}
+//	public void updateTRight(ImagePattern pattern) {
+//		trickRects.get(1).setFill(pattern);
+//		model.setStopThread();
+//		updateRightPlayer();
+//		
+//		trickRects.get(1).setTranslateX(0);
+//		trickRects.get(1).setTranslateY(0);
+//		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(1));
+//		translateTransition.setFromX(400);
+//		translateTransition.setToX(0);
+//		translateTransition.setCycleCount(1);
+//		translateTransition.setAutoReverse(true);
+//		 
+//		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(1));
+//		scaleTransition.setFromX(2);
+//		scaleTransition.setFromY(2);
+//		scaleTransition.setToX(1);
+//		scaleTransition.setToY(1);
+//		scaleTransition.setCycleCount(1);
+//		scaleTransition.setAutoReverse(true);
+//
+//		ParallelTransition parallelTransition = new ParallelTransition();
+//		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
+//		parallelTransition.setCycleCount(1);
+//		parallelTransition.play();
+//
+//		model.unsetStopThread();     
+//	}
+//	public void updateTOppo(ImagePattern pattern) {
+//		model.setStopThread();
+//		trickRects.get(2).setFill(pattern);
+//		trickRects.get(2).setTranslateX(0);
+//		trickRects.get(2).setTranslateY(0);
+//		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(2));
+//		translateTransition.setFromY(-200);
+//		translateTransition.setToY(0);
+//		translateTransition.setCycleCount(1);
+//		translateTransition.setAutoReverse(true);
+//		 
+//		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(2));
+//		scaleTransition.setFromX(2);
+//		scaleTransition.setFromY(2);
+//		scaleTransition.setToX(1);
+//		scaleTransition.setToY(1);
+//		scaleTransition.setCycleCount(1);
+//		scaleTransition.setAutoReverse(true);
+//
+//		ParallelTransition parallelTransition = new ParallelTransition();
+//		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
+//		parallelTransition.setCycleCount(1);
+//		parallelTransition.play();
+//
+//		model.unsetStopThread();
+//	}	
+//	public void updateTLeft(ImagePattern pattern) {
+//		trickRects.get(3).setFill(pattern);
+//		model.setStopThread();
+//		trickRects.get(3).setTranslateX(0);
+//		trickRects.get(3).setTranslateY(0);
+//		TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), trickRects.get(3));
+//		translateTransition.setFromX(-400);
+//		translateTransition.setToX(0);
+//		translateTransition.setCycleCount(1);
+//		translateTransition.setAutoReverse(true);
+//		 
+//		ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(500), trickRects.get(3));
+//		scaleTransition.setFromX(2);
+//		scaleTransition.setFromY(2);
+//		scaleTransition.setToX(1);
+//		scaleTransition.setToY(1);
+//		scaleTransition.setCycleCount(1);
+//		scaleTransition.setAutoReverse(true);
+//
+//		ParallelTransition parallelTransition = new ParallelTransition();
+//		parallelTransition.getChildren().addAll(translateTransition, scaleTransition);
+//		parallelTransition.setCycleCount(1);
+//		parallelTransition.play();
+//			
+//		model.unsetStopThread();
+//	}
 	
 	public void clearTrick() {
 		for (int d = 0; d<MAX_PLAYERS; d++)   {		
@@ -611,6 +586,7 @@ public class GameView extends View<GameModel> {
 		}
 	}
 	
+	// create cards of the other players, show back of cards and fan out 
 	public void setOtherPlayers() {
 		// rightHandSide - cards in HBox, together with name in VBox
 		for (int i= 0; i< MAX_CARDS; i++) {
@@ -699,6 +675,7 @@ public class GameView extends View<GameModel> {
 		opposite.setAlignment(Pos.CENTER);
 	}
 	
+	// remove card of other player
 	public void updateLeftPlayer() {
 		int round = MAX_CARDS - model.getTrickNumber();
 		if(round <leftHandSide.getChildren().size()) {
@@ -732,9 +709,8 @@ public class GameView extends View<GameModel> {
 		}
 	}
 	
+	// create trump panel: show all trump options in StackPane window in Front
 	public void setTrumpOptions() {
-		// show all trump options in StackPane window in Front
-		
 		for (int i = 0; i< 6; i++) {
 			Rectangle rectangleTO = new Rectangle();
 			rectangleTO.setHeight(100);
@@ -744,7 +720,6 @@ public class GameView extends View<GameModel> {
 	        trumpBox.getChildren().add(rectangleTO);  
 	        trumpRects.add(rectangleTO);
 		}
-		
 		updateTrumpOptions();
 		chooseTrumpBox.getChildren().addAll(trumpOrderLabel, trumpBox);
 		chooseTrumpBox.setAlignment(Pos.CENTER);
@@ -764,26 +739,24 @@ public class GameView extends View<GameModel> {
 		}
 	}
 	
+	// change trump images when card set is changed
 	public void updateTrumpOptions() {
-	
 		for (int i = 0; i< 6; i++) {
 	        Trump trump;
 	        trump = Trump.values()[i];
 	        String t = trump.toString(); 
-			String filenameTrump = t + ".png";
-	        
+			String filenameTrump = t + ".png";  
 			Image images = new Image(this.getClass().getClassLoader().getResourceAsStream("herb/client/ui/images/" + model.getCardSet() + "/" + filenameTrump));
 	        ImagePattern patterns = new ImagePattern(images, 0, 0, 100, 100, false);
 	        trumpRects.get(i).setFill(patterns);  
 		}	
 	}
 	
+	// manage stackPane (trump, trick, points) - topNode goes to back, middleNode comes forward
 	public void changeTopOfStackPane() {		
 		ObservableList<Node> tablePanes = this.tablePart.getChildren();
 			if (tablePanes.size() > 1) {
 				Node topNode = tablePanes.get(tablePanes.size()-1);
-		        
-				// This node will be brought to the front
 				Node newTopNode = tablePanes.get(tablePanes.size()-2);
 				
 				topNode.setVisible(false);
@@ -792,6 +765,7 @@ public class GameView extends View<GameModel> {
 				}
 			}
 	
+	// create showTrumpBox
 	public void setTrumpInfo() {
 		imview.setFitWidth(90);
         imview.setPreserveRatio(true);
@@ -808,6 +782,7 @@ public class GameView extends View<GameModel> {
 		imview.setImage(image);	
 	}
 	
+	// create PointPane - not visible
     private void setPointPane() {
     	pointsLabel = new Label();
     	pointsLabel.setVisible(false);
@@ -823,15 +798,12 @@ public class GameView extends View<GameModel> {
     	quitButton.setPrefSize(220, 50);
 		revancheLabel = new Label();
 		revancheLabel.setVisible(false);
-		
     	buttons = new HBox();
     	buttons.getChildren().addAll(revancheButton, quitButton);
     	buttons.setSpacing(10);
     	buttonsBox = new VBox();
     	buttonsBox.getChildren().addAll(buttons, revancheLabel);
-
 		topBox.getChildren().addAll(winnerLabel2, winnerLabel);
-
 		winnerBox.getChildren().addAll(pointsLabel, topBox);
 
     	String label = "";
@@ -865,12 +837,14 @@ public class GameView extends View<GameModel> {
 		playedPointsLabel2.setStyle("-fx-text-fill: WHITE");
 		winnerLabel.setStyle("-fx-text-fill: GOLD");
 		winnerLabel2.setStyle("-fx-text-fill: GOLD");
+		revancheLabel.setStyle("-fx-test-fill: GOLD");
 			
 		pointPane.setVisible(false);
 		changeTopOfStackPane();
 		pointPane.toBack();
     }	
 	
+    // update PointPane at the end of a round
 	public void updatePointPane(ArrayList<Integer> scores) {
 		changeTopOfStackPane();
 		pointPane.setVisible(true);
@@ -934,18 +908,16 @@ public class GameView extends View<GameModel> {
 
 		try {
 		Player s = model.getStartingPlayer();
-		int index = model.getPlayers().indexOf(s);
 		if(s.equals(model.getPlayers().get(0))) playerLabel.setStyle("-fx-background-color: deepskyblue");
 		if(s.equals(model.getPlayers().get(1))) rightHandLabel.setStyle("-fx-background-color: deepskyblue");
 		if(s.equals(model.getPlayers().get(2))) oppositeLabel.setStyle("-fx-background-color: deepskyblue");
 		if(s.equals(model.getPlayers().get(3))) leftHandLabel.setStyle("-fx-background-color: deepskyblue");
 		} catch(Exception e) {
-			startingPlayerLabel.setText("to be defined");
 		}
 
 	}
 	
-	//  change language 
+	//  change language DE, CH, EN
 	private void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
@@ -966,23 +938,24 @@ public class GameView extends View<GameModel> {
 		trumpOrderLabel.setText(t.getString("program.game.trumpOrder"));
 		revancheLabel.setText(t.getString("program.game.revanche"));
 		
-		// Herren: if label is not visible, do not update
+		// Herren- if label is not visible, do not update
 		if (messageLabel.getText()!="") {
 			messageLabel.setText(t.getString("program.game.message"));
 		}
 		if (messageLabelS.getText() !="") {
 			messageLabelS.setText(t.getString("program.game.messageServer")); 
-		}
-		
-		
+		}	
 	}
 	
-	// TODO check
 	public void cleanings() {
 		playerLabel.setStyle("-fx-text-fill: black");
 		rightHandLabel.setStyle("-fx-text-fill: black");
 		oppositeLabel.setStyle("-fx-text-fill: black");
 		leftHandLabel.setStyle("-fx-text-fill: black");
+		playerLabel.setStyle("-fx-background-color: transparent");
+		rightHandLabel.setStyle("-fx-background-color: transparent");
+		oppositeLabel.setStyle("-fx-background-color: transparent");
+		leftHandLabel.setStyle("-fx-background-color: transparent");
 		removeTurn();
 		leftHandSide.getChildren().clear();
 		rightHandSide.getChildren().clear();
@@ -1054,5 +1027,4 @@ public class GameView extends View<GameModel> {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		messageLabelS.setText(t.getString("program.game.messageServer"));
 	}
-	
 }

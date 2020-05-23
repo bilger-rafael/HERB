@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import herb.client.ressources.Card;
 import herb.client.ressources.Player;
 import herb.client.ressources.Trick;
-import herb.client.ressources.core.ExceptionBase;
 import herb.client.ressources.core.Trump;
 import herb.client.ui.core.Model;
 import herb.client.utils.Datastore;
@@ -21,7 +20,6 @@ public class GameModel extends Model {
 	private Player[] playerServerOrder;
 	private ArrayList<Player> players;
 	private int playerServerPosition;
-	private ArrayList<Card> currentCards;
 	private Trick trick;
 	private int trickIndex;
 	private int trickNumber;
@@ -31,15 +29,13 @@ public class GameModel extends Model {
 	private ObservableList<Trump> trumps = FXCollections.observableArrayList();
 	private ArrayList<Integer> scoresList;
 	private String cardSet = "Fr";
-	private Thread t, tu, tru;
+	private Thread t, tru;
 	private volatile boolean stop = false;
 	private volatile boolean trumpStop = false;
 	private ObservableList<Player> currentPlayers = FXCollections.observableArrayList();
 	private ObservableList<Player> startingPlayers = FXCollections.observableArrayList();
 	private SimpleBooleanProperty rematch;
 	private boolean rematchUpdater;
-	private Card[][] localTrick = new Card [9][4];
-	private ObservableList<Card> betterTrickCards = FXCollections.observableArrayList();
 
 	
 	//  Roesti
@@ -50,11 +46,12 @@ public class GameModel extends Model {
 		startTrickUpdater();
 	}
 
-	//  Bilger- Input von Server, Roesti- store MainPlayer in Pole-position
+	//  Bilger- Input von Server
+	//  roesti-  create local list 'players', in order to store MainPlayer in Pole-position (0)
 	public ArrayList<Player> getLobbyPlayers() {
 		playerServerOrder = Datastore.getInstance().getMainPlayer().getRound().getPlayers();
 		players = new ArrayList<Player>(Arrays.asList(playerServerOrder));
-		LinkedList<Player> plys = new LinkedList();
+		LinkedList<Player> plys = new LinkedList<>();
 		for (Player p : players)
 			plys.add(p);
 
@@ -84,16 +81,18 @@ public class GameModel extends Model {
 		return players;
 	}
 
-	//  Bilger- cards from MainPlayer from server (already sorted)
+	//  query MainPlayer cards 'currentCards' from server (they're already sorted)
 	public ArrayList<Card> getMyCards() {
-		currentCards = new ArrayList();
-		return currentCards = Datastore.getInstance().getMainPlayer().getHand().getCards();
+		ArrayList<Card> currentCards = new ArrayList<>();
+		currentCards = Datastore.getInstance().getMainPlayer().getHand().getCards();
+		return currentCards;
 	}
 
-
-	//  trick array on server corresponds to the player order, put cards here in 
-	//  array, starting with the card of the current starting player
-	//  Bilger- delay for completed trick, freeze four cards for a moment
+	//  method for TrickUpdater to get the current trick / the played cards from server
+	//  (trick array on server corresponds to the player order, put cards here in 
+	//  array 'trickCards', starting with the card of the current starting player)
+	// 	update starting player (blue) and current player (it's your turn)
+	//  Bilger- delay for completed trick
 	public void refreshTrickCards() {
 		LinkedList<Trick> tricks = Datastore.getInstance().getMainPlayer().getRound().getTricks();
 
@@ -111,7 +110,7 @@ public class GameModel extends Model {
 			long playedCards = Arrays.asList(trick.getPlayedCards()).stream().filter(x -> x != null).count();
 			if (playedCards < 4) {
 				trick = tricks.get(trickIndex);
-				// if client have all cards of the previous trick, wait to give Player some time
+				// if client has all cards of the previous trick, wait to give Player some time
 				// to look at the finished trick
 			} else {
 				try {
@@ -195,13 +194,11 @@ public class GameModel extends Model {
 			}
 	}
 	
-	// get and show scores
-	public ArrayList<Integer> getScores() {
-		
+	//  query scores from server, put them in array 'scoresList' in same order as 'players'
+	public ArrayList<Integer> getScores() {	
 		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getGame().getScores();
-		
-		try {
-			ArrayList<Integer> tmp = new ArrayList(Arrays.asList(serverScores));
+	
+		ArrayList<Integer> tmp = new ArrayList(Arrays.asList(serverScores));
 		
 			scoresList = new ArrayList(Arrays.asList(serverScores));
 			LinkedList<Integer> scrs = new LinkedList();
@@ -229,12 +226,10 @@ public class GameModel extends Model {
 					scoresList.add(scrs.get(1));
 					scoresList.add(scrs.get(2));
 			}
-		}catch (Exception e) {
-		}
-			
 		return scoresList;
 	}
 
+	//  method for TrumpUpdater to get the chosen trump from server
 	public void refreshTrump() {
 		if (Datastore.getInstance().getMainPlayer().getRound().getTrump() == null)
 			return;
@@ -244,10 +239,6 @@ public class GameModel extends Model {
 
 	public ObservableList<Card> getTrickCards() {
 		return trickCards;
-	}
-	
-	public ObservableList<Card> getBetterTrickCards() {
-		return betterTrickCards;
 	}	
 
 	public ObservableList<Player> getCurrentPlayers() {
@@ -262,6 +253,9 @@ public class GameModel extends Model {
 		return trumps;
 	}
 
+	// start Thread TrickUpdater for current trick cards
+	// updates every time because the 'trickCards' have to be sorted in every query to be sure 
+	// that the cards are not mixed up (position of starting player changes for every trick) 
 	private void startTrickUpdater() {
 		Runnable r = new Runnable() {
 			@Override
@@ -278,6 +272,8 @@ public class GameModel extends Model {
 		t.start();
 	}
 
+	// start Thread TrumpUpdater for chosen trump
+	// is stopped when trump is received
 	private void startTrumpUpdater() {
 		Runnable run = new Runnable() {
 			@Override
@@ -287,15 +283,14 @@ public class GameModel extends Model {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-					}
-				}
-			}
+			}}}
 		};
 		tru = new Thread(run);
 		tru.setDaemon(true);
 		tru.start();
 	}
 
+	// bilger- 
 	public void startRematchUpdater() {
 		this.rematch = new SimpleBooleanProperty();
 		this.rematchUpdater = true;
@@ -360,10 +355,6 @@ public class GameModel extends Model {
 	
 	public void setTrickNumber(int n) {
 		this.trickNumber = n;
-	}
-
-	public Thread getT() {
-		return tu;
 	}
 
 	public void setCardSet(String s) {
