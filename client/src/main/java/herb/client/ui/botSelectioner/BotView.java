@@ -46,7 +46,7 @@ public class BotView extends View<BotModel> {
 
 	public BotView(Stage stage, BotModel model) {
 		super(stage, model);
-		ServiceLocator.getInstance().getLogger().info("Application view initialized");
+		ServiceLocator.getInstance().getLogger().info("BotView initialized");
 	}
 
 	@Override

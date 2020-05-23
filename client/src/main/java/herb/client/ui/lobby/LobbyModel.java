@@ -14,7 +14,7 @@ import javafx.collections.ObservableList;
 
 //Herren
 public class LobbyModel extends Model {
-	ServiceLocator serviceLocator;
+	private ServiceLocator serviceLocator;
 	private Lobby lobby;
 	private ObservableList<Player> players = FXCollections.observableArrayList();
 
@@ -23,7 +23,7 @@ public class LobbyModel extends Model {
 		this.lobby = lobby;
 		startLobbyUpdater();
 		serviceLocator = ServiceLocator.getInstance();
-		serviceLocator.getLogger().info("Application Lobby model initialized");
+		serviceLocator.getLogger().info("LobbyModel initialized");
 	}
 
 	// refresh lobby

@@ -6,7 +6,7 @@ import herb.client.utils.ServiceLocator;
 
 //Herren
 public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyCreaterView> {
-
+	private ServiceLocator serviceLocator;
 	public LobbyCreaterController(LobbyCreaterModel model, LobbyCreaterView view) {
 		super(model, view);
 
@@ -16,6 +16,9 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 		view.getOkButton().disableProperty().bind(view.getTextField().textProperty().isEmpty());
 		// action for cancelButton
 		view.getCancelButton().setOnAction(e -> getBackLauncherView());
+		
+		serviceLocator = ServiceLocator.getInstance();
+		serviceLocator.getLogger().info("Lobbycreater controller initialized");
 
 	}
 

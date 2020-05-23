@@ -13,7 +13,7 @@ public class RegistrationModel extends Model {
 		super();
 
 		serviceLocator = ServiceLocator.getInstance();
-		serviceLocator.getLogger().info("Registration model initialized");
+		serviceLocator.getLogger().info("RegistrationModel initialized");
 
 	}
 

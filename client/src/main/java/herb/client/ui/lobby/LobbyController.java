@@ -6,11 +6,12 @@ import herb.client.ressources.Player;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Controller;
 import herb.client.utils.Datastore;
+import herb.client.utils.ServiceLocator;
 import javafx.collections.ListChangeListener;
 
 //Herren
 public class LobbyController extends Controller<LobbyModel, LobbyView> {
-
+	private ServiceLocator serviceLocator;
 	private ListChangeListener<Player> changeListener;
 
 	public LobbyController(LobbyModel model, LobbyView view) {
@@ -20,6 +21,9 @@ public class LobbyController extends Controller<LobbyModel, LobbyView> {
 		// action for botButton
 		view.getBotsButton().setOnAction(e -> createViewBot());
 		// update the amount of players in a lobby
+		serviceLocator = ServiceLocator.getInstance();
+		serviceLocator.getLogger().info("LobbyController controller initialized");
+		
 		changeListener = new ListChangeListener<Player>() {
 			public void onChanged(Change<? extends Player> c) {
 				if (model.getLobby().isFull()) {

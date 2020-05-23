@@ -51,7 +51,7 @@ public class RegistrationView extends View<RegistrationModel> {
 
 	public RegistrationView(Stage stage, RegistrationModel model) {
 		super(stage, model);
-		ServiceLocator.getInstance().getLogger().info("Application view initialized");
+		ServiceLocator.getInstance().getLogger().info("RegistrationView initialized");
 	}
 
 	@Override

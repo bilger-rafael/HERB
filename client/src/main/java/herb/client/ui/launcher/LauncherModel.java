@@ -24,7 +24,7 @@ public class LauncherModel extends Model {
 		startLobbyUpdater();
 		startHighScoreUpdater();
 		serviceLocator = ServiceLocator.getInstance();
-		serviceLocator.getLogger().info("Application Launcher model initialized");
+		serviceLocator.getLogger().info("LauncherModel initialized");
 	}
 
 	//refresh amount lobbys in the list

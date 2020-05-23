@@ -3,10 +3,11 @@ package herb.client.ui.botSelectioner;
 import herb.client.Main;
 import herb.client.ressources.core.ExceptionBase;
 import herb.client.ui.core.Controller;
+import herb.client.utils.ServiceLocator;
 
 //Anahi
 public class BotController extends Controller<BotModel, BotView> {
-
+	private ServiceLocator serviceLocator;
 	public BotController(BotModel model, BotView view) {
 		super(model, view);
 
@@ -16,7 +17,9 @@ public class BotController extends Controller<BotModel, BotView> {
 		view.getOkButton().setOnAction(e -> startSelectedBot());
 		// if no radioButton is selected then okButton is disabled
 		view.getOkButton().disableProperty().bind(view.getToggleGroup().selectedToggleProperty().isNull());
-
+		
+		serviceLocator = ServiceLocator.getInstance();
+		serviceLocator.getLogger().info("BotController controller initialized");
 	}
 	//mehtode for cancelButton
 	private void getBackLobbyView() {

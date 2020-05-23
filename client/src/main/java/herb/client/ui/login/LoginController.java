@@ -9,7 +9,7 @@ import herb.client.utils.ServiceLocator;
 //Herren
 public class LoginController extends Controller<LoginModel, LoginView> {
 
-	ServiceLocator serviceLocator;
+	private ServiceLocator serviceLocator;
 
 	private LoginModel loginModel;
 

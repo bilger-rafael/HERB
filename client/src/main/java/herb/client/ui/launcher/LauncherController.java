@@ -10,7 +10,7 @@ import javafx.application.Platform;
 
 //Herren
 public class LauncherController extends Controller<LauncherModel, LauncherView> {
-	ServiceLocator serviceLocator;
+	private ServiceLocator serviceLocator;
 
 	public LauncherController(LauncherModel model, LauncherView view) {
 		super(model, view);
@@ -39,7 +39,7 @@ public class LauncherController extends Controller<LauncherModel, LauncherView> 
 		view.getLogoutMenuItem().setOnAction(e -> getBackLoginView());
 
 		serviceLocator = ServiceLocator.getInstance();
-		serviceLocator.getLogger().info("Launcher controller initialized");
+		serviceLocator.getLogger().info("LauncherController initialized");
 
 	}
 

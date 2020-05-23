@@ -46,7 +46,7 @@ public class LobbyView extends View<LobbyModel> {
 		
 	public LobbyView(Stage stage, LobbyModel model) {
 		super(stage, model);
-		ServiceLocator.getInstance().getLogger().info("Application Lobby view initialized");
+		ServiceLocator.getInstance().getLogger().info("LobbyView initialized");
 	}
 
 	@Override

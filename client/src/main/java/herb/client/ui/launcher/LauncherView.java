@@ -52,7 +52,7 @@ public class LauncherView extends View<LauncherModel> {
 
 	public LauncherView(Stage stage, LauncherModel model) {
 		super(stage, model);
-		ServiceLocator.getInstance().getLogger().info("Application view initialized");
+		ServiceLocator.getInstance().getLogger().info("LauncherView initialized");
 	}
 
 	@Override

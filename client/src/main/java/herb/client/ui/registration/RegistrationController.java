@@ -9,7 +9,7 @@ import herb.client.ui.core.Controller;
 
 //Herren
 public class RegistrationController extends Controller<RegistrationModel, RegistrationView> {
-	ServiceLocator serviceLocator;
+	private ServiceLocator serviceLocator;
 
 	public RegistrationController(RegistrationModel model, RegistrationView view) {
 		super(model, view);
@@ -25,7 +25,7 @@ public class RegistrationController extends Controller<RegistrationModel, Regist
 		view.getCancelButton().setOnAction(e -> getBackLoginView());
 
 		serviceLocator = ServiceLocator.getInstance();
-		serviceLocator.getLogger().info("Application controller initialized");
+		serviceLocator.getLogger().info("RegistrationController initialized");
 
 	}
 
