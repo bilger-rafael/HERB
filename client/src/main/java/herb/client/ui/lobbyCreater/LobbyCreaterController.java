@@ -3,9 +3,9 @@ package herb.client.ui.lobbyCreater;
 import herb.client.Main;
 import herb.client.ui.core.Controller;
 import herb.client.utils.ServiceLocator;
+
 //Herren
 public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyCreaterView> {
-	ServiceLocator serviceLocator;
 
 	public LobbyCreaterController(LobbyCreaterModel model, LobbyCreaterView view) {
 		super(model, view);
@@ -31,7 +31,6 @@ public class LobbyCreaterController extends Controller<LobbyCreaterModel, LobbyC
 			// if lobby does already exist throw exception
 			view.showError();
 			view.getMessage().setVisible(true);
-			// serviceLocator.getLogger().info("Lobby existiert bereits.");
 		}
 
 	}
