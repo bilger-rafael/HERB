@@ -85,7 +85,6 @@ public class GameView extends View<GameModel> {
 	private final int oCARD_W = 322/4; 
 	private final int oCARD_H = 514/4;
 	private int startingPosition;
-	private int tCounter = 0;
 
 	
 	public GameView(Stage stage, GameModel model) {
@@ -837,7 +836,7 @@ public class GameView extends View<GameModel> {
 		playedPointsLabel2.setStyle("-fx-text-fill: WHITE");
 		winnerLabel.setStyle("-fx-text-fill: GOLD");
 		winnerLabel2.setStyle("-fx-text-fill: GOLD");
-		revancheLabel.setStyle("-fx-test-fill: GOLD");
+		revancheLabel.setStyle("-fx-text-fill: GOLD");
 			
 		pointPane.setVisible(false);
 		changeTopOfStackPane();
@@ -918,7 +917,7 @@ public class GameView extends View<GameModel> {
 	}
 	
 	//  change language DE, CH, EN
-	private void updateLabels() {
+	public void updateLabels() {
 		Translator t = ServiceLocator.getInstance().getTranslator();
 		
 		// language settings
@@ -952,10 +951,10 @@ public class GameView extends View<GameModel> {
 		rightHandLabel.setStyle("-fx-text-fill: black");
 		oppositeLabel.setStyle("-fx-text-fill: black");
 		leftHandLabel.setStyle("-fx-text-fill: black");
-		playerLabel.setStyle("-fx-background-color: transparent");
-		rightHandLabel.setStyle("-fx-background-color: transparent");
-		oppositeLabel.setStyle("-fx-background-color: transparent");
-		leftHandLabel.setStyle("-fx-background-color: transparent");
+		playerLabel.setStyle("-fx-background-color: white");
+		rightHandLabel.setStyle("-fx-background-color: white");
+		oppositeLabel.setStyle("-fx-background-color: white");
+		leftHandLabel.setStyle("-fx-background-color: white");
 		removeTurn();
 		leftHandSide.getChildren().clear();
 		rightHandSide.getChildren().clear();
@@ -1001,9 +1000,10 @@ public class GameView extends View<GameModel> {
 	}
 	
 	public void setRevancheLabel() {
-		revancheLabel.setVisible(true);
-		revancheLabel.setStyle("-fx-text-fill: WHITE");
+		revancheLabel.setStyle("-fx-background-color: white");
 		revancheLabel.setStyle("-fx-text-size: 14px");
+		revancheLabel.setStyle("-fx-text-fill: gold");
+		revancheLabel.setVisible(true);
 	}
 	
 	public Label getMessageLabel() {

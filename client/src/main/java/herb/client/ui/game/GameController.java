@@ -31,6 +31,9 @@ public class GameController extends Controller<GameModel, GameView> {
 		super(model, view);
 
 		startPlayablesUpdater();
+		
+		serviceLocator = ServiceLocator.getInstance();
+		serviceLocator.getLogger().info("GameController initialized");
 
 		// trickListener updates the trickCards in view
 		ListChangeListener<Card> trickListener = new ListChangeListener<Card>() {

@@ -197,11 +197,10 @@ public class GameModel extends Model {
 	//  query scores from server, put them in array 'scoresList' in same order as 'players'
 	public ArrayList<Integer> getScores() {	
 		Integer[] serverScores = (Integer[]) Datastore.getInstance().getMainPlayer().getRound().getGame().getScores();
-	
-		ArrayList<Integer> tmp = new ArrayList(Arrays.asList(serverScores));
-		
-			scoresList = new ArrayList(Arrays.asList(serverScores));
-			LinkedList<Integer> scrs = new LinkedList();
+			
+		try {
+			scoresList = new ArrayList<>(Arrays.asList(serverScores));
+			LinkedList<Integer> scrs = new LinkedList<>();
 			for (Integer i : scoresList) {
 				scrs.add(i);
 			}
@@ -226,6 +225,8 @@ public class GameModel extends Model {
 					scoresList.add(scrs.get(1));
 					scoresList.add(scrs.get(2));
 			}
+		}catch (Exception e){
+		}
 		return scoresList;
 	}
 
