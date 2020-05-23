@@ -139,7 +139,7 @@ public class Round extends RoundBase<Game, Player, Trick> {
 		Integer[] scores = new Integer[4];
 		for (int i = 0; i < this.getPlayers().length; i++) {
 			Player p = this.getPlayers()[i];
-			scores[i] = this.getTricks().stream().mapToInt(x -> x.getPlayedCard(p).getPoints()).sum();
+			scores[i] = this.getTricks().stream().filter(x -> x.getWinningPlayer().equals(p)).mapToInt(x -> x.getTrickPoints()).sum();
 			// add 5 points for winning last trick
 			if (p.equals(this.getTricks().getLast().getWinner()))
 				scores[i] += 5;
