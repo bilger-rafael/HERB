@@ -1,12 +1,8 @@
 package herb.client;
 
-import java.util.UUID;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import herb.client.ressources.Game;
 import herb.client.ressources.Lobby;
-import herb.client.ressources.Round;
 import herb.client.ui.botSelectioner.BotController;
 import herb.client.ui.botSelectioner.BotModel;
 import herb.client.ui.botSelectioner.BotView;
