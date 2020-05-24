@@ -113,26 +113,26 @@ public class Main extends Application {
 	 * http://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm
 	 */
 	public void startMain() {
-		
+
 		// Initialize the application MVC components. Note that these components
 		// can only be initialized now, because they may depend on the
 		// resources initialized by the splash screen
-		
+
 		// create LoginView
 		View view = getLoginView();
 
 		// Resources are now initialized
-		serviceLocator = ServiceLocator.getInstance();	
-		
+		serviceLocator = ServiceLocator.getInstance();
+
 		// Close the splash screen, and set the reference to null, so that all
 		// Splash_XXX objects can be garbage collected
 		splashView.stop();
 		splashView = null;
 
-		view.start();		
+		view.start();
 	}
-	
-	// roesti - call login view	
+
+	// roesti - call login view
 	public LoginView getLoginView() {
 		if (loginView == null) {
 			Stage stage = new Stage();
@@ -142,7 +142,6 @@ public class Main extends Application {
 		}
 		return loginView;
 	}
-
 
 	/**
 	 * The stop method is the opposite of the start method. It provides an
@@ -162,7 +161,7 @@ public class Main extends Application {
 	public static Main getMainProgram() {
 		return main;
 	}
-		
+
 	// roesti - open RegistrationWindow
 	public void startRegistration() {
 		Stage stage = new Stage();
@@ -171,7 +170,6 @@ public class Main extends Application {
 			registrationView = new RegistrationView(stage, regModel);
 		}
 		new RegistrationController(regModel, registrationView);
-		//loginView.stop();
 		registrationView.start();
 	}
 
@@ -183,10 +181,10 @@ public class Main extends Application {
 			launcherView = new LauncherView(stage, lauModel);
 			new LauncherController(lauModel, launcherView);
 			serviceLocator.getLogger().info("Launcher started");
-			}
+		}
 		return launcherView;
 	}
-	
+
 	public LobbyCreaterView getLobbyCreater() {
 		if (lobbyCreaterView == null) {
 			Stage stage = new Stage();
@@ -194,54 +192,45 @@ public class Main extends Application {
 			lobbyCreaterView = new LobbyCreaterView(stage, lobbyCreaterModel);
 			new LobbyCreaterController(lobbyCreaterModel, lobbyCreaterView);
 			serviceLocator.getLogger().info("LobbyCreater started");
-			}
+		}
 		return lobbyCreaterView;
 	}
 
 	public LobbyView getLobbyView(Lobby lobby) {
-		// TODO correct, when lobbies work => multiple Lobbies possible
-		
-		//if(!getlobbyViews().containsKey(loobyName)) {
 		Stage stage = new Stage();
 		LobbyModel model = new LobbyModel(lobby);
 		loView = new LobbyView(stage, model);
-		// LobbyView loView = new LobbyView(stage, model);
 		new LobbyController(model, loView);
 		launcherView.stop();
-		
-		//getLobbyViews().put(lobbyName, loView);
-		
-		return loView; 
-		// return getLobbyViews().get(lobbyName);
+		return loView;
 	}
-	
 
 	public GameView getGameView() {
-			// TODO correct, when everything works
-			Stage stage = new Stage();
-			GameModel model = new GameModel();
-			gameView = new GameView(stage, model);
-			new GameController(model, gameView);
-			//loView.stop();
-			
-			return gameView;
-	}
-	
-	public BotView getBotView(Lobby lobby) {
-		if(botView == null) {
+		// TODO correct, when everything works
 		Stage stage = new Stage();
-		BotModel botModel = new BotModel(lobby);
-		botView = new BotView(stage, botModel);
-		new BotController(botModel, botView);
-		serviceLocator.getLogger().info("BotView started");
+		GameModel model = new GameModel();
+		gameView = new GameView(stage, model);
+		new GameController(model, gameView);
+		// loView.stop();
+
+		return gameView;
+	}
+
+	public BotView getBotView(Lobby lobby) {
+		if (botView == null) {
+			Stage stage = new Stage();
+			BotModel botModel = new BotModel(lobby);
+			botView = new BotView(stage, botModel);
+			new BotController(botModel, botView);
+			serviceLocator.getLogger().info("BotView started");
 		}
 		return botView;
 	}
-	
+
 	public void clearBotView() {
 		this.botView = null;
 	}
-	
+
 	public void clearGameView() {
 		this.gameView = null;
 	}
